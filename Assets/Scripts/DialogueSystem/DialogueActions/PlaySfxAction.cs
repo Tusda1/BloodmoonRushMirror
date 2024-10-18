@@ -1,13 +1,11 @@
 using System;
-using Unity.Behavior;
 using UnityEngine;
-using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace DialogueSystem.DialogueActions {
+namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
-        name: "PlaySFX",
+        name: "Play SFX",
         story: "Play SFX: [sfxName]",
         category: "DialogueAction",
         id: "a7c30756d907cc458e2475160bdbb3ef")]

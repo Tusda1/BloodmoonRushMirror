@@ -1,18 +1,16 @@
 using System;
 using UI;
-using Unity.Behavior;
-using Action = Unity.Behavior.Action;
 using Unity.Properties;
 using UnityEngine;
 
-namespace DialogueSystem.DialogueActions {
+namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
-        name: "FadeToBlack",
-        story: "Fade To Black Over [time] Seconds",
+        name: "Fade to black",
+        story: "Fade to black over [time] seconds",
         category: "DialogueAction",
         id: "83d41d0d566fd549a7d189c445b2a500")]
-    public class FadeToBlackAction : Action {
+    internal class FadeToBlackAction : Action {
         [SerializeReference] public BlackboardVariable<float> time = new() { Value = 5.0f };
 
         protected override Status OnStart() {

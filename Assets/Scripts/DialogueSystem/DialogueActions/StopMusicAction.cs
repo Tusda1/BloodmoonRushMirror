@@ -1,12 +1,10 @@
 using System;
-using Unity.Behavior;
-using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace DialogueSystem.DialogueActions {
+namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
-        name: "StopMusic",
+        name: "Stop Music",
         story: "Stop Music",
         category: "DialogueAction",
         id: "dfaee972cacdb7c763c853117a55acdb")]

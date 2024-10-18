@@ -1,15 +1,13 @@
 using System;
 using UI;
-using Unity.Behavior;
 using UnityEngine;
-using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace DialogueSystem.DialogueActions {
+namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
-        name: "DialogueCharacterSaysAuto",
-        story: "[dialogueCharacterReference] Says [dialogue] | Auto |",
+        name: "DialogueCharacter Says Auto",
+        story: "[dialogueCharacterReference] says [dialogue] | Auto |",
         category: "DialogueAction",
         id: "0466ecf5f83b7ef25e26fd10319bf1e2")]
     public class DialogueCharacterSaysAutoAction : Action {

@@ -1,15 +1,13 @@
 using System;
 using UI;
-using Unity.Behavior;
 using UnityEngine;
-using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace DialogueSystem.DialogueActions {
+namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
-        name: "FadeFromBlack",
-        story: "Fade From Black Over [time] Seconds",
+        name: "Fade From Black",
+        story: "Fade from black over [time] seconds",
         category: "Action",
         id: "490e94aa3754ce7782fc5a9dd6ec504a")]
     public class FadeFromBlackAction : Action {

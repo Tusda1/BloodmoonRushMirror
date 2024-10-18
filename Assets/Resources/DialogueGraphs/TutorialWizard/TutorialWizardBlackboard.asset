@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6830447404565283916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
+  m_Name: TutorialWizardBlackboard
+  m_EditorClassIdentifier: 
+  VersionTimestamp: 638648669670919957
+  AssetID:
+    m_Value0: 1465934021941519809
+    m_Value1: 10228809807368344090
+  m_Blackboard:
+    m_Variables:
+    - rid: 74644067056877899
+    - rid: 74644067056877900
+  m_SharedBlackboardVariableGuids: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 74644067056877899
+      type: {class: 'BlackboardVariable`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 9409301076609905188
+          m_Value1: 13801873091532337908
+        Name: TutorialWizardCall
+        m_Value: {fileID: -6601854684063276967, guid: 54ac675515541ab4eb4585509194276d, type: 2}
+    - rid: 74644067056877900
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 756888291168188447
+          m_Value1: 2364793695808250459
+        Name: PhoneRingingSFXPath
+        m_Value: event:/Sfx/Misc/Phone_ringing
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
+  m_Name: TutorialWizardBlackboard
+  m_EditorClassIdentifier: 
+  AssetID:
+    m_Value0: 1465934021941519809
+    m_Value1: 10228809807368344090
+  m_Variables:
+  - rid: 74644066332049843
+  - rid: 74644066332049433
+  m_VersionTimestamp: 638648669670919957
+  m_CommandBuffer:
+    m_Commands: []
+  m_RuntimeBlackboardAsset: {fileID: -6830447404565283916}
+  references:
+    version: 2
+    RefIds:
+    - rid: 74644066332049433
+      type: {class: 'TypedVariableModel`1[[System.String, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 756888291168188447
+          m_Value1: 2364793695808250459
+        Name: PhoneRingingSFXPath
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: event:/Sfx/Misc/Phone_ringing
+    - rid: 74644066332049843
+      type: {class: 'TypedVariableModel`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 9409301076609905188
+          m_Value1: 13801873091532337908
+        Name: TutorialWizardCall
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: -6601854684063276967, guid: 54ac675515541ab4eb4585509194276d, type: 2}

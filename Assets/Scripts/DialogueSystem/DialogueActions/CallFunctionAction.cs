@@ -1,17 +1,15 @@
 using System;
-using Unity.Behavior;
 using UnityEngine;
-using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace DialogueSystem.DialogueActions {
+namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
-        name: "Reflection",
-        story: "Call [functionName] In [script]",
+        name: "Call Function",
+        story: "Call [functionName] in [script]",
         category: "DialogueAction",
         id: "2aa36e2dee0f965713092da12b0ad796")]
-    public class ReflectionAction : Action {
+    public class CallFunctionAction : Action {
         [SerializeReference] public BlackboardVariable<string> functionName;
         [SerializeReference] public BlackboardVariable<MonoBehaviour> script;
 

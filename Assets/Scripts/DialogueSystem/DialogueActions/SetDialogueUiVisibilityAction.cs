@@ -1,24 +1,24 @@
 using System;
 using UI;
-using Unity.Behavior;
 using UnityEngine;
-using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace DialogueSystem.DialogueActions {
+namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
-        name: "SetDialogueUIVisibility",
-        story: "Set DialogueUI Visibility To [value]",
-        category: "DialogueAction",
-        id: "1d559a13de6996119c80648c6ad1dfcd")]
+        name: "Set DialogueUI Visibility",
+        story: "Set dialogueUI visibility to [value]",
+        category: "Action",
+        id: "875940953991b078f36e684d6c237500")]
     public class SetDialogueUiVisibilityAction : Action {
         [SerializeReference] public BlackboardVariable<bool> value;
 
-        protected override Status OnStart() {
-            if (DialogueUI.Instance == null) return Status.Failure;
+        private DialogueUI dialogueUI => DialogueUI.Instance;
 
-            DialogueUI.Instance.uiDocumentVisible = value.Value;
+        protected override Status OnStart() {
+            if (dialogueUI == null) return Status.Failure;
+
+            dialogueUI.uiDocumentVisible = value.Value;
             return Status.Success;
         }
     }

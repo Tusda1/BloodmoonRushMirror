@@ -1,19 +1,17 @@
 using System;
 using UI;
-using Unity.Behavior;
 using UnityEngine;
-using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace DialogueSystem.DialogueActions {
+namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
-        name: "DialogueCharacterSays",
-        story: "[dialogueCharacterReference] Says [dialogue]",
-        category: "DialogueAction",
-        id: "e49e2e5c1831f1017bfd69a4c9d4f6b3")]
+        name: "DialogueCharacter Says",
+        story: "[dialogueCharacter] says [dialogue]",
+        category: "Action",
+        id: "2f66c0875cb50dfa9564f10bbb4723ec")]
     public class DialogueCharacterSaysAction : Action {
-        [SerializeReference] public BlackboardVariable<DialogueCharacter> dialogueCharacterReference;
+        [SerializeReference] public BlackboardVariable<DialogueCharacter> dialogueCharacter;
         [SerializeReference] public BlackboardVariable<string> dialogue;
 
         [SerializeReference] public BlackboardVariable<Sprite> imagePortraitOverride;
@@ -29,10 +27,9 @@ namespace DialogueSystem.DialogueActions {
         private bool _skipped;
         private bool _textDoneDisplaying;
         private float _timePerChar;
-
         private string _displayText;
+        
         private DialogueUI dialogueUI => DialogueUI.Instance;
-        private DialogueCharacter dialogueCharacter => dialogueCharacterReference.Value;
         private DialogueCharacter.WhenIsSfxPlayed _whenIsSfxPlayed;
 
         protected override Status OnStart() {
@@ -53,30 +50,35 @@ namespace DialogueSystem.DialogueActions {
             dialogueUI.OnSkipDialogue += Skip;
 
             dialogueUI.dialogueFont = dialogueFontOverride.Value == null
-                ? dialogueCharacter.dialogueFont
+                ? dialogueCharacter.Value.dialogueFont
                 : dialogueFontOverride.Value;
+            
             dialogueUI.imagePortrait = imagePortraitOverride.Value == null
-                ? dialogueCharacter.dialogueImage
+                ? dialogueCharacter.Value.dialogueImage
                 : imagePortraitOverride.Value;
+            
             dialogueUI.dialogueColor = dialogueColorOverride.Value == default
-                ? dialogueCharacter.dialogueColor
+                ? dialogueCharacter.Value.dialogueColor
                 : dialogueColorOverride.Value;
-            dialogueUI.textSize = textSizeOverride.Value == 0 ? dialogueCharacter.textSize : textSizeOverride.Value;
+            
+            dialogueUI.textSize = textSizeOverride.Value == 0 ? dialogueCharacter.Value.textSize : textSizeOverride.Value;
+            
             dialogueUI.dialogueText = "";
-            _timePerChar = 1f / (textSpeedOverride == 0 ? dialogueCharacter.textSpeed : textSpeedOverride.Value);
+            
+            _timePerChar = 1f / (textSpeedOverride == 0 ? dialogueCharacter.Value.textSpeed : textSpeedOverride.Value);
 
             _currentCharIndex = -1;
             _skipped = false;
             _displayText = dialogue.Value;
             _textDoneDisplaying = false;
 
-            _whenIsSfxPlayed = overwriteWhenIsSfxPlayed ? whenIsSfxPlayed.Value : dialogueCharacter.whenIsSfxPlayed;
+            _whenIsSfxPlayed = overwriteWhenIsSfxPlayed ? whenIsSfxPlayed.Value : dialogueCharacter.Value.whenIsSfxPlayed;
 
             if ((_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.InTheBeginning) !=
                 DialogueCharacter.WhenIsSfxPlayed.Nowhere ||
                 (_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.PerWord) !=
                 DialogueCharacter.WhenIsSfxPlayed.Nowhere) {
-                FmodManager.Instance.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
+                FmodManager.Instance.PlayOneShot(dialogueCharacter.Value.textAudioSoundEventPath);
             }
 
             return Status.Running;
@@ -111,7 +113,7 @@ namespace DialogueSystem.DialogueActions {
                         _currentCharIndex++;
                         if ((_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.PerWord) !=
                             DialogueCharacter.WhenIsSfxPlayed.Nowhere) {
-                            FmodManager.Instance.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
+                            FmodManager.Instance.PlayOneShot(dialogueCharacter.Value.textAudioSoundEventPath);
                         }
                     }
                 }
@@ -124,7 +126,7 @@ namespace DialogueSystem.DialogueActions {
 
                 if ((_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.PerCharacter) !=
                     DialogueCharacter.WhenIsSfxPlayed.Nowhere) {
-                    FmodManager.Instance.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
+                    FmodManager.Instance.PlayOneShot(dialogueCharacter.Value.textAudioSoundEventPath);
                 }
 
                 if (_currentCharIndex >= _displayText.Length) {

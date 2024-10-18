@@ -1,17 +1,15 @@
 using System;
-using Unity.Behavior;
 using UnityEngine;
-using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
-namespace DialogueSystem.DialogueActions {
+namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
-        name: "SwitchMusic",
-        story: "Switch Music To: [path]",
+        name: "Change Music",
+        story: "Change music to: [path]",
         category: "DialogueAction",
         id: "f9a0355a2faa61db84e8afde6179d44e")]
-    public class SwitchMusicAction : Action {
+    public class ChangeMusicAction : Action {
         [SerializeReference] public BlackboardVariable<string> path;
 
         protected override Status OnStart() {
