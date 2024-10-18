@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Runtime.InteropServices;
+using Attributes;
 using UnityEngine;
 using FMOD.Studio;
 using FMODUnity;
 
 namespace Fmod {
     public class FmodManager : PersistentSingleton<FmodManager> {
-        [Header("DebugLogger")] [SerializeField]
-        private DebugLogger.DebugLogger debugLogger;
-        
+        [Header("DebugLogger")] 
+        [SerializeField, Required] private DebugLoggerSO debugLogger;
+
         public static float masterVolume => PlayerPrefs.GetFloat("MasterVolume");
         public static float musicVolume => PlayerPrefs.GetFloat("SFXVolume");
         public static float sfxVolume => PlayerPrefs.GetFloat("MusicVolume");
-        
+
         private EventInstance _currentMusic;
         private Bus _musicBus;
         private Bus _sfxBus;
@@ -20,7 +21,7 @@ namespace Fmod {
 
         private IEnumerator Start() {
             debugLogger.Log("Initializing");
-            
+
             yield return new WaitUntil(() => RuntimeManager.IsInitialized);
             debugLogger.Log("RuntimeManager is initialized");
 
@@ -37,28 +38,28 @@ namespace Fmod {
 
         public void SetMasterVolume(float volume) {
             volume = Mathf.Clamp01(volume);
-            
+
             _masterBus.setVolume(volume);
             PlayerPrefs.SetFloat("MasterVolume", volume);
-            
+
             debugLogger.Log("Master volume set to: " + volume);
         }
 
         public void SetSfxVolume(float volume) {
             volume = Mathf.Clamp01(volume);
-            
+
             _sfxBus.setVolume(volume);
             PlayerPrefs.SetFloat("SFXVolume", volume);
-            
+
             debugLogger.Log("SFX volume set to: " + volume);
         }
 
         public void SetMusicVolume(float volume) {
             volume = Mathf.Clamp01(volume);
-            
+
             _musicBus.setVolume(volume);
             PlayerPrefs.SetFloat("MusicVolume", volume);
-            
+
             debugLogger.Log("Music volume set to: " + volume);
         }
 
@@ -84,7 +85,7 @@ namespace Fmod {
             _currentMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             _currentMusic = RuntimeManager.CreateInstance(path);
             _currentMusic.start();
-            
+
             debugLogger.Log("Playing new music");
         }
 
@@ -92,19 +93,19 @@ namespace Fmod {
             if (CheckIfStringIsEmpty(parameter)) return;
 
             _currentMusic.setParameterByName(parameter, value, ignoreSeekSpeed);
-            
+
             debugLogger.Log($"Parameter {parameter} set to {value}");
         }
 
         public void StopMusic() {
             _currentMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            
+
             debugLogger.Log("Stopped music");
         }
 
         public void StopAllSound() {
             _masterBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            
+
             debugLogger.Log("Stopped all sound");
         }
 

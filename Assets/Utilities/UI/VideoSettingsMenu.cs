@@ -1,3 +1,4 @@
+using Attributes;
 using Consensus;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,7 +19,7 @@ namespace Utilities.UI {
         private readonly ScriptVotePair _displaySettingChanged = new();
 
         [Header("Debug Logger")] 
-        [SerializeField] private DebugLogger.DebugLogger debugLogger;
+        [SerializeField, Required] private DebugLoggerSO debugLogger;
 
         private DropdownField _screenModeDropdownMenu;
         private DropdownField _displayDropdownMenu;
