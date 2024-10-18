@@ -1,0 +1,245 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6314824275859076673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
+  m_Name: DrucillaBlackboard
+  m_EditorClassIdentifier: 
+  VersionTimestamp: 638648593212471352
+  AssetID:
+    m_Value0: 4944896706078454662
+    m_Value1: 8713339101728911770
+  m_Blackboard:
+    m_Variables:
+    - rid: 74644065046757659
+    - rid: 74644065046757660
+    - rid: 74644065046757661
+    - rid: 74644065046757662
+    - rid: 74644065046757663
+    - rid: 74644065046757664
+    - rid: 74644065046757665
+    - rid: 74644065046757666
+    - rid: 74644065046757667
+  m_SharedBlackboardVariableGuids:
+  - m_Value0: 7456374676149723218
+    m_Value1: 11093767988059105249
+  - m_Value0: 14354650347657143494
+    m_Value1: 8725196837871845085
+  - m_Value0: 2547419228468632051
+    m_Value1: 15405140386796512659
+  - m_Value0: 15115106911295453415
+    m_Value1: 7302902440862893819
+  - m_Value0: 10937460128923722935
+    m_Value1: 1623098206269681022
+  - m_Value0: 8907713716009419350
+    m_Value1: 7001401514357285640
+  - m_Value0: 1269379063139990625
+    m_Value1: 3615010332039499076
+  - m_Value0: 18396006059417771950
+    m_Value1: 3113126771667264831
+  - m_Value0: 10490511990889088030
+    m_Value1: 13752352793835671015
+  references:
+    version: 2
+    RefIds:
+    - rid: 74644065046757659
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7456374676149723218
+          m_Value1: 11093767988059105249
+        Name: LaughSFXPath
+        m_Value: event:/Sfx/Talk/Drusilla_laugh
+    - rid: 74644065046757660
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 14354650347657143494
+          m_Value1: 8725196837871845085
+        Name: MusicThemePath
+        m_Value: event:/Music/Drusilla_theme_basic
+    - rid: 74644065046757661
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 2547419228468632051
+          m_Value1: 15405140386796512659
+        Name: LaughPortrait
+        m_Value: {fileID: -1587205731444698363, guid: 5620f4f64f5a9cc40be14fa5fdcc6b54, type: 3}
+    - rid: 74644065046757662
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15115106911295453415
+          m_Value1: 7302902440862893819
+        Name: FromBat
+        m_Value: {fileID: 0}
+    - rid: 74644065046757663
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 10937460128923722935
+          m_Value1: 1623098206269681022
+        Name: ToBat
+        m_Value: {fileID: 0}
+    - rid: 74644065046757664
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 8907713716009419350
+          m_Value1: 7001401514357285640
+        Name: Laugh
+        m_Value: {fileID: 0}
+    - rid: 74644065046757665
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1269379063139990625
+          m_Value1: 3615010332039499076
+        Name: Shoot
+        m_Value: {fileID: 0}
+    - rid: 74644065046757666
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 18396006059417771950
+          m_Value1: 3113126771667264831
+        Name: IdleBat
+        m_Value: {fileID: 0}
+    - rid: 74644065046757667
+      type: {class: 'BlackboardVariable`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 10490511990889088030
+          m_Value1: 13752352793835671015
+        Name: Idle
+        m_Value: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
+  m_Name: DrucillaBlackboard
+  m_EditorClassIdentifier: 
+  AssetID:
+    m_Value0: 4944896706078454662
+    m_Value1: 8713339101728911770
+  m_Variables:
+  - rid: 74644064412106984
+  - rid: 74644064432554412
+  - rid: 74644064412107713
+  - rid: 74644065001931326
+  - rid: 74644065001931327
+  - rid: 74644065001931328
+  - rid: 74644065001931329
+  - rid: 74644065046757527
+  - rid: 74644065046757528
+  m_VersionTimestamp: 638648593212471352
+  m_CommandBuffer:
+    m_Commands: []
+  m_RuntimeBlackboardAsset: {fileID: -6314824275859076673}
+  references:
+    version: 2
+    RefIds:
+    - rid: 74644064412106984
+      type: {class: 'TypedVariableModel`1[[System.String, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 7456374676149723218
+          m_Value1: 11093767988059105249
+        Name: LaughSFXPath
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: event:/Sfx/Talk/Drusilla_laugh
+    - rid: 74644064412107713
+      type: {class: 'TypedVariableModel`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 2547419228468632051
+          m_Value1: 15405140386796512659
+        Name: LaughPortrait
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: -1587205731444698363, guid: 5620f4f64f5a9cc40be14fa5fdcc6b54, type: 3}
+    - rid: 74644064432554412
+      type: {class: 'TypedVariableModel`1[[System.String, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 14354650347657143494
+          m_Value1: 8725196837871845085
+        Name: MusicThemePath
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: event:/Music/Drusilla_theme_basic
+    - rid: 74644065001931326
+      type: {class: 'TypedVariableModel`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 15115106911295453415
+          m_Value1: 7302902440862893819
+        Name: FromBat
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 0}
+    - rid: 74644065001931327
+      type: {class: 'TypedVariableModel`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 10937460128923722935
+          m_Value1: 1623098206269681022
+        Name: ToBat
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 0}
+    - rid: 74644065001931328
+      type: {class: 'TypedVariableModel`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 8907713716009419350
+          m_Value1: 7001401514357285640
+        Name: Laugh
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 0}
+    - rid: 74644065001931329
+      type: {class: 'TypedVariableModel`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 1269379063139990625
+          m_Value1: 3615010332039499076
+        Name: Shoot
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 0}
+    - rid: 74644065046757527
+      type: {class: 'TypedVariableModel`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 18396006059417771950
+          m_Value1: 3113126771667264831
+        Name: IdleBat
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 0}
+    - rid: 74644065046757528
+      type: {class: 'TypedVariableModel`1[[UnityEngine.AnimationClip, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 10490511990889088030
+          m_Value1: 13752352793835671015
+        Name: Idle
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 0}

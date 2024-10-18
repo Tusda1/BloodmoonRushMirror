@@ -1,0 +1,129 @@
+.header {
+    -unity-font-definition: url("project://database/Packages/com.erlend-eiken-oppedal.custompackageimporter/Editor/home-video-font/HomeVideo-BLG6G.ttf?fileID=12800000&guid=a2c8e4c4789a7de49b190104473bfa9e&type=3#HomeVideo-BLG6G");
+    font-size: 117px;
+    opacity: 1;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    background-color: rgba(255, 255, 255, 0);
+    background-image: url("project://database/Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Textures/White1px.png?fileID=2800000&guid=127279d577f25ac4ea17dae3782e5074&type=3#White1px");
+    margin-top: 35px;
+    margin-right: 35px;
+    margin-bottom: 35px;
+    margin-left: 35px;
+    white-space: nowrap;
+    text-overflow: clip;
+    -unity-text-outline-color: rgba(0, 0, 0, 0);
+    color: rgb(0, 0, 0);
+    align-self: center;
+}
+
+.button {
+    font-size: 67px;
+    padding-top: 11px;
+    padding-right: 11px;
+    padding-bottom: 11px;
+    padding-left: 11px;
+    margin-top: 29px;
+    margin-right: 29px;
+    margin-bottom: 29px;
+    margin-left: 29px;
+    width: 500px;
+    -unity-font-definition: url('project://database/Assets/Fonts/home-video-font/HomeVideo-BLG6G.ttf?fileID=12800000&guid=5f2ba05984567144fba2558348923b14&type=3#HomeVideo-BLG6G');
+    background-color: rgba(255, 255, 255, 0);
+    background-image: url("project://database/Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Textures/White1px.png?fileID=2800000&guid=127279d577f25ac4ea17dae3782e5074&type=3#White1px");
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    color: rgb(0, 0, 0);
+    transition-duration: 1s;
+    position: absolute;
+}
+
+.dropdown {
+    font-size: 20px;
+    -unity-font-definition: url("project://database/Packages/com.erlend-eiken-oppedal.custompackageimporter/Editor/home-video-font/HomeVideo-BLG6G.ttf?fileID=12800000&guid=a2c8e4c4789a7de49b190104473bfa9e&type=3#HomeVideo-BLG6G");
+    background-color: rgba(255, 255, 255, 0);
+    background-image: url("project://database/Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Textures/White1px.png?fileID=2800000&guid=127279d577f25ac4ea17dae3782e5074&type=3#White1px");
+    margin-top: 18px;
+    margin-right: 18px;
+    margin-bottom: 18px;
+    margin-left: 18px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    width: auto;
+    min-width: 400px;
+}
+
+.page {
+    align-self: center;
+    align-items: center;
+    position: absolute;
+    transition-property: translate;
+    transition-duration: 1s;
+    transition-timing-function: linear;
+    transition-delay: 0s;
+    left: 0;
+    background-image: none;
+    background-color: rgb(0, 0, 0);
+    -unity-background-image-tint-color: rgb(29, 0, 61);
+    width: 100%;
+    height: 100%;
+}
+
+.pageLeft {
+    translate: -100% 0;
+}
+
+.pageRight {
+    translate: 100% 0;
+}
+
+.sliderInt {
+    width: 500px;
+    height: 49px;
+    -unity-font-definition: url('project://database/Assets/Fonts/home-video-font/HomeVideo-BLG6G.ttf?fileID=12800000&guid=5f2ba05984567144fba2558348923b14&type=3#HomeVideo-BLG6G');
+    background-color: rgba(255, 255, 255, 0);
+    background-image: url("project://database/Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Textures/White1px.png?fileID=2800000&guid=127279d577f25ac4ea17dae3782e5074&type=3#White1px");
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    font-size: 20px;
+    margin-top: 14px;
+    margin-right: 14px;
+    margin-bottom: 14px;
+    margin-left: 14px;
+    opacity: 1;
+}
+
+#SettingsDiv > #Elements > #FPSLimiterSlider > .unity-slider-int__input > #unity-text-field > #unity-text-input {
+    margin-top: -3px;
+    margin-right: -3px;
+    margin-bottom: -3px;
+    margin-left: -3px;
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    -unity-text-align: middle-center;
+    -unity-font-definition: url("project://database/Packages/com.erlend-eiken-oppedal.custompackageimporter/Editor/home-video-font/HomeVideo-BLG6G.ttf?fileID=12800000&guid=a2c8e4c4789a7de49b190104473bfa9e&type=3#HomeVideo-BLG6G");
+}
+
+.elements {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    -unity-font-definition: url("project://database/Packages/com.erlend-eiken-oppedal.custompackageimporter/Editor/home-video-font/HomeVideo-BLG6G.ttf?fileID=12800000&guid=a2c8e4c4789a7de49b190104473bfa9e&type=3#HomeVideo-BLG6G");
+}
+
+#LoadGameDiv > #Elements > .unity-scroll-view--vertical > #unity-content-and-vertical-scroll-container > #unity-content-viewport > #unity-content-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    -unity-font-definition: url("project://database/Packages/com.erlend-eiken-oppedal.custompackageimporter/Editor/home-video-font/HomeVideo-BLG6G.ttf?fileID=12800000&guid=a2c8e4c4789a7de49b190104473bfa9e&type=3#HomeVideo-BLG6G");
+}

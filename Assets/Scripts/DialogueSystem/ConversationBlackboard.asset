@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3320641498084860972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
+  m_Name: ConversationBlackboard
+  m_EditorClassIdentifier: 
+  VersionTimestamp: 638648506204346474
+  AssetID:
+    m_Value0: 15288752459104378572
+    m_Value1: 3564932514194951723
+  m_Blackboard:
+    m_Variables:
+    - rid: 74644062254662299
+    - rid: 74644062254662300
+    - rid: 74644062254662301
+    - rid: 74644062254662302
+    - rid: 74644062254662303
+  m_SharedBlackboardVariableGuids:
+  - m_Value0: 13485905918620395647
+    m_Value1: 17435310099699223674
+  - m_Value0: 17287344005796200022
+    m_Value1: 4454272142127185038
+  - m_Value0: 11281502307917404426
+    m_Value1: 9342102848994364427
+  - m_Value0: 15056001448151854011
+    m_Value1: 18194400516396341818
+  - m_Value0: 5359681903435635332
+    m_Value1: 12722908730384917195
+  references:
+    version: 2
+    RefIds:
+    - rid: 74644062254662299
+      type: {class: 'BlackboardVariable`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 13485905918620395647
+          m_Value1: 17435310099699223674
+        Name: David
+        m_Value: {fileID: 0}
+    - rid: 74644062254662300
+      type: {class: 'BlackboardVariable`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 17287344005796200022
+          m_Value1: 4454272142127185038
+        Name: Dracula
+        m_Value: {fileID: 0}
+    - rid: 74644062254662301
+      type: {class: 'BlackboardVariable`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11281502307917404426
+          m_Value1: 9342102848994364427
+        Name: Wizard
+        m_Value: {fileID: 0}
+    - rid: 74644062254662302
+      type: {class: 'BlackboardVariable`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15056001448151854011
+          m_Value1: 18194400516396341818
+        Name: Drucilla
+        m_Value: {fileID: 0}
+    - rid: 74644062254662303
+      type: {class: 'BlackboardVariable`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 5359681903435635332
+          m_Value1: 12722908730384917195
+        Name: TutorialWizardCall
+        m_Value: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
+  m_Name: ConversationBlackboard
+  m_EditorClassIdentifier: 
+  AssetID:
+    m_Value0: 15288752459104378572
+    m_Value1: 3564932514194951723
+  m_Variables:
+  - rid: 5931141251979018783
+  - rid: 5931141251979018784
+  - rid: 5931141277139337404
+  - rid: 5931141277139337408
+  - rid: 74643722105258710
+  m_VersionTimestamp: 638648506204346474
+  m_CommandBuffer:
+    m_Commands: []
+  m_RuntimeBlackboardAsset: {fileID: -3320641498084860972}
+  references:
+    version: 2
+    RefIds:
+    - rid: 74643722105258710
+      type: {class: 'TypedVariableModel`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 5359681903435635332
+          m_Value1: 12722908730384917195
+        Name: TutorialWizardCall
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: -7549735889448428532, guid: 54ac675515541ab4eb4585509194276d, type: 2}
+    - rid: 5931141251979018783
+      type: {class: 'TypedVariableModel`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 13485905918620395647
+          m_Value1: 17435310099699223674
+        Name: David
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 11400000, guid: 206a9c7f94fa46a4bb93deab729f915c, type: 2}
+    - rid: 5931141251979018784
+      type: {class: 'TypedVariableModel`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 17287344005796200022
+          m_Value1: 4454272142127185038
+        Name: Dracula
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
+    - rid: 5931141277139337404
+      type: {class: 'TypedVariableModel`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 11281502307917404426
+          m_Value1: 9342102848994364427
+        Name: Wizard
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+    - rid: 5931141277139337408
+      type: {class: 'TypedVariableModel`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 15056001448151854011
+          m_Value1: 18194400516396341818
+        Name: Drucilla
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}

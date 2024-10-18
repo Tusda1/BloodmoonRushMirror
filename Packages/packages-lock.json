@@ -1,5 +1,66 @@
 {
   "dependencies": {
+    "com.erlend-eiken-oppedal.clampedfloat": {
+      "version": "https://github.com/EOppedal/ClampedFloat.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "e99206c6b8baecddf6caad0e9886715e44e07abc"
+    },
+    "com.erlend-eiken-oppedal.custompackageimporter": {
+      "version": "https://github.com/EOppedal/CustomPackageImporter.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "26f79b37dc7355952f95248116577f9b07c699d0"
+    },
+    "com.erlend-eiken-oppedal.debuglogger": {
+      "version": "https://github.com/EOppedal/DebugLogger.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.erlend-eiken-oppedal.scrubutils": "https://github.com/EOppedal/ScrubUtils.git"
+      },
+      "hash": "c03efeb16b1e64d68abbf67ba1844d2b3874e2b0"
+    },
+    "com.erlend-eiken-oppedal.extensionsandattributes": {
+      "version": "https://github.com/EOppedal/ExtensionsAndAttributes.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "402f395b2026356e5db35f6ff293004a767ec207"
+    },
+    "com.erlend-eiken-oppedal.runtimeset": {
+      "version": "https://github.com/EOppedal/RuntimeSet.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "b9c05deb4c761e9b71582383b20548fd396ad845"
+    },
+    "com.erlend-eiken-oppedal.scrubglobaldata": {
+      "version": "https://github.com/EOppedal/ScrubGlobalData.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.erlend-eiken-oppedal.clampedfloat": "https://github.com/EOppedal/ClampedFloat.git",
+        "com.erlend-eiken-oppedal.runtimeset": "https://github.com/EOppedal/RuntimeSet.git"
+      },
+      "hash": "f6d3f52318919ceb2f671f261fac9ce89b197a40"
+    },
+    "com.erlend-eiken-oppedal.scrubutils": {
+      "version": "https://github.com/EOppedal/ScrubUtils.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "a56555c18a484524198530ba44d7dda35ff865f8"
+    },
+    "com.erlend-eiken-oppedal.singletons": {
+      "version": "https://github.com/EOppedal/Singletons.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "9b65f4173d547c63ff74fd70c6a154f31a87250f"
+    },
     "com.unity.2d.animation": {
       "version": "10.1.3",
       "depth": 1,
@@ -93,9 +154,26 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.behavior": {
+      "version": "1.0.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.burst": "1.7.2",
+        "com.unity.dt.app-ui": "2.0.0-pre.10",
+        "com.unity.modules.ai": "1.0.0",
+        "com.unity.collections": "2.1.4",
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.modules.animation": "1.0.0",
+        "com.unity.nuget.newtonsoft-json": "3.2.1",
+        "com.unity.modules.particlesystem": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.burst": {
       "version": "1.8.18",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
@@ -112,13 +190,25 @@
     },
     "com.unity.collections": {
       "version": "2.5.1",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.burst": "1.8.17",
         "com.unity.test-framework": "1.4.5",
         "com.unity.nuget.mono-cecil": "1.11.4",
         "com.unity.test-framework.performance": "3.0.3"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.dt.app-ui": {
+      "version": "2.0.0-pre.10",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.androidjni": "1.0.0",
+        "com.unity.modules.uielements": "1.0.0",
+        "com.unity.modules.screencapture": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -188,7 +278,14 @@
     },
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.4",
-      "depth": 3,
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -265,7 +362,7 @@
     },
     "com.unity.test-framework.performance": {
       "version": "3.0.3",
-      "depth": 3,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.test-framework": "1.1.31",

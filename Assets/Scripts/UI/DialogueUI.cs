@@ -1,0 +1,41 @@
+using System;
+using Consensus;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+namespace UI {
+    public class DialogueUI : Singleton<DialogueUI> {
+        [SerializeField] private UIDocument uiDocument;
+        [SerializeField] public AllInFavourConsensus playerCanMove;
+        public event Action OnSkipDialogue = delegate { };
+
+        [Header("DialogueUI Settings")] public bool uiDocumentVisible;
+        public Sprite imagePortrait;
+        public string dialogueText;
+        public Font dialogueFont;
+        public float textSize;
+        public Color dialogueColor;
+
+        private VisualElement _root;
+        [HideInInspector] public ScriptVotePair scriptVotePair = new();
+
+        protected override void Awake() {
+            base.Awake();
+
+            _root = uiDocument.rootVisualElement;
+            _root.dataSource = this;
+        }
+
+        private void OnEnable() {
+            playerCanMove.ChangeVote(scriptVotePair, true);
+        }
+
+        private void OnDisable() {
+            playerCanMove.DeleteVote(scriptVotePair);
+        }
+
+        public void TriggerOnSkipDialogue() {
+            OnSkipDialogue.Invoke();
+        }
+    }
+}
