@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+public class EnemyBase :  GravityObject
 {
     protected bool isDead;
     protected bool isVulnerable;
@@ -9,6 +9,7 @@ public class EnemyBase : MonoBehaviour
     protected Vector2 facingDirection;
 
     [SerializeField] private bool faceLeftOnStart;
+    [SerializeField] protected float moveSpeed;
 
     private void Start()
     {
