@@ -1578,8 +1578,7 @@ namespace FMOD.Studio
         #endregion
     }
 
-    public struct Bus
-    {
+    public struct Bus : IEquatable<Bus> {
         public RESULT getID(out GUID id)
         {
             return FMOD_Studio_Bus_GetID(this.handle, out id);
@@ -1723,6 +1722,18 @@ namespace FMOD.Studio
         }
 
         #endregion
+
+        public bool Equals(Bus other) {
+            return handle.Equals(other.handle);
+        }
+
+        public override bool Equals(object obj) {
+            return obj is Bus other && Equals(other);
+        }
+
+        public override int GetHashCode() {
+            return handle.GetHashCode();
+        }
     }
 
     public struct VCA

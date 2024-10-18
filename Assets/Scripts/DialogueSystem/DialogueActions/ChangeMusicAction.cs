@@ -1,4 +1,5 @@
 using System;
+using Fmod;
 using UnityEngine;
 using Unity.Properties;
 
@@ -11,9 +12,11 @@ namespace Unity.Behavior {
         id: "f9a0355a2faa61db84e8afde6179d44e")]
     public class ChangeMusicAction : Action {
         [SerializeReference] public BlackboardVariable<string> path;
+        
+        private FmodManager fmodManager => FmodManager.Instance;
 
         protected override Status OnStart() {
-            FmodManager.Instance.PlayMusic(path.Value);
+            fmodManager.PlayMusic(path.Value);
             return Status.Success;
         }
     }

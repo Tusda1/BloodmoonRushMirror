@@ -1,4 +1,5 @@
 using System;
+using Fmod;
 using UI;
 using UnityEngine;
 using Unity.Properties;
@@ -28,6 +29,7 @@ namespace Unity.Behavior {
 
         private string _displayText;
         private DialogueUI dialogueUI => DialogueUI.Instance;
+        private FmodManager fmodManager => FmodManager.Instance;
         private DialogueCharacter dialogueCharacter => dialogueCharacterReference.Value;
         private DialogueCharacter.WhenIsSfxPlayed _whenIsSfxPlayed;
 
@@ -68,7 +70,7 @@ namespace Unity.Behavior {
                 DialogueCharacter.WhenIsSfxPlayed.Nowhere ||
                 (_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.PerWord) !=
                 DialogueCharacter.WhenIsSfxPlayed.Nowhere) {
-                FmodManager.Instance.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
+                fmodManager.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
             }
 
             return Status.Running;
@@ -86,7 +88,7 @@ namespace Unity.Behavior {
                         _currentCharIndex++;
                         if ((_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.PerWord) !=
                             DialogueCharacter.WhenIsSfxPlayed.Nowhere) {
-                            FmodManager.Instance.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
+                            fmodManager.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
                         }
                     }
                 }
@@ -99,7 +101,7 @@ namespace Unity.Behavior {
 
                 if ((_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.PerCharacter) !=
                     DialogueCharacter.WhenIsSfxPlayed.Nowhere) {
-                    FmodManager.Instance.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
+                    fmodManager.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
                 }
 
                 if (_currentCharIndex >= _displayText.Length) {

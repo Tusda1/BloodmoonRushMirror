@@ -1,4 +1,5 @@
 using System;
+using Fmod;
 using Unity.Properties;
 
 namespace Unity.Behavior {
@@ -9,8 +10,10 @@ namespace Unity.Behavior {
         category: "DialogueAction",
         id: "dfaee972cacdb7c763c853117a55acdb")]
     public class StopMusicAction : Action {
+        private FmodManager fmodManager => FmodManager.Instance;
+        
         protected override Status OnStart() {
-            FmodManager.Instance.StopMusic();
+            fmodManager.StopMusic();
 
             return Status.Success;
         }
