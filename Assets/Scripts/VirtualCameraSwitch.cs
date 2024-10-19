@@ -1,26 +1,27 @@
 using System.Collections;
+using Attributes;
 using Player;
 using Unity.Cinemachine;
 using UnityEngine;
 
 public class VirtualCameraSwitch : MonoBehaviour {
-    [SerializeField] private CinemachineBrain cinemachineBrain;
+    [SerializeField, Required] private CinemachineBrain cinemachineBrain;
     [SerializeField] private CinemachineCamera cinemachineCamera;
     [SerializeField] private GameObject areaGameObjects;
-    [SerializeField] private GameObject EnemyGameObject;
-    private bool _isDeactivating;
+    [SerializeField] private GameObject enemyGameObject;
+    
     [HideInInspector] public bool isActiveRoom;
-
+    
+    private bool _isDeactivating;
     private static int _priority;
 
     private void Awake() {
-        //Check if player is in this room
         isActiveRoom = cinemachineCamera.Priority > 0;
     }
     
     private void Start() {
         areaGameObjects.SetActive(false);
-        EnemyGameObject.SetActive(false);
+        enemyGameObject.SetActive(false);
         
         if (cinemachineBrain == null) {
             cinemachineBrain = Camera.main?.GetComponent<CinemachineBrain>();
@@ -69,10 +70,10 @@ public class VirtualCameraSwitch : MonoBehaviour {
     }
     
     private void EnemyActivation() {
-        EnemyGameObject.SetActive(true);
+        enemyGameObject.SetActive(true);
     }
     
     public void EnemyDeactivation() {
-        EnemyGameObject.SetActive(false);
+        enemyGameObject.SetActive(false);
     }
 }
