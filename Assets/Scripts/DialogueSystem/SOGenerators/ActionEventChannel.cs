@@ -1,8 +1,8 @@
 using System;
-using Unity.Behavior.GraphFramework;
 using Unity.Behavior;
-using UnityEngine;
+using Unity.Behavior.GraphFramework;
 using Unity.Properties;
+using UnityEngine;
 
 #if UNITY_EDITOR
 [CreateAssetMenu(menuName = "Behavior/Event Channels/ActionEventChannel")]

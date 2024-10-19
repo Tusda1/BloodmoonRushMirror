@@ -4,7 +4,7 @@ using Player;
 using Unity.Behavior;
 using UnityEngine;
 
-public class Boss : MonoBehaviour, IDamageable {
+public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
     [SerializeField] private StartNewConversationEventChannel startNewConversationEvent;
     [SerializeField] private BehaviorGraph bossDialogue;
     [SerializeField] private ActionEventChannel actionEvent;
@@ -25,7 +25,7 @@ public class Boss : MonoBehaviour, IDamageable {
 
     public bool TakeDamage(int damageAmount, Vector3 attackDirection = default) {
         var dialogueVariables = bossDialogue.BlackboardReference.Blackboard.Variables;
-        dialogueVariables.Find(x => x.Type == typeof(Boss)).ObjectValue = this;
+        dialogueVariables.Find(x => x.Type == typeof(DrucillaFirstEncounter)).ObjectValue = this;
         dialogueVariables.Find(x => x.Type == typeof(Animator)).ObjectValue = _animator;
         startNewConversationEvent.SendEventMessage(bossDialogue);
         DOTween.Kill(transform);
@@ -36,18 +36,13 @@ public class Boss : MonoBehaviour, IDamageable {
     }
 
     public void PlaySwishSfx() {
-        // FmodManager.Instance.PlayOneShot();
     }
     
     public void PlayShotSfx() {
-        fmodManager.PlayOneShot("event:/Sfx/Misc/Spell_blast");
+        fmodManager.PlaySfx("Misc/Spell_blast");
     }
 
     public void BreakFloor() {
         floorAnimator.Play(floorAnimation.name);
-    }
-
-    // Do not remove will cause an error for no reason
-    public void Test() {
     }
 }

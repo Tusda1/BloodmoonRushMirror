@@ -1,7 +1,7 @@
 using System;
 using UI;
-using UnityEngine;
 using Unity.Properties;
+using UnityEngine;
 
 namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
