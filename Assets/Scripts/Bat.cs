@@ -14,21 +14,19 @@ public class Bat : MonoBehaviour, IDamageable {
     [SerializeField] private int health = 1;
     [SerializeField] private int damage = 1;
     [SerializeField] private bool doesKnockBack = true;
-    
+
     [HideInInspector] public RuntimeSet<GameObject> batRuntimeSet;
     public GameObject parentGameObject;
 
-    private FmodManager fmodManager => FmodManager.Instance;
-
     private void OnDisable() {
         batRuntimeSet.Remove(parentGameObject);
-        
+
         DOTween.Kill(spriteTransform);
     }
 
     private void Start() {
         batRuntimeSet.Add(parentGameObject);
-        
+
         spriteTransform.DOBlendableMoveBy(new Vector3(0, yJitter, 0), jitterDuration)
             .SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
 
@@ -56,12 +54,13 @@ public class Bat : MonoBehaviour, IDamageable {
 
     public bool TakeDamage(int damageAmount, Vector3 attackDirection = default) {
         if (health == 0) return true;
-        fmodManager.PlayOneShot("event:/Sfx/Misc/Generic_impact");
+        FmodManager.Instance.PlayOneShot("event:/Sfx/Misc/Generic_impact");
         health -= damageAmount;
         if (health <= 0) {
             Destroy(parentGameObject);
             return true;
         }
-        return false;   
+
+        return false;
     }
 }
