@@ -14,40 +14,55 @@ namespace Utilities.DataBinding {
         private readonly ISerializer _serializer;
         private readonly string _dataPath;
         private readonly string _fileExtension;
-        
+
         public FileDataService(ISerializer serializer = null, bool encrypted = true) {
             _serializer = encrypted ? new EncryptedSerializer(serializer) : serializer ?? new JSONSerializer();
-            
-            _dataPath = Application.persistentDataPath + "/" + typeof(TGameData).Name;
+
+            _dataPath = Path.Combine(Application.persistentDataPath, typeof(TGameData).Name);
             if (!Directory.Exists(_dataPath)) Directory.CreateDirectory(_dataPath);
-            
+
             _fileExtension = _serializer.FileExtension;
         }
 
-        private string GetPathToSaveFile(string fileName) => Path.Combine(_dataPath, string.Concat(fileName, _fileExtension));
+        private string GetPathToSaveFile(string fileName) {
+            return Path.Combine(_dataPath, fileName, _fileExtension);
+        }
 
         public void Save(TGameData gameData) {
-            gameData.LastSaveTime = DateTime.Now;
             var filePath = GetPathToSaveFile(gameData.Name);
-            
+
             File.WriteAllText(filePath, _serializer.Serialize(gameData));
         }
 
-        public TGameData Load(string name) {
+        #region ---Loading---
+
+        public TGameData LoadByName(string name) {
             var filePath = GetPathToSaveFile(name);
             
-            if (!File.Exists(filePath)) {
-                throw new ArgumentException($"No save file with the name: '{name}'.");
-            }
-            
-            return _serializer.Deserialize<TGameData>(File.ReadAllText(filePath));
+            return LoadByPath(filePath);
         }
 
-        public void Delete(string name) {
+        public TGameData LoadByPath(string path) {
+            if (!File.Exists(path)) {
+                throw new ArgumentException($"No save file with the path: '{path}'.");
+            }
+
+            return _serializer.Deserialize<TGameData>(File.ReadAllText(path));
+        }
+
+        #endregion
+
+        #region ---Deletion---
+
+        public void DeleteByName(string name) {
             var filePath = GetPathToSaveFile(name);
 
-            if (File.Exists(filePath)) {
-                File.Delete(filePath);
+            DeleteByPath(filePath);
+        }
+
+        public void DeleteByPath(string path) {
+            if (File.Exists(path)) {
+                File.Delete(path);
             }
         }
 
@@ -56,18 +71,35 @@ namespace Utilities.DataBinding {
                 File.Delete(saveFile);
             }
         }
-        
+
+        #endregion
+
+        #region ---ReadFiles---
+
         public IEnumerable<string> ListSavesPath() {
             return Directory.GetFiles(_dataPath).Where(file => file.EndsWith(_fileExtension));
         }
-        
+
+        public FileInfo ReadFileMetadata(string path) {
+            return new FileInfo(path);
+        }
+
+        public FileInfo[] ListFiles() {
+            return ListSavesPath().Select(ReadFileMetadata).ToArray();
+        }
+
         public IEnumerable<string> ListSavesName() {
-            return Directory.GetFiles(_dataPath).Where(file => file.EndsWith(_fileExtension))
-                .Select(file => file.Substring(_dataPath.Length + 1, file.Length - _dataPath.Length - _fileExtension.Length - 1));
+            return ListFiles().Select(file => file.Name);
+        }
+
+        public FileInfo GetMostRecentSaveFile() {
+            return ListFiles().OrderBy(x => x.LastWriteTime).LastOrDefault();
         }
 
         public int GetSaveCount() {
-            return Directory.GetFiles(_dataPath).Length;
+            return ListSavesPath().Count();
         }
+
+        #endregion
     }
 }
