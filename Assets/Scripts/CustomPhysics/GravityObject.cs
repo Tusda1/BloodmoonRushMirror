@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class GravityObject : MonoBehaviour
@@ -17,7 +18,7 @@ public class GravityObject : MonoBehaviour
 
     protected float gravityModifier = 1f;
     protected float minGroundNormalY = 0.65f;
-    protected int lockToAxis = 0; //0 for no, 1 for x, 2 for y :3
+    [SerializeField] protected int lockToAxis = 0; //0 for no, 1 for x, 2 for y :3
 
     protected void OnEnable()
     {
@@ -118,9 +119,20 @@ public class GravityObject : MonoBehaviour
         }
     }
 
-    public void ResetMovement()
+    public void ResetMovement(int whichAxis)
     {
-        velocity = Vector2.zero;
+        switch (whichAxis)
+        {
+            case 0:
+                velocity = Vector2.zero;
+                break;
+            case 1:
+                velocity.x = 0;
+                break;
+            case 2:
+                velocity.y = 0;
+                break;
+        }
     }
 
     public Vector2 GetVelocity()
