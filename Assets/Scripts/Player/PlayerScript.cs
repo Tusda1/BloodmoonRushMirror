@@ -10,8 +10,10 @@ using UnityEngine.InputSystem;
 
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable {
+        [GetOrAddComponent, HideInInspector] public PlayerHealth health;
+        [GetOrAddComponent] private PlayerMovement _playerMovement;
+        
         public int playerLives = 5;
-        [RequiredReference, HideInInspector] public PlayerHealth health;
         private bool _isDead;
 
         public int gems;
@@ -34,8 +36,6 @@ namespace Player {
         private bool _canAttack = true;
         public bool isAttacking;
         public Vector3 lastGroundedPosition;
-
-        [RequiredReference] private PlayerMovement _playerMovement;
 
         [Header("Knockback")] [SerializeField] private float knockbackForce;
         [SerializeField] private float knockbackDuration;

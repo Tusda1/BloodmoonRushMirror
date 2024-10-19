@@ -15,10 +15,10 @@ namespace Player {
 
         #region ***---RequiredReferences---
 
-        [RequiredReference, HideInInspector] public Rigidbody2D playerRigidbody;
-        [RequiredReference, HideInInspector] public Animator animator;
-        [RequiredReference] private BoxCollider2D _playerCollider;
-        [RequiredReference] private PlayerScript _playerScript;
+        [GetOrAddComponent, HideInInspector] public Rigidbody2D playerRigidbody;
+        [GetOrAddComponent, HideInInspector] public Animator animator;
+        [GetOrAddComponent] private BoxCollider2D _playerCollider;
+        [GetOrAddComponent] private PlayerScript _playerScript;
 
         #endregion
 
