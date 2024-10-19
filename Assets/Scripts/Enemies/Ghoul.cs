@@ -26,8 +26,6 @@ public class Ghoul : EnemyBase
     {
         base.Update();
         
-        print(_currentState.ToString());
-        
         if (isDead)
         {
             targetVelocity = Vector2.zero;
