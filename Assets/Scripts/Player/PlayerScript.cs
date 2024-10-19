@@ -70,7 +70,7 @@ namespace Player {
             health.OnDeath += () => {
                 playerLives--;
                 fmodManager.StopAllSound();
-                fmodManager.PlayOneShot("event:/Sfx/Player/Player_death");
+                fmodManager.PlaySfx("Player/Player_death");
                 StartCoroutine(Die());
             };
         }
@@ -134,7 +134,7 @@ namespace Player {
             _attackTimer.OnBegin += () => {
                 debugLogger.Log("Attack" + _attackTimer.CurrentProgress);
                 
-                fmodManager.PlayOneShot("event:/Sfx/Player/Player_slash");
+                fmodManager.PlaySfx("Player/Player_slash");
 
                 hitbox.SetActive(true);
                 playerHitbox.damage = damage;
