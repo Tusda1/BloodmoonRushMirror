@@ -15,9 +15,9 @@ public class GravityObject : MonoBehaviour
     protected bool isGrounded;
     protected Vector2 groundNormal; //set this to Vector2.Right in child if you want to make projectiles
 
-    public float gravityModifier = 1f;
-    public float minGroundNormalY = 0.65f;
-    public int lockToAxis = 0; //0 for no, 1 for x, 2 for y :3
+    protected float gravityModifier = 1f;
+    protected float minGroundNormalY = 0.65f;
+    protected int lockToAxis = 0; //0 for no, 1 for x, 2 for y :3
 
     protected void OnEnable()
     {
@@ -101,6 +101,8 @@ public class GravityObject : MonoBehaviour
             }
             
         }
+        
+        
 
         switch (lockToAxis)
         {
