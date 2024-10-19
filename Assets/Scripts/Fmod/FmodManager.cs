@@ -18,6 +18,10 @@ namespace Fmod {
         private Bus _musicBus;
         private Bus _sfxBus;
         private Bus _masterBus;
+        
+        private static string busPath => "bus:/";
+        private static string sfxPath => "event:/Sfx/";
+        private static string musicPath => "event:/Music/";
 
         private IEnumerator Start() {
             debugLogger.Log("Initializing");
@@ -25,9 +29,9 @@ namespace Fmod {
             yield return new WaitUntil(() => RuntimeManager.IsInitialized);
             debugLogger.Log("RuntimeManager is initialized");
 
-            _masterBus = RuntimeManager.GetBus("bus:/");
-            _musicBus = RuntimeManager.GetBus("bus:/Music Bus");
-            _sfxBus = RuntimeManager.GetBus("bus:/Sfx Bus");
+            _masterBus = RuntimeManager.GetBus(busPath);
+            _musicBus = RuntimeManager.GetBus(busPath + "Music Bus");
+            _sfxBus = RuntimeManager.GetBus(busPath + "Sfx Bus");
 
             if (_masterBus.Equals(default) || _sfxBus.Equals(default) || _musicBus.Equals(default)) {
                 debugLogger.Log("Busses are not valid");
@@ -77,6 +81,14 @@ namespace Fmod {
             RuntimeManager.PlayOneShot(path);
 
             debugLogger.Log("Playing one shot global");
+        }
+
+        public void PlaySfx(string sfx) {
+            PlayOneShot(sfxPath + sfx);
+        }
+
+        public void PlaySfx(string sfx, GameObject emitter) {
+            PlayOneShotAttached(sfxPath + sfx, emitter);
         }
 
         public void PlayMusic(string path) {
