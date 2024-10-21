@@ -11,6 +11,7 @@ public class GravityObject : MonoBehaviour
     protected const float minMoveDistance = 0.001f;
     protected const float shellRadius = 0.01f;
     protected ContactFilter2D contactFilter;
+    [SerializeField] LayerMask layerMask;
     protected RaycastHit2D[] hitBuffer = new RaycastHit2D[16];
     protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
     protected bool isGrounded;
@@ -28,7 +29,8 @@ public class GravityObject : MonoBehaviour
     protected void Start()
     {
         contactFilter.useTriggers = false;
-        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        //contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        contactFilter.SetLayerMask(layerMask);
         contactFilter.useLayerMask = true;
     }
 

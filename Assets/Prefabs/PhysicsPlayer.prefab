@@ -162,7 +162,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.9, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &9170211437487459540
 MonoBehaviour:
@@ -180,11 +180,14 @@ MonoBehaviour:
   smoothTime: 0.1
   fallSpeed: 0.5
   gravityMultiplier: 5
-  jumpForce: 18
+  jumpForce: 19
   maxSpeed: 10
   dashTime: 0.25
   dashForce: 23.5
+  minJumpTime: 0.1
+  jumpBufferTime: 0.15
   isJumping: 0
+  isHoldingJump: 0
   isDashing: 0
   canDash: 0
   isFacingRight: 1
