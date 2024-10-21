@@ -1,7 +1,9 @@
+using System;
 using PlayerLoopTimer;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class GravityPlayer : GravityObject
 {
@@ -12,11 +14,16 @@ public class GravityPlayer : GravityObject
     [SerializeField] private float maxSpeed;
     [SerializeField] private float dashTime;
     [SerializeField] private float dashForce;
+    [SerializeField] private float minJumpTime;
+    [SerializeField] private float jumpBufferTime;
     private CountdownTimer dashTimer;
+    private CountdownTimer minJumpTimer;
+    private CountdownTimer jumpBufferTimer;
     private Vector2 inputVector;
     private Vector2 SmoothMovement;
     private Vector2 referenceSmoothVelocity;
     public bool isJumping = false;
+    public bool isHoldingJump = false;
     public bool isDashing = false;
     public bool canDash = false;
     [SerializeField] bool isFacingRight = true;
@@ -25,8 +32,7 @@ public class GravityPlayer : GravityObject
     {
         gravityModifier = gravityMultiplier;
         
-        dashTimer = new CountdownTimer(dashTime);
-        dashTimer.OnComplete += CompleteDash;
+        InitializeTimers();
     }
     
     protected override void ComputeVelocity()
@@ -39,7 +45,7 @@ public class GravityPlayer : GravityObject
         {
             velocity.y = jumpForce;
         }
-        else if (!isJumping)
+        else if (!isHoldingJump && !isJumping)
         {
             if (velocity.y > 0)
                 velocity.y = velocity.y * fallSpeed;
@@ -72,9 +78,28 @@ public class GravityPlayer : GravityObject
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.performed)
-            isJumping = true;
+        {
+            isHoldingJump = true;
+            if (isGrounded)
+            {
+                isJumping = true;
+                minJumpTimer.StartTimer();
+            }
+            else
+            {
+                jumpBufferTimer.StartTimer();
+            }
+        }
+
         if (context.canceled)
-            isJumping = false;
+        {
+            isHoldingJump = false;
+            // if (jumpBufferTimer.TimerRunning) 
+            // {
+            //     jumpBufferTimer.StopTimer();
+            //     isJumping = false;
+            // }
+        }
     }
 
     public void Run(InputAction.CallbackContext context)
@@ -101,11 +126,51 @@ public class GravityPlayer : GravityObject
         }
     }
 
+    private void MinJumpCancel()
+    {
+        isJumping = false;
+    }
+
     private void CompleteDash()
     {
         dashTimer.StopTimer();
         lockToAxis = 0;
         isDashing = false;
         ResetMovement(2);
+    }
+
+    private void JumpBuffer()
+    {
+        if (isGrounded)
+        {
+            isJumping = true;
+            minJumpTimer.StartTimer();
+            jumpBufferTimer.StopTimer();
+        }
+    }
+
+    private void CompleteJumpBuffer()
+    {
+        isJumping = false;
+    }
+
+    private void InitializeTimers()
+    {
+        dashTimer = new CountdownTimer(dashTime);
+        dashTimer.OnComplete += CompleteDash;
+
+        minJumpTimer = new CountdownTimer(minJumpTime);
+        minJumpTimer.OnComplete += MinJumpCancel;
+
+        jumpBufferTimer = new CountdownTimer(jumpBufferTime);
+        jumpBufferTimer.OnUpdate += JumpBuffer;
+        jumpBufferTimer.OnComplete += CompleteJumpBuffer;
+    }
+
+    private void OnValidate()
+    {
+        if (jumpBufferTimer != null) jumpBufferTimer.Duration = jumpBufferTime;
+        if (dashTimer != null) dashTimer.Duration = dashTime;
+        if (minJumpTimer != null) minJumpTimer.Duration = minJumpTime;
     }
 }
