@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using Attributes;
+using UnityEngine;
 using UnityEngine.Pool;
 
 namespace Bat {
     public class BatPoolManager : Singleton<BatPoolManager> {
-        public GameObject batPrefab;
-        public int batPoolSize;
+        public int initialBatPoolSize;
         [SerializeField] private Transform batParentTransform;
+        [AssetPreviewIcon(80,80)] public GameObject batPrefab;
 
         public ObjectPool<Bat> Pool;
 
@@ -18,10 +19,10 @@ namespace Bat {
         private void CreateBatPool() {
             batParentTransform ??= new GameObject("BatPoolParent").transform;
 
-            Pool = new ObjectPool<Bat>(CreateBat, ActionOnGet, ActionOnRelease, ActionOnDestroy, true, batPoolSize);
+            Pool = new ObjectPool<Bat>(CreateBat, ActionOnGet, ActionOnRelease, ActionOnDestroy, true, initialBatPoolSize);
 
-            var bats = new Bat[batPoolSize];
-            for (var i = 0; i < batPoolSize; i++) {
+            var bats = new Bat[initialBatPoolSize];
+            for (var i = 0; i < initialBatPoolSize; i++) {
                 bats[i] = Pool.Get();
             }
 
