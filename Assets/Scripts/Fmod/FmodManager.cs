@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Runtime.InteropServices;
 using Attributes;
-using UnityEngine;
 using FMOD.Studio;
 using FMODUnity;
+using UnityEngine;
 
 namespace Fmod {
     public class FmodManager : PersistentSingleton<FmodManager> {

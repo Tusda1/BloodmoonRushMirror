@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "com.erlend-eiken-oppedal.clampedfloat": {
-      "version": "https://github.com/EOppedal/ClampedFloat.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "e99206c6b8baecddf6caad0e9886715e44e07abc"
-    },
     "com.erlend-eiken-oppedal.custompackageimporter": {
       "version": "https://github.com/EOppedal/CustomPackageImporter.git",
       "depth": 0,
@@ -28,7 +21,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "b5d20cfc192096a1e0290937c727a4de7e9b2388"
+      "hash": "6bca53a9548a0bd7d2e770f907fe37beaa7949ed"
     },
     "com.erlend-eiken-oppedal.healthcomponent": {
       "version": "https://github.com/EOppedal/HealthComponent.git",
@@ -58,10 +51,10 @@
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.erlend-eiken-oppedal.clampedfloat": "https://github.com/EOppedal/ClampedFloat.git",
-        "com.erlend-eiken-oppedal.runtimeset": "https://github.com/EOppedal/RuntimeSet.git"
+        "com.erlend-eiken-oppedal.runtimeset": "https://github.com/EOppedal/RuntimeSet.git",
+        "com.erlend-eiken-oppedal.extensionsandattributes": "https://github.com/EOppedal/ExtensionsAndAttributes.git"
       },
-      "hash": "f6d3f52318919ceb2f671f261fac9ce89b197a40"
+      "hash": "98e4a9973d0b53514c295abad25b6dabe54598ae"
     },
     "com.erlend-eiken-oppedal.scrubutils": {
       "version": "https://github.com/EOppedal/ScrubUtils.git",
@@ -89,14 +82,14 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "9b65f4173d547c63ff74fd70c6a154f31a87250f"
+      "hash": "1a2b9f3b4f615b65ca0550cc24c5a793e96c564a"
     },
     "com.erlend-eiken-oppedal.timers": {
       "version": "https://github.com/EOppedal/Timers.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "506b0e302d9417c24979d03c11ae78ae44abfa53"
+      "hash": "367c3b70fce3864cb08b4cf1a6947237d5b10d03"
     },
     "com.erlend-eiken-oppedal.uitoolkittools": {
       "version": "https://github.com/EOppedal/UIToolkitTools.git",
@@ -338,7 +331,7 @@
     },
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.2.1",
-      "depth": 1,
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -471,6 +464,24 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.v0lt.editor-attributes": {
+      "version": "https://github.com/v0lt13/EditorAttributes.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      },
+      "hash": "1c2c1780b9acbe14e87e8e15cc7dd17d1b01207b"
+    },
+    "dev.krajnc.uitoolkittimeline": {
+      "version": "https://github.com/mihakrajnc/UITTimeline.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.timeline": "1.6.5"
+      },
+      "hash": "68e9114b94ba4a9123a4612d6fd6ce9fc98a7868"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",

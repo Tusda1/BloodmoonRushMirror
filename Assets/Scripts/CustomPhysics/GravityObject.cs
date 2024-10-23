@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class GravityObject : MonoBehaviour
@@ -10,14 +11,15 @@ public class GravityObject : MonoBehaviour
     protected const float minMoveDistance = 0.001f;
     protected const float shellRadius = 0.01f;
     protected ContactFilter2D contactFilter;
+    [SerializeField] LayerMask layerMask;
     protected RaycastHit2D[] hitBuffer = new RaycastHit2D[16];
     protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
     protected bool isGrounded;
     protected Vector2 groundNormal; //set this to Vector2.Right in child if you want to make projectiles
 
-    public float gravityModifier = 1f;
-    public float minGroundNormalY = 0.65f;
-    public int lockToAxis = 0; //0 for no, 1 for x, 2 for y :3
+    protected float gravityModifier = 1f;
+    protected float minGroundNormalY = 0.65f;
+    [SerializeField] protected int lockToAxis = 0; //0 for no, 1 for x, 2 for y :3
 
     protected void OnEnable()
     {
@@ -27,7 +29,8 @@ public class GravityObject : MonoBehaviour
     protected void Start()
     {
         contactFilter.useTriggers = false;
-        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        //contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        contactFilter.SetLayerMask(layerMask);
         contactFilter.useLayerMask = true;
     }
 
@@ -101,6 +104,8 @@ public class GravityObject : MonoBehaviour
             }
             
         }
+        
+        
 
         switch (lockToAxis)
         {
@@ -116,9 +121,20 @@ public class GravityObject : MonoBehaviour
         }
     }
 
-    public void ResetMovement()
+    public void ResetMovement(int whichAxis)
     {
-        velocity = Vector2.zero;
+        switch (whichAxis)
+        {
+            case 0:
+                velocity = Vector2.zero;
+                break;
+            case 1:
+                velocity.x = 0;
+                break;
+            case 2:
+                velocity.y = 0;
+                break;
+        }
     }
 
     public Vector2 GetVelocity()

@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 8798351002445025831}
   - component: {fileID: 3402096621317275113}
   - component: {fileID: 4012985615332974812}
-  - component: {fileID: 26182836339400038}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -91,7 +90,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 60
-    OrthographicSize: 9
+    OrthographicSize: 11.25
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -160,18 +159,6 @@ MonoBehaviour:
     MaxWindowSize: 1.8
     Padding: 0
   m_LegacyMaxWindowSize: -2
---- !u!114 &26182836339400038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2518279704755113359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a8a05de0ac134f4f9d01bef6b9da077, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4453278142026536323
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,13 +289,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -13, y: -7}
-      - {x: 52, y: -7}
-      - {x: 52, y: 13}
-      - {x: 34, y: 13}
-      - {x: 20, y: 20}
-      - {x: 20, y: 20}
-      - {x: -13, y: 20}
+    - - {x: 0, y: 0}
+      - {x: 40, y: 0}
+      - {x: 40, y: 22.5}
+      - {x: 0, y: 22.5}
   m_UseDelaunayMesh: 0
 --- !u!1 &9093227878091812984
 GameObject:
