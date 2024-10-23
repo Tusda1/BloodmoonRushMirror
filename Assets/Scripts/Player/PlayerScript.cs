@@ -2,32 +2,52 @@ using System;
 using System.Collections;
 using Attributes;
 using Consensus;
+using ExtensionMethods;
 using Fmod;
 using PlayerLoopTimer;
+using SaveLoadSystem.Data;
+using TetraCreations.Attributes;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utilities.DataBinding;
 
 namespace Player {
-    public class PlayerScript : MonoBehaviour, IDamageable {
+    public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {
+        #region ---DataBindingVariables---
+
+        [Header("Data Binding")] public string Id { get; } = Guid.NewGuid().ToString();
+        [field: SerializeField] public PlayerData GameData { get; set; }
+        public PlayerData DataInGameData => SaveLoadSystem.SaveLoadSystem.Instance.gameData.playerData;
+
+        #endregion
+
         [GetOrAddComponent, HideInInspector] public PlayerHealth health;
         [GetOrAddComponent] private GravityPlayer _playerMovement;
         [GetOrAddComponent] private Animator _animator;
 
+        [Header("Player")] 
         public int playerLives = 5;
+        [SerializeField] private int damage;
+        [SerializeField] private LayerMask whatIsInteractable;
+        
+        [Header("Gems")]
         public int gems;
+        [SerializeField] private GemLostMethod gemLostMethod;
 
-        [Header("Player Can Move")] [SerializeField, Required]
+        [DrawIf(nameof(gemLostMethod), comparedValue: GemLostMethod.Subtraction)]
+        [SerializeField, Tooltip("This number gets subtracted from the gem count")]
+        private int gemsLostOnDeath;
+
+        [DrawIf(nameof(gemLostMethod), comparedValue: GemLostMethod.Multiplication)]
+        [SerializeField, Tooltip("The gem count gets multiplied by this number and cast to int")]
+        private float gemMultiplierOnDeath = 0.9f;
+
+        [Header("Player Can Move")] [SerializeField, Attributes.Required]
         private AllInFavourConsensus playerCanMove;
 
         private bool playerMovementEnabled => playerCanMove.consensus;
         private readonly ScriptVotePair _isAliveVotePair = new();
-
-        [SerializeField] private GameObject hitbox;
-        [SerializeField] private PlayerHitbox playerHitbox;
-        [SerializeField] private int damage;
-
-        [SerializeField] private LayerMask whatIsInteractable;
 
         [Header("Debug Logger"), SerializeField]
         private DebugLoggerSO debugLogger;
@@ -52,12 +72,17 @@ namespace Player {
 
         private ScriptVotePair _playerCanMoveVotePair;
 
+        [Serializable] private enum GemLostMethod { Subtraction, Multiplication }
+
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
-            hitbox.SetActive(false);
+        }
 
-            health.OnDeath += () => { StartCoroutine(Die()); };
+        private void Start() {
+            // SaveLoadSystem.SaveLoadSystem.Instance.Bind(this, DataInGameData);
+
+            health.OnDeath += () => StartCoroutine(Die());
         }
 
         private IEnumerator Die() {
@@ -71,16 +96,18 @@ namespace Player {
             print("Setting death trigger");
             _animator.SetTrigger(Death);
 
-            yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).IsName("Death"));
+            yield return new WaitUntil(() => _animator.GetCurrentAnimationClip().name == "Death");
 
-            yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length + 2f);
+            yield return new WaitForSeconds(_animator.GetCurrentAnimationClip().length + 2f);
 
             playerCanMove.ChangeVote(_isAliveVotePair, true);
             _animator.SetBool(IsDead, false);
 
             _isDead = false;
             health.Health = health.maxHealth;
-            gems /= 2;
+
+            LoseGems();
+
             playerLives--;
             OnRespawn?.Invoke();
 
@@ -89,7 +116,7 @@ namespace Player {
 
             if (playerLives <= 0) {
                 // TODO
-                // SceneManager.LoadScene("Death");
+                throw new NotImplementedException();
             }
         }
 
@@ -124,6 +151,19 @@ namespace Player {
         }
 
         #endregion
+
+        private void LoseGems() {
+            switch (gemLostMethod) {
+                case GemLostMethod.Subtraction:
+                    gems -= gemsLostOnDeath;
+                    break;
+                case GemLostMethod.Multiplication:
+                    gems = (int)(gems * gemMultiplierOnDeath);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
 
         public void Attack() {
             if (!_canAttack) return;
@@ -161,5 +201,33 @@ namespace Player {
         private Collider2D InteractCheck() {
             return Physics2D.OverlapBox(transform.position, transform.localScale, 0, whatIsInteractable);
         }
+
+        #region ---DataBindingMethods---
+
+        public void LoadBindData() {
+            transform.position = GameData.position;
+            gems = GameData.gems;
+            health.Health = GameData.health;
+            playerLives = GameData.lives;
+        }
+
+        public void SaveBindData() {
+            GameData.position = transform.position;
+            GameData.gems = gems;
+            GameData.health = health.Health;
+            GameData.lives = playerLives;
+        }
+
+        public void Bind(PlayerData data) {
+            GameData = data;
+
+            debugLogger.Log("Player data bind-ed to gameData");
+        }
+
+        public void UnBind(PlayerData data) {
+            GameData = null;
+        }
+
+        #endregion
     }
 }

@@ -13,9 +13,9 @@
     }
     
     public interface IBind<TData> : IDataBind where TData : ISaveable {
-        string id { get; }
-        TData gameData { get; }
-        TData dataInGameData { get; }
+        string Id { get; }
+        TData GameData { get; set; }
+        TData DataInGameData { get; }
         
         /// <summary>
         /// "Bind" is called by the class implementing the interface; usually when created.
