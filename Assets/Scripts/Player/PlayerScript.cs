@@ -4,7 +4,7 @@ using Attributes;
 using Consensus;
 using ExtensionMethods;
 using Fmod;
-using PlayerLoopTimer;
+using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using TetraCreations.Attributes;
 using UI;
@@ -14,25 +14,24 @@ using Utilities.DataBinding;
 
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {
-        #region ---DataBindingVariables---
-
+        #region ---Fields---
+        #region ***---DataBindingVariables---***
         [Header("Data Binding")] public string Id { get; } = Guid.NewGuid().ToString();
         [field: SerializeField] public PlayerData GameData { get; set; }
-        public PlayerData DataInGameData => SaveLoadSystem.SaveLoadSystem.Instance.gameData.playerData;
-
+        public PlayerData DataInGameData => SaveLoadSystemManager.Instance.gameData.playerData;
         #endregion
 
         [GetOrAddComponent, HideInInspector] public PlayerHealth health;
         [GetOrAddComponent] private GravityPlayer _playerMovement;
         [GetOrAddComponent] private Animator _animator;
 
-        [Header("Player")] 
-        public int playerLives = 5;
+
+        [Header("Player")] public int playerLives = 5;
         [SerializeField] private int damage;
         [SerializeField] private LayerMask whatIsInteractable;
-        
-        [Header("Gems")]
-        public int gems;
+
+        #region ***---Gems---***
+        [Header("Gems")] public int gems;
         [SerializeField] private GemLostMethod gemLostMethod;
 
         [DrawIf(nameof(gemLostMethod), comparedValue: GemLostMethod.Subtraction)]
@@ -42,6 +41,9 @@ namespace Player {
         [DrawIf(nameof(gemLostMethod), comparedValue: GemLostMethod.Multiplication)]
         [SerializeField, Tooltip("The gem count gets multiplied by this number and cast to int")]
         private float gemMultiplierOnDeath = 0.9f;
+
+        [Serializable] private enum GemLostMethod { Subtraction, Multiplication }
+        #endregion
 
         [Header("Player Can Move")] [SerializeField, Attributes.Required]
         private AllInFavourConsensus playerCanMove;
@@ -57,30 +59,32 @@ namespace Player {
         public bool isAttacking;
         public Vector3 lastGroundedPosition;
 
-        private CountdownTimer _attackTimer;
-
+        #region ***---AnimatorStringToHash---***
         private static readonly int AnimatorIsAttacking = Animator.StringToHash("IsAttacking");
         private static readonly int AnimatorTakeDamage = Animator.StringToHash("TakeDamage");
         private static readonly int Death = Animator.StringToHash("Death");
-        private static readonly int Respawn = Animator.StringToHash("Respawn");
+        private static readonly int RespawnTrigger = Animator.StringToHash("Respawn");
         private static readonly int IsDead = Animator.StringToHash("IsDead");
+        #endregion
 
         private static FmodManager fmodManager => FmodManager.Instance;
         private static PauseMenu pauseMenu => PauseMenu.Instance;
-
-        public event Action OnRespawn;
+        private static SaveLoadSystemManager saveLoadSystemManager => SaveLoadSystemManager.Instance;
 
         private ScriptVotePair _playerCanMoveVotePair;
 
-        [Serializable] private enum GemLostMethod { Subtraction, Multiplication }
+        public event Action OnRespawn = delegate { };
+        #endregion
 
+        #region ---EventFunctions---
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
         }
 
         private void Start() {
-            // SaveLoadSystem.SaveLoadSystem.Instance.Bind(this, DataInGameData);
+            // TODO: comment out
+            // saveLoadSystemManager.Instance.Bind(this, DataInGameData);
 
             health.OnDeath += () => StartCoroutine(Die());
         }
@@ -93,30 +97,20 @@ namespace Player {
             fmodManager.PlaySfx("Player/Player_death");
 
             _animator.ResetTrigger(AnimatorTakeDamage);
-            print("Setting death trigger");
+            debugLogger.Log("Setting death trigger");
             _animator.SetTrigger(Death);
 
             yield return new WaitUntil(() => _animator.GetCurrentAnimationClip().name == "Death");
-
             yield return new WaitForSeconds(_animator.GetCurrentAnimationClip().length + 2f);
 
-            playerCanMove.ChangeVote(_isAliveVotePair, true);
-            _animator.SetBool(IsDead, false);
-
-            _isDead = false;
-            health.Health = health.maxHealth;
-
-            LoseGems();
-
             playerLives--;
-            OnRespawn?.Invoke();
-
-            _animator.ResetTrigger(Death);
-            _animator.SetTrigger(Respawn);
 
             if (playerLives <= 0) {
+                debugLogger.Log("Ran out of lives");
                 // TODO
-                throw new NotImplementedException();
+            }
+            else {
+                Respawn();
             }
         }
 
@@ -124,8 +118,7 @@ namespace Player {
             ServiceLocator.Unregister<PlayerScript>();
         }
 
-        #region ---InputActions---
-
+        #region ***---InputActions---***
         public void OnPause(InputAction.CallbackContext context) {
             if (!context.performed) return;
 
@@ -149,25 +142,12 @@ namespace Player {
 
             Attack();
         }
-
         #endregion
-
-        private void LoseGems() {
-            switch (gemLostMethod) {
-                case GemLostMethod.Subtraction:
-                    gems -= gemsLostOnDeath;
-                    break;
-                case GemLostMethod.Multiplication:
-                    gems = (int)(gems * gemMultiplierOnDeath);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
+        #endregion
 
         public void Attack() {
             if (!_canAttack) return;
-            debugLogger.Log("Attack" + _attackTimer.CurrentProgress);
+            debugLogger.Log("Attack");
 
             _animator.SetBool(AnimatorIsAttacking, true);
             fmodManager.PlaySfx("Player/Player_slash");
@@ -192,6 +172,36 @@ namespace Player {
             _animator.SetTrigger(AnimatorTakeDamage);
         }
 
+        private void Respawn() {
+            debugLogger.Log("Respawning");
+
+            playerCanMove.ChangeVote(_isAliveVotePair, true);
+
+            _isDead = false;
+            _animator.SetBool(IsDead, false);
+            health.Health = health.maxHealth;
+
+            LoseGems();
+
+            OnRespawn.Invoke();
+
+            _animator.ResetTrigger(Death);
+            _animator.SetTrigger(RespawnTrigger);
+        }
+
+        private void LoseGems() {
+            switch (gemLostMethod) {
+                case GemLostMethod.Subtraction:
+                    gems -= gemsLostOnDeath;
+                    break;
+                case GemLostMethod.Multiplication:
+                    gems = (int)(gems * gemMultiplierOnDeath);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         public void GoToLastGroundedPosition() {
             transform.position = lastGroundedPosition;
             _playerMovement.ResetMovement(0);
@@ -203,7 +213,6 @@ namespace Player {
         }
 
         #region ---DataBindingMethods---
-
         public void LoadBindData() {
             transform.position = GameData.position;
             gems = GameData.gems;
@@ -227,7 +236,6 @@ namespace Player {
         public void UnBind(PlayerData data) {
             GameData = null;
         }
-
         #endregion
     }
 }
