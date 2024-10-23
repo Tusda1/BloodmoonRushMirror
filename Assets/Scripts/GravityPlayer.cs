@@ -22,6 +22,8 @@ public class GravityPlayer : GravityObject
     [SerializeField] private float minJumpTime;
     [SerializeField] private float jumpBufferTime;
     [SerializeField] private float knockBackTime;
+    public Vector2 knockbackVector;
+    [SerializeField] private float coyoteTime;
     public int killCharges;
     [SerializeField, Required] private AllInFavourConsensus playerCanMove;
     [GetOrAddComponent] private BoxCollider2D boxCollider;
@@ -29,10 +31,10 @@ public class GravityPlayer : GravityObject
     private CountdownTimer minJumpTimer;
     private CountdownTimer jumpBufferTimer;
     private CountdownTimer knockbackTimer;
+    private CountdownTimer coyoteTimer;
     private Vector2 inputVector;
     private Vector2 SmoothMovement;
     private Vector2 referenceSmoothVelocity;
-    public Vector2 knockbackVector;
     public bool isJumping = false;
     public bool isHoldingJump = false;
     public bool isDashing = false;
@@ -41,6 +43,7 @@ public class GravityPlayer : GravityObject
     public bool isDucking = false;
     public bool isHoldingDuck = false;
     private bool playerMovementEnabled => playerCanMove.consensus;
+    public bool coyoteSearch = true;
     public bool isFacingRight = true;
 
     void Start()
@@ -88,7 +91,10 @@ public class GravityPlayer : GravityObject
         }
         else
         {
-            if (isGrounded) canDash = true;
+            if (isGrounded)
+            {
+                canDash = true;
+            }
             
             if (isHoldingDuck && !isJumping && !isDucking && isGrounded)
             {
@@ -251,11 +257,12 @@ public class GravityPlayer : GravityObject
         if (isGrounded)
         {
             isJumping = true;
+            ForceExitDuck();
             minJumpTimer.StartTimer();
             jumpBufferTimer.StopTimer();
         }
     }
-
+    
     private void CompleteJumpBuffer()
     {
         isJumping = false;
@@ -264,6 +271,11 @@ public class GravityPlayer : GravityObject
     private void FinishKnockBack()
     {
         isKnockbacked = false;
+    }
+
+    private void CoyoteCheck()
+    {
+        if (isGrounded) coyoteTimer.StopTimer();
     }
 
     private void InitializeTimers()
@@ -280,6 +292,9 @@ public class GravityPlayer : GravityObject
         
         knockbackTimer = new CountdownTimer(knockBackTime);
         knockbackTimer.OnComplete += FinishKnockBack;
+        
+        coyoteTimer = new CountdownTimer(coyoteTime);
+        coyoteTimer.OnUpdate += CoyoteCheck;
     }
 
     private void OnValidate()
@@ -288,6 +303,7 @@ public class GravityPlayer : GravityObject
         if (dashTimer != null) dashTimer.Duration = dashTime;
         if (minJumpTimer != null) minJumpTimer.Duration = minJumpTime;
         if (knockbackTimer != null) knockbackTimer.Duration = knockBackTime;
+        if (coyoteTimer != null) coyoteTimer.Duration = knockBackTime;
     }
     
     #endregion
