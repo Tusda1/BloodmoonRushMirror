@@ -29,6 +29,11 @@ namespace Player {
         [Header("Player")] public int playerLives = 5;
         [SerializeField] private int damage;
         [SerializeField] private LayerMask whatIsInteractable;
+        public bool isAttacking;
+        public Vector3 lastGroundedPosition;
+        
+        private bool _isDead;
+        private bool _canAttack = true;
 
         #region ***---Gems---***
         [Header("Gems")] public int gems;
@@ -51,13 +56,8 @@ namespace Player {
         private bool playerMovementEnabled => playerCanMove.consensus;
         private readonly ScriptVotePair _isAliveVotePair = new();
 
-        [Header("Debug Logger"), SerializeField]
+        [Header("Debug Logger"), SerializeField, Attributes.Required]
         private DebugLoggerSO debugLogger;
-
-        private bool _isDead;
-        private bool _canAttack = true;
-        public bool isAttacking;
-        public Vector3 lastGroundedPosition;
 
         #region ***---AnimatorStringToHash---***
         private static readonly int AnimatorIsAttacking = Animator.StringToHash("IsAttacking");

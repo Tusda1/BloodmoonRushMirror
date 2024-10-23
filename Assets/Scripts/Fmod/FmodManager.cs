@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Fmod {
     public class FmodManager : PersistentSingleton<FmodManager> {
-        [Header("DebugLogger")] [SerializeField, Required]
+        [Header("DebugLogger"), SerializeField, Required] 
         private DebugLoggerSO debugLogger;
 
         public static float masterVolume => PlayerPrefs.GetFloat("MasterVolume");
