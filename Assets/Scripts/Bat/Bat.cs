@@ -19,7 +19,6 @@ namespace Bat {
 
         [SerializeField] private DamageInstance damageInstance;
         [SerializeField] private string takeDamageSfx = "Misc/Generic_impact";
-        [SerializeField] private bool doesKnockBack = true;
 
         [HideInInspector] public BatSpawner batSpawner;
 
@@ -64,10 +63,12 @@ namespace Bat {
 
         public void TakeDamage(DamageInstance damageInstance) {
             if (health == 0) return;
+            damageInstance.TriggerOnHitAction();
 
             fmodManager.PlaySfx(takeDamageSfx);
             health -= damageInstance.damage;
             if (health > 0) return;
+            damageInstance.TriggerOnKillAction();
 
             batSpawner.DespawnBat(this);
         }
