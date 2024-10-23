@@ -23,16 +23,14 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
             .SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
     }
 
-    public bool TakeDamage(int damageAmount, Vector3 attackDirection = default) {
+    public void TakeDamage(DamageInstance damageInstance) {
         var dialogueVariables = bossDialogue.BlackboardReference.Blackboard.Variables;
         dialogueVariables.Find(x => x.Type == typeof(DrucillaFirstEncounter)).ObjectValue = this;
         dialogueVariables.Find(x => x.Type == typeof(Animator)).ObjectValue = _animator;
         startNewConversationEvent.SendEventMessage(bossDialogue);
         DOTween.Kill(transform);
         
-        ServiceLocator.Get<PlayerScript>().TakeDamage(0, Vector3.right);
-        
-        return false;   
+        // ServiceLocator.Get<PlayerScript>().TakeDamage(0, Vector3.right);
     }
 
     public void PlaySwishSfx() {

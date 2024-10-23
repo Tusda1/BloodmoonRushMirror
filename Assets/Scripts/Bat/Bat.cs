@@ -17,7 +17,7 @@ namespace Bat {
         [Header("Health And Damage")] [SerializeField]
         private int health = 1;
 
-        [SerializeField] private int damage = 1;
+        [SerializeField] private DamageInstance damageInstance;
         [SerializeField] private string takeDamageSfx = "Misc/Generic_impact";
         [SerializeField] private bool doesKnockBack = true;
 
@@ -38,16 +38,8 @@ namespace Bat {
             if (!other.TryGetComponent<PlayerScript>(out var playerScript)) return;
 
             var dir = (playerScript.transform.position - transform.position).normalized;
-            if (doesKnockBack) {
-                if (damage != 0) {
-                    playerScript.TakeDamage(damage, dir);
-                }
-            }
-            else {
-                if (damage != 0) {
-                    playerScript.TakeDamage(damage);
-                }
-            }
+            
+            playerScript.TakeDamage(damageInstance);
         }
 
         private IEnumerator Initialize() {
@@ -70,15 +62,14 @@ namespace Bat {
             batSpawner.DespawnBat(this);
         }
 
-        public bool TakeDamage(int damageAmount, Vector3 attackDirection = default) {
-            if (health == 0) return true;
+        public void TakeDamage(DamageInstance damageInstance) {
+            if (health == 0) return;
 
             fmodManager.PlaySfx(takeDamageSfx);
-            health -= damageAmount;
-            if (health > 0) return false;
+            health -= damageInstance.damage;
+            if (health > 0) return;
 
             batSpawner.DespawnBat(this);
-            return true;
         }
     }
 }
