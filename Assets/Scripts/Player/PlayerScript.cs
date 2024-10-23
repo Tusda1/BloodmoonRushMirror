@@ -11,16 +11,15 @@ using UnityEngine.InputSystem;
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable {
         [GetOrAddComponent, HideInInspector] public PlayerHealth health;
-        [GetOrAddComponent] private PlayerMovement _playerMovement;
+        [GetOrAddComponent] private GravityPlayer _playerMovement;
+        [GetOrAddComponent] private Animator _animator;
         
         public int playerLives = 5;
-        private bool _isDead;
-
         public int gems;
 
-        [SerializeField] private ActionEventChannel skipEventChannel;
-
-        [SerializeField] private AllInFavourConsensus playerCanMove;
+        [Header("Player Can Move")]
+        [SerializeField, Required] private AllInFavourConsensus playerCanMove;
+        private bool playerMovementEnabled => playerCanMove.consensus;
         private readonly ScriptVotePair _isNotAttackingOnGround = new();
         private readonly ScriptVotePair _isAliveVotePair = new();
 
@@ -33,16 +32,12 @@ namespace Player {
         [Header("Debug Logger"), SerializeField]
         private DebugLoggerSO debugLogger;
 
+        private bool _isDead;
         private bool _canAttack = true;
         public bool isAttacking;
         public Vector3 lastGroundedPosition;
-
-        [Header("Knockback")] [SerializeField] private float knockbackForce;
-        [SerializeField] private float knockbackDuration;
-        [SerializeField] private AnimationCurve knockbackCurve;
-        private CountdownTimer _knockbackTimer;
+        
         private CountdownTimer _attackTimer;
-        private Vector2 _knockbackDirection;
 
         private static readonly int AnimatorIsAttacking = Animator.StringToHash("IsAttacking");
         private static readonly int AnimatorTakeDamage = Animator.StringToHash("TakeDamage");
@@ -50,8 +45,8 @@ namespace Player {
         private static readonly int Respawn = Animator.StringToHash("Respawn");
         private static readonly int IsDead = Animator.StringToHash("IsDead");
         
-        private FmodManager fmodManager => FmodManager.Instance;
-        private PauseMenu pauseMenu => PauseMenu.Instance;
+        private static FmodManager fmodManager => FmodManager.Instance;
+        private static PauseMenu pauseMenu => PauseMenu.Instance;
 
         public event Action OnRespawn;
 
@@ -62,44 +57,39 @@ namespace Player {
             debugLogger.messageOrigin = this;
             hitbox.SetActive(false);
 
-            _playerMovement = GetComponent<PlayerMovement>();
-
-            InitializeKnockbackTimer();
             InitializeAttackTimer();
             
             health.OnDeath += () => {
-                playerLives--;
-                fmodManager.StopAllSound();
-                fmodManager.PlaySfx("Player/Player_death");
                 StartCoroutine(Die());
             };
         }
 
         private IEnumerator Die() {
             _isDead = true;
+            playerCanMove.ChangeVote(_isAliveVotePair, false);
+            _animator.SetBool(IsDead, true);
+            fmodManager.StopAllSound();
+            fmodManager.PlaySfx("Player/Player_death");
 
-            _playerMovement.playerCanMove.ChangeVote(_isAliveVotePair, false);
-
-            _playerMovement.animator.SetBool(IsDead, true);
-
-            _playerMovement.animator.ResetTrigger(AnimatorTakeDamage);
+            _animator.ResetTrigger(AnimatorTakeDamage);
             print("Setting death trigger");
-            _playerMovement.animator.SetTrigger(Death);
+            _animator.SetTrigger(Death);
 
-            yield return new WaitUntil(() => _playerMovement.animator.GetCurrentAnimatorStateInfo(0).IsName("Death"));
+            yield return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).IsName("Death"));
 
-            yield return new WaitForSeconds(_playerMovement.animator.GetCurrentAnimatorStateInfo(0).length + 2f);
+            yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length + 2f);
 
-            _playerMovement.playerCanMove.ChangeVote(_isAliveVotePair, true);
-            _playerMovement.animator.SetBool(IsDead, false);
+            playerCanMove.ChangeVote(_isAliveVotePair, true);
+            _animator.SetBool(IsDead, false);
 
             _isDead = false;
             health.Health = health.maxHealth;
             gems /= 2;
+            playerLives--;
             OnRespawn?.Invoke();
 
-            _playerMovement.animator.ResetTrigger(Death);
-            _playerMovement.animator.SetTrigger(Respawn);
+            _animator.ResetTrigger(Death);
+            _animator.SetTrigger(Respawn);
 
             if (playerLives <= 0) {
                 // TODO
@@ -109,25 +99,15 @@ namespace Player {
 
         private void OnDestroy() {
             ServiceLocator.Unregister<PlayerScript>();
-            _playerMovement.playerCanMove.DeleteVote(_playerCanMoveVotePair);
-            _knockbackTimer.StopTimer();
+            playerCanMove.DeleteVote(_playerCanMoveVotePair);
             playerCanMove.DeleteVote(_isNotAttackingOnGround);
-            _playerMovement.playerCanMove.DeleteVote(_isAliveVotePair);
-        }
-
-        private void InitializeKnockbackTimer() {
-            _knockbackTimer = new CountdownTimer(knockbackDuration);
-            _playerCanMoveVotePair = new ScriptVotePair { vote = false };
-            _knockbackTimer.OnBegin += () => _playerMovement.playerCanMove.ChangeVote(_playerCanMoveVotePair, false);
-            _knockbackTimer.OnUpdate += () => _playerMovement.playerRigidbody.linearVelocity = _knockbackDirection *
-                (knockbackForce * knockbackCurve.Evaluate(_knockbackTimer.CurrentProgress));
-            _knockbackTimer.OnComplete += () => _playerMovement.playerCanMove.ChangeVote(_playerCanMoveVotePair, true);
+            playerCanMove.DeleteVote(_isAliveVotePair);
         }
 
         private void InitializeAttackTimer() {
-            playerHitbox.OnHitAction += () =>  _playerMovement.killCharges++;
+            // playerHitbox.OnKillAction += () => _playerMovement.killCharges++;
             
-            _playerMovement.animator.SetBool(AnimatorIsAttacking, false);
+            _animator.SetBool(AnimatorIsAttacking, false);
 
             _attackTimer = new CountdownTimer(0.25f);
 
@@ -137,10 +117,9 @@ namespace Player {
                 fmodManager.PlaySfx("Player/Player_slash");
 
                 hitbox.SetActive(true);
-                playerHitbox.damage = damage;
                 _canAttack = false;
                 isAttacking = true;
-                _playerMovement.animator.SetBool(AnimatorIsAttacking, true);
+                _animator.SetBool(AnimatorIsAttacking, true);
                 playerCanMove.ChangeVote(_isNotAttackingOnGround, false);
             };
             _attackTimer.OnStop += OnAttackTimerOnOnComplete;
@@ -150,7 +129,7 @@ namespace Player {
             debugLogger.Log("Attack done" + _attackTimer.CurrentProgress);
             hitbox.SetActive(false);
             _canAttack = true;
-            _playerMovement.animator.SetBool(AnimatorIsAttacking, false);
+            _animator.SetBool(AnimatorIsAttacking, false);
             playerCanMove.ChangeVote(_isNotAttackingOnGround, true);
             isAttacking = false;
         }
@@ -164,7 +143,7 @@ namespace Player {
         }
 
         public void OnInteract(InputAction.CallbackContext context) {
-            if (!context.performed || !_playerMovement.playerInputEnabled) return;
+            if (!context.performed || !playerMovementEnabled) return;
 
             var interactable = InteractCheck();
             if (interactable == null) return;
@@ -176,15 +155,9 @@ namespace Player {
         }
 
         public void OnAttack(InputAction.CallbackContext context) {
-            if (!context.performed || !_canAttack || !_playerMovement.playerInputEnabled ||
-                !_playerMovement.isGrounded) return;
+            if (!context.performed || !_canAttack || !playerMovementEnabled) return;
 
             Attack();
-        }
-
-        public void OnSkipAction(InputAction.CallbackContext context) {
-            if (!context.performed) return;
-            skipEventChannel.SendEventMessage();
         }
 
         #endregion
@@ -196,28 +169,19 @@ namespace Player {
         }
 
 
-        public bool TakeDamage(int damageAmount, Vector3 attackDirection = default) {
-            if (_isDead) {
-                return false;
-            }
+        public void TakeDamage(DamageInstance damageInstance) {
+            if (_isDead) return;
 
-            health.TakeDamage(damageAmount);
+            damageInstance.TriggerOnHitAction();
+            health.TakeDamage(damageInstance.damage);
 
-            debugLogger.Log($"Taking Damage: {damageAmount}");
-            _playerMovement.animator.SetTrigger(AnimatorTakeDamage);
-
-            if (attackDirection != default) {
-                _knockbackDirection = attackDirection;
-                _knockbackTimer.StartTimer();
-                debugLogger.Log($"Applying Knockback Force: {knockbackForce} in direction: {attackDirection}");
-            }
-
-            return false;
+            debugLogger.Log($"Taking Damage: {damageInstance.damage}");
+            _animator.SetTrigger(AnimatorTakeDamage);
         }
 
         public void GoToLastGroundedPosition() {
             transform.position = lastGroundedPosition;
-            _playerMovement.playerRigidbody.linearVelocity = Vector2.zero;
+            _playerMovement.ResetMovement(0);
             debugLogger.Log("Go To Last Grounded Position");
         }
 
