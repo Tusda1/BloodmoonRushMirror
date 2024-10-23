@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 
 public class GravityPlayer : GravityObject
 {
@@ -23,6 +24,7 @@ public class GravityPlayer : GravityObject
     [SerializeField] private float knockBackTime;
     public int killCharges;
     [SerializeField, Required] private AllInFavourConsensus playerCanMove;
+    [GetOrAddComponent] private BoxCollider2D boxCollider;
     private CountdownTimer dashTimer;
     private CountdownTimer minJumpTimer;
     private CountdownTimer jumpBufferTimer;
@@ -36,8 +38,10 @@ public class GravityPlayer : GravityObject
     public bool isDashing = false;
     public bool canDash = false;
     public bool isKnockbacked = false;
+    public bool isDucking = false;
+    public bool isHoldingDuck = false;
     private bool playerMovementEnabled => playerCanMove.consensus;
-    bool isFacingRight = true;
+    public bool isFacingRight = true;
 
     void Start()
     {
@@ -86,6 +90,21 @@ public class GravityPlayer : GravityObject
         {
             if (isGrounded) canDash = true;
             
+            if (isHoldingDuck && !isJumping && !isDucking && isGrounded)
+            {
+                EnterDuck();
+            }
+            else if (isDucking && !isHoldingDuck)
+            {
+                ForceExitDuck();
+            }
+
+            if (isDucking)
+            {
+                if(inputVector.x > 0.01f) isFacingRight = true;
+                else if(inputVector.x < -0.01f) isFacingRight = false;
+                move = Vector2.zero;
+            }
             
             SmoothMovement = Vector2.SmoothDamp(SmoothMovement, move, ref referenceSmoothVelocity, smoothTime);
         
@@ -110,6 +129,7 @@ public class GravityPlayer : GravityObject
         if (context.performed)
         {
             isHoldingJump = true;
+            ForceExitDuck();
             if (isGrounded)
             {
                 isJumping = true;
@@ -143,7 +163,8 @@ public class GravityPlayer : GravityObject
         if (context.performed)
         {
             if (isDashing || !canDash) return;
-        
+
+            ForceExitDuck();
             isDashing = true;
             canDash = false;
             lockToAxis = 1;
@@ -159,6 +180,35 @@ public class GravityPlayer : GravityObject
     public void TestFunction(InputAction.CallbackContext context)
     {
         Knockback(new Vector2(1, 0), true);
+    }
+
+    public void DuckInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            isHoldingDuck = true;
+        }
+        
+        if (context.canceled)
+        {
+            isHoldingDuck = false;
+        }
+    }
+
+    private void ForceExitDuck()
+    {
+        print("exiting duck");
+        isDucking = false;
+        //boxCollider.size = new Vector2(boxCollider.size.x, 2);
+        gameObject.transform.localScale = new Vector3(1, 1, 1); //TEST
+    }
+
+    private void EnterDuck()
+    {
+        print("entering duck");
+        isDucking = true;
+        //boxCollider.size = new Vector2(boxCollider.size.x, 2);
+        gameObject.transform.localScale = new Vector3(1.5f, .5f, 1); //TEST
     }
 
     public void Knockback(Vector2 enemyPosition, bool givesKnockback)
