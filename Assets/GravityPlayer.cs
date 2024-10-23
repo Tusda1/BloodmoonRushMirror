@@ -1,4 +1,6 @@
 using System;
+using Attributes;
+using Consensus;
 using PlayerLoopTimer;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -18,17 +20,24 @@ public class GravityPlayer : GravityObject
     [SerializeField] private float dashForce;
     [SerializeField] private float minJumpTime;
     [SerializeField] private float jumpBufferTime;
+    [SerializeField] private float knockBackTime;
+    public int killCharges;
+    [SerializeField, Required] private AllInFavourConsensus playerCanMove;
     private CountdownTimer dashTimer;
     private CountdownTimer minJumpTimer;
     private CountdownTimer jumpBufferTimer;
+    private CountdownTimer knockbackTimer;
     private Vector2 inputVector;
     private Vector2 SmoothMovement;
     private Vector2 referenceSmoothVelocity;
+    public Vector2 knockbackVector;
     public bool isJumping = false;
     public bool isHoldingJump = false;
     public bool isDashing = false;
     public bool canDash = false;
-    [SerializeField] bool isFacingRight = true;
+    public bool isKnockbacked = false;
+    private bool playerMovementEnabled => playerCanMove.consensus;
+    bool isFacingRight = true;
 
     void Start()
     {
@@ -44,6 +53,16 @@ public class GravityPlayer : GravityObject
     protected override void ComputeVelocity()
     {
         Vector2 move = Vector2.zero;
+        
+        if (!playerMovementEnabled) return;
+
+        if (isKnockbacked)
+        {
+            move = knockbackVector;
+            SmoothMovement = Vector2.SmoothDamp(SmoothMovement, knockbackVector.normalized, ref referenceSmoothVelocity, smoothTime);
+            
+            return;
+        }
         
         move.x = inputVector.x;
 
@@ -83,7 +102,7 @@ public class GravityPlayer : GravityObject
     
     #endregion
 
-    #region Input Functions
+    #region Functions
     
     public void Jump(InputAction.CallbackContext context)
     {
@@ -135,6 +154,29 @@ public class GravityPlayer : GravityObject
                 dashForce = -Mathf.Abs(dashForce);
         }
     }
+
+    public void TestFunction(InputAction.CallbackContext context)
+    {
+        Knockback(new Vector2(1, 0), true);
+    }
+
+    public void Knockback(Vector2 enemyPosition, bool givesKnockback)
+    {
+        if (!givesKnockback) return;
+
+        isKnockbacked = true;
+        
+        knockbackTimer.StartTimer();
+        
+        if (enemyPosition.x < transform.position.x)
+        {
+            knockbackVector.x = Mathf.Abs(knockbackVector.x);
+        }
+        else
+        {
+            knockbackVector.x = -Mathf.Abs(knockbackVector.x);
+        }
+    }
     
     #endregion
 
@@ -168,6 +210,11 @@ public class GravityPlayer : GravityObject
         isJumping = false;
     }
 
+    private void FinishKnockBack()
+    {
+        isKnockbacked = false;
+    }
+
     private void InitializeTimers()
     {
         dashTimer = new CountdownTimer(dashTime);
@@ -179,6 +226,9 @@ public class GravityPlayer : GravityObject
         jumpBufferTimer = new CountdownTimer(jumpBufferTime);
         jumpBufferTimer.OnUpdate += JumpBuffer;
         jumpBufferTimer.OnComplete += CompleteJumpBuffer;
+        
+        knockbackTimer = new CountdownTimer(knockBackTime);
+        knockbackTimer.OnComplete += FinishKnockBack;
     }
 
     private void OnValidate()
