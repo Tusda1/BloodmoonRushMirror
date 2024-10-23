@@ -75948,19 +75948,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34de162bb9e1d641b01ad6758b3d05b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <GameData>k__BackingField:
+    position: {x: 0, y: 0, z: 0}
+    health: 0
+    gems: 0
+    lives: 0
   health: {fileID: 2103243908}
   playerLives: 5
-  gems: 0
-  playerCanMove: {fileID: 0}
-  hitbox: {fileID: 0}
-  playerHitbox: {fileID: 0}
   damage: 0
   whatIsInteractable:
     serializedVersion: 2
     m_Bits: 0
-  debugLogger: {fileID: 0}
   isAttacking: 0
   lastGroundedPosition: {x: 0, y: 0, z: 0}
+  gems: 0
+  gemLostMethod: 0
+  gemsLostOnDeath: 0
+  gemMultiplierOnDeath: 0.9
+  playerCanMove: {fileID: 0}
+  debugLogger: {fileID: 0}
 --- !u!1001 &249616156204847171
 PrefabInstance:
   m_ObjectHideFlags: 0
