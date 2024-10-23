@@ -7,6 +7,8 @@ using UnityEngine.Serialization;
 
 public class GravityPlayer : GravityObject
 {
+    #region Variables
+    
     [SerializeField] private float smoothTime;
     [SerializeField] private float fallSpeed;
     [SerializeField] private float gravityMultiplier;
@@ -34,6 +36,10 @@ public class GravityPlayer : GravityObject
         
         InitializeTimers();
     }
+    
+    #endregion
+
+    #region ComputeVelocity
     
     protected override void ComputeVelocity()
     {
@@ -74,7 +80,11 @@ public class GravityPlayer : GravityObject
             SmoothMovement.x = 0;
         }
     }
+    
+    #endregion
 
+    #region Input Functions
+    
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -125,7 +135,11 @@ public class GravityPlayer : GravityObject
                 dashForce = -Mathf.Abs(dashForce);
         }
     }
+    
+    #endregion
 
+    #region Timers
+    
     private void MinJumpCancel()
     {
         isJumping = false;
@@ -173,4 +187,6 @@ public class GravityPlayer : GravityObject
         if (dashTimer != null) dashTimer.Duration = dashTime;
         if (minJumpTimer != null) minJumpTimer.Duration = minJumpTime;
     }
+    
+    #endregion
 }
