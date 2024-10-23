@@ -58,7 +58,8 @@ public class GravityPlayer : GravityObject
 
         if (isKnockbacked)
         {
-            move = knockbackVector;
+            velocity.y = knockbackVector.y;
+            targetVelocity.x = knockbackVector.x;
             SmoothMovement = Vector2.SmoothDamp(SmoothMovement, knockbackVector.normalized, ref referenceSmoothVelocity, smoothTime);
             
             return;
@@ -236,6 +237,7 @@ public class GravityPlayer : GravityObject
         if (jumpBufferTimer != null) jumpBufferTimer.Duration = jumpBufferTime;
         if (dashTimer != null) dashTimer.Duration = dashTime;
         if (minJumpTimer != null) minJumpTimer.Duration = minJumpTime;
+        if (knockbackTimer != null) knockbackTimer.Duration = knockBackTime;
     }
     
     #endregion

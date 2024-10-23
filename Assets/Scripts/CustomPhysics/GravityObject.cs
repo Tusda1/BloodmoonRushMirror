@@ -29,8 +29,8 @@ public class GravityObject : MonoBehaviour
     protected void Start()
     {
         contactFilter.useTriggers = false;
-        //contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
-        contactFilter.SetLayerMask(layerMask);
+        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        //contactFilter.SetLayerMask(layerMask);
         contactFilter.useLayerMask = true;
     }
 
