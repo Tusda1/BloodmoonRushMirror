@@ -3,12 +3,14 @@ using UnityEngine;
 using Utilities.DataBinding;
 
 namespace SaveLoadSystem.Data {
-    [Serializable] public class PlayerData : ISaveable {
-        public string Id { get; set; }
-        public Vector3 position;
+    /// <summary>
+    /// 'Id' must be serialized with '[field: SerializeField]' to be visible in the inspector
+    /// </summary>
+    [Serializable] public class PlayerData : ISaveable { 
+        [field: SerializeField] public string Id { get; set; }
         public int health;
-        public int gems;
         public int lives;
+        public int gems;
         
         public object Clone() {
             var clone = (PlayerData)MemberwiseClone();

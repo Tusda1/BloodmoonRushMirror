@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace Fmod {
     public class FmodManager : PersistentSingleton<FmodManager> {
-        [Header("DebugLogger")] 
-        [SerializeField, Required] private DebugLoggerSO debugLogger;
+        [Header("DebugLogger"), SerializeField, Required] 
+        private DebugLoggerSO debugLogger;
 
         public static float masterVolume => PlayerPrefs.GetFloat("MasterVolume");
         public static float musicVolume => PlayerPrefs.GetFloat("SFXVolume");
@@ -18,7 +18,7 @@ namespace Fmod {
         private Bus _musicBus;
         private Bus _sfxBus;
         private Bus _masterBus;
-        
+
         private static string busPath => "bus:/";
         private static string sfxPath => "event:/Sfx/";
         private static string musicPath => "event:/Music/";
@@ -39,7 +39,6 @@ namespace Fmod {
         }
 
         #region ---PublicFunctions---
-
         public void SetMasterVolume(float volume) {
             volume = Mathf.Clamp01(volume);
 
@@ -124,7 +123,6 @@ namespace Fmod {
         public bool IsMusicPlaying() {
             return _currentMusic.GetPlaybackState() == PLAYBACK_STATE.PLAYING;
         }
-
         #endregion
 
         private bool CheckIfStringIsEmpty(string s) {

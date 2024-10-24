@@ -14,7 +14,7 @@ public interface IDamageable {
     public event Action OnHitAction = delegate { };
     public event Action OnKillAction = delegate { };
 
-    public virtual void TriggerOnHitAction() => OnHitAction.Invoke();
+    public void TriggerOnHitAction() => OnHitAction.Invoke();
 
-    public virtual void TriggerOnKillAction() => OnKillAction.Invoke();
+    public void TriggerOnKillAction() => OnKillAction.Invoke();
 }
