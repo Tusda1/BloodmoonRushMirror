@@ -20,7 +20,7 @@ public class Skeleton : EnemyBase
     private GameObject _agroObject;
     private Path _path;
     private int _currentWaypoint = 0;
-    private bool _reachedEndOfPath = false;
+    private bool _reachedEndOfPath;
     private Seeker _seeker;
 
     private new void Start()
@@ -87,12 +87,7 @@ public class Skeleton : EnemyBase
 
         if (_currentWaypoint >= _path.vectorPath.Count)
         {
-            _reachedEndOfPath = true;
             return;
-        }
-        else
-        {
-            _reachedEndOfPath = false;
         }
 
         // Determine the direction to the next waypoint
@@ -105,8 +100,8 @@ public class Skeleton : EnemyBase
             facingDirection = direction.x > 0 ? Vector2.right : Vector2.left;
         }
 
-        // Move towards the next waypoint
-        if (isGrounded)
+        // Move towards the next waypoint if grounded and angle to next waypoint is less than 75 degrees
+        if (isGrounded && !(Vector2.Angle(Vector2.up, direction) < 15))
         {
             targetVelocity = facingDirection * moveSpeed;
         }
