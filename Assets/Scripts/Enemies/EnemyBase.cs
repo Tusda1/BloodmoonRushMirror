@@ -15,10 +15,8 @@ public class EnemyBase :  GravityObject
     
     protected LayerMask EnemyAndGroundLayerMask;
 
-    private new void Start()
+    protected void Initialize()
     {
-        base.Start();
-        
         facingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
         
         EnemyAndGroundLayerMask = LayerMask.GetMask("Enemy", "Ground");

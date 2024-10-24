@@ -15,9 +15,11 @@ public class Ghoul : EnemyBase
     private bool _isJumping;
     private GhoulState _currentState = GhoulState.Scanning;
     
-    private new void OnEnable()
+    private new void Start()
     {
-        base.OnEnable();
+        base.Start();
+        
+        Initialize();
         
         _currentState = GhoulState.Scanning;
     }
