@@ -52,9 +52,12 @@ MonoBehaviour:
   yJitter: 0
   jitterDuration: 0
   health: 1
-  damage: 1
+  damageInstance:
+    damage: 0
+    knockbackStrength: {x: 0, y: 0}
+    damageDirection: {x: 0, y: 0}
+    staggerStrength: 0
   takeDamageSfx: Misc/Generic_impact
-  doesKnockBack: 1
   batSpawner: {fileID: 0}
 --- !u!212 &1338600803970277736
 SpriteRenderer:

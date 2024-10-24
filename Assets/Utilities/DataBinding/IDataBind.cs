@@ -1,4 +1,6 @@
-﻿namespace Utilities.DataBinding {
+﻿using UnityEngine;
+
+namespace Utilities.DataBinding {
     public interface IDataBind {
         /// <summary>
         /// "LoadBindData" is done by the class implementing "IBind".
@@ -13,8 +15,8 @@
     }
     
     public interface IBind<TData> : IDataBind where TData : ISaveable {
-        string Id { get; }
-        TData GameData { get; set; }
+        public string Id { get; set; }
+        TData SaveSystemData { get; set; }
         TData DataInGameData { get; }
         
         /// <summary>

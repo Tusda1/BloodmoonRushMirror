@@ -20,9 +20,9 @@ namespace Player {
             _playerHeartBar = _root.Q<HeartBar>("PlayerHeartBar");
             _playerTempHeartBar = _root.Q<HeartBar>("PlayerTempHeartBar");
 
-            _player.health.OnHealthChanged += health => OnHealthOnOnHealthChanged(health, _player.health.TempHealth);
+            _player.healthComponent.OnHealthChanged += health => OnHealthOnOnHealthChanged(health, _player.healthComponent.TempHealth);
 
-            OnHealthOnOnHealthChanged(_player.health.Health, _player.health.TempHealth);
+            OnHealthOnOnHealthChanged(_player.healthComponent.Health, _player.healthComponent.TempHealth);
         }
 
         private void OnHealthOnOnHealthChanged(int health, int tempHealth) {

@@ -15,23 +15,15 @@ using Utilities.DataBinding;
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {
         #region ---Fields---
-        #region ***---DataBindingVariables---***
-        [Header("Data Binding")] public string Id { get; } = Guid.NewGuid().ToString();
-        [field: SerializeField] public PlayerData GameData { get; set; }
-        public PlayerData DataInGameData => SaveLoadSystemManager.Instance.gameData.playerData;
-        #endregion
-
-        [GetOrAddComponent, HideInInspector] public PlayerHealth health;
-        [GetOrAddComponent] private GravityPlayer _playerMovement;
+        [GetOrAddComponent, HideInInspector] public PlayerHealth healthComponent;
+        [GetOrAddComponent] private GravityObjectPlayerMovement _playerMovement;
         [GetOrAddComponent] private Animator _animator;
 
-
         [Header("Player")] public int playerLives = 5;
-        [SerializeField] private int damage;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         public Vector3 lastGroundedPosition;
-        
+
         private bool _isDead;
         private bool _canAttack = true;
 
@@ -60,20 +52,32 @@ namespace Player {
         private DebugLoggerSO debugLogger;
 
         #region ***---AnimatorStringToHash---***
-        private static readonly int AnimatorIsAttacking = Animator.StringToHash("IsAttacking");
-        private static readonly int AnimatorTakeDamage = Animator.StringToHash("TakeDamage");
-        private static readonly int Death = Animator.StringToHash("Death");
-        private static readonly int RespawnTrigger = Animator.StringToHash("Respawn");
-        private static readonly int IsDead = Animator.StringToHash("IsDead");
+        private static readonly int AnimatorIsAttackingBool = Animator.StringToHash("IsAttacking");
+        private static readonly int AnimatorIsCrouchAttackingBool = Animator.StringToHash("IsCrouchAttacking");
+        private static readonly int AnimatorTakeDamageTrigger = Animator.StringToHash("TakeDamage");
+        private static readonly int AnimatorDeathTrigger = Animator.StringToHash("Death");
+        private static readonly int AnimatorRespawnTrigger = Animator.StringToHash("Respawn");
+        private static readonly int AnimatorIsDeadBool = Animator.StringToHash("IsDead");
         #endregion
 
+        #region ***---GameManagers---***
         private static FmodManager fmodManager => FmodManager.Instance;
         private static PauseMenu pauseMenu => PauseMenu.Instance;
         private static SaveLoadSystemManager saveLoadSystemManager => SaveLoadSystemManager.Instance;
+        #endregion
 
         private ScriptVotePair _playerCanMoveVotePair;
 
         public event Action OnRespawn = delegate { };
+
+        #region ***---DataBindingVariables---***
+        [field: Header("Data Binding")]
+        [field: SerializeField]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
+        [field: SerializeField] public PlayerData SaveSystemData { get; set; }
+        public PlayerData DataInGameData => SaveLoadSystemManager.Instance.gameData.playerData;
+        #endregion
         #endregion
 
         #region ---EventFunctions---
@@ -86,32 +90,7 @@ namespace Player {
             // TODO: comment out
             // saveLoadSystemManager.Instance.Bind(this, DataInGameData);
 
-            health.OnDeath += () => StartCoroutine(Die());
-        }
-
-        private IEnumerator Die() {
-            _isDead = true;
-            playerCanMove.ChangeVote(_isAliveVotePair, false);
-            _animator.SetBool(IsDead, true);
-            fmodManager.StopAllSound();
-            fmodManager.PlaySfx("Player/Player_death");
-
-            _animator.ResetTrigger(AnimatorTakeDamage);
-            debugLogger.Log("Setting death trigger");
-            _animator.SetTrigger(Death);
-
-            yield return new WaitUntil(() => _animator.GetCurrentAnimationClip().name == "Death");
-            yield return new WaitForSeconds(_animator.GetCurrentAnimationClip().length + 2f);
-
-            playerLives--;
-
-            if (playerLives <= 0) {
-                debugLogger.Log("Ran out of lives");
-                // TODO
-            }
-            else {
-                Respawn();
-            }
+            healthComponent.OnDeath += () => StartCoroutine(Die());
         }
 
         private void OnDestroy() {
@@ -140,16 +119,32 @@ namespace Player {
         public void OnAttack(InputAction.CallbackContext context) {
             if (!context.performed || !_canAttack || !playerMovementEnabled) return;
 
-            Attack();
+            if (_playerMovement.isDucking) {
+                CrouchAttack();
+            }
+            else {
+                Attack();
+            }
         }
         #endregion
         #endregion
 
+        #region ---Combat---
         public void Attack() {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
 
-            _animator.SetBool(AnimatorIsAttacking, true);
+            _animator.SetBool(AnimatorIsAttackingBool, true);
+            fmodManager.PlaySfx("Player/Player_slash");
+            _canAttack = false;
+            isAttacking = true;
+        }
+
+        private void CrouchAttack() {
+            if (!_canAttack) return;
+            debugLogger.Log("CrouchAttack");
+
+            _animator.SetBool(AnimatorIsCrouchAttackingBool, true);
             fmodManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
@@ -158,7 +153,7 @@ namespace Player {
         public void AttackFinished() {
             debugLogger.Log("Attack finished");
             _canAttack = true;
-            _animator.SetBool(AnimatorIsAttacking, false);
+            _animator.SetBool(AnimatorIsAttackingBool, false);
             isAttacking = false;
         }
 
@@ -166,10 +161,36 @@ namespace Player {
             if (_isDead) return;
 
             damageInstance.TriggerOnHitAction();
-            health.TakeDamage(damageInstance.damage);
+            healthComponent.TakeDamage(damageInstance.damage);
 
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
-            _animator.SetTrigger(AnimatorTakeDamage);
+            _animator.SetTrigger(AnimatorTakeDamageTrigger);
+        }
+
+        #region ***---Death---***
+        private IEnumerator Die() {
+            _isDead = true;
+            playerCanMove.ChangeVote(_isAliveVotePair, false);
+            _animator.SetBool(AnimatorIsDeadBool, true);
+            fmodManager.StopAllSound();
+            fmodManager.PlaySfx("Player/Player_death");
+
+            _animator.ResetTrigger(AnimatorTakeDamageTrigger);
+            debugLogger.Log("Setting death trigger");
+            _animator.SetTrigger(AnimatorDeathTrigger);
+
+            yield return new WaitUntil(() => _animator.GetCurrentAnimationClip().name == "Death");
+            yield return new WaitForSeconds(_animator.GetCurrentAnimationClip().length + 2f);
+
+            playerLives--;
+
+            if (playerLives <= 0) {
+                debugLogger.Log("Ran out of lives");
+                // TODO
+            }
+            else {
+                Respawn();
+            }
         }
 
         private void Respawn() {
@@ -178,15 +199,15 @@ namespace Player {
             playerCanMove.ChangeVote(_isAliveVotePair, true);
 
             _isDead = false;
-            _animator.SetBool(IsDead, false);
-            health.Health = health.maxHealth;
+            _animator.SetBool(AnimatorIsDeadBool, false);
+            healthComponent.Health = healthComponent.maxHealth;
 
             LoseGems();
 
             OnRespawn.Invoke();
 
-            _animator.ResetTrigger(Death);
-            _animator.SetTrigger(RespawnTrigger);
+            _animator.ResetTrigger(AnimatorDeathTrigger);
+            _animator.SetTrigger(AnimatorRespawnTrigger);
         }
 
         private void LoseGems() {
@@ -201,6 +222,8 @@ namespace Player {
                     throw new ArgumentOutOfRangeException();
             }
         }
+        #endregion
+        #endregion
 
         public void GoToLastGroundedPosition() {
             transform.position = lastGroundedPosition;
@@ -214,27 +237,25 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void LoadBindData() {
-            transform.position = GameData.position;
-            gems = GameData.gems;
-            health.Health = GameData.health;
-            playerLives = GameData.lives;
+            healthComponent.Health = SaveSystemData.health;
+            playerLives = SaveSystemData.lives;
+            gems = SaveSystemData.gems;
         }
 
         public void SaveBindData() {
-            GameData.position = transform.position;
-            GameData.gems = gems;
-            GameData.health = health.Health;
-            GameData.lives = playerLives;
+            SaveSystemData.health = healthComponent.Health;
+            SaveSystemData.lives = playerLives;
+            SaveSystemData.gems = gems;
         }
 
         public void Bind(PlayerData data) {
-            GameData = data;
+            SaveSystemData = data;
 
             debugLogger.Log("Player data bind-ed to gameData");
         }
 
         public void UnBind(PlayerData data) {
-            GameData = null;
+            SaveSystemData = null;
         }
         #endregion
     }

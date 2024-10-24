@@ -19,8 +19,8 @@ namespace Player {
             damageable.TakeDamage(damageInstance);
         }
 
-        public virtual void TriggerOnHitAction() => OnHitAction.Invoke();
+        public void TriggerOnHitAction() => OnHitAction.Invoke();
 
-        public virtual void TriggerOnKillAction() => OnKillAction.Invoke();
+        public void TriggerOnKillAction() => OnKillAction.Invoke();
     }
 }
