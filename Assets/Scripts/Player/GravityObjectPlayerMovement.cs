@@ -179,20 +179,26 @@ namespace Player {
         }
 
         public void Dash(InputAction.CallbackContext context) {
-            if (context.performed) {
-                if (isDashing || !canDash) return;
-
-                ForceExitDuck();
-                isDashing = true;
-                canDash = false;
-                lockToAxis = 1;
-                _dashTimer.StartTimer();
-
-                if (isFacingRight)
-                    dashForce = Mathf.Abs(dashForce);
-                else
-                    dashForce = -Mathf.Abs(dashForce);
+            if (!context.performed) return;
+            if (isDashing || !canDash) {
+                if (killCharges > 0) {
+                    killCharges--;
+                }
+                else {
+                    return;
+                }
             }
+
+            ForceExitDuck();
+            isDashing = true;
+            canDash = false;
+            lockToAxis = 1;
+            _dashTimer.StartTimer();
+
+            if (isFacingRight)
+                dashForce = Mathf.Abs(dashForce);
+            else
+                dashForce = -Mathf.Abs(dashForce);
         }
 
         public void TestFunction(InputAction.CallbackContext context) {
