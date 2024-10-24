@@ -42,11 +42,13 @@ public class GravityPlayer : GravityObject
     public bool isKnockbacked = false;
     public bool isDucking = false;
     public bool isHoldingDuck = false;
+    public bool doubleJumping = false;
     private bool playerMovementEnabled => playerCanMove.consensus;
     public bool coyoteSearch = true;
+    
     public bool isFacingRight = true;
 
-    void Start()
+    new void Start()
     {
         gravityModifier = gravityMultiplier;
         
@@ -78,6 +80,13 @@ public class GravityPlayer : GravityObject
         {
             velocity.y = jumpForce;
         }
+        else if (doubleJumping && isJumping)
+        {
+            ResetMovement(2);
+            isDashing = false;
+            velocity.y = jumpForce;
+            doubleJumping = false;
+        }
         else if (!isHoldingJump && !isJumping)
         {
             if (velocity.y > 0)
@@ -94,6 +103,7 @@ public class GravityPlayer : GravityObject
             if (isGrounded)
             {
                 canDash = true;
+                killCharges = 0;
             }
             
             if (isHoldingDuck && !isJumping && !isDucking && isGrounded)
@@ -136,10 +146,16 @@ public class GravityPlayer : GravityObject
         {
             isHoldingJump = true;
             ForceExitDuck();
-            if (isGrounded)
+            if (isGrounded || killCharges > 0)
             {
                 isJumping = true;
                 minJumpTimer.StartTimer();
+
+                if (killCharges > 0)
+                {
+                    doubleJumping = true;
+                    killCharges--;
+                }
             }
             else
             {
@@ -185,6 +201,7 @@ public class GravityPlayer : GravityObject
 
     public void TestFunction(InputAction.CallbackContext context)
     {
+        killCharges += 1;
         Knockback(new Vector2(1, 0), true);
     }
 
