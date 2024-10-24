@@ -16,6 +16,10 @@ namespace Bat {
             CreateBatPool();
         }
 
+        private void OnDestroy() {
+            Pool?.Clear();
+        }
+
         private void CreateBatPool() {
             batParentTransform ??= new GameObject("BatPoolParent").transform;
 

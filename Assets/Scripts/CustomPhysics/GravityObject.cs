@@ -45,9 +45,14 @@ public class GravityObject : MonoBehaviour
         //use this in script with targetVelocity updated here :3
     }
 
-    protected void FixedUpdate()
-    {
-        velocity += gravityModifier * Physics2D.gravity * Time.deltaTime;
+    protected void FixedUpdate() {
+        if (gravityModifier != 0) {
+            velocity += gravityModifier * Physics2D.gravity * Time.fixedDeltaTime;
+        }
+        else {
+            velocity.y = targetVelocity.y;
+        }
+        
         velocity.x = targetVelocity.x;
         
         isGrounded = false;

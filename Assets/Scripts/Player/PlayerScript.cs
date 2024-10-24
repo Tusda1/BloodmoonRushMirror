@@ -256,6 +256,8 @@ namespace Player {
 
         public void UnBind(PlayerData data) {
             SaveSystemData = null;
+
+            debugLogger.Log("Player data un-bind-ed to gameData");
         }
         #endregion
     }

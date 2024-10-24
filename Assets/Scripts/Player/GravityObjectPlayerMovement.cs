@@ -1,17 +1,25 @@
+using System;
 using Attributes;
 using Consensus;
+using ExtensionMethods;
+using Gaskellgames;
 using PlayerLoopTimer;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
         #region ---Fields---
+        [SerializeField, ReadOnly] private Vector2 inputVector;
         public bool isDucking;
         public bool isHoldingDuck;
         public bool isFacingRight = true;
+        public bool isClimbing;
         [SerializeField] private float smoothTime;
         [SerializeField] private float maxSpeed;
+        [SerializeField] private LayerMask whatIsLadder;
+        [SerializeField] private float climbSpeed;
 
         [Header("Dash")] public bool isDashing;
         public bool canDash;
@@ -48,10 +56,11 @@ namespace Player {
         private CountdownTimer _jumpBufferTimer;
         private CountdownTimer _knockbackTimer;
         private CountdownTimer _coyoteTimer;
-        private Vector2 _inputVector;
         private Vector2 _smoothMovement;
         private Vector2 _referenceSmoothVelocity;
         private bool _wasGroundedLastFrame;
+        private Ladder _ladder;
+        private bool _notClimbing;
         #endregion
 
         private new void Start() {
@@ -61,8 +70,34 @@ namespace Player {
         }
         #endregion
 
-        #region ComputeVelocity
         protected override void ComputeVelocity() {
+            if (inputVector.y != 0 && _ladder != null) {
+                isClimbing = true;
+                _ladder.LadderIsUsed = true;
+            }
+
+            if (isClimbing) {
+                targetVelocity = new Vector2(0, inputVector.y * climbSpeed);
+                if (_ladder != null) {
+                    var transformPosition = transform.position;
+                    transform.position = transformPosition.With(x: _ladder.triggerCollider.transform.position.x);
+                }
+
+                gravityModifier = 0;
+
+                if ((isGrounded && inputVector.y < 0) || isHoldingJump || isDashing || _notClimbing) {
+                    isClimbing = false;
+                    isGrounded = true;
+                    gravityModifier = gravityMultiplier;
+                    _ladder.LadderIsUsed = false;
+                    _ladder = null;
+                    _notClimbing = false;
+                }
+                else {
+                    return;
+                }
+            }
+
             if (_wasGroundedLastFrame && !isJumping) {
                 _coyoteTimer.StartTimer();
             }
@@ -88,7 +123,7 @@ namespace Player {
                 return;
             }
 
-            move.x = _inputVector.x;
+            move.x = inputVector.x;
 
             if (isGrounded && isJumping) {
                 velocity.y = jumpForce;
@@ -123,8 +158,8 @@ namespace Player {
                 }
 
                 if (isDucking) {
-                    if (_inputVector.x > 0.01f) isFacingRight = true;
-                    else if (_inputVector.x < -0.01f) isFacingRight = false;
+                    if (inputVector.x > 0.01f) isFacingRight = true;
+                    else if (inputVector.x < -0.01f) isFacingRight = false;
                     move = Vector2.zero;
                 }
 
@@ -142,9 +177,8 @@ namespace Player {
 
             _wasGroundedLastFrame = isGrounded;
         }
-        #endregion
 
-        #region Functions
+        #region ---EventFunctions---
         public void Jump(InputAction.CallbackContext context) {
             if (context.performed) {
                 isHoldingJump = true;
@@ -165,17 +199,12 @@ namespace Player {
 
             if (context.canceled) {
                 isHoldingJump = false;
-                // if (jumpBufferTimer.TimerRunning) 
-                // {
-                //     jumpBufferTimer.StopTimer();
-                //     isJumping = false;
-                // }
             }
         }
 
         public void Run(InputAction.CallbackContext context) {
-            Vector2 referenceVector = context.ReadValue<Vector2>();
-            _inputVector.x = referenceVector.normalized.x;
+            var referenceVector = context.ReadValue<Vector2>();
+            inputVector = referenceVector.normalized;
         }
 
         public void Dash(InputAction.CallbackContext context) {
@@ -216,15 +245,38 @@ namespace Player {
             }
         }
 
+        private void OnTriggerEnter2D(Collider2D other) {
+            if (!other.CompareTag("Ladder")) return;
+
+            _ladder = other.GetComponentInChildren<Ladder>();
+        }
+
+        private void OnTriggerExit2D(Collider2D other) {
+            if (!other.CompareTag("LadderShell")) return;
+
+            _notClimbing = true;
+        }
+        #endregion
+
         private void ForceExitDuck() {
-            print("exiting duck");
+            debugLogger.Log("exiting duck");
             isDucking = false;
             //boxCollider.size = new Vector2(boxCollider.size.x, 2);
             gameObject.transform.localScale = new Vector3(1, 1, 1); //TEST
         }
 
         private void EnterDuck() {
-            print("entering duck");
+            debugLogger.Log("entering duck");
+
+            if (TryGetLadder(out _ladder)) {
+                transform.position = _ladder.ladderStartPosition.position;
+                targetVelocity = Vector2.zero;
+                isClimbing = true;
+                _ladder.LadderIsUsed = true;
+
+                return;
+            }
+
             isDucking = true;
             //boxCollider.size = new Vector2(boxCollider.size.x, 2);
             gameObject.transform.localScale = new Vector3(1.5f, .5f, 1); //TEST
@@ -244,9 +296,8 @@ namespace Player {
                 knockbackVector.x = -Mathf.Abs(knockbackVector.x);
             }
         }
-        #endregion
 
-        #region Timers
+        #region ---Timers---
         private void MinJumpCancel() {
             isJumping = false;
         }
@@ -307,5 +358,29 @@ namespace Player {
             if (_coyoteTimer != null) _coyoteTimer.Duration = coyoteTime;
         }
         #endregion
+
+        private bool TryGetLadder(out Ladder platform) {
+            debugLogger.Log("TryGetLadder");
+            var ladder = Physics2D.OverlapBox(transform.position.WithOffset(transform.localScale.y * 0.5f),
+                transform.localScale.Abs(), 0, whatIsLadder);
+
+            if (ladder == null) {
+                platform = null;
+                return false;
+            }
+
+            platform = ladder.GetComponentInChildren<Ladder>();
+
+            if (ladder != null && platform == null) {
+                throw new Exception(
+                    $"{nameof(Ladder)} was detected but with no {nameof(Ladder)} component were found on it!");
+            }
+
+            if (ladder != null && platform != null) {
+                debugLogger.Log("Ladder found");
+            }
+
+            return ladder;
+        }
     }
 }
