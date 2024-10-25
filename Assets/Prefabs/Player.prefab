@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6503705925884822905}
   - component: {fileID: 1175266118841304441}
   m_Layer: 7
-  m_Name: PhysicsPlayer
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,15 +154,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccff21e192f9e96428749b266d5fdbac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  isGrounded: 0
   lockToAxis: 0
+  inputVector: {x: 0, y: 0}
   isDucking: 0
   isHoldingDuck: 0
   isFacingRight: 1
+  isClimbing: 0
   smoothTime: 0.1
   maxSpeed: 10
+  whatIsLadder:
+    serializedVersion: 2
+    m_Bits: 512
+  climbSpeed: 2.15
   isDashing: 0
   canDash: 0
   dashTime: 0.25
