@@ -13,7 +13,7 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] private bool faceLeftOnStart;
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected float maxHealth;
-    [SerializeField] protected float currentHealth;
+    protected float currentHealth;
     [SerializeField] protected float weight;
     
     protected LayerMask EnemyAndGroundLayerMask;
@@ -28,7 +28,12 @@ public class EnemyBase :  GravityObject, IDamageable
         
         boxCollider = GetComponent<Collider2D>();
     }
-    
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     public void TakeDamage(DamageInstance damageInstance)
     {
         if (!isVulnerable) { return; }

@@ -11,7 +11,7 @@ public abstract class GravityObject : MonoBehaviour {
     protected Vector2 targetVelocity;
     protected Vector2 velocity;
     [GetOrAddComponent] protected Rigidbody2D rb2d;
-    protected float GravityModifier = 1f;
+    [SerializeField] protected float GravityModifier = 1f;
     protected Vector2 GroundNormal; //set this to Vector2.Right in child if you want to make projectiles
 
     private readonly RaycastHit2D[] _hitBuffer = new RaycastHit2D[16];
