@@ -154,15 +154,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccff21e192f9e96428749b266d5fdbac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  isGrounded: 0
   lockToAxis: 0
+  inputVector: {x: 0, y: 0}
   isDucking: 0
   isHoldingDuck: 0
   isFacingRight: 1
+  isClimbing: 0
   smoothTime: 0.1
   maxSpeed: 10
+  whatIsLadder:
+    serializedVersion: 2
+    m_Bits: 0
+  climbSpeed: 0
   isDashing: 0
   canDash: 0
   dashTime: 0.25
