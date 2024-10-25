@@ -2,10 +2,10 @@
 
 namespace Utilities.DataBinding {
     public interface IGameData : ICloneable {
-        public string Name { get; set; }
+        public string name { get; set; }
     }
 
-    public interface ISaveable : ICloneable {
-        string Id { get; set; }
+    public interface ISaveable {
+        string id { get; set; }
     }
 }

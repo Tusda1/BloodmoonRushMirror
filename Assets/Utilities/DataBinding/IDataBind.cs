@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Utilities.DataBinding {
+﻿namespace Utilities.DataBinding {
     public interface IDataBind {
         /// <summary>
         /// "LoadBindData" is done by the class implementing "IBind".
@@ -14,19 +12,9 @@ namespace Utilities.DataBinding {
         void SaveBindData();
     }
     
-    public interface IBind<TData> : IDataBind where TData : ISaveable {
-        public string Id { get; set; }
-        TData SaveSystemData { get; set; }
-        TData DataInGameData { get; }
-        
-        /// <summary>
-        /// "Bind" is called by the class implementing the interface; usually when created.
-        /// </summary>
-        void Bind(TData data);
-        
-        /// <summary>
-        /// "UnBind" is called by the class implementing the interface; usually when destroyed.
-        /// </summary>
-        void UnBind(TData data);
+    public interface IBind<TData> : IDataBind {
+        public string id { get; set; }
+        TData saveSystemData { get; set; }
+        TData dataInGameData { get; }
     }
 }

@@ -366,6 +366,7 @@ namespace Player {
                 }
                 else {
                     isGrounded = false;
+                    ForceExitDuck();
                     return true;
                 }
             }

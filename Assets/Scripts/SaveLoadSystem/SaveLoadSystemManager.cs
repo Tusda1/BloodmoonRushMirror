@@ -1,4 +1,6 @@
+using System.Collections;
 using SaveLoadSystem.Data;
+using UnityEngine;
 using Utilities.DataBinding;
 
 namespace SaveLoadSystem {
@@ -17,5 +19,17 @@ namespace SaveLoadSystem {
                 LoadSave(mostRecentSaveFile.Name);
             }
         }
+
+        private IEnumerator Start() {
+            yield return null;
+            
+            LoadAllDataBinds();
+        }
+
+        [ContextMenu("WriteToNewGameData()")]
+        public void WriteToNewGameDataCall() => WriteToNewGameData();
+
+        [ContextMenu("SaveToFile")]
+        public void SaveToFile() => SaveGame();
     }
 }

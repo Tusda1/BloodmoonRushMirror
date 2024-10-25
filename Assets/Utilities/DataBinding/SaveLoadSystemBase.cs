@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Attributes;
 using UnityEngine;
 
 namespace Utilities.DataBinding {
@@ -15,7 +14,7 @@ namespace Utilities.DataBinding {
         [Header("New Save Default Values")] [SerializeField]
         public GameDataScrubGeneric<TGameData> newGameData;
 
-        [Header("DebugLogger")] [SerializeField, Required]
+        [Header("DebugLogger")] [SerializeField, Attributes.Required]
         private DebugLoggerSO debugLogger;
 
         public readonly List<IDataBind> GameDataBinds = new();
@@ -30,19 +29,19 @@ namespace Utilities.DataBinding {
 
             var saveNumber = 0;
 
-            while (File.Exists(gameData.Name + saveNumber)) {
+            while (File.Exists(gameData.name + saveNumber)) {
                 saveNumber++;
             }
 
-            gameData.Name += saveNumber;
+            gameData.name += saveNumber;
 
-            debugLogger.Log($"Creating new game data with name '{gameData.Name}' with values from '{newGameData.gameData.Name}'");
+            debugLogger.Log($"Creating new game data with name '{gameData.name}' with values from '{newGameData.gameData.name}'");
         }
 
         /// <summary>
         /// Updates all dataBinds for the IGameData type of this SaveLoadSystem.
         /// </summary>
-        public virtual void UpdateAllDataBinds() {
+        public virtual void SaveAllDataBinds() {
             foreach (var dataBind in GameDataBinds) {
                 dataBind.SaveBindData();
 
@@ -54,20 +53,28 @@ namespace Utilities.DataBinding {
         /// Base "SaveGame" method calls "UpdateAllDataBinds"  and saves the "gameData" using the "DataService".
         /// </summary>
         public virtual void SaveGame() {
-            UpdateAllDataBinds();
+            debugLogger.Log($"Saving {typeof(TGameData)}");
+            
+            SaveAllDataBinds();
 
             DataService.Save(gameData);
-
-            debugLogger.Log($"Saving {typeof(TGameData)}");
         }
 
         /// <summary>
         /// Base "LoadSave" method loads a save using the "DataService" and sets "gameData" to that save.
         /// </summary>
         public virtual void LoadSave(string saveName) {
-            gameData = DataService.LoadByName(saveName);
-
             debugLogger.Log($"Loading {typeof(TGameData)} with name '{saveName}'");
+            
+            gameData = DataService.LoadByName(saveName);
+        }
+        
+        public virtual void LoadAllDataBinds() {
+            foreach (var dataBind in GameDataBinds) {
+                dataBind.LoadBindData();
+
+                debugLogger.Log("Loading DataBind");
+            }
         }
 
         /// <summary>
@@ -79,11 +86,10 @@ namespace Utilities.DataBinding {
             debugLogger.Log($"Deleting  {typeof(TGameData)} with name '{saveName}'");
         }
 
-        [ContextMenu("Write To New Save Default Values")]
         public void WriteToNewGameData() {
-            newGameData.gameData = (TGameData)gameData.Clone();
-
             debugLogger.Log($"Writing default {typeof(TGameData)} to {newGameData.name}");
+            
+            newGameData.gameData = (TGameData)gameData.Clone();
         }
 
         /// <summary>
@@ -93,8 +99,7 @@ namespace Utilities.DataBinding {
             var bind = FindObjectsByType<T>(FindObjectsSortMode.None).FirstOrDefault();
             if (bind == null) return;
 
-            GameDataBinds.Add(bind);
-            bind.Bind(data);
+            Bind(bind, data);
         }
 
         /// <summary>
@@ -103,13 +108,15 @@ namespace Utilities.DataBinding {
         public virtual void Bind<TBind, TData>(TBind bind, TData data)
             where TBind : MonoBehaviour, IBind<TData> where TData : ISaveable {
             GameDataBinds.Add(bind);
-            bind.Bind(data);
+            bind.saveSystemData = data;
+            debugLogger.Log($"{typeof(TBind)} object bind-ed to {typeof(TData)}");
         }
 
         public virtual void UnBind<TBind, TData>(TBind bind, TData data)
             where TBind : MonoBehaviour, IBind<TData> where TData : ISaveable {
             GameDataBinds.Remove(bind);
-            bind.UnBind(data);
+            bind.saveSystemData = default;
+            debugLogger.Log($"{typeof(TBind)} object un-bind-ed from {typeof(TData)}");
         }
     }
 }
