@@ -11,6 +11,7 @@ using UnityEngine.InputSystem;
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
         #region ---Fields---
+        [Header("Player Movement")]
         [SerializeField, ReadOnly] private Vector2 inputVector;
         public bool isDucking;
         public bool isHoldingDuck;
@@ -64,55 +65,20 @@ namespace Player {
         #endregion
 
         private new void Start() {
-            gravityModifier = gravityMultiplier;
+            GravityModifier = gravityMultiplier;
 
             InitializeTimers();
         }
         #endregion
 
         protected override void ComputeVelocity() {
-            if (inputVector.y != 0 && _ladder != null) {
-                isClimbing = true;
-                _ladder.LadderIsUsed = true;
-            }
+            if (!playerMovementEnabled) return;
+            
+            if (LadderLogic()) return;
 
-            if (isClimbing) {
-                targetVelocity = new Vector2(0, inputVector.y * climbSpeed);
-                if (_ladder != null) {
-                    var transformPosition = transform.position;
-                    transform.position = transformPosition.With(x: _ladder.triggerCollider.transform.position.x);
-                }
-
-                gravityModifier = 0;
-
-                if ((isGrounded && inputVector.y < 0) || isHoldingJump || isDashing || _notClimbing) {
-                    isClimbing = false;
-                    isGrounded = true;
-                    gravityModifier = gravityMultiplier;
-                    _ladder.LadderIsUsed = false;
-                    _ladder = null;
-                    _notClimbing = false;
-                }
-                else {
-                    return;
-                }
-            }
-
-            if (_wasGroundedLastFrame && !isJumping) {
-                _coyoteTimer.StartTimer();
-            }
-
-            if (isJumping) {
-                _coyoteTimer.StopTimer();
-            }
-
-            if (isGrounded == false) {
-                isGrounded = _coyoteTimer.TimerRunning;
-            }
+            CoyoteTimeLogic();
 
             var move = Vector2.zero;
-
-            if (!playerMovementEnabled) return;
 
             if (isKnockbacked) {
                 velocity.y = knockbackVector.y;
@@ -171,7 +137,7 @@ namespace Player {
                 else if (_smoothMovement.x < -0.01f) isFacingRight = false;
             }
 
-            if (Mathf.Abs(GetVelocity().x) < 0.01f) {
+            if (Mathf.Abs(velocity.x) < 0.01f) {
                 _smoothMovement.x = 0;
             }
 
@@ -245,9 +211,10 @@ namespace Player {
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D other) {
+        private void OnTriggerStay2D(Collider2D other) {
             if (!other.CompareTag("Ladder")) return;
 
+            _notClimbing = false;
             _ladder = other.GetComponentInChildren<Ladder>();
         }
 
@@ -255,6 +222,10 @@ namespace Player {
             if (!other.CompareTag("LadderShell")) return;
 
             _notClimbing = true;
+            if (_ladder != null) {
+                _ladder.LadderIsUsed = false;
+                _ladder = null;
+            }
         }
         #endregion
 
@@ -270,9 +241,11 @@ namespace Player {
 
             if (TryGetLadder(out _ladder)) {
                 transform.position = _ladder.ladderStartPosition.position;
-                targetVelocity = Vector2.zero;
                 isClimbing = true;
+                isGrounded = false;
+                _notClimbing = false;
                 _ladder.LadderIsUsed = true;
+                debugLogger.Log("Enter ladder from top");
 
                 return;
             }
@@ -359,12 +332,67 @@ namespace Player {
         }
         #endregion
 
+
+        private bool LadderLogic() {
+            if (inputVector.y > 0 && _ladder != null && !isClimbing) {
+                isClimbing = true;
+                _ladder.LadderIsUsed = true;
+                isGrounded = false;
+                _notClimbing = false;
+                debugLogger.Log("Enter ladder from bottom");
+            }
+
+            if (isClimbing) {
+                targetVelocity = new Vector2(0, inputVector.y * climbSpeed);
+                if (_ladder != null) {
+                    var transformPosition = transform.position;
+                    transform.position = transformPosition.With(x: _ladder.triggerCollider.transform.position.x);
+                }
+
+                GravityModifier = 0;
+
+                if ((isGrounded && inputVector.y < 0) || isHoldingJump || isDashing || _notClimbing) {
+                    debugLogger.Log(
+                        $"Exit Ladder | {isGrounded && inputVector.y < 0} || {isHoldingJump} || {isDashing} || {_notClimbing}");
+
+                    isClimbing = false;
+                    // isGrounded = true;
+                    GravityModifier = gravityMultiplier;
+                    if (_ladder != null) {
+                        _ladder.LadderIsUsed = false;
+                        _ladder = null;
+                    }
+                    _notClimbing = false;
+                }
+                else {
+                    isGrounded = false;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void CoyoteTimeLogic() {
+            if (_wasGroundedLastFrame && !isJumping) {
+                _coyoteTimer.StartTimer();
+            }
+
+            if (isJumping) {
+                _coyoteTimer.StopTimer();
+            }
+
+            if (isGrounded == false) {
+                isGrounded = _coyoteTimer.TimerRunning;
+            }
+        }
+
         private bool TryGetLadder(out Ladder platform) {
             debugLogger.Log("TryGetLadder");
             var ladder = Physics2D.OverlapBox(transform.position.WithOffset(transform.localScale.y * 0.5f),
                 transform.localScale.Abs(), 0, whatIsLadder);
 
-            if (ladder == null) {
+            if (ladder == null || ladder.CompareTag("Ladder")) {
                 platform = null;
                 return false;
             }
