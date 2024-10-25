@@ -3,13 +3,6 @@ using UnityEngine;
 
 public class PatrolEnemy : EnemyBase
 {
-    private new void Start()
-    {
-        base.Start();
-        
-        Initialize();
-    }
-    
     private new void Update()
     {
         base.Update();
