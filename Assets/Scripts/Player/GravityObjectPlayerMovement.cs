@@ -297,6 +297,7 @@ namespace Player {
         {
             gameObject.transform.position = _lastSpikePoint;
             ResetMovement(0);
+            isDashing = false;
         }
 
         #region ---Timers---
