@@ -162,7 +162,7 @@ namespace Player {
             healthComponent.TakeDamage(damageInstance.damage);
 
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
-            _animator.SetTrigger(AnimatorTakeDamageTrigger);
+            //_animator.SetTrigger(AnimatorTakeDamageTrigger);
         }
 
         #region ***---Death---***
