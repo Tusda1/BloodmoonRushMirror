@@ -43,7 +43,7 @@ namespace Player {
         #endregion
 
         [Header("Player Can Move")] [SerializeField, Attributes.Required]
-        private AllInFavourConsensus playerCanMove;
+        private AllInFavourConsensusSO playerCanMove;
 
         private bool playerMovementEnabled => playerCanMove.consensus;
         private readonly ScriptVotePair _isAliveVotePair = new();

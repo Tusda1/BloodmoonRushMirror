@@ -44,7 +44,7 @@ namespace Player {
         public int killCharges;
 
         [Header("Player Can Move")] [SerializeField, Required]
-        private AllInFavourConsensus playerCanMove;
+        private AllInFavourConsensusSO playerCanMove;
 
         private bool playerMovementEnabled => playerCanMove.consensus;
 

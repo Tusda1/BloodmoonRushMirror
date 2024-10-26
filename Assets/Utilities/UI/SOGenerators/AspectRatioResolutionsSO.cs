@@ -5,8 +5,8 @@ using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 namespace Utilities.UI.DisplaySettings {
-    [CreateAssetMenu(fileName = "AspectRatioResolutionsScrub", menuName = "Scrubs/SettingsMenu/AspectRatioResolutionsScrub")]
-    public class AspectRatioResolutionsScrub : ScriptableObject {
+    [CreateAssetMenu(fileName = "AspectRatioResolutions", menuName = "Scriptable Objects/SettingsMenu/Create AspectRatioResolutionsSO")]
+    public class AspectRatioResolutionsSO : ScriptableObject {
         [SerializeField] public SerializedDictionary<string, Vector2Int[]> aspectRatioResolutions = new() {
             {
                 "16:9", new Vector2Int[] {

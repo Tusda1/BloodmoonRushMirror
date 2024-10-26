@@ -19,7 +19,7 @@ namespace Utilities.DataBinding {
 
         public readonly List<IDataBind> GameDataBinds = new();
 
-        public IDataService<TGameData> DataService { get; protected set; }
+        public IDataService<TGameData> dataService { get; protected set; }
         
         /// <summary>
         /// Base "NewGame" method creates a new save with the "newGameData" as a base reference.
@@ -57,7 +57,7 @@ namespace Utilities.DataBinding {
             
             SaveAllDataBinds();
 
-            DataService.Save(gameData);
+            dataService.Save(gameData);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Utilities.DataBinding {
         public virtual void LoadSave(string saveName) {
             debugLogger.Log($"Loading {typeof(TGameData)} with name '{saveName}'");
             
-            gameData = DataService.LoadByName(saveName);
+            gameData = dataService.LoadByName(saveName);
         }
         
         public virtual void LoadAllDataBinds() {
@@ -81,7 +81,7 @@ namespace Utilities.DataBinding {
         /// Deletes a save by the given name.
         /// </summary>
         public void DeleteSave(string saveName) {
-            DataService.DeleteByName(saveName);
+            dataService.DeleteByName(saveName);
 
             debugLogger.Log($"Deleting  {typeof(TGameData)} with name '{saveName}'");
         }

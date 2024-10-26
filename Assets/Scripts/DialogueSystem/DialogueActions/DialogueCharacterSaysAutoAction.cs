@@ -12,7 +12,7 @@ namespace Unity.Behavior {
         category: "DialogueAction",
         id: "0466ecf5f83b7ef25e26fd10319bf1e2")]
     public class DialogueCharacterSaysAutoAction : Action {
-        [SerializeReference] public BlackboardVariable<DialogueCharacter> dialogueCharacterReference;
+        [SerializeReference] public BlackboardVariable<DialogueCharacterSO> dialogueCharacterReference;
         [SerializeReference] public BlackboardVariable<string> dialogue;
 
         [SerializeReference] public BlackboardVariable<Sprite> imagePortraitOverride;
@@ -21,7 +21,7 @@ namespace Unity.Behavior {
         [SerializeReference] public BlackboardVariable<Color> dialogueColorOverride;
         [SerializeReference] public BlackboardVariable<float> textSpeedOverride;
         [SerializeReference] public BlackboardVariable<bool> overwriteWhenIsSfxPlayed;
-        [SerializeReference] public BlackboardVariable<DialogueCharacter.WhenIsSfxPlayed> whenIsSfxPlayed;
+        [SerializeReference] public BlackboardVariable<DialogueCharacterSO.WhenIsSfxPlayed> whenIsSfxPlayed;
 
         private int _currentCharIndex;
         private float _timer;
@@ -30,13 +30,13 @@ namespace Unity.Behavior {
         private string _displayText;
         private DialogueUI dialogueUI => DialogueUI.Instance;
         private FmodManager fmodManager => FmodManager.Instance;
-        private DialogueCharacter dialogueCharacter => dialogueCharacterReference.Value;
-        private DialogueCharacter.WhenIsSfxPlayed _whenIsSfxPlayed;
+        private DialogueCharacterSO dialogueCharacterSO => dialogueCharacterReference.Value;
+        private DialogueCharacterSO.WhenIsSfxPlayed _whenIsSfxPlayed;
 
         protected override Status OnStart() {
             #region ---FailureConditions---
 
-            if (dialogueCharacter == null) {
+            if (dialogueCharacterSO == null) {
                 Debug.LogWarning("DialogueCharacter not set!");
                 return Status.Failure;
             }
@@ -49,28 +49,28 @@ namespace Unity.Behavior {
             #endregion
 
             dialogueUI.dialogueFont = dialogueFontOverride.Value == null
-                ? dialogueCharacter.dialogueFont
+                ? dialogueCharacterSO.dialogueFont
                 : dialogueFontOverride.Value;
             dialogueUI.imagePortrait = imagePortraitOverride.Value == null
-                ? dialogueCharacter.dialogueImage
+                ? dialogueCharacterSO.dialogueImage
                 : imagePortraitOverride.Value;
             dialogueUI.dialogueColor = dialogueColorOverride.Value == default
-                ? dialogueCharacter.dialogueColor
+                ? dialogueCharacterSO.dialogueColor
                 : dialogueColorOverride.Value;
-            dialogueUI.textSize = textSizeOverride.Value == 0 ? dialogueCharacter.textSize : textSizeOverride.Value;
+            dialogueUI.textSize = textSizeOverride.Value == 0 ? dialogueCharacterSO.textSize : textSizeOverride.Value;
             dialogueUI.dialogueText = "";
-            _timePerChar = 1f / (textSpeedOverride == 0 ? dialogueCharacter.textSpeed : textSpeedOverride.Value);
+            _timePerChar = 1f / (textSpeedOverride == 0 ? dialogueCharacterSO.textSpeed : textSpeedOverride.Value);
 
             _currentCharIndex = -1;
             _displayText = dialogue.Value;
 
-            _whenIsSfxPlayed = overwriteWhenIsSfxPlayed ? whenIsSfxPlayed.Value : dialogueCharacter.whenIsSfxPlayed;
+            _whenIsSfxPlayed = overwriteWhenIsSfxPlayed ? whenIsSfxPlayed.Value : dialogueCharacterSO.whenIsSfxPlayed;
 
-            if ((_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.InTheBeginning) !=
-                DialogueCharacter.WhenIsSfxPlayed.Nowhere ||
-                (_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.PerWord) !=
-                DialogueCharacter.WhenIsSfxPlayed.Nowhere) {
-                fmodManager.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
+            if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.InTheBeginning) !=
+                DialogueCharacterSO.WhenIsSfxPlayed.Nowhere ||
+                (_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerWord) !=
+                DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
+                fmodManager.PlayOneShot(dialogueCharacterSO.textAudioSoundEventPath);
             }
 
             return Status.Running;
@@ -86,9 +86,9 @@ namespace Unity.Behavior {
                 try {
                     if (char.IsWhiteSpace(_displayText[_currentCharIndex])) {
                         _currentCharIndex++;
-                        if ((_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.PerWord) !=
-                            DialogueCharacter.WhenIsSfxPlayed.Nowhere) {
-                            fmodManager.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
+                        if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerWord) !=
+                            DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
+                            fmodManager.PlayOneShot(dialogueCharacterSO.textAudioSoundEventPath);
                         }
                     }
                 }
@@ -99,9 +99,9 @@ namespace Unity.Behavior {
                 _currentCharIndex = Math.Clamp(_currentCharIndex, 0, _displayText.Length);
                 dialogueUI.dialogueText = _displayText[.._currentCharIndex];
 
-                if ((_whenIsSfxPlayed & DialogueCharacter.WhenIsSfxPlayed.PerCharacter) !=
-                    DialogueCharacter.WhenIsSfxPlayed.Nowhere) {
-                    fmodManager.PlayOneShot(dialogueCharacter.textAudioSoundEventPath);
+                if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerCharacter) !=
+                    DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
+                    fmodManager.PlayOneShot(dialogueCharacterSO.textAudioSoundEventPath);
                 }
 
                 if (_currentCharIndex >= _displayText.Length) {

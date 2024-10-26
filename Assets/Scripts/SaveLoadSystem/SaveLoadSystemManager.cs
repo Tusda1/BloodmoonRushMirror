@@ -11,7 +11,7 @@ namespace SaveLoadSystem {
         protected override void Awake() {
             base.Awake();
 
-            DataService = new FileDataService<SaveGameData>();
+            dataService = new FileDataService<SaveGameData>();
         }
 
         private IEnumerator Start() {
@@ -27,7 +27,7 @@ namespace SaveLoadSystem {
 
         [ContextMenu("Runtime/LoadMostRecentSaveFile()")]
         public void LoadMostRecentSaveFile() {
-            var mostRecentSaveFile = DataService.GetMostRecentSaveFile();
+            var mostRecentSaveFile = dataService.GetMostRecentSaveFile();
 
             if (mostRecentSaveFile == null) {
                 NewGame();
@@ -54,7 +54,6 @@ namespace SaveLoadSystem {
 
             LoadAllDataBinds();
         }
-        
 
         [ContextMenu("WriteToNewGameDataCall()")]
         public void WriteToNewGameDataCall() {
@@ -74,7 +73,7 @@ namespace SaveLoadSystem {
 #if UNITY_EDITOR
         private void SetDataBindsInEditor() {
             if (Application.isPlaying) return;
-            
+
             try {
                 var dataBinds = GetAllDataBindsEditMode().ToArray();
                 if (dataBinds.Length == 0) {
@@ -88,7 +87,7 @@ namespace SaveLoadSystem {
                 Debug.LogError($"Error while saving data binds: {ex.Message}");
             }
         }
-            
+
         private static IEnumerable<IDataBind> GetAllDataBindsEditMode() {
             var allDataBinds = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IDataBind>();
 
@@ -96,7 +95,7 @@ namespace SaveLoadSystem {
                 dataBind.Bind();
                 yield return dataBind;
             }
-        } 
+        }
 #endif
     }
 }

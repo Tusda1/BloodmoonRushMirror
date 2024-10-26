@@ -55,14 +55,14 @@ namespace SaveLoadSystem.Data {
     }
 
     public static class SaveGameDataExtensions {
-        public static T GetOrAddByIdInList<T>(this IList<T> saveGameDataList, string id, T item) where T : ISaveable, new() {
+        public static T GetOrAddByIdInList<T>(this IList<T> saveGameDataList, string id, T itemToAddIfDoesntExist) where T : ISaveable, new() {
             var data = saveGameDataList.FirstOrDefault(x => x.id == id);
 
             if (data != null) return data;
             
-            saveGameDataList.Add(item);
+            saveGameDataList.Add(itemToAddIfDoesntExist);
 
-            return item;
+            return itemToAddIfDoesntExist;
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
-[CustomEditor(typeof(DialogueCharacter))]
+[CustomEditor(typeof(DialogueCharacterSO))]
 public class DialogueCharacterCustomInspector : Editor {
     [FormerlySerializedAs("m_InspectorXML")] public VisualTreeAsset inspectorXML;
 
