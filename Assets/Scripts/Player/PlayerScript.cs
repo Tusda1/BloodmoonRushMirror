@@ -223,10 +223,8 @@ namespace Player {
         #endregion
         #endregion
 
-        public void GoToLastGroundedPosition() {
-            transform.position = lastGroundedPosition;
-            _playerMovement.ResetMovement(0);
-            debugLogger.Log("Go To Last Grounded Position");
+        public void HitSpike() {
+            _playerMovement.SpikeReset();
         }
 
         private Collider2D InteractCheck() {
@@ -238,12 +236,23 @@ namespace Player {
             saveLoadSystemManager.Bind(this, dataInGameData);
         }
         
+#if UNITY_EDITOR
+        private void OnValidate() {
+            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(id)) {
+                id = Guid.NewGuid().ToString();
+                Debug.Log($"Setting new guid for {nameof(PlayerScript)}");
+            }
+        }
+#endif
+        
+        [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
             healthComponent.Health = saveSystemData.health;
             playerLives = saveSystemData.lives;
             gems = saveSystemData.gems;
         }
 
+        [ContextMenu(nameof(SaveBindData))]
         public void SaveBindData() {
             saveSystemData.health = healthComponent.Health;
             saveSystemData.lives = playerLives;

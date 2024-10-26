@@ -37,17 +37,17 @@ public class #SCRIPTNAME# : MonoBehaviour, IBind<#SCRIPTNAME#Data> { //Change ty
     private void OnValidate() {
         if (gameObject.activeInHierarchy && string.IsNullOrEmpty(id)) {
             id = Guid.NewGuid().ToString();
-            Debug.Log($"Setting new guid for {nameof(TestEnemy)}");
+            Debug.Log($"Setting new guid for {nameof(#SCRIPTNAME#)}");
         }
     }
 #endif
 #NOTRIM#
-    [ContextMenu("LoadBindData()")]
+    [ContextMenu(nameof(LoadBindData))]
     public void LoadBindData() {
         // Get variables from 'saveSystemData' and set local variables
     }
 #NOTRIM#
-    [ContextMenu("SaveBindData()")]
+    [ContextMenu(nameof(SaveBindData))]
     public void SaveBindData() {
         // Set variables in 'saveSystemData' from local variables
     }

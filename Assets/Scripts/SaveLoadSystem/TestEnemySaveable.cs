@@ -50,7 +50,7 @@ public class TestEnemySaveable : MonoBehaviour, IBind<EnemyData> {
     }
 #endif
 
-    [ContextMenu("LoadBindData()")]
+    [ContextMenu(nameof(LoadBindData))]
     public void LoadBindData() {
         name = saveSystemData.name;
         isAlive = saveSystemData.isAlive;
@@ -59,7 +59,7 @@ public class TestEnemySaveable : MonoBehaviour, IBind<EnemyData> {
         transform.position = saveSystemData.position;
     }
 
-    [ContextMenu("SaveBindData()")]
+    [ContextMenu(nameof(SaveBindData))]
     public void SaveBindData() {
         saveSystemData.name = name;
         saveSystemData.isAlive = isAlive;

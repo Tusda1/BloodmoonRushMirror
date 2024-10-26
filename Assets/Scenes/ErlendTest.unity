@@ -361,12 +361,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3298925456892397176, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: <saveSystemData>k__BackingField.lives
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3298925456892397176, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: <saveSystemData>k__BackingField.health
-      value: 2
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3298925456892397176, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: <saveSystemData>k__BackingField.<id>k__BackingField
-      value: 123
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1632,6 +1636,10 @@ PrefabInstance:
       propertyPath: <id>k__BackingField
       value: 8fd39b4fdd7d9c79-ff39fda2a92db23f
       objectReference: {fileID: 0}
+    - target: {fileID: 2716387161386965624, guid: 58a18738661ad7c4a90e9969b5fa5de4, type: 3}
+      propertyPath: <saveSystemData>k__BackingField.<id>k__BackingField
+      value: 8fd39b4fdd7d9c79-ff39fda2a92db23f
+      objectReference: {fileID: 0}
     - target: {fileID: 3498597279493152290, guid: 58a18738661ad7c4a90e9969b5fa5de4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1674,7 +1682,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7685080436622495331, guid: 58a18738661ad7c4a90e9969b5fa5de4, type: 3}
       propertyPath: m_Name
-      value: TestSaveableEnemy
+      value: TestSaveableEnemy0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2120,11 +2128,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: 'gameData.enemies.Array.data[8]'
-      value: 74644252738715648
+      value: 74644252738715772
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: 'gameData.enemies.Array.data[9]'
-      value: 74644252738715771
+      value: 74644252738715772
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: 'gameData.enemies.Array.data[10]'
@@ -2319,6 +2327,10 @@ PrefabInstance:
       value: Assembly-CSharp SaveLoadSystem.Data.EnemyData
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
+      propertyPath: 'managedReferences[74644252738715772]'
+      value: Assembly-CSharp SaveLoadSystem.Data.EnemyData
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644246104637623].name
       value: TestSaveableEnemy (2)
       objectReference: {fileID: 0}
@@ -2352,15 +2364,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715648].name
-      value: TestSaveableEnemy (8)
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715770].name
-      value: TestSaveableEnemy
+      value: TestSaveableEnemy0
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715771].name
       value: TestSaveableEnemy (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
+      propertyPath: managedReferences[74644252738715772].name
+      value: TestSaveableEnemy (8)
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644246104637508].health
@@ -2520,7 +2536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715648].health
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715770].health
@@ -2528,6 +2544,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715771].health
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
+      propertyPath: managedReferences[74644252738715772].health
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
@@ -2688,7 +2708,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715648].isAlive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715770].isAlive
@@ -2697,6 +2717,10 @@ PrefabInstance:
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715771].isAlive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
+      propertyPath: managedReferences[74644252738715772].isAlive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644246104637508].position.x
@@ -3203,6 +3227,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
+      propertyPath: managedReferences[74644252738715772].position.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
+      propertyPath: managedReferences[74644252738715772].position.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
+      propertyPath: managedReferences[74644252738715772].position.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644246104637508].gemsContaining
       value: 0
       objectReference: {fileID: 0}
@@ -3360,7 +3396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715648].gemsContaining
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715770].gemsContaining
@@ -3369,6 +3405,10 @@ PrefabInstance:
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715771].gemsContaining
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
+      propertyPath: managedReferences[74644252738715772].gemsContaining
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644246104637507].<id>k__BackingField
@@ -3544,7 +3584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715648].<id>k__BackingField
-      value: 1619b85e11322493-36b40393b1ed0a63
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715770].<id>k__BackingField
@@ -3553,6 +3593,10 @@ PrefabInstance:
     - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: managedReferences[74644252738715771].<id>k__BackingField
       value: c1665f04dc11f494-f38010f5269c71ca
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980172968325913438, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
+      propertyPath: managedReferences[74644252738715772].<id>k__BackingField
+      value: 1619b85e11322493-36b40393b1ed0a63
       objectReference: {fileID: 0}
     - target: {fileID: 8858118747165755070, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: m_Name

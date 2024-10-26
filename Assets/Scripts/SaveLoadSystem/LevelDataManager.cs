@@ -37,16 +37,33 @@ public class LevelDataManager : Singleton<LevelDataManager>, IBind<LevelData> {
         base.Awake();
 
         debugLogger.messageOrigin = this;
-        saveLoadSystemManager.Bind(this, dataInGameData);
     }
+
+    private void Start() {
+        Bind();
+    }
+
+    #region ---DataBindingMethods---
     
     public void Bind() {
         saveLoadSystemManager.Bind(this, dataInGameData);
     }
 
+#if UNITY_EDITOR
+    private void OnValidate() {
+        if (gameObject.activeInHierarchy && string.IsNullOrEmpty(id)) {
+            id = Guid.NewGuid().ToString();
+            Debug.Log($"Setting new guid for {nameof(TestEnemySaveable)}");
+        }
+    }
+#endif
+
+    [ContextMenu(nameof(LoadBindData))]
     public void LoadBindData() {
     }
-
+    
+    [ContextMenu(nameof(SaveBindData))]
     public void SaveBindData() {
     }
+    #endregion
 }
