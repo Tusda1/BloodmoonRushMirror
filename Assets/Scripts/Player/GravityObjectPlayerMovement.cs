@@ -61,15 +61,16 @@ namespace Player {
                 }
                 i++;
             }
-            RaycastHit2D hit = Physics2D.Raycast(quantizedPosition, Vector2.down, .4f);
+            RaycastHit2D hit = Physics2D.Raycast(quantizedPosition, Vector2.down, .5f);
             if (hit.collider != null && !hit.collider.CompareTag("Hazard") && hit.collider.CompareTag("Ground"))
             {
-                hit = Physics2D.Raycast(quantizedPosition, Vector2.right, .4f);
-                if (!hit.collider.CompareTag("Hazard"))
-                {
-                    hit = Physics2D.Raycast(quantizedPosition, Vector2.left, .4f);
-                    if (!hit.collider.CompareTag("Hazard")) return true;
-                }
+                return true;
+                //hit = Physics2D.Raycast(quantizedPosition, Vector2.right, 1f);
+                //if (!hit.collider.CompareTag("Hazard"))
+                //{
+                //hit = Physics2D.Raycast(quantizedPosition, Vector2.left, 1f);
+                //if (!hit.collider.CompareTag("Hazard")) return true;
+                //}
             }
             return false;
         }
