@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +18,14 @@ namespace SaveLoadSystem.Data {
 
         public object Clone() => DeepClone(this);
 
+        private IList CloneListByType(IList sourceList, Type targetType) {
+            var clonedList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(targetType));
+            foreach (var item in sourceList) {
+                clonedList.Add(DeepClone((ISaveable)item));
+            }
+            return clonedList;
+        }
+
         public object DeepClone(object obj) {
             if (obj == null) return null;
 
@@ -34,13 +43,9 @@ namespace SaveLoadSystem.Data {
                     case ISaveable cloneable:
                         clonedValue = DeepClone(cloneable);
                         break;
-                    case IEnumerable<ISaveable> cloneableCollection:
-                        var clonedList = Activator.CreateInstance(value.GetType()) as IList<ISaveable>;
-                        foreach (var item in cloneableCollection) {
-                            clonedList?.Add((ISaveable)DeepClone(item));
-                        }
-
-                        clonedValue = clonedList;
+                    case IList cloneableList when fieldInfo.FieldType.IsGenericType:
+                        var targetType = fieldInfo.FieldType.GetGenericArguments()[0];
+                        clonedValue = CloneListByType(cloneableList, targetType);
                         break;
                     default:
                         clonedValue = value;
@@ -55,11 +60,12 @@ namespace SaveLoadSystem.Data {
     }
 
     public static class SaveGameDataExtensions {
-        public static T GetOrAddByIdInList<T>(this IList<T> saveGameDataList, string id, T itemToAddIfDoesntExist) where T : ISaveable, new() {
+        public static T GetOrAddByIdInList<T>(this IList<T> saveGameDataList, string id, T itemToAddIfDoesntExist)
+            where T : ISaveable, new() {
             var data = saveGameDataList.FirstOrDefault(x => x.id == id);
 
             if (data != null) return data;
-            
+
             saveGameDataList.Add(itemToAddIfDoesntExist);
 
             return itemToAddIfDoesntExist;

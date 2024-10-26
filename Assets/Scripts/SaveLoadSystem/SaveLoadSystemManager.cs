@@ -20,12 +20,12 @@ namespace SaveLoadSystem {
             LoadAllDataBinds();
         }
 
-        [ContextMenu("Runtime/SaveToFile()")]
+        [ContextMenu("Runtime/" + nameof(SaveToFile))]
         public void SaveToFile() {
             SaveGame();
         }
 
-        [ContextMenu("Runtime/LoadMostRecentSaveFile()")]
+        [ContextMenu("Runtime/" + nameof(LoadMostRecentSaveFile))]
         public void LoadMostRecentSaveFile() {
             var mostRecentSaveFile = dataService.GetMostRecentSaveFile();
 
@@ -37,7 +37,7 @@ namespace SaveLoadSystem {
             }
         }
 
-        [ContextMenu("SaveAllDataBinds()")]
+        [ContextMenu(nameof(SaveBindings))]
         public void SaveBindings() {
 #if UNITY_EDITOR
             SetDataBindsInEditor();
@@ -46,7 +46,7 @@ namespace SaveLoadSystem {
             SaveAllDataBinds();
         }
 
-        [ContextMenu("LoadAllDataBinds()")]
+        [ContextMenu(nameof(LoadDataBinds))]
         public void LoadDataBinds() {
 #if UNITY_EDITOR
             SetDataBindsInEditor();
@@ -55,17 +55,17 @@ namespace SaveLoadSystem {
             LoadAllDataBinds();
         }
 
-        [ContextMenu("WriteToNewGameDataCall()")]
+        [ContextMenu(nameof(WriteToNewGameDataCall))]
         public void WriteToNewGameDataCall() {
             WriteToNewGameData();
         }
 
-        [ContextMenu("LoadFromNewGameDataCall()")]
+        [ContextMenu(nameof(LoadFromNewGameDataCall))]
         public void LoadFromNewGameDataCall() {
             gameData = (SaveGameData)newGameData.gameData.Clone();
         }
 
-        [ContextMenu("ResetGameData()")]
+        [ContextMenu(nameof(ResetGameData))]
         public void ResetGameData() {
             gameData = new SaveGameData();
         }
