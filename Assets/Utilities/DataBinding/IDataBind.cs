@@ -10,6 +10,12 @@
         /// Implementation needs to add themselves to the "GameDataBinds" list in the SaveLoadSystem to be updated.
         /// </summary>
         void SaveBindData();
+
+        /// <summary>
+        /// This example should be the implementation
+        /// </summary>
+        /// <code>saveLoadSystemManager.Bind(this, dataInGameData);</code>
+        void Bind();
     }
     
     public interface IBind<TData> : IDataBind {

@@ -16,10 +16,12 @@ public class TestEnemy : MonoBehaviour, IBind<EnemyData> {
 
     #region ***---DataBindingVariables---***
     [field: Header("Data Binding")]
-    [field: SerializeField] public string id { get; set; } = Guid.NewGuid().ToString();
+    [field: SerializeField]
+    public string id { get; set; }
 
     [field: SerializeField] public EnemyData saveSystemData { get; set; }
-    public EnemyData dataInGameData => saveLoadSystemManager.gameData.enemies.GetOrAddByIdInList(id, new EnemyData() {
+
+    public EnemyData dataInGameData => saveLoadSystemManager.gameData.enemies.GetOrAddByIdInList(id, new EnemyData {
         id = id,
         health = health,
         gemsContaining = gemsContaining,
@@ -29,18 +31,36 @@ public class TestEnemy : MonoBehaviour, IBind<EnemyData> {
     #endregion
 
     private void Start() {
+        Bind();
+    }
+
+    public void Bind() {
         saveLoadSystemManager.Bind(this, dataInGameData);
     }
 
+#if UNITY_EDITOR
+    private void OnValidate() {
+        if (!gameObject.activeInHierarchy) {
+            return;
+        }
+        
+        if (string.IsNullOrEmpty(saveSystemData.id)) {
+            id = Guid.NewGuid().ToString();
+        }
+    }
+#endif
+
     public void LoadBindData() {
-        isAlive = dataInGameData.isAlive;
-        health = dataInGameData.health;
-        gemsContaining = dataInGameData.gemsContaining;
+        isAlive = saveSystemData.isAlive;
+        health = saveSystemData.health;
+        gemsContaining = saveSystemData.gemsContaining;
+        transform.position = saveSystemData.position;
     }
 
     public void SaveBindData() {
-        dataInGameData.isAlive = isAlive;
-        dataInGameData.health = health;
-        dataInGameData.gemsContaining = gemsContaining;
+        saveSystemData.isAlive = isAlive;
+        saveSystemData.health = health;
+        saveSystemData.gemsContaining = gemsContaining;
+        saveSystemData.position = transform.position;
     }
 }

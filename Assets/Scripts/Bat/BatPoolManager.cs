@@ -6,7 +6,7 @@ namespace Bat {
     public class BatPoolManager : Singleton<BatPoolManager> {
         public int initialBatPoolSize;
         [SerializeField] private Transform batParentTransform;
-        [AssetPreviewIcon(80,80)] public GameObject batPrefab;
+        [AssetPreviewIcon(80, 80)] public GameObject batPrefab;
 
         public ObjectPool<Bat> Pool;
 
@@ -14,10 +14,6 @@ namespace Bat {
             base.Awake();
 
             CreateBatPool();
-        }
-
-        private void OnDestroy() {
-            Pool?.Clear();
         }
 
         private void CreateBatPool() {

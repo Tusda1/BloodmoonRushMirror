@@ -39,6 +39,10 @@ public class LevelDataManager : Singleton<LevelDataManager>, IBind<LevelData> {
         debugLogger.messageOrigin = this;
         saveLoadSystemManager.Bind(this, dataInGameData);
     }
+    
+    public void Bind() {
+        saveLoadSystemManager.Bind(this, dataInGameData);
+    }
 
     public void LoadBindData() {
     }

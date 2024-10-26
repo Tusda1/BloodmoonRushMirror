@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 902220977972190868}
-  - component: {fileID: 898121571785710857}
+  - component: {fileID: 5980172968325913438}
   m_Layer: 0
   m_Name: SaveLoadSystemManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &898121571785710857
+--- !u!114 &5980172968325913438
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,11 +45,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameData:
-    <Name>k__BackingField: 
+    <name>k__BackingField: 
     playerData:
-      position: {x: 0, y: 0, z: 0}
+      <id>k__BackingField: 
       health: 0
-      gems: 0
       lives: 0
-  newGameData: {fileID: 11400000, guid: 2252c8bddc0e1e74290853adc1d3a73f, type: 2}
+      gems: 0
+    levelData: []
+    enemies: []
+  newGameData: {fileID: 0}
   debugLogger: {fileID: 11400000, guid: 29444be234bdeae46bfa86fc3a1c3c62, type: 2}
+  references:
+    version: 2
+    RefIds: []

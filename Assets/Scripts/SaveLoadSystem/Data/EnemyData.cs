@@ -8,6 +8,7 @@ namespace SaveLoadSystem.Data {
         public bool isAlive;
         public int health;
         public int gemsContaining;
+        public Vector3 position;
         
         public object Clone() {
             var clonedGameData = (EnemyData)MemberwiseClone();

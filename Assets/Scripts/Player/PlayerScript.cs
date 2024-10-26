@@ -86,7 +86,7 @@ namespace Player {
         }
 
         private void Start() {
-            saveLoadSystemManager.Bind(this, dataInGameData);
+            Bind();
 
             healthComponent.OnDeath += () => StartCoroutine(Die());
         }
@@ -234,6 +234,10 @@ namespace Player {
         }
 
         #region ---DataBindingMethods---
+        public void Bind() {
+            saveLoadSystemManager.Bind(this, dataInGameData);
+        }
+        
         public void LoadBindData() {
             healthComponent.Health = saveSystemData.health;
             playerLives = saveSystemData.lives;

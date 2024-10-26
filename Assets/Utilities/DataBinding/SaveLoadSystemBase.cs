@@ -15,12 +15,12 @@ namespace Utilities.DataBinding {
         public GameDataScrubGeneric<TGameData> newGameData;
 
         [Header("DebugLogger")] [SerializeField, Attributes.Required]
-        private DebugLoggerSO debugLogger;
+        protected DebugLoggerSO debugLogger;
 
         public readonly List<IDataBind> GameDataBinds = new();
 
         public IDataService<TGameData> DataService { get; protected set; }
-
+        
         /// <summary>
         /// Base "NewGame" method creates a new save with the "newGameData" as a base reference.
         /// </summary>
@@ -96,6 +96,8 @@ namespace Utilities.DataBinding {
         /// Binds "TBind" to the "TData". Finds the first object of the "TBind" type.
         /// </summary>
         public virtual void Bind<T, TData>(TData data) where T : MonoBehaviour, IBind<TData> where TData : ISaveable {
+            Debug.Log("Binding data parameter 1");
+            
             var bind = FindObjectsByType<T>(FindObjectsSortMode.None).FirstOrDefault();
             if (bind == null) return;
 
@@ -106,15 +108,26 @@ namespace Utilities.DataBinding {
         /// Binds "TBind" to the "TData". "TBind" object is given explicitly.
         /// </summary>
         public virtual void Bind<TBind, TData>(TBind bind, TData data)
-            where TBind : MonoBehaviour, IBind<TData> where TData : ISaveable {
-            GameDataBinds.Add(bind);
+            where TBind : IBind<TData> where TData : ISaveable {
+            debugLogger.Log("Binding data parameter 2");
+            
+            if (bind == null || data == null) {
+                debugLogger.LogError("Bind or data is null. Binding operation aborted.");
+                return;
+            }
+            
+            if (!GameDataBinds.Contains(bind)) {
+                GameDataBinds.Add(bind);
+            }
             bind.saveSystemData = data;
             debugLogger.Log($"{typeof(TBind)} object bind-ed to {typeof(TData)}");
         }
 
         public virtual void UnBind<TBind, TData>(TBind bind, TData data)
             where TBind : MonoBehaviour, IBind<TData> where TData : ISaveable {
-            GameDataBinds.Remove(bind);
+            if (GameDataBinds.Contains(bind)) {
+                GameDataBinds.Remove(bind);
+            }
             bind.saveSystemData = default;
             debugLogger.Log($"{typeof(TBind)} object un-bind-ed from {typeof(TData)}");
         }
