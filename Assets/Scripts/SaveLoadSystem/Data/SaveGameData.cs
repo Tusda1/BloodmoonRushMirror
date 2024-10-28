@@ -9,11 +9,11 @@ namespace SaveLoadSystem.Data {
     [Serializable] public class SaveGameData : IGameData {
         [field: SerializeField] public string name { get; set; }
 
-        [SerializeField] public PlayerData playerData;
+        [SerializeField] public PlayerData playerData = new();
 
-        [SerializeReference] public List<LevelData> levelData = new();
+        [SerializeReference] public List<LevelData> levelDatas = new();
 
-        [SerializeReference] public List<EnemyData> enemies = new();
+        [SerializeReference] public List<EnemyData> enemyDatas = new();
 
         public object Clone() => this.DeepClone();
     }

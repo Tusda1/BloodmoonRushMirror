@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 1338600803970277736}
   - component: {fileID: 6511151725682864079}
   - component: {fileID: 4449985280780462753}
-  m_Layer: 0
+  - component: {fileID: -6020004002196398610}
+  m_Layer: 8
   m_Name: Bat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4709506457550710183}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.06610881, y: -0.9092865, z: -0.045493346}
+  m_LocalPosition: {x: 100000000, y: 100000000, z: 100000000}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55,8 +56,8 @@ MonoBehaviour:
   health: 1
   attackDamageInstance:
     damage: 1
-    knockbackStrength: {x: 0, y: 0}
-    damageDirection: {x: 0, y: 0}
+    knockback: {x: 0, y: 0}
+    knockbackStrength: 0
     staggerStrength: 0
   takeDamageSfx: Misc/Generic_impact
   batSpawner: {fileID: 0}
@@ -168,9 +169,36 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.85
+--- !u!50 &-6020004002196398610
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4709506457550710183}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
