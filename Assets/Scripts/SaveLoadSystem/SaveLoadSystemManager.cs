@@ -11,7 +11,7 @@ namespace SaveLoadSystem {
         protected override void Awake() {
             base.Awake();
 
-            dataService = new FileDataService<SaveGameData>();
+            DataService = new FileDataService<SaveGameData>();
         }
 
         private IEnumerator Start() {
@@ -27,7 +27,7 @@ namespace SaveLoadSystem {
 
         [ContextMenu("Runtime/" + nameof(LoadMostRecentSaveFile))]
         public void LoadMostRecentSaveFile() {
-            var mostRecentSaveFile = dataService.GetMostRecentSaveFile();
+            var mostRecentSaveFile = DataService.GetMostRecentSaveFile();
 
             if (mostRecentSaveFile == null) {
                 NewGame();

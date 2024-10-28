@@ -4,11 +4,6 @@ using Utilities.DataBinding;
 #NOTRIM#
 namespace SaveLoadSystem.Data {
     [Serializable] public class #SCRIPTNAME# : ISaveable {
-        public string Id { get; set; }
-        #NOTRIM#
-        public object Clone() {
-            var clonedGameData = (#SCRIPTNAME#)MemberwiseClone();
-            return clonedGameData;
-        }
+        [field: SerializeField] public string ID { get; set; }
     }
 }

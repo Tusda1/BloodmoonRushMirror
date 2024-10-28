@@ -7,13 +7,13 @@ using Utilities.DataBinding;
 
 namespace SaveLoadSystem.Data {
     [Serializable] public class SaveGameData : IGameData {
-        [field: SerializeField] public string name { get; set; }
+        [field: SerializeField] public string Name { get; set; }
 
-        [SerializeField] public PlayerData playerData;
+        [SerializeField] public PlayerData playerData = new();
 
-        [SerializeReference] public List<LevelData> levelData = new();
+        [SerializeReference] public List<LevelData> levelDatas = new();
 
-        [SerializeReference] public List<EnemyData> enemies = new();
+        [SerializeReference] public List<EnemyData> enemyDatas = new();
 
         public object Clone() => this.DeepClone();
     }
@@ -21,7 +21,7 @@ namespace SaveLoadSystem.Data {
     public static class SaveGameDataExtensions {
         public static T GetOrAddByIdInList<T>(this IList<T> saveGameDataList, string id, T itemToAddIfDoesntExist)
             where T : ISaveable, new() {
-            var data = saveGameDataList.FirstOrDefault(x => x.id == id);
+            var data = saveGameDataList.FirstOrDefault(x => x.ID == id);
 
             if (data != null) return data;
 

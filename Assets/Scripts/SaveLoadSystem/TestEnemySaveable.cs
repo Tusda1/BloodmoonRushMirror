@@ -4,68 +4,71 @@ using SaveLoadSystem.Data;
 using UnityEngine;
 using Utilities.DataBinding;
 
-public class TestEnemySaveable : MonoBehaviour, IBind<EnemyData> {
-    #region ---Fields---
-    [SerializeField] private int health = 3;
-    [SerializeField] private bool isAlive = true;
-    [SerializeField] private int gemsContaining = 5;
+namespace Enemies {
+    public class TestEnemySaveable : MonoBehaviour, IBind<EnemyData> {
+        #region ---Fields---
+        [SerializeField] private int health = 3;
+        [SerializeField] private bool isAlive = true;
+        [SerializeField] private int gemsContaining = 5;
 
-    #region ***---GameManagers---***
-    private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
-    #endregion
+        #region ***---GameManagers---***
+        private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
+        #endregion
 
-    #region ***---DataBindingVariables---***
-    [field: Header("Data Binding")]
-    [field: SerializeField]
-    public string id { get; set; }
+        #region ***---DataBindingVariables---***
+        [field: Header("Data Binding")]
+        [field: SerializeField]
+        public string ID { get; set; }
 
-    [field: SerializeField] public EnemyData saveSystemData { get; set; }
+        [field: SerializeField] public EnemyData SaveSystemData { get; set; }
 
-    public EnemyData dataInGameData => SaveLoadSystemManager.gameData.enemies.GetOrAddByIdInList(id, new EnemyData {
-        id = id,
-        health = health,
-        gemsContaining = gemsContaining,
-        isAlive = isAlive
-    });
-    #endregion
-    #endregion
+        public EnemyData DataInGameData => SaveLoadSystemManager.gameData.enemyDatas.GetOrAddByIdInList(ID,
+            new EnemyData {
+                ID = ID,
+                health = health,
+                gemsContaining = gemsContaining,
+                isAlive = isAlive
+            });
+        #endregion
+        #endregion
 
-    #region ---EventFunctions---
-    private void Start() {
-        Bind();
-    }
-    #endregion
+        #region ---EventFunctions---
+        private void Start() {
+            Bind();
+        }
+        #endregion
 
-    #region ---DataBindingMethods---
-    public void Bind() {
-        SaveLoadSystemManager.Bind(this, dataInGameData);
-    }
+        #region ---DataBindingMethods---
+        public void Bind() {
+            SaveLoadSystemManager.Bind(this, DataInGameData);
+        }
 
 #if UNITY_EDITOR
-    private void OnValidate() {
-        if (gameObject.activeInHierarchy && string.IsNullOrEmpty(id)) {
-            id = Guid.NewGuid().ToString();
-            Debug.Log($"Setting new guid for {nameof(TestEnemySaveable)}");
+        private void OnValidate() {
+            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
+                ID = Guid.NewGuid().ToString();
+                Debug.Log($"Setting new guid for {nameof(TestEnemySaveable)}");
+            }
         }
-    }
 #endif
 
-    [ContextMenu(nameof(LoadBindData))]
-    public void LoadBindData() {
-        name = saveSystemData.name;
-        isAlive = saveSystemData.isAlive;
-        health = saveSystemData.health;
-        gemsContaining = saveSystemData.gemsContaining;
-        transform.position = saveSystemData.position;
-    }
+        [ContextMenu(nameof(LoadBindData))]
+        public void LoadBindData() {
+            name = SaveSystemData.name;
+            isAlive = SaveSystemData.isAlive;
+            health = SaveSystemData.health;
+            gemsContaining = SaveSystemData.gemsContaining;
+            transform.position = SaveSystemData.position;
+        }
 
-    [ContextMenu(nameof(SaveBindData))]
-    public void SaveBindData() {
-        saveSystemData.name = name;
-        saveSystemData.isAlive = isAlive;
-        saveSystemData.health = health;
-        saveSystemData.gemsContaining = gemsContaining;
-        saveSystemData.position = transform.position;
+        [ContextMenu(nameof(SaveBindData))]
+        public void SaveBindData() {
+            SaveSystemData.name = name;
+            SaveSystemData.isAlive = isAlive;
+            SaveSystemData.health = health;
+            SaveSystemData.gemsContaining = gemsContaining;
+            SaveSystemData.position = transform.position;
+        }
+        #endregion
     }
-    #endregion
 }

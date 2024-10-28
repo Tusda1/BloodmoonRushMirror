@@ -1,4 +1,4 @@
-using Fmod;
+using FMODScripts;
 using Player;
 using UnityEngine;
 
@@ -6,6 +6,8 @@ public class CheckpointData : MonoBehaviour {
     private PlayerScript _playerScript;
     private Vector2 _playerRespawnPos;
     [HideInInspector] public CombatCheckpoint[] combatCheckpoints;
+    
+    private static FMODManager FMODManager => FMODManager.Instance;
 
     public void Initialize() {
         _playerScript = ServiceLocator.Get<PlayerScript>();
@@ -23,7 +25,7 @@ public class CheckpointData : MonoBehaviour {
     }
 
     private void Respawn() {
-        FmodManager.Instance.PlayOneShot("event:/Sfx/Player/SpawnPlayer");
+        FMODManager.PlaySfx("Player/SpawnPlayer");
         _playerScript.gameObject.transform.position = _playerRespawnPos;
     }
 }

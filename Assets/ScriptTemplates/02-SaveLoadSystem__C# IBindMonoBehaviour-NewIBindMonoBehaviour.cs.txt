@@ -4,21 +4,24 @@ using SaveLoadSystem.Data;
 using UnityEngine;
 using Utilities.DataBinding;
 #NOTRIM#
-public class #SCRIPTNAME# : MonoBehaviour, IBind<#SCRIPTNAME#Data> { //Change type to be of a type implementing ISaveable. Script template available "SaveLoadSystem/C# NewGameData"
+#ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# : MonoBehaviour, IBind<#SCRIPTNAME#Data> { 
+// Change type to be of a type implementing ISaveable. 
+// Script template for GameData available "SaveLoadSystem/C# NewGameData"
     #region ---Fields---
-#NOTRIM#
     #region ***---GameManagers---***
     private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
     #endregion
 #NOTRIM#
     #region ***---DataBindingVariables---***
     [field: Header("Data Binding")]
-    [field: SerializeField]
-    public string id { get; set; }
+    [field: SerializeField] public string id { get; set; }
 #NOTRIM#
-    [field: SerializeField] public #SCRIPTNAME#Data saveSystemData { get; set; }
+    [field: SerializeField] public #SCRIPTNAME#Data SaveSystemData { get; set; }
 #NOTRIM#
-    public #SCRIPTNAME#Data dataInGameData => SaveLoadSystemManager.gameData // Set in where in the gameData the data for this monoBehaviour should be stored 
+    public #SCRIPTNAME#Data DataInGameData => SaveLoadSystemManager.gameData.levelData.GetOrAddByIdInList(id, new #SCRIPTNAME#Data {
+        id = id
+    });
     #endregion
     #endregion
 #NOTRIM#
@@ -30,7 +33,7 @@ public class #SCRIPTNAME# : MonoBehaviour, IBind<#SCRIPTNAME#Data> { //Change ty
 #NOTRIM#
     #region ---DataBindingMethods---
     public void Bind() {
-        SaveLoadSystemManager.Bind(this, dataInGameData);
+        SaveLoadSystemManager.Bind(this, DataInGameData);
     }
 #NOTRIM#
 #if UNITY_EDITOR
@@ -44,12 +47,13 @@ public class #SCRIPTNAME# : MonoBehaviour, IBind<#SCRIPTNAME#Data> { //Change ty
 #NOTRIM#
     [ContextMenu(nameof(LoadBindData))]
     public void LoadBindData() {
-        // Get variables from 'saveSystemData' and set local variables
+        // Get variables from 'SaveSystemData' and set local variables
     }
 #NOTRIM#
     [ContextMenu(nameof(SaveBindData))]
     public void SaveBindData() {
-        // Set variables in 'saveSystemData' from local variables
+        // Set variables in 'SaveSystemData' from local variables
     }
     #endregion
 }
+#ROOTNAMESPACEEND#

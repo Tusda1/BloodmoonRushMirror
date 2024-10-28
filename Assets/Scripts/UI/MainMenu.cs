@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Fmod;
+using FMODScripts;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
@@ -30,11 +30,11 @@ namespace UI {
         private List<Tab> _tabs;
         private int _tabIndex;
         
-        private FmodManager fmodManager => FmodManager.Instance;
+        private static FMODManager FMODManager => FMODManager.Instance;
 
         private void Awake() {
-            fmodManager.SetParameterValue("levelMusicProgression", 0);
-            fmodManager.PlayMusic("event:/Music/Music_level1");
+            FMODManager.SetParameterValue("levelMusicProgression", 0);
+            FMODManager.PlayMusic("event:/Music/Music_level1");
             
             _rootElement = uiDocument.rootVisualElement;
 

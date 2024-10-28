@@ -1,17 +1,19 @@
 using System;
-using Fmod;
+using FMODScripts;
 using UnityEngine;
 
 public class CombatCheckpoint : MonoBehaviour
 {
     public event Action CheckpointReached; 
     
+    private static FMODManager FMODManager => FMODManager.Instance;
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             CheckpointReached?.Invoke();
-            FmodManager.Instance.PlayOneShot("event:/Sfx/Misc/Checkpoint_reached");
+            FMODManager.PlaySfx("Misc/Checkpoint_reached");
             gameObject.SetActive(false);
         }
     }

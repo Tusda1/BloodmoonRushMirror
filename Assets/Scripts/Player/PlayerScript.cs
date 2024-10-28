@@ -3,7 +3,7 @@ using System.Collections;
 using Attributes;
 using Consensus;
 using ExtensionMethods;
-using Fmod;
+using FMODScripts;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using TetraCreations.Attributes;
@@ -45,7 +45,7 @@ namespace Player {
         [Header("Player Can Move")] [SerializeField, Attributes.Required]
         private AllInFavourConsensusSO playerCanMove;
 
-        private bool playerMovementEnabled => playerCanMove.consensus;
+        private bool PlayerMovementEnabled => playerCanMove.consensus;
         private readonly ScriptVotePair _isAliveVotePair = new();
 
         [Header("Debug Logger"), SerializeField, Attributes.Required]
@@ -61,9 +61,9 @@ namespace Player {
         #endregion
 
         #region ***---GameManagers---***
-        private static FmodManager fmodManager => FmodManager.Instance;
-        private static PauseMenu pauseMenu => PauseMenu.Instance;
-        private static SaveLoadSystemManager saveLoadSystemManager => SaveLoadSystemManager.Instance;
+        private static FMODManager FMODManager => FMODManager.Instance;
+        private static PauseMenu PauseMenu => PauseMenu.Instance;
+        private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
         #endregion
 
         private ScriptVotePair _playerCanMoveVotePair;
@@ -72,10 +72,10 @@ namespace Player {
 
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
-        [field: SerializeField] public string id { get; set; } = Guid.NewGuid().ToString();
+        [field: SerializeField] public string ID { get; set; } = Guid.NewGuid().ToString();
 
-        [field: SerializeField] public PlayerData saveSystemData { get; set; }
-        public PlayerData dataInGameData => SaveLoadSystemManager.Instance.gameData.playerData;
+        [field: SerializeField] public PlayerData SaveSystemData { get; set; }
+        public PlayerData DataInGameData => SaveLoadSystemManager.Instance.gameData.playerData;
         #endregion
         #endregion
 
@@ -99,11 +99,11 @@ namespace Player {
         public void OnPause(InputAction.CallbackContext context) {
             if (!context.performed) return;
 
-            pauseMenu.PauseToggle();
+            PauseMenu.PauseToggle();
         }
 
         public void OnInteract(InputAction.CallbackContext context) {
-            if (!context.performed || !playerMovementEnabled) return;
+            if (!context.performed || !PlayerMovementEnabled) return;
 
             var interactable = InteractCheck();
             if (interactable == null) return;
@@ -115,7 +115,7 @@ namespace Player {
         }
 
         public void OnAttack(InputAction.CallbackContext context) {
-            if (!context.performed || !_canAttack || !playerMovementEnabled) return;
+            if (!context.performed || !_canAttack || !PlayerMovementEnabled) return;
 
             if (_playerMovement.isDucking) {
                 CrouchAttack();
@@ -133,7 +133,7 @@ namespace Player {
             debugLogger.Log("Attack");
 
             _animator.SetBool(AnimatorIsAttackingBool, true);
-            fmodManager.PlaySfx("Player/Player_slash");
+            FMODManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
         }
@@ -143,7 +143,7 @@ namespace Player {
             debugLogger.Log("CrouchAttack");
 
             _animator.SetBool(AnimatorIsCrouchAttackingBool, true);
-            fmodManager.PlaySfx("Player/Player_slash");
+            FMODManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
         }
@@ -169,8 +169,8 @@ namespace Player {
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             _animator.SetBool(AnimatorIsDeadBool, true);
-            fmodManager.StopAllSound();
-            fmodManager.PlaySfx("Player/Player_death");
+            FMODManager.StopAllSound();
+            FMODManager.PlaySfx("Player/Player_death");
 
             _animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");
@@ -232,30 +232,30 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            saveLoadSystemManager.Bind(this, dataInGameData);
+            SaveLoadSystemManager.Bind(this, DataInGameData);
         }
         
 #if UNITY_EDITOR
         private void OnValidate() {
-            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(id)) {
-                id = Guid.NewGuid().ToString();
-                Debug.Log($"Setting new guid for {nameof(PlayerScript)}");
+            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
+                ID = Guid.NewGuid().ToString();
+                debugLogger.Log($"Setting new guid for {nameof(PlayerScript)}");
             }
         }
 #endif
         
         [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
-            healthComponent.Health = saveSystemData.health;
-            playerLives = saveSystemData.lives;
-            gems = saveSystemData.gems;
+            healthComponent.Health = SaveSystemData.health;
+            playerLives = SaveSystemData.lives;
+            gems = SaveSystemData.gems;
         }
 
         [ContextMenu(nameof(SaveBindData))]
         public void SaveBindData() {
-            saveSystemData.health = healthComponent.Health;
-            saveSystemData.lives = playerLives;
-            saveSystemData.gems = gems;
+            SaveSystemData.health = healthComponent.Health;
+            SaveSystemData.lives = playerLives;
+            SaveSystemData.gems = gems;
         }
         #endregion
     }

@@ -1,5 +1,5 @@
 using System;
-using Fmod;
+using FMODScripts;
 using Unity.Properties;
 using UnityEngine;
 
@@ -13,10 +13,10 @@ namespace Unity.Behavior {
     public class PlaySfxAction : Action {
         [SerializeReference] public BlackboardVariable<string> sfxName;
         
-        private FmodManager fmodManager => FmodManager.Instance;
+        private static FMODManager FMODManager => FMODManager.Instance;
 
         protected override Status OnStart() {
-            fmodManager.PlayOneShot(sfxName.Value);
+            FMODManager.PlayOneShot(sfxName.Value);
 
             return Status.Success;
         }
