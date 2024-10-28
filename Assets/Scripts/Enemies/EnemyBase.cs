@@ -136,7 +136,10 @@ public class EnemyBase :  GravityObject, IDamageable
             IDamageable player = other.GetComponent<IDamageable>();
             if (player != null)
             {
-                damageInstance.enemyPosition = transform.position;
+                Vector2 directionToPlayer = (other.transform.position - transform.position).normalized;
+                Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
+                
+                damageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * damageInstance.knockback.magnitude;
                 player.TakeDamage(damageInstance);
             }
         }
