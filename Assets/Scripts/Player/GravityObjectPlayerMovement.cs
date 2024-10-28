@@ -40,12 +40,11 @@ namespace Player {
 
         [Header("Knockback")] public bool isKnockbacked;
         [SerializeField] private float knockBackTime;
-        public Vector2 knockbackVector;
         public int killCharges;
 
         [Header("Player Can Move")] [SerializeField, Required]
         private AllInFavourConsensusSO playerCanMove;
-
+        private Vector2 knockbackVector;
         private bool playerMovementEnabled => playerCanMove.consensus;
 
         private bool IsValidSpawnPoint()
@@ -222,7 +221,7 @@ namespace Player {
 
         public void TestFunction(InputAction.CallbackContext context) {
             killCharges += 1;
-            Knockback(new Vector2(1, 0), true);
+            Knockback(new Vector2(1, 0));
         }
 
         public void DuckInput(InputAction.CallbackContext context) {
@@ -279,19 +278,13 @@ namespace Player {
             gameObject.transform.localScale = new Vector3(1.5f, .5f, 1); //TEST
         }
 
-        public void Knockback(Vector2 enemyPosition, bool givesKnockback) {
-            if (!givesKnockback) return;
+        public void Knockback(Vector2 argumentKnockback) {
 
             isKnockbacked = true;
 
             _knockbackTimer.StartTimer();
 
-            if (enemyPosition.x < transform.position.x) {
-                knockbackVector.x = Mathf.Abs(knockbackVector.x);
-            }
-            else {
-                knockbackVector.x = -Mathf.Abs(knockbackVector.x);
-            }
+            knockbackVector = argumentKnockback;
         }
 
         public void SpikeReset()
