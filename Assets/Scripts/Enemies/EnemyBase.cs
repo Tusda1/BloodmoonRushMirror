@@ -139,7 +139,7 @@ public class EnemyBase :  GravityObject, IDamageable
                 Vector2 directionToPlayer = (other.transform.position - transform.position).normalized;
                 Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
                 
-                damageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * damageInstance.knockback.magnitude;
+                damageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * damageInstance.knockbackStrength;
                 player.TakeDamage(damageInstance);
             }
         }
