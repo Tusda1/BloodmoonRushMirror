@@ -1,6 +1,7 @@
-
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 public class EnemyBase :  GravityObject, IDamageable
@@ -16,6 +17,7 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected float maxHealth;
     protected float currentHealth;
+    [SerializeField] private DamageInstance damageInstance;
     [SerializeField] protected float weight;
     [SerializeField] protected int rubyDropAmount = 3;
     
@@ -44,13 +46,13 @@ public class EnemyBase :  GravityObject, IDamageable
         
         // Play hit animation
         // Play hit sound
-        if (damageInstance.knockbackStrength.normalized == Vector2.up)
+        if (damageInstance.knockback.normalized == Vector2.up)
         {
-            StartCoroutine(KnockUp(damageInstance.knockbackStrength));
+            StartCoroutine(KnockUp(damageInstance.knockback));
         }
         else
         {
-            StartCoroutine(Knockback(damageInstance.knockbackStrength));
+            StartCoroutine(Knockback(damageInstance.knockback));
         }
         
         currentHealth -= damageInstance.damage;
@@ -116,7 +118,30 @@ public class EnemyBase :  GravityObject, IDamageable
 
         rubyDropAmount = 0;
     }
-    
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        if (isStunned)
+        {
+            return;
+        }
+        
+        if (other.CompareTag("Player"))
+        {
+            IDamageable player = other.GetComponent<IDamageable>();
+            if (player != null)
+            {
+                damageInstance.enemyPosition = transform.position;
+                player.TakeDamage(damageInstance);
+            }
+        }
+    }
+
     protected Vector2 GetBottomPosition()
     {
         return new Vector2(boxCollider.bounds.center.x, boxCollider.bounds.min.y + 0.05f);

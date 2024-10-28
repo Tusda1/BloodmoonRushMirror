@@ -18,10 +18,8 @@ public class RubyScript : GravityObject
     private Transform _player;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private new void Start()
+    private void OnEnable()
     {
-        base.Start();
-
         StartCoroutine(SpawnKillSafeguard());
         
         if (!fall)
@@ -33,7 +31,12 @@ public class RubyScript : GravityObject
             _currentCoroutine = StartCoroutine(Fall());
         }
     }
-    
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     private IEnumerator SpawnKillSafeguard()
     {
         yield return new WaitForSeconds(0.2f);

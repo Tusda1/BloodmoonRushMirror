@@ -7,8 +7,8 @@ public interface IDamageable {
 
 [Serializable] public class DamageInstance {
     public int damage;
-    public Vector2 knockbackStrength;
-    public Vector2 damageDirection;
+    public Vector2 knockback;
+    public float knockbackStrength;
     public int staggerStrength;
         
     public event Action OnHitAction = delegate { };
