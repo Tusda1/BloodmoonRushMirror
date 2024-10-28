@@ -9,6 +9,7 @@ public class RubyScript : GravityObject
     [SerializeField] private float hoverHeight = 0.5f; // Height of the hover motion
     [SerializeField] private float despawnDistance = 0.1f; // Distance from the player at which the Ruby despawns
     [SerializeField] private float moveSpeed = 5f; // Speed at which the Ruby moves towards the player
+    public bool fall; // Whether the Ruby should fall to the ground or hover in place
     
     private float initialY;
     private bool _canBePickedUp;
@@ -23,7 +24,7 @@ public class RubyScript : GravityObject
 
         StartCoroutine(SpawnKillSafeguard());
         
-        if (GravityModifier == 0)
+        if (!fall)
         {
             _currentCoroutine = StartCoroutine(Hover());
         }
@@ -46,7 +47,6 @@ public class RubyScript : GravityObject
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundDistance, LayerMask.GetMask("Ground"));
             if (hit.collider != null)
             {
-                GravityModifier = 0;
                 StopCoroutine(_currentCoroutine);
                 _currentCoroutine = StartCoroutine(Hover());
             }
@@ -57,6 +57,7 @@ public class RubyScript : GravityObject
     private IEnumerator Hover()
     {
         initialY = transform.position.y;
+        GravityModifier = 0;
         
         while (true)
         {

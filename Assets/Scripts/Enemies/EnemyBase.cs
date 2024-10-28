@@ -1,6 +1,7 @@
-using System;
+
 using System.Collections;
 using UnityEngine;
+
 
 public class EnemyBase :  GravityObject, IDamageable
 {
@@ -9,12 +10,14 @@ public class EnemyBase :  GravityObject, IDamageable
     protected bool isStunned;
     protected Vector2 facingDirection;
     protected Collider2D boxCollider;
+    private GameObject _rubyPrefab;
 
     [SerializeField] private bool faceLeftOnStart;
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected float maxHealth;
     protected float currentHealth;
     [SerializeField] protected float weight;
+    [SerializeField] protected int rubyDropAmount = 3;
     
     protected LayerMask EnemyAndGroundLayerMask;
 
@@ -27,6 +30,7 @@ public class EnemyBase :  GravityObject, IDamageable
         EnemyAndGroundLayerMask = LayerMask.GetMask("Enemy", "Ground");
         
         boxCollider = GetComponent<Collider2D>();
+        _rubyPrefab = Resources.Load<GameObject>("Prefabs/Ruby");
     }
 
     private void OnDisable()
@@ -84,11 +88,33 @@ public class EnemyBase :  GravityObject, IDamageable
     private void Die()
     {
         isDead = true;
-        gameObject.SetActive(false);
         // Play death animation
         // Play death sound
-        // Drop loot
-        // Destroy game object
+        DropRubies();
+        gameObject.SetActive(false);
+    }
+    
+    private void DropRubies()
+    {
+        if (_rubyPrefab == null)
+        {
+            Debug.LogError("Ruby prefab not found");
+            return;
+        }
+
+        //Drop as many rubies as the RubyDropAmount
+        for (int i = 0; i < rubyDropAmount; i++)
+        {
+            // Generate a small random offset
+            Vector3 offset = new Vector3(Random.Range(1.5f, 0.5f), Random.Range(0.5f, 0.5f), 0);
+            // Add the offset to the enemy's position
+            Vector3 spawnPosition = transform.position + offset;
+            
+            GameObject ruby = Instantiate(_rubyPrefab, spawnPosition, Quaternion.identity);
+            ruby.GetComponent<RubyScript>().fall = true;
+        }
+
+        rubyDropAmount = 0;
     }
     
     protected Vector2 GetBottomPosition()
