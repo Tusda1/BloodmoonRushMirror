@@ -18,7 +18,7 @@ public class Skeleton : ReactiveBase
         }
     }
 
-    protected override void Move()
+    protected override void Action()
     {
         // Check if the target is still in range
         if (Vector2.Distance(_agroOject.position, transform.position) > keepAgroDistance)

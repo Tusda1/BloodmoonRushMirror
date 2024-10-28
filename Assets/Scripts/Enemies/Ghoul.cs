@@ -7,8 +7,8 @@ public class Ghoul : ReactiveBase
     [SerializeField] private float universalAgroDistance = 2f;
     
     private bool _isJumping;
-    
-    private void Charge()
+
+    protected override void Action()
     {
         targetVelocity = facingDirection * moveSpeed;
         
@@ -39,7 +39,7 @@ public class Ghoul : ReactiveBase
         }
     }
     
-    private void CheckForPlayer()
+    protected override void Scan()
     {
         // Check for a player in close proximity
         Collider2D hitClose = Physics2D.OverlapCircle(transform.position, universalAgroDistance, LayerMask.GetMask("Player"));

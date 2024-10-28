@@ -25,7 +25,8 @@ public class ReactiveBase : EnemyBase
                 break;
 
             case EnemyState.Moving:
-                Move();
+                
+                Action();
                 break;
         }
     }
@@ -35,7 +36,7 @@ public class ReactiveBase : EnemyBase
         
     }
     
-    protected virtual void Move()
+    protected virtual void Action()
     {
         
     }

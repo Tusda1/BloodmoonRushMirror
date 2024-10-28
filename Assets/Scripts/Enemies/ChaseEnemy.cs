@@ -37,7 +37,7 @@ public class ChaseEnemy : ReactiveBase
         }
     }
 
-    protected override void Move()
+    protected override void Action()
     {
         if (_agroObject == null)
         {
