@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DialogueCharacter", menuName = "Behavior/new DialogueCharacter")]
-public class DialogueCharacter : ScriptableObject {
+[CreateAssetMenu(fileName = nameof(DialogueCharacterSO), menuName = "Behavior/Create " + nameof(DialogueCharacterSO))]
+public class DialogueCharacterSO : ScriptableObject {
     public Sprite dialogueImage;
     public Font dialogueFont;
     public float textSize = 8;

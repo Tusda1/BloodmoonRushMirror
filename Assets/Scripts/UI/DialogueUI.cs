@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 namespace UI {
     public class DialogueUI : Singleton<DialogueUI> {
         [SerializeField] private UIDocument uiDocument;
-        [SerializeField] public AllInFavourConsensus playerCanMove;
+        [SerializeField] public AllInFavourConsensusSO playerCanMove;
         public event Action OnSkipDialogue = delegate { };
 
         [Header("DialogueUI Settings")] public bool uiDocumentVisible;

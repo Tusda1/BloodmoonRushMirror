@@ -1,6 +1,7 @@
 using Attributes;
 using Consensus;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Utilities.UI.DisplaySettings;
 
@@ -9,13 +10,14 @@ namespace Utilities.UI {
         [Header("Settings UI Document")]
         [SerializeField] private UIDocument settingsUiDocument;
 
+        [FormerlySerializedAs("fullScreenModeScrub")]
         [Header("Display Settings Data")] 
-        [SerializeField] private FullScreenModeScrub fullScreenModeScrub;
+        [SerializeField] private FullScreenModeSO fullScreenModeSo;
         
-        [SerializeField] private AspectRatioResolutionsScrub aspectRatioResolutionsScrub;
+        [FormerlySerializedAs("aspectRatioResolutionsScrub")] [SerializeField] private AspectRatioResolutionsSO aspectRatioResolutionsSo;
 
         [Header("Scrub Global Data")]
-        [SerializeField] private AtLeastOneInFavourConsensus hasMadeChangeThatRequiresRestart;
+        [SerializeField] private AtLeastOneInFavourConsensusSO hasMadeChangeThatRequiresRestart;
         private readonly ScriptVotePair _displaySettingChanged = new();
 
         [Header("Debug Logger")] 
@@ -48,14 +50,14 @@ namespace Utilities.UI {
 
             if (_screenModeDropdownMenu != null) {
                 _screenModeDropdownMenu.choices.Clear();
-                foreach (var screenMode in fullScreenModeScrub.screenModes) {
+                foreach (var screenMode in fullScreenModeSo.screenModes) {
                     _screenModeDropdownMenu.choices.Add(screenMode);
                 }
 
                 _screenModeDropdownMenu.RegisterValueChangedCallback(FullScreenModeChange);
 
                 var fullScreenMode = PlayerPrefs.GetInt("FullScreenMode");
-                _screenModeDropdownMenu.value = fullScreenModeScrub.screenModes[fullScreenMode];
+                _screenModeDropdownMenu.value = fullScreenModeSo.screenModes[fullScreenMode];
             }
             else debugLogger.LogWarning("'_screenModeDropdownMenu' is not set");
 
@@ -76,7 +78,7 @@ namespace Utilities.UI {
             if (_aspectRatioDropdownMenu != null && _resolutionDropdownMenu != null) {
                 _aspectRatioDropdownMenu.choices.Clear();
                 _resolutionDropdownMenu.choices.Clear();
-                foreach (var key in aspectRatioResolutionsScrub.aspectRatioResolutions.Keys) {
+                foreach (var key in aspectRatioResolutionsSo.aspectRatioResolutions.Keys) {
                     _aspectRatioDropdownMenu.choices.Add(key);
                 }
 
@@ -84,13 +86,13 @@ namespace Utilities.UI {
 
                 var resolution = PlayerPrefs.GetString("ScreenResolution");
                 var screenResolution = resolution != ""
-                    ? AspectRatioResolutionsScrub.StringToVector2Int(resolution)
+                    ? AspectRatioResolutionsSO.StringToVector2Int(resolution)
                     : new Vector2Int(Screen.width, Screen.height);
 
-                var screenAspectRatio = aspectRatioResolutionsScrub.FindKeyByValue(screenResolution);
+                var screenAspectRatio = aspectRatioResolutionsSo.FindKeyByValue(screenResolution);
 
                 _aspectRatioDropdownMenu.value = screenAspectRatio;
-                _resolutionDropdownMenu.value = AspectRatioResolutionsScrub.ResolutionToString(screenResolution);
+                _resolutionDropdownMenu.value = AspectRatioResolutionsSO.ResolutionToString(screenResolution);
 
                 _resolutionDropdownMenu.RegisterValueChangedCallback(ResolutionChanged);
             }
@@ -141,7 +143,7 @@ namespace Utilities.UI {
 
         private void FullScreenModeChange(ChangeEvent<string> changeEvent) {
             var value = _screenModeDropdownMenu.choices.IndexOf(changeEvent.newValue);
-            Screen.fullScreenMode = fullScreenModeScrub.GetFullScreenMode(value);
+            Screen.fullScreenMode = FullScreenModeSO.GetFullScreenMode(value);
 
             PlayerPrefs.SetInt("FullScreenMode", value);
             PlayerPrefs.Save();
@@ -161,15 +163,15 @@ namespace Utilities.UI {
 
         private void AspectRatioChanged(ChangeEvent<string> changeEvent) {
             _resolutionDropdownMenu.choices.Clear();
-            foreach (var resolutions in aspectRatioResolutionsScrub.GetResolutionForAspectRatio(changeEvent.newValue)) {
-                _resolutionDropdownMenu.choices.Add(AspectRatioResolutionsScrub.ResolutionToString(resolutions));
+            foreach (var resolutions in aspectRatioResolutionsSo.GetResolutionForAspectRatio(changeEvent.newValue)) {
+                _resolutionDropdownMenu.choices.Add(AspectRatioResolutionsSO.ResolutionToString(resolutions));
             }
 
             debugLogger.Log("Aspect Ratio changed");
         }
 
         private void ResolutionChanged(ChangeEvent<string> changeEvent) {
-            var resolution = AspectRatioResolutionsScrub.StringToVector2Int(changeEvent.newValue);
+            var resolution = AspectRatioResolutionsSO.StringToVector2Int(changeEvent.newValue);
             Screen.SetResolution(resolution.x, resolution.y, Screen.fullScreenMode);
             PlayerPrefs.SetString("ScreenResolution", changeEvent.newValue);
 

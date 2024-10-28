@@ -20,6 +20,7 @@ namespace Player {
         [SerializeField] private float smoothTime;
         [SerializeField] private float maxSpeed;
         [SerializeField] private LayerMask whatIsLadder;
+        [SerializeField] private LayerMask whatIsInvalidSpawnPoint;
         [SerializeField] private float climbSpeed;
 
         [Header("Dash")] public bool isDashing;
@@ -43,9 +44,28 @@ namespace Player {
         public int killCharges;
 
         [Header("Player Can Move")] [SerializeField, Required]
-        private AllInFavourConsensus playerCanMove;
+        private AllInFavourConsensusSO playerCanMove;
 
         private bool playerMovementEnabled => playerCanMove.consensus;
+
+        private bool IsValidSpawnPoint()
+        {
+            var quantizedPosition = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .4f);
+            Collider[] hitColliders = Physics.OverlapBox(quantizedPosition, transform.localScale, Quaternion.identity, whatIsInvalidSpawnPoint);
+            int i = 0;
+            while (i < hitColliders.Length)
+            {
+                if (hitColliders[i].CompareTag("Hazard"))
+                {
+                    return false;
+                }
+                i++;
+            }
+            RaycastHit2D hit = Physics2D.Raycast(quantizedPosition, Vector2.down, .5f);
+            if (hit.collider != null && !hit.collider.CompareTag("Hazard") && hit.collider.CompareTag("Ground"))
+                return true;
+            return false;
+        }
 
         [Header("Debug Logger")] [SerializeField, Required]
         private DebugLoggerSO debugLogger;
@@ -59,6 +79,7 @@ namespace Player {
         private CountdownTimer _coyoteTimer;
         private Vector2 _smoothMovement;
         private Vector2 _referenceSmoothVelocity;
+        private Vector2 _lastSpikePoint;
         private bool _wasGroundedLastFrame;
         private Ladder _ladder;
         private bool _notClimbing;
@@ -140,7 +161,9 @@ namespace Player {
             if (Mathf.Abs(velocity.x) < 0.01f) {
                 _smoothMovement.x = 0;
             }
-
+            
+            if (isGrounded && IsValidSpawnPoint()) _lastSpikePoint = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .4f);
+            
             _wasGroundedLastFrame = isGrounded;
         }
 
@@ -270,6 +293,13 @@ namespace Player {
             }
         }
 
+        public void SpikeReset()
+        {
+            gameObject.transform.position = _lastSpikePoint;
+            ResetMovement(0);
+            isDashing = false;
+        }
+
         #region ---Timers---
         private void MinJumpCancel() {
             isJumping = false;
@@ -366,6 +396,7 @@ namespace Player {
                 }
                 else {
                     isGrounded = false;
+                    ForceExitDuck();
                     return true;
                 }
             }

@@ -1,8 +1,8 @@
 using UnityEngine;
 
 namespace Utilities.UI.DisplaySettings {
-    [CreateAssetMenu(fileName = "FullScreenModeScrub", menuName = "Scrubs/SettingsMenu/FullScreenModeScrub")]
-    public class FullScreenModeScrub : ScriptableObject {
+    [CreateAssetMenu(fileName = "FullScreenModeSO", menuName = "Scriptable Objects/SettingsMenu/Create FullScreenModeSO")]
+    public class FullScreenModeSO : ScriptableObject {
         [SerializeField] public string[] screenModes = {
             "FullScreen",
             "Borderless Window",
@@ -10,7 +10,7 @@ namespace Utilities.UI.DisplaySettings {
             "Windowed"
         };
 
-        public FullScreenMode GetFullScreenMode(int value) {
+        public static FullScreenMode GetFullScreenMode(int value) {
             return value switch {
                 0 => FullScreenMode.ExclusiveFullScreen,
                 1 => FullScreenMode.FullScreenWindow,

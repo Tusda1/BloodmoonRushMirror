@@ -2,10 +2,13 @@
 
 namespace Utilities.DataBinding {
     public interface IGameData : ICloneable {
-        public string Name { get; set; }
+        public string name { get; set; }
     }
 
-    public interface ISaveable : ICloneable {
-        string Id { get; set; }
+    /// <summary>
+    /// 'id' must be serialized with '[field: SerializeField]' to be visible in the inspector
+    /// </summary>
+    public interface ISaveable {
+        string id { get; set; }
     }
 }

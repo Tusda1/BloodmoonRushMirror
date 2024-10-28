@@ -5,7 +5,7 @@ using Unity.Properties;
 using UnityEngine;
 
 #if UNITY_EDITOR
-[CreateAssetMenu(menuName = "Behavior/Event Channels/ActionEventChannel")]
+[CreateAssetMenu(fileName = nameof(ActionEventChannel), menuName = "Behavior/Event Channels/Create " + nameof(ActionEventChannel))]
 #endif
 [Serializable, GeneratePropertyBag]
 [EventChannelDescription(

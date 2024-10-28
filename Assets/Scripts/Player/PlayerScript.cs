@@ -43,7 +43,7 @@ namespace Player {
         #endregion
 
         [Header("Player Can Move")] [SerializeField, Attributes.Required]
-        private AllInFavourConsensus playerCanMove;
+        private AllInFavourConsensusSO playerCanMove;
 
         private bool playerMovementEnabled => playerCanMove.consensus;
         private readonly ScriptVotePair _isAliveVotePair = new();
@@ -72,11 +72,10 @@ namespace Player {
 
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
-        [field: SerializeField]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        [field: SerializeField] public string id { get; set; } = Guid.NewGuid().ToString();
 
-        [field: SerializeField] public PlayerData SaveSystemData { get; set; }
-        public PlayerData DataInGameData => SaveLoadSystemManager.Instance.gameData.playerData;
+        [field: SerializeField] public PlayerData saveSystemData { get; set; }
+        public PlayerData dataInGameData => SaveLoadSystemManager.Instance.gameData.playerData;
         #endregion
         #endregion
 
@@ -87,8 +86,7 @@ namespace Player {
         }
 
         private void Start() {
-            // TODO: comment out
-            // saveLoadSystemManager.Instance.Bind(this, DataInGameData);
+            Bind();
 
             healthComponent.OnDeath += () => StartCoroutine(Die());
         }
@@ -164,7 +162,7 @@ namespace Player {
             healthComponent.TakeDamage(damageInstance.damage);
 
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
-            _animator.SetTrigger(AnimatorTakeDamageTrigger);
+            //_animator.SetTrigger(AnimatorTakeDamageTrigger);
         }
 
         #region ***---Death---***
@@ -225,10 +223,8 @@ namespace Player {
         #endregion
         #endregion
 
-        public void GoToLastGroundedPosition() {
-            transform.position = lastGroundedPosition;
-            _playerMovement.ResetMovement(0);
-            debugLogger.Log("Go To Last Grounded Position");
+        public void HitSpike() {
+            _playerMovement.SpikeReset();
         }
 
         private Collider2D InteractCheck() {
@@ -236,28 +232,31 @@ namespace Player {
         }
 
         #region ---DataBindingMethods---
+        public void Bind() {
+            saveLoadSystemManager.Bind(this, dataInGameData);
+        }
+        
+#if UNITY_EDITOR
+        private void OnValidate() {
+            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(id)) {
+                id = Guid.NewGuid().ToString();
+                Debug.Log($"Setting new guid for {nameof(PlayerScript)}");
+            }
+        }
+#endif
+        
+        [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
-            healthComponent.Health = SaveSystemData.health;
-            playerLives = SaveSystemData.lives;
-            gems = SaveSystemData.gems;
+            healthComponent.Health = saveSystemData.health;
+            playerLives = saveSystemData.lives;
+            gems = saveSystemData.gems;
         }
 
+        [ContextMenu(nameof(SaveBindData))]
         public void SaveBindData() {
-            SaveSystemData.health = healthComponent.Health;
-            SaveSystemData.lives = playerLives;
-            SaveSystemData.gems = gems;
-        }
-
-        public void Bind(PlayerData data) {
-            SaveSystemData = data;
-
-            debugLogger.Log("Player data bind-ed to gameData");
-        }
-
-        public void UnBind(PlayerData data) {
-            SaveSystemData = null;
-
-            debugLogger.Log("Player data un-bind-ed to gameData");
+            saveSystemData.health = healthComponent.Health;
+            saveSystemData.lives = playerLives;
+            saveSystemData.gems = gems;
         }
         #endregion
     }

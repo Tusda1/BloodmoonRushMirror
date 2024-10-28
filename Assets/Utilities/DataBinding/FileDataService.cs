@@ -15,7 +15,7 @@ namespace Utilities.DataBinding {
         private readonly string _dataPath;
         private readonly string _fileExtension;
 
-        public FileDataService(ISerializer serializer = null, bool encrypted = true) {
+        public FileDataService(ISerializer serializer = null, bool encrypted = false) {
             _serializer = encrypted ? new EncryptedSerializer(serializer) : serializer ?? new JSONSerializer();
 
             _dataPath = Path.Combine(Application.persistentDataPath, typeof(TGameData).Name);
@@ -25,11 +25,11 @@ namespace Utilities.DataBinding {
         }
 
         private string GetPathToSaveFile(string fileName) {
-            return Path.Combine(_dataPath, fileName, _fileExtension);
+            return Path.Combine(_dataPath, fileName);
         }
 
         public void Save(TGameData gameData) {
-            var filePath = GetPathToSaveFile(gameData.Name);
+            var filePath = GetPathToSaveFile(gameData.name) + _fileExtension;
 
             File.WriteAllText(filePath, _serializer.Serialize(gameData));
         }
