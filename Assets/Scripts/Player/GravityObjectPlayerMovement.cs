@@ -132,10 +132,6 @@ namespace Player {
                     ref _referenceSmoothVelocity, smoothTime);
             }
             else {
-                if (isGrounded) {
-                    canDash = true;
-                    killCharges = 0;
-                }
 
                 if (isHoldingDuck && !isJumping && !isDucking && isGrounded) {
                     EnterDuck();
@@ -160,6 +156,11 @@ namespace Player {
 
             if (Mathf.Abs(velocity.x) < 0.01f) {
                 _smoothMovement.x = 0;
+            }
+            
+            if (isGrounded) {
+                if (!isDashing) canDash = true;
+                killCharges = 0;
             }
             
             if (isGrounded && IsValidSpawnPoint()) _lastSpikePoint = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .4f);
