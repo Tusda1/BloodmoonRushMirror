@@ -7,6 +7,7 @@ using UnityEngine.Splines;
 
 namespace Bat {
     public class BatSpawner : MonoBehaviour {
+        #region ---Fields---
         [GetOrAddComponent, HideInInspector] public SplineContainer batPath;
 
         [SerializeField] private float timeBetweenBats;
@@ -18,7 +19,8 @@ namespace Bat {
         private Transform _batParentTransform;
 
         private RepeatingTimer _timer;
-
+        #endregion
+        
         private void Start() {
             if (BatPoolManager.Instance == null) {
                 throw new Exception($"{nameof(BatPoolManager)} does not exist!");

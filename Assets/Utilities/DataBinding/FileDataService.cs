@@ -29,7 +29,7 @@ namespace Utilities.DataBinding {
         }
 
         public void Save(TGameData gameData) {
-            var filePath = GetPathToSaveFile(gameData.name) + _fileExtension;
+            var filePath = GetPathToSaveFile(gameData.Name) + _fileExtension;
 
             File.WriteAllText(filePath, _serializer.Serialize(gameData));
         }

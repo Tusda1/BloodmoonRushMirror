@@ -5,23 +5,23 @@ using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 
-namespace Fmod {
-    public class FmodManager : PersistentSingleton<FmodManager> {
-        [Header("DebugLogger"), SerializeField, Required] 
-        private DebugLoggerSO debugLogger;
+namespace FMODScripts {
+    public class FMODManager : PersistentSingleton<FMODManager> {
+        [Header("DebugLogger")] 
+        [SerializeField, Required] private DebugLoggerSO debugLogger;
 
-        public static float masterVolume => PlayerPrefs.GetFloat("MasterVolume");
-        public static float musicVolume => PlayerPrefs.GetFloat("SFXVolume");
-        public static float sfxVolume => PlayerPrefs.GetFloat("MusicVolume");
+        public static float MasterVolume => PlayerPrefs.GetFloat("MasterVolume");
+        public static float MusicVolume => PlayerPrefs.GetFloat("SFXVolume");
+        public static float SfxVolume => PlayerPrefs.GetFloat("MusicVolume");
 
         private EventInstance _currentMusic;
         private Bus _musicBus;
         private Bus _sfxBus;
         private Bus _masterBus;
 
-        private static string busPath => "bus:/";
-        private static string sfxPath => "event:/Sfx/";
-        private static string musicPath => "event:/Music/";
+        private static string BusPath => "bus:/";
+        private static string SfxPath => "event:/Sfx/";
+        private static string MusicPath => "event:/Music/";
 
         private IEnumerator Start() {
             debugLogger.Log("Initializing");
@@ -29,9 +29,9 @@ namespace Fmod {
             yield return new WaitUntil(() => RuntimeManager.IsInitialized);
             debugLogger.Log("RuntimeManager is initialized");
 
-            _masterBus = RuntimeManager.GetBus(busPath);
-            _musicBus = RuntimeManager.GetBus(busPath + "Music Bus");
-            _sfxBus = RuntimeManager.GetBus(busPath + "Sfx Bus");
+            _masterBus = RuntimeManager.GetBus(BusPath);
+            _musicBus = RuntimeManager.GetBus(BusPath + "Music Bus");
+            _sfxBus = RuntimeManager.GetBus(BusPath + "Sfx Bus");
 
             if (_masterBus.Equals(default) || _sfxBus.Equals(default) || _musicBus.Equals(default)) {
                 debugLogger.Log("Busses are not valid");
@@ -83,11 +83,11 @@ namespace Fmod {
         }
 
         public void PlaySfx(string sfx) {
-            PlayOneShot(sfxPath + sfx);
+            PlayOneShot(SfxPath + sfx);
         }
 
         public void PlaySfx(string sfx, GameObject emitter) {
-            PlayOneShotAttached(sfxPath + sfx, emitter);
+            PlayOneShotAttached(SfxPath + sfx, emitter);
         }
 
         public void PlayMusic(string path) {

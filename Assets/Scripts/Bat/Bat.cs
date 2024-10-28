@@ -1,18 +1,17 @@
 using System.Collections;
 using DG.Tweening;
-using Fmod;
+using FMODScripts;
 using Player;
 using UnityEngine;
 using UnityEngine.Splines;
 
 namespace Bat {
     public class Bat : MonoBehaviour, IDamageable {
-        [Header("Spline Path")] 
-        public SplineAnimate splineAnimate;
+        #region ---Fields---
+        [Header("Spline Path")] public SplineAnimate splineAnimate;
         [SerializeField] private bool loopOnlyOnce;
 
-        [Header("Jitter")] 
-        [SerializeField] private Transform spriteTransform;
+        [Header("Jitter")] [SerializeField] private Transform spriteTransform;
         [SerializeField] private float yJitter;
         [SerializeField] private float jitterDuration;
 
@@ -22,11 +21,13 @@ namespace Bat {
         [SerializeField] private DamageInstance attackDamageInstance = new() {
             damage = 1
         };
+
         [SerializeField] private string takeDamageSfx = "Misc/Generic_impact";
 
         [HideInInspector] public BatSpawner batSpawner;
 
-        private static FmodManager FMODManager => FmodManager.Instance;
+        private static FMODManager FMODManager => FMODManager.Instance;
+        #endregion
 
         private void OnEnable() {
             StartCoroutine(Initialize());
@@ -42,9 +43,9 @@ namespace Bat {
 
             var directionToPlayer = (other.transform.position - transform.position).normalized;
             var knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
-                
+
             attackDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * attackDamageInstance.knockbackStrength;
-            
+
             playerScript.TakeDamage(attackDamageInstance);
         }
 

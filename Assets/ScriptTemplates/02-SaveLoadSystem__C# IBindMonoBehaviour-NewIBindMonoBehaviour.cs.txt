@@ -5,56 +5,55 @@ using UnityEngine;
 using Utilities.DataBinding;
 #NOTRIM#
 #ROOTNAMESPACEBEGIN#
-    public class #SCRIPTNAME# : MonoBehaviour, IBind<#SCRIPTNAME#Data> { 
-    //Change type to be of a type implementing ISaveable. 
-    // Script template for GameData available "SaveLoadSystem/C# NewGameData"
-        #region ---Fields---
-        #region ***---GameManagers---***
-        private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
-        #endregion
-    #NOTRIM#
-        #region ***---DataBindingVariables---***
-        [field: Header("Data Binding")]
-        [field: SerializeField]
-        public string id { get; set; }
-    #NOTRIM#
-        [field: SerializeField] public #SCRIPTNAME#Data saveSystemData { get; set; }
-    #NOTRIM#
-        public #SCRIPTNAME#Data dataInGameData => SaveLoadSystemManager.gameData.levelData.GetOrAddByIdInList(id, new #SCRIPTNAME#Data {
-            id = id
-        });
-        #endregion
-        #endregion
-    #NOTRIM#
-        #region ---EventFunctions---
-        private void Start() {
-            Bind();
-        }
-        #endregion
-    #NOTRIM#
-        #region ---DataBindingMethods---
-        public void Bind() {
-            SaveLoadSystemManager.Bind(this, dataInGameData);
-        }
-    #NOTRIM#
-    #if UNITY_EDITOR
-        private void OnValidate() {
-            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(id)) {
-                id = Guid.NewGuid().ToString();
-                Debug.Log($"Setting new guid for {nameof(#SCRIPTNAME#)}");
-            }
-        }
-    #endif
-    #NOTRIM#
-        [ContextMenu(nameof(LoadBindData))]
-        public void LoadBindData() {
-            // Get variables from 'saveSystemData' and set local variables
-        }
-    #NOTRIM#
-        [ContextMenu(nameof(SaveBindData))]
-        public void SaveBindData() {
-            // Set variables in 'saveSystemData' from local variables
-        }
-        #endregion
+public class #SCRIPTNAME# : MonoBehaviour, IBind<#SCRIPTNAME#Data> { 
+// Change type to be of a type implementing ISaveable. 
+// Script template for GameData available "SaveLoadSystem/C# NewGameData"
+    #region ---Fields---
+    #region ***---GameManagers---***
+    private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
+    #endregion
+#NOTRIM#
+    #region ***---DataBindingVariables---***
+    [field: Header("Data Binding")]
+    [field: SerializeField] public string id { get; set; }
+#NOTRIM#
+    [field: SerializeField] public #SCRIPTNAME#Data SaveSystemData { get; set; }
+#NOTRIM#
+    public #SCRIPTNAME#Data DataInGameData => SaveLoadSystemManager.gameData.levelData.GetOrAddByIdInList(id, new #SCRIPTNAME#Data {
+        id = id
+    });
+    #endregion
+    #endregion
+#NOTRIM#
+    #region ---EventFunctions---
+    private void Start() {
+        Bind();
     }
+    #endregion
+#NOTRIM#
+    #region ---DataBindingMethods---
+    public void Bind() {
+        SaveLoadSystemManager.Bind(this, DataInGameData);
+    }
+#NOTRIM#
+#if UNITY_EDITOR
+    private void OnValidate() {
+        if (gameObject.activeInHierarchy && string.IsNullOrEmpty(id)) {
+            id = Guid.NewGuid().ToString();
+            Debug.Log($"Setting new guid for {nameof(#SCRIPTNAME#)}");
+        }
+    }
+#endif
+#NOTRIM#
+    [ContextMenu(nameof(LoadBindData))]
+    public void LoadBindData() {
+        // Get variables from 'SaveSystemData' and set local variables
+    }
+#NOTRIM#
+    [ContextMenu(nameof(SaveBindData))]
+    public void SaveBindData() {
+        // Set variables in 'SaveSystemData' from local variables
+    }
+    #endregion
+}
 #ROOTNAMESPACEEND#

@@ -4,11 +4,13 @@ using UnityEngine.Pool;
 
 namespace Bat {
     public class BatPoolManager : Singleton<BatPoolManager> {
+        #region ---Fields---
         public int initialBatPoolSize;
         [SerializeField] private Transform batParentTransform;
         [AssetPreviewIcon(80, 80)] public GameObject batPrefab;
 
         public ObjectPool<Bat> Pool;
+        #endregion
 
         protected override void Awake() {
             base.Awake();
@@ -19,7 +21,8 @@ namespace Bat {
         private void CreateBatPool() {
             batParentTransform ??= new GameObject("BatPoolParent").transform;
 
-            Pool = new ObjectPool<Bat>(CreateBat, ActionOnGet, ActionOnRelease, ActionOnDestroy, true, initialBatPoolSize);
+            Pool = new ObjectPool<Bat>(CreateBat, ActionOnGet, ActionOnRelease, ActionOnDestroy, true,
+                initialBatPoolSize);
 
             var bats = new Bat[initialBatPoolSize];
             for (var i = 0; i < initialBatPoolSize; i++) {

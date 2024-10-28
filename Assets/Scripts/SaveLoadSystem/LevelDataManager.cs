@@ -13,13 +13,13 @@ namespace SaveLoadSystem {
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
         [field: SerializeField]
-        public string id { get; set; } = Guid.NewGuid().ToString();
+        public string ID { get; set; } = Guid.NewGuid().ToString();
 
-        [field: SerializeField] public LevelData saveSystemData { get; set; }
+        [field: SerializeField] public LevelData SaveSystemData { get; set; }
 
-        public LevelData dataInGameData => SaveLoadSystemManager.gameData.levelDatas.GetOrAddByIdInList(id,
+        public LevelData DataInGameData => SaveLoadSystemManager.gameData.levelDatas.GetOrAddByIdInList(ID,
             new LevelData {
-                id = id
+                ID = ID
             });
         #endregion
         #endregion
@@ -31,13 +31,13 @@ namespace SaveLoadSystem {
         #region ---DataBindingMethods---
 
         public void Bind() {
-            SaveLoadSystemManager.Bind(this, dataInGameData);
+            SaveLoadSystemManager.Bind(this, DataInGameData);
         }
 
 #if UNITY_EDITOR
         private void OnValidate() {
-            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(id)) {
-                id = Guid.NewGuid().ToString();
+            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
+                ID = Guid.NewGuid().ToString();
                 Debug.Log($"Setting new guid for {nameof(LevelDataManager)}");
             }
         }

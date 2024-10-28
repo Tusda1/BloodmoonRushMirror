@@ -2,8 +2,8 @@ using System;
 using UnityEngine;
 using Utilities.DataBinding;
 #NOTRIM#
-#ROOTNAMESPACEBEGIN#
+namespace SaveLoadSystem.Data {
     [Serializable] public class #SCRIPTNAME# : ISaveable {
-        [field: SerializeField] public string id { get; set; }
+        [field: SerializeField] public string ID { get; set; }
     }
-#ROOTNAMESPACEEND#
+}

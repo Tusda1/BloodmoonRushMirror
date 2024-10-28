@@ -19,7 +19,7 @@ namespace Utilities.DataBinding {
 
         public readonly List<IDataBind> GameDataBinds = new();
 
-        public IDataService<TGameData> dataService { get; protected set; }
+        public IDataService<TGameData> DataService { get; protected set; }
         
         /// <summary>
         /// Base "NewGame" method creates a new save with the "newGameData" as a base reference.
@@ -29,13 +29,13 @@ namespace Utilities.DataBinding {
 
             var saveNumber = 0;
 
-            while (File.Exists(gameData.name + saveNumber)) {
+            while (File.Exists(gameData.Name + saveNumber)) {
                 saveNumber++;
             }
 
-            gameData.name += saveNumber;
+            gameData.Name += saveNumber;
 
-            debugLogger.Log($"Creating new game data with name '{gameData.name}' with values from '{newGameData.gameData.name}'");
+            debugLogger.Log($"Creating new game data with name '{gameData.Name}' with values from '{newGameData.gameData.Name}'");
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Utilities.DataBinding {
             
             SaveAllDataBinds();
 
-            dataService.Save(gameData);
+            DataService.Save(gameData);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Utilities.DataBinding {
         public virtual void LoadSave(string saveName) {
             debugLogger.Log($"Loading {typeof(TGameData)} with name '{saveName}'");
             
-            gameData = dataService.LoadByName(saveName);
+            gameData = DataService.LoadByName(saveName);
         }
         
         public virtual void LoadAllDataBinds() {
@@ -81,7 +81,7 @@ namespace Utilities.DataBinding {
         /// Deletes a save by the given name.
         /// </summary>
         public void DeleteSave(string saveName) {
-            dataService.DeleteByName(saveName);
+            DataService.DeleteByName(saveName);
 
             debugLogger.Log($"Deleting  {typeof(TGameData)} with name '{saveName}'");
         }
@@ -119,7 +119,7 @@ namespace Utilities.DataBinding {
             if (!GameDataBinds.Contains(bind)) {
                 GameDataBinds.Add(bind);
             }
-            bind.saveSystemData = data;
+            bind.SaveSystemData = data;
             debugLogger.Log($"{typeof(TBind)} object bind-ed to {typeof(TData)}");
         }
 
@@ -128,7 +128,7 @@ namespace Utilities.DataBinding {
             if (GameDataBinds.Contains(bind)) {
                 GameDataBinds.Remove(bind);
             }
-            bind.saveSystemData = default;
+            bind.SaveSystemData = default;
             debugLogger.Log($"{typeof(TBind)} object un-bind-ed from {typeof(TData)}");
         }
     }

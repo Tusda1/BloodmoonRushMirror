@@ -19,8 +19,8 @@
     }
     
     public interface IBind<TData> : IDataBind {
-        public string id { get; set; }
-        TData saveSystemData { get; set; }
-        TData dataInGameData { get; }
+        public string ID { get; set; }
+        TData SaveSystemData { get; set; }
+        TData DataInGameData { get; }
     }
 }

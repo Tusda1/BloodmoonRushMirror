@@ -18,13 +18,13 @@ namespace Enemies {
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
         [field: SerializeField]
-        public string id { get; set; }
+        public string ID { get; set; }
 
-        [field: SerializeField] public EnemyData saveSystemData { get; set; }
+        [field: SerializeField] public EnemyData SaveSystemData { get; set; }
 
-        public EnemyData dataInGameData => SaveLoadSystemManager.gameData.enemyDatas.GetOrAddByIdInList(id,
+        public EnemyData DataInGameData => SaveLoadSystemManager.gameData.enemyDatas.GetOrAddByIdInList(ID,
             new EnemyData {
-                id = id,
+                ID = ID,
                 health = health,
                 gemsContaining = gemsContaining,
                 isAlive = isAlive
@@ -40,13 +40,13 @@ namespace Enemies {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            SaveLoadSystemManager.Bind(this, dataInGameData);
+            SaveLoadSystemManager.Bind(this, DataInGameData);
         }
 
 #if UNITY_EDITOR
         private void OnValidate() {
-            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(id)) {
-                id = Guid.NewGuid().ToString();
+            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
+                ID = Guid.NewGuid().ToString();
                 Debug.Log($"Setting new guid for {nameof(TestEnemySaveable)}");
             }
         }
@@ -54,20 +54,20 @@ namespace Enemies {
 
         [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
-            name = saveSystemData.name;
-            isAlive = saveSystemData.isAlive;
-            health = saveSystemData.health;
-            gemsContaining = saveSystemData.gemsContaining;
-            transform.position = saveSystemData.position;
+            name = SaveSystemData.name;
+            isAlive = SaveSystemData.isAlive;
+            health = SaveSystemData.health;
+            gemsContaining = SaveSystemData.gemsContaining;
+            transform.position = SaveSystemData.position;
         }
 
         [ContextMenu(nameof(SaveBindData))]
         public void SaveBindData() {
-            saveSystemData.name = name;
-            saveSystemData.isAlive = isAlive;
-            saveSystemData.health = health;
-            saveSystemData.gemsContaining = gemsContaining;
-            saveSystemData.position = transform.position;
+            SaveSystemData.name = name;
+            SaveSystemData.isAlive = isAlive;
+            SaveSystemData.health = health;
+            SaveSystemData.gemsContaining = gemsContaining;
+            SaveSystemData.position = transform.position;
         }
         #endregion
     }
