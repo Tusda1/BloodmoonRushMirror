@@ -399,7 +399,7 @@ namespace Player {
         }
 
         private void CoyoteTimeLogic() {
-            if (_wasGroundedLastFrame && !isJumping && !isDashing) {
+            if (_wasGroundedLastFrame && !isGrounded && !isJumping && !isDashing) {
                 _coyoteTimer.StartTimer();
             }
 
