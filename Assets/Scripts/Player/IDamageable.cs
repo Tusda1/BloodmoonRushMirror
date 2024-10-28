@@ -7,7 +7,7 @@ public interface IDamageable {
 
 [Serializable] public class DamageInstance {
     public int damage;
-    public Vector2 knockback;
+    public Vector2 enemyPosition;
     public float knockbackStrength;
     public int staggerStrength;
         
