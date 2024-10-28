@@ -55,13 +55,13 @@ namespace SaveLoadSystem {
             LoadAllDataBinds();
         }
 
-        [ContextMenu(nameof(WriteToNewGameDataCall))]
-        public void WriteToNewGameDataCall() {
+        [ContextMenu(nameof(WriteToNewGameDataSO))]
+        public void WriteToNewGameDataSO() {
             WriteToNewGameData();
         }
 
-        [ContextMenu(nameof(LoadFromNewGameDataCall))]
-        public void LoadFromNewGameDataCall() {
+        [ContextMenu(nameof(LoadFromNewGameDataSO))]
+        public void LoadFromNewGameDataSO() {
             gameData = (SaveGameData)newGameData.gameData.Clone();
         }
 

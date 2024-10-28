@@ -12,52 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: CharactersBlackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 638648669607483246
+  VersionTimestamp: 638656629802065422
   AssetID:
     m_Value0: 15288752459104378572
     m_Value1: 3564932514194951723
   m_Blackboard:
     m_Variables:
-    - rid: 74644067056877664
-    - rid: 74644067056877665
-    - rid: 74644067056877666
-    - rid: 74644067056877667
+    - rid: 74644276656734537
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
     RefIds:
-    - rid: 74644067056877664
-      type: {class: 'BlackboardVariable`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+    - rid: 74644276656734537
+      type: {class: 'BlackboardVariable`1[[DialogueCharacterSO, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
-          m_Value0: 13485905918620395647
-          m_Value1: 17435310099699223674
-        Name: David
+          m_Value0: 16991138425671572874
+          m_Value1: 12658085697146853635
+        Name: New Dialogue Character SO
         m_Value: {fileID: 11400000, guid: 206a9c7f94fa46a4bb93deab729f915c, type: 2}
-    - rid: 74644067056877665
-      type: {class: 'BlackboardVariable`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 17287344005796200022
-          m_Value1: 4454272142127185038
-        Name: Dracula
-        m_Value: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
-    - rid: 74644067056877666
-      type: {class: 'BlackboardVariable`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 11281502307917404426
-          m_Value1: 9342102848994364427
-        Name: Wizard
-        m_Value: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
-    - rid: 74644067056877667
-      type: {class: 'BlackboardVariable`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15056001448151854011
-          m_Value1: 18194400516396341818
-        Name: Drucilla
-        m_Value: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,54 +47,21 @@ MonoBehaviour:
     m_Value0: 15288752459104378572
     m_Value1: 3564932514194951723
   m_Variables:
-  - rid: 5931141251979018783
-  - rid: 5931141251979018784
-  - rid: 5931141277139337404
-  - rid: 5931141277139337408
-  m_VersionTimestamp: 638648669607483246
+  - rid: 74644276656734510
+  m_VersionTimestamp: 638656629802065422
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: -3320641498084860972}
   references:
     version: 2
     RefIds:
-    - rid: 5931141251979018783
-      type: {class: 'TypedVariableModel`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+    - rid: 74644276656734510
+      type: {class: 'TypedVariableModel`1[[DialogueCharacterSO, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
         ID:
-          m_Value0: 13485905918620395647
-          m_Value1: 17435310099699223674
-        Name: David
+          m_Value0: 16991138425671572874
+          m_Value1: 12658085697146853635
+        Name: New Dialogue Character SO
         IsExposed: 1
         m_IsShared: 0
         m_Value: {fileID: 11400000, guid: 206a9c7f94fa46a4bb93deab729f915c, type: 2}
-    - rid: 5931141251979018784
-      type: {class: 'TypedVariableModel`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
-      data:
-        ID:
-          m_Value0: 17287344005796200022
-          m_Value1: 4454272142127185038
-        Name: Dracula
-        IsExposed: 1
-        m_IsShared: 0
-        m_Value: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
-    - rid: 5931141277139337404
-      type: {class: 'TypedVariableModel`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
-      data:
-        ID:
-          m_Value0: 11281502307917404426
-          m_Value1: 9342102848994364427
-        Name: Wizard
-        IsExposed: 1
-        m_IsShared: 0
-        m_Value: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
-    - rid: 5931141277139337408
-      type: {class: 'TypedVariableModel`1[[DialogueCharacter, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
-      data:
-        ID:
-          m_Value0: 15056001448151854011
-          m_Value1: 18194400516396341818
-        Name: Drucilla
-        IsExposed: 1
-        m_IsShared: 0
-        m_Value: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}

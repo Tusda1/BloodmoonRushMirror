@@ -10,11 +10,11 @@ namespace Player {
 
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Player") || !other.TryGetComponent<IDamageable>(out var damageable)) return;
-
-            var direction = (other.transform.position - transform.position).normalized;
-            var cardinalDirection = direction.x > 0 ? Vector2.right : Vector2.left;
-
-            damageInstance.damageDirection.x = cardinalDirection.x;
+            
+            var directionToPlayer = (other.transform.position - transform.position).normalized;
+            var knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
+                
+            damageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * damageInstance.knockbackStrength;
 
             damageable.TakeDamage(damageInstance);
         }

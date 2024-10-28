@@ -11,7 +11,7 @@ public class TestEnemySaveable : MonoBehaviour, IBind<EnemyData> {
     [SerializeField] private int gemsContaining = 5;
 
     #region ***---GameManagers---***
-    private static SaveLoadSystemManager saveLoadSystemManager => SaveLoadSystemManager.Instance;
+    private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
     #endregion
 
     #region ***---DataBindingVariables---***
@@ -21,7 +21,7 @@ public class TestEnemySaveable : MonoBehaviour, IBind<EnemyData> {
 
     [field: SerializeField] public EnemyData saveSystemData { get; set; }
 
-    public EnemyData dataInGameData => saveLoadSystemManager.gameData.enemies.GetOrAddByIdInList(id, new EnemyData {
+    public EnemyData dataInGameData => SaveLoadSystemManager.gameData.enemies.GetOrAddByIdInList(id, new EnemyData {
         id = id,
         health = health,
         gemsContaining = gemsContaining,
@@ -38,7 +38,7 @@ public class TestEnemySaveable : MonoBehaviour, IBind<EnemyData> {
 
     #region ---DataBindingMethods---
     public void Bind() {
-        saveLoadSystemManager.Bind(this, dataInGameData);
+        SaveLoadSystemManager.Bind(this, dataInGameData);
     }
 
 #if UNITY_EDITOR

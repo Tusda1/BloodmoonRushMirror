@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using ExtensionMethods;
 using UnityEngine;
 using Utilities.DataBinding;
 
@@ -16,47 +15,7 @@ namespace SaveLoadSystem.Data {
 
         [SerializeReference] public List<EnemyData> enemies = new();
 
-        public object Clone() => DeepClone(this);
-
-        private IList CloneListByType(IList sourceList, Type targetType) {
-            var clonedList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(targetType));
-            foreach (var item in sourceList) {
-                clonedList.Add(DeepClone((ISaveable)item));
-            }
-            return clonedList;
-        }
-
-        public object DeepClone(object obj) {
-            if (obj == null) return null;
-
-            var clonedObj = obj.GetType()
-                .GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance)
-                ?.Invoke(obj, null);
-
-            var fields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            foreach (var fieldInfo in fields) {
-                var value = fieldInfo.GetValue(obj);
-                if (value == null) continue;
-
-                object clonedValue;
-                switch (value) {
-                    case ISaveable cloneable:
-                        clonedValue = DeepClone(cloneable);
-                        break;
-                    case IList cloneableList when fieldInfo.FieldType.IsGenericType:
-                        var targetType = fieldInfo.FieldType.GetGenericArguments()[0];
-                        clonedValue = CloneListByType(cloneableList, targetType);
-                        break;
-                    default:
-                        clonedValue = value;
-                        break;
-                }
-
-                fieldInfo.SetValue(clonedObj, clonedValue);
-            }
-
-            return clonedObj;
-        }
+        public object Clone() => this.DeepClone();
     }
 
     public static class SaveGameDataExtensions {

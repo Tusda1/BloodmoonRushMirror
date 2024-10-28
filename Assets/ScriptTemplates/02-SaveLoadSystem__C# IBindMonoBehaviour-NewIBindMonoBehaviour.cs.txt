@@ -8,7 +8,7 @@ public class #SCRIPTNAME# : MonoBehaviour, IBind<#SCRIPTNAME#Data> { //Change ty
     #region ---Fields---
 #NOTRIM#
     #region ***---GameManagers---***
-    private static SaveLoadSystemManager saveLoadSystemManager => SaveLoadSystemManager.Instance;
+    private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
     #endregion
 #NOTRIM#
     #region ***---DataBindingVariables---***
@@ -18,7 +18,7 @@ public class #SCRIPTNAME# : MonoBehaviour, IBind<#SCRIPTNAME#Data> { //Change ty
 #NOTRIM#
     [field: SerializeField] public #SCRIPTNAME#Data saveSystemData { get; set; }
 #NOTRIM#
-    public #SCRIPTNAME#Data dataInGameData => saveLoadSystemManager.gameData // Set in where in the gameData the data for this monoBehaviour should be stored 
+    public #SCRIPTNAME#Data dataInGameData => SaveLoadSystemManager.gameData // Set in where in the gameData the data for this monoBehaviour should be stored 
     #endregion
     #endregion
 #NOTRIM#
@@ -30,7 +30,7 @@ public class #SCRIPTNAME# : MonoBehaviour, IBind<#SCRIPTNAME#Data> { //Change ty
 #NOTRIM#
     #region ---DataBindingMethods---
     public void Bind() {
-        saveLoadSystemManager.Bind(this, dataInGameData);
+        SaveLoadSystemManager.Bind(this, dataInGameData);
     }
 #NOTRIM#
 #if UNITY_EDITOR

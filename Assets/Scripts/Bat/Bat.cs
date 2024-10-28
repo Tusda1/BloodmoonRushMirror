@@ -7,22 +7,26 @@ using UnityEngine.Splines;
 
 namespace Bat {
     public class Bat : MonoBehaviour, IDamageable {
-        [Header("Spline Path")] public SplineAnimate splineAnimate;
+        [Header("Spline Path")] 
+        public SplineAnimate splineAnimate;
         [SerializeField] private bool loopOnlyOnce;
 
-        [Header("Jitter")] [SerializeField] private Transform spriteTransform;
+        [Header("Jitter")] 
+        [SerializeField] private Transform spriteTransform;
         [SerializeField] private float yJitter;
         [SerializeField] private float jitterDuration;
 
         [Header("Health And Damage")] [SerializeField]
         private int health = 1;
 
-        [SerializeField] private DamageInstance damageInstance;
+        [SerializeField] private DamageInstance attackDamageInstance = new() {
+            damage = 1
+        };
         [SerializeField] private string takeDamageSfx = "Misc/Generic_impact";
 
         [HideInInspector] public BatSpawner batSpawner;
 
-        private static FmodManager fmodManager => FmodManager.Instance;
+        private static FmodManager FMODManager => FmodManager.Instance;
 
         private void OnEnable() {
             StartCoroutine(Initialize());
@@ -38,7 +42,7 @@ namespace Bat {
 
             var dir = (playerScript.transform.position - transform.position).normalized;
             
-            playerScript.TakeDamage(damageInstance);
+            playerScript.TakeDamage(attackDamageInstance);
         }
 
         private IEnumerator Initialize() {
@@ -65,7 +69,7 @@ namespace Bat {
             if (health == 0) return;
             damageInstance.TriggerOnHitAction();
 
-            fmodManager.PlaySfx(takeDamageSfx);
+            FMODManager.PlaySfx(takeDamageSfx);
             health -= damageInstance.damage;
             if (health > 0) return;
             damageInstance.TriggerOnKillAction();

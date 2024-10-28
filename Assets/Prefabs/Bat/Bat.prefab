@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3477084558353581193}
   - component: {fileID: 1338600803970277736}
   - component: {fileID: 6511151725682864079}
+  - component: {fileID: 4449985280780462753}
   m_Layer: 0
   m_Name: Bat
   m_TagString: Untagged
@@ -52,8 +53,8 @@ MonoBehaviour:
   yJitter: 0
   jitterDuration: 0
   health: 1
-  damageInstance:
-    damage: 0
+  attackDamageInstance:
+    damage: 1
     knockbackStrength: {x: 0, y: 0}
     damageDirection: {x: 0, y: 0}
     staggerStrength: 0
@@ -137,3 +138,39 @@ MonoBehaviour:
   m_ObjectForwardAxis: 2
   m_ObjectUpAxis: 1
   m_StartOffset: 0
+--- !u!58 &4449985280780462753
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4709506457550710183}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.85
