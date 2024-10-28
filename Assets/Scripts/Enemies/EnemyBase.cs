@@ -84,6 +84,7 @@ public class EnemyBase :  GravityObject, IDamageable
     private void Die()
     {
         isDead = true;
+        gameObject.SetActive(false);
         // Play death animation
         // Play death sound
         // Drop loot
