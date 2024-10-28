@@ -45,7 +45,7 @@ namespace Player {
         [Header("Player Can Move")] [SerializeField, Required]
         private AllInFavourConsensusSO playerCanMove;
         private Vector2 knockbackVector;
-        private bool playerMovementEnabled => playerCanMove.consensus;
+        private bool PlayerMovementEnabled => playerCanMove.consensus;
 
         private bool IsValidSpawnPoint()
         {
@@ -92,7 +92,7 @@ namespace Player {
         #endregion
 
         protected override void ComputeVelocity() {
-            if (!playerMovementEnabled) return;
+            if (!PlayerMovementEnabled) return;
             
             if (LadderLogic()) return;
 
@@ -399,7 +399,7 @@ namespace Player {
         }
 
         private void CoyoteTimeLogic() {
-            if (_wasGroundedLastFrame && !isJumping) {
+            if (_wasGroundedLastFrame && !isJumping && !isDashing) {
                 _coyoteTimer.StartTimer();
             }
 

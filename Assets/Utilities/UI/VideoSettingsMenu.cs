@@ -1,24 +1,20 @@
 using Attributes;
 using Consensus;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Utilities.UI.DisplaySettings;
 
 namespace Utilities.UI {
     public class VideoSettingsMenu : MonoBehaviour {
-        [Header("Settings UI Document")]
-        [SerializeField] private UIDocument settingsUiDocument;
+        #region ---Fields---
+        [GetOrAddComponent] private UIDocument _settingsUiDocument;
 
-        [FormerlySerializedAs("fullScreenModeScrub")]
-        [Header("Display Settings Data")] 
-        [SerializeField] private FullScreenModeSO fullScreenModeSo;
-        
-        [FormerlySerializedAs("aspectRatioResolutionsScrub")] [SerializeField] private AspectRatioResolutionsSO aspectRatioResolutionsSo;
+        [Header("Display Settings Data")]
+        [SerializeField, Required] private FullScreenModeSO fullScreenModeSo;
+        [SerializeField, Required] private AspectRatioResolutionsSO aspectRatioResolutionsSo;
 
-        [Header("Scrub Global Data")]
-        [SerializeField] private AtLeastOneInFavourConsensusSO hasMadeChangeThatRequiresRestart;
-        private readonly ScriptVotePair _displaySettingChanged = new();
+        [Header("Scrub Global Data")] 
+        [SerializeField, Required] private AtLeastOneInFavourConsensusSO hasMadeChangeThatRequiresRestart;
 
         [Header("Debug Logger")] 
         [SerializeField, Required] private DebugLoggerSO debugLogger;
@@ -30,12 +26,15 @@ namespace Utilities.UI {
         private Toggle _vsyncToggle;
         private SliderInt _fpsLimitSlider;
 
+        private readonly ScriptVotePair _displaySettingChanged = new();
+
         private int _currentDisplay;
+        #endregion
 
         private void Awake() {
             debugLogger.messageOrigin = this;
 
-            var settingsRoot = settingsUiDocument.rootVisualElement;
+            var settingsRoot = _settingsUiDocument.rootVisualElement;
 
             _screenModeDropdownMenu = settingsRoot.Q<DropdownField>("ScreenModeSelectDropdown");
             _displayDropdownMenu = settingsRoot.Q<DropdownField>("DisplaySelectDropdown");

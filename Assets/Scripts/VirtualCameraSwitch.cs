@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Attributes;
 using Player;
@@ -6,6 +5,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 
 public class VirtualCameraSwitch : MonoBehaviour {
+    #region ---Fields---
     [SerializeField] private CinemachineBrain cinemachineBrain;
     [SerializeField, Required] private CinemachineCamera cinemachineCamera;
     [SerializeField, Required] private GameObject areaGameObjects;
@@ -15,6 +15,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
 
     private bool _isDeactivating;
     private static int _priority;
+    #endregion
 
     private void Awake() {
         isActiveRoom = cinemachineCamera.Priority > 0;
