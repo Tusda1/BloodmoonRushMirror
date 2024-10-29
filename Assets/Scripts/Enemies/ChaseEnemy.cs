@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Pathfinding;
 
 public class ChaseEnemy : ReactiveBase
