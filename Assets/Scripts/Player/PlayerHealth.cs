@@ -27,7 +27,7 @@ namespace Player {
 #endif
 
         public override void TakeDamage(int amount) {
-            if (_hasInvincibilityFrames) return;
+            if (HasInvincibilityFrames) return;
 
             var tempHealthIfSubtracted = TempHealth - amount;
 

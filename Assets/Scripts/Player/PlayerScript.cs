@@ -86,7 +86,7 @@ namespace Player {
         }
 
         private void Start() {
-            Bind();
+            // Bind();
 
             healthComponent.OnDeath += () => StartCoroutine(Die());
         }
