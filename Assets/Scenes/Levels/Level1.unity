@@ -334,16 +334,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1766183112093479742, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
     - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: canDash
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: maxSpeed
       value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: jumpForce
-      value: 19
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: coyoteTime
-      value: 3.48
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: isGrounded
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: boxCollider
@@ -376,6 +384,14 @@ PrefabInstance:
     - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: knockbackVector.y
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: isActuallyGrounded
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: whatIsGround.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: whatIsInvalidSpawnPoint.m_Bits
