@@ -105,15 +105,15 @@ MonoBehaviour:
   isGrounded: 0
   lockToAxis: 0
   faceLeftOnStart: 0
-  moveSpeed: 1
-  maxHealth: 0
-  damageInstance:
-    damage: 0
+  moveSpeed: 5
+  maxHealth: 2
+  enemyDamageInstance:
+    damage: 1
     knockback: {x: 0, y: 0}
     knockbackStrength: 0
     staggerStrength: 0
   weight: 0
-  rubyDropAmount: 3
+  rubyDropAmount: 1
 --- !u!61 &5382585622787063819
 BoxCollider2D:
   m_ObjectHideFlags: 0
