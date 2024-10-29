@@ -11,8 +11,9 @@ using UnityEngine.InputSystem;
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
         #region ---Fields---
-        [Header("Player Movement")]
-        [SerializeField, ReadOnly] private Vector2 inputVector;
+        [Header("Player Movement")] [SerializeField, ReadOnly]
+        private Vector2 inputVector;
+
         public bool isDucking;
         public bool isHoldingDuck;
         public bool isFacingRight = true;
@@ -37,6 +38,8 @@ namespace Player {
         [SerializeField] private float jumpBufferTime;
         [SerializeField] private float gravityMultiplier;
         [SerializeField] private float fallSpeed;
+        [SerializeField] private LayerMask whatIsGround;
+        [SerializeField] private bool isActuallyGrounded;
 
         [Header("Knockback")] public bool isKnockbacked;
         [SerializeField] private float knockBackTime;
@@ -44,27 +47,9 @@ namespace Player {
 
         [Header("Player Can Move")] [SerializeField, Required]
         private AllInFavourConsensusSO playerCanMove;
+
         private Vector2 knockbackVector;
         private bool PlayerMovementEnabled => playerCanMove.consensus;
-
-        private bool IsValidSpawnPoint()
-        {
-            var quantizedPosition = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .4f);
-            Collider[] hitColliders = Physics.OverlapBox(quantizedPosition, transform.localScale, Quaternion.identity, whatIsInvalidSpawnPoint);
-            int i = 0;
-            while (i < hitColliders.Length)
-            {
-                if (hitColliders[i].CompareTag("Hazard"))
-                {
-                    return false;
-                }
-                i++;
-            }
-            RaycastHit2D hit = Physics2D.Raycast(quantizedPosition, Vector2.down, .5f);
-            if (hit.collider != null && !hit.collider.CompareTag("Hazard") && hit.collider.CompareTag("Ground"))
-                return true;
-            return false;
-        }
 
         [Header("Debug Logger")] [SerializeField, Required]
         private DebugLoggerSO debugLogger;
@@ -93,8 +78,11 @@ namespace Player {
 
         protected override void ComputeVelocity() {
             if (!PlayerMovementEnabled) return;
-            
+
             if (LadderLogic()) return;
+
+            GroundCheck();
+            isActuallyGrounded = isGrounded;
 
             CoyoteTimeLogic();
 
@@ -111,10 +99,10 @@ namespace Player {
 
             move.x = inputVector.x;
 
-            if (isGrounded && isJumping) {
-                velocity.y = jumpForce;
-            }
-            else if (doubleJumping && isJumping) {
+            // if (isGrounded && isJumping) {
+            //     velocity.y = jumpForce;
+            // } else
+            if (doubleJumping && isJumping) {
                 ResetMovement(2);
                 isDashing = false;
                 velocity.y = jumpForce;
@@ -124,6 +112,9 @@ namespace Player {
                 if (velocity.y > 0)
                     velocity.y *= fallSpeed;
             }
+            else if (isJumping) {
+                velocity.y = jumpForce;
+            }
 
             if (isDashing) {
                 targetVelocity.x = dashForce;
@@ -131,7 +122,6 @@ namespace Player {
                     ref _referenceSmoothVelocity, smoothTime);
             }
             else {
-
                 if (isHoldingDuck && !isJumping && !isDucking && isGrounded) {
                     EnterDuck();
                 }
@@ -140,8 +130,11 @@ namespace Player {
                 }
 
                 if (isDucking) {
-                    if (inputVector.x > 0.01f) isFacingRight = true;
-                    else if (inputVector.x < -0.01f) isFacingRight = false;
+                    isFacingRight = inputVector.x switch {
+                        > 0.01f => true,
+                        < -0.01f => false,
+                        _ => isFacingRight
+                    };
                     move = Vector2.zero;
                 }
 
@@ -149,22 +142,47 @@ namespace Player {
 
                 targetVelocity = _smoothMovement * maxSpeed;
 
-                if (_smoothMovement.x > 0.01f) isFacingRight = true;
-                else if (_smoothMovement.x < -0.01f) isFacingRight = false;
+                isFacingRight = _smoothMovement.x switch {
+                    > 0.01f => true,
+                    < -0.01f => false,
+                    _ => isFacingRight
+                };
             }
 
             if (Mathf.Abs(velocity.x) < 0.01f) {
                 _smoothMovement.x = 0;
             }
-            
+
             if (isGrounded) {
                 if (!isDashing) canDash = true;
                 killCharges = 0;
             }
-            
-            if (isGrounded && IsValidSpawnPoint()) _lastSpikePoint = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .4f);
-            
-            _wasGroundedLastFrame = isGrounded;
+
+            if (isGrounded && IsValidSpawnPoint())
+                _lastSpikePoint = new Vector2(Mathf.Round(transform.position.x),
+                    Mathf.Round(transform.position.y) - 0.4f);
+
+            _wasGroundedLastFrame = isActuallyGrounded;
+        }
+
+        private bool IsValidSpawnPoint() {
+            var quantizedPosition =
+                new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .4f);
+            var hitColliders = Physics.OverlapBox(quantizedPosition, transform.localScale, 
+                Quaternion.identity, whatIsInvalidSpawnPoint);
+            var i = 0;
+            while (i < hitColliders.Length) {
+                if (hitColliders[i].CompareTag("Hazard")) {
+                    return false;
+                }
+
+                i++;
+            }
+
+            RaycastHit2D hit = Physics2D.Raycast(quantizedPosition, Vector2.down, .5f);
+            if (hit.collider != null && !hit.collider.CompareTag("Hazard") && hit.collider.CompareTag("Ground"))
+                return true;
+            return false;
         }
 
         #region ---EventFunctions---
@@ -172,9 +190,11 @@ namespace Player {
             if (context.performed) {
                 isHoldingJump = true;
                 ForceExitDuck();
+                Debug.Log(string.Join('|', isGrounded, isActuallyGrounded, _coyoteTimer.IsRunning));
                 if (isGrounded || killCharges > 0) {
                     isJumping = true;
                     _minJumpTimer.StartTimer();
+                    _coyoteTimer.StopTimer();
 
                     if (killCharges > 0) {
                         doubleJumping = true;
@@ -199,6 +219,8 @@ namespace Player {
         public void Dash(InputAction.CallbackContext context) {
             if (!context.performed) return;
             if (isDashing || !canDash) {
+                _coyoteTimer.StopTimer();
+
                 if (killCharges > 0) {
                     killCharges--;
                 }
@@ -279,7 +301,6 @@ namespace Player {
         }
 
         public void Knockback(Vector2 argumentKnockback) {
-
             isKnockbacked = true;
 
             _knockbackTimer.StartTimer();
@@ -287,8 +308,7 @@ namespace Player {
             knockbackVector = argumentKnockback;
         }
 
-        public void SpikeReset()
-        {
+        public void SpikeReset() {
             gameObject.transform.position = _lastSpikePoint;
             ResetMovement(0);
             isDashing = false;
@@ -323,12 +343,6 @@ namespace Player {
             isKnockbacked = false;
         }
 
-        private void CoyoteCheck() {
-            if (isGrounded || isJumping) {
-                _coyoteTimer.StopTimer();
-            }
-        }
-
         private void InitializeTimers() {
             _dashTimer = new CountdownTimer(dashTime);
             _dashTimer.OnComplete += CompleteDash;
@@ -344,7 +358,6 @@ namespace Player {
             _knockbackTimer.OnComplete += FinishKnockBack;
 
             _coyoteTimer = new CountdownTimer(coyoteTime);
-            _coyoteTimer.OnUpdate += CoyoteCheck;
         }
 
         private void OnValidate() {
@@ -386,6 +399,7 @@ namespace Player {
                         _ladder.LadderIsUsed = false;
                         _ladder = null;
                     }
+
                     _notClimbing = false;
                 }
                 else {
@@ -399,16 +413,14 @@ namespace Player {
         }
 
         private void CoyoteTimeLogic() {
-            if (_wasGroundedLastFrame && !isGrounded && !isJumping && !isDashing) {
-                _coyoteTimer.StartTimer();
+            if (!isActuallyGrounded && _wasGroundedLastFrame && !isJumping && !isDashing) {
+                Debug.Log("Start coyote timer");
+                _coyoteTimer.RestartTimer();
             }
 
-            if (isJumping) {
-                _coyoteTimer.StopTimer();
-            }
-
-            if (isGrounded == false) {
-                isGrounded = _coyoteTimer.TimerRunning;
+            if (_coyoteTimer.IsRunning) {
+                Debug.Log("Timer running");
+                isGrounded = true;
             }
         }
 
@@ -434,6 +446,10 @@ namespace Player {
             }
 
             return ladder;
+        }
+
+        private void GroundCheck() {
+            isGrounded = Physics2D.OverlapBox(transform.position, new Vector2(0.5f, 0.01f), 0, whatIsGround);
         }
     }
 }
