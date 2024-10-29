@@ -13,6 +13,8 @@ public class EnemyBase :  GravityObject, IDamageable
     protected Vector2 facingDirection;
     protected Collider2D boxCollider;
     private GameObject _rubyPrefab;
+    private Material _whiteMaterial;
+    private Material _defaultMaterial;
 
     [SerializeField] private bool faceLeftOnStart;
     [SerializeField] protected float moveSpeed;
@@ -34,6 +36,8 @@ public class EnemyBase :  GravityObject, IDamageable
         
         boxCollider = GetComponent<Collider2D>();
         _rubyPrefab = Resources.Load<GameObject>("Prefabs/Ruby");
+        _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
+        _defaultMaterial = GetComponent<SpriteRenderer>().material;
     }
 
     private void OnDisable()
@@ -43,7 +47,14 @@ public class EnemyBase :  GravityObject, IDamageable
 
     public void TakeDamage(DamageInstance damageInstance)
     {
-        if (!isVulnerable) { return; }
+        currentHealth -= damageInstance.damage;
+        
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+
+        StartCoroutine(FlashWhite());
         
         // Play hit animation
         // Play hit sound
@@ -55,13 +66,15 @@ public class EnemyBase :  GravityObject, IDamageable
         {
             StartCoroutine(Knockback(damageInstance.knockback));
         }
-        
-        currentHealth -= damageInstance.damage;
-        
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+    }
+    
+    private IEnumerator FlashWhite()
+    {
+        // Flash white
+        GetComponent<SpriteRenderer>().material = _whiteMaterial;
+        yield return new WaitForSeconds(0.1f);
+        // Return to normal
+        GetComponent<SpriteRenderer>().material = _defaultMaterial;
     }
     
     private IEnumerator KnockUp(Vector2 knockbackStrength)
