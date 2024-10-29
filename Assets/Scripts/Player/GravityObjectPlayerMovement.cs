@@ -68,13 +68,13 @@ namespace Player {
         private Ladder _ladder;
         private bool _notClimbing;
         #endregion
+        #endregion
 
         private new void Start() {
             GravityModifier = gravityMultiplier;
 
             InitializeTimers();
         }
-        #endregion
 
         protected override void ComputeVelocity() {
             if (!PlayerMovementEnabled) return;
