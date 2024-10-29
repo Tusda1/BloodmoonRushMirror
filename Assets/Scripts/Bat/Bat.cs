@@ -69,14 +69,14 @@ namespace Bat {
             batSpawner.DespawnBat(this);
         }
 
-        public void TakeDamage(DamageInstance enemyDamageInstance) {
+        public void TakeDamage(DamageInstance damageInstance) {
             if (health == 0) return;
-            enemyDamageInstance.TriggerOnHitAction();
+            damageInstance.TriggerOnHitAction();
 
             FMODManager.PlaySfx(takeDamageSfx);
-            health -= enemyDamageInstance.damage;
+            health -= damageInstance.damage;
             if (health > 0) return;
-            enemyDamageInstance.TriggerOnKillAction();
+            damageInstance.TriggerOnKillAction();
 
             batSpawner.DespawnBat(this);
         }
