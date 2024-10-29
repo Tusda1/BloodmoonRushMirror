@@ -4,6 +4,8 @@ public class SpitterEnemy : ReactiveBase
 {
     [SerializeField] private float detectionDistance = 20f;
     [SerializeField] private float projectileSpeed = 10f;
+    [SerializeField] private float projectileCooldown = 2f;
+    [SerializeField] private float cooldownTimer;
     
     private GameObject _projectilePrefab;
     private Transform _player;
@@ -37,6 +39,20 @@ public class SpitterEnemy : ReactiveBase
             return;
         }
         
+        // check if the cooldown has passed
+        if (cooldownTimer <= 0)
+        {
+            ShootProjectile();
+            cooldownTimer = projectileCooldown;
+        }
+        else
+        {
+            cooldownTimer -= Time.deltaTime;
+        }
+    }
+    
+    private void ShootProjectile()
+    {
         // Shoot a projectile in the facingdirection. Spawn it so that it is outside of the collider of the spitter
         GameObject projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity);
         projectile.GetComponent<Rigidbody2D>().linearVelocity = facingDirection * projectileSpeed;

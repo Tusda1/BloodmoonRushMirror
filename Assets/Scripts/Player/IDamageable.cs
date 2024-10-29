@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 public interface IDamageable {
-    void TakeDamage(DamageInstance damageInstance);
+    void TakeDamage(DamageInstance enemyDamageInstance);
 }
 
 [Serializable] public class DamageInstance {

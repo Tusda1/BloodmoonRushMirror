@@ -24,7 +24,7 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
             .SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
     }
 
-    public void TakeDamage(DamageInstance damageInstance) {
+    public void TakeDamage(DamageInstance enemyDamageInstance) {
         var dialogueVariables = bossDialogue.BlackboardReference.Blackboard.Variables;
         dialogueVariables.Find(x => x.Type == typeof(DrucillaFirstEncounter)).ObjectValue = this;
         dialogueVariables.Find(x => x.Type == typeof(Animator)).ObjectValue = _animator;

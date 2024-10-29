@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6440413847570242210}
   - component: {fileID: 6882286261496487952}
   - component: {fileID: 2665933494494703752}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,6 +107,7 @@ MonoBehaviour:
     knockback: {x: 0, y: 0}
     knockbackStrength: 1
     staggerStrength: 0
+  shooter: {fileID: 0}
 --- !u!58 &6882286261496487952
 CircleCollider2D:
   m_ObjectHideFlags: 0

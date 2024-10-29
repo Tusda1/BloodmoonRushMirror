@@ -155,12 +155,12 @@ namespace Player {
             isAttacking = false;
         }
 
-        public void TakeDamage(DamageInstance damageInstance) {
+        public void TakeDamage(DamageInstance enemyDamageInstance) {
             if (_isDead) return;
 
-            damageInstance.TriggerOnHitAction();
-            healthComponent.TakeDamage(damageInstance.damage);
-            debugLogger.Log($"Taking Damage: {damageInstance.damage}");
+            enemyDamageInstance.TriggerOnHitAction();
+            healthComponent.TakeDamage(enemyDamageInstance.damage);
+            debugLogger.Log($"Taking Damage: {enemyDamageInstance.damage}");
             //_animator.SetTrigger(AnimatorTakeDamageTrigger);
         }
 

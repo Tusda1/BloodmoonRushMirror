@@ -40,22 +40,22 @@ public class EnemyBase :  GravityObject, IDamageable
         StopAllCoroutines();
     }
 
-    public void TakeDamage(DamageInstance damageInstance)
+    public void TakeDamage(DamageInstance enemyDamageInstance)
     {
         if (!isVulnerable) { return; }
         
         // Play hit animation
         // Play hit sound
-        if (damageInstance.knockback.normalized == Vector2.up)
+        if (enemyDamageInstance.knockback.normalized == Vector2.up)
         {
-            StartCoroutine(KnockUp(damageInstance.knockback));
+            StartCoroutine(KnockUp(enemyDamageInstance.knockback));
         }
         else
         {
-            StartCoroutine(Knockback(damageInstance.knockback));
+            StartCoroutine(Knockback(enemyDamageInstance.knockback));
         }
         
-        currentHealth -= damageInstance.damage;
+        currentHealth -= enemyDamageInstance.damage;
         
         if (currentHealth <= 0)
         {
