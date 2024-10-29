@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 
@@ -17,7 +18,7 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected float maxHealth;
     protected float currentHealth;
-    [SerializeField] private DamageInstance damageInstance;
+    [SerializeField] private DamageInstance enemyDamageInstance;
     [SerializeField] protected float weight;
     [SerializeField] protected int rubyDropAmount = 3;
     
@@ -139,8 +140,8 @@ public class EnemyBase :  GravityObject, IDamageable
                 Vector2 directionToPlayer = (other.transform.position - transform.position).normalized;
                 Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
                 
-                damageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * damageInstance.knockbackStrength;
-                player.TakeDamage(damageInstance);
+                enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * enemyDamageInstance.knockbackStrength;
+                player.TakeDamage(enemyDamageInstance);
             }
         }
     }
