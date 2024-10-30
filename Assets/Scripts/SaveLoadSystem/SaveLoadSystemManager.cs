@@ -16,7 +16,8 @@ namespace SaveLoadSystem {
 
         private IEnumerator Start() {
             yield return null;
-
+            
+            SaveAllDataBinds();
             LoadAllDataBinds();
         }
 

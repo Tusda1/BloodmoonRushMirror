@@ -15,14 +15,15 @@ using Utilities.DataBinding;
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {
         #region ---Fields---
-        [GetOrAddComponent, HideInInspector] public PlayerHealth healthComponent;
-        [GetOrAddComponent] private GravityObjectPlayerMovement _playerMovement;
-        [GetOrAddComponent] private Animator _animator;
+         public PlayerHealth healthComponent;
+        [SerializeField] private GravityObjectPlayerMovement _playerMovement;
+        [SerializeField] private Animator _animator;
 
         [Header("Player")] public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         public Vector3 lastGroundedPosition;
+        [SerializeField] private PlayerHitbox hitbox;
 
         private bool _isDead;
         private bool _canAttack = true;
@@ -85,10 +86,14 @@ namespace Player {
             debugLogger.messageOrigin = this;
         }
 
-        private void Start() {
+        private IEnumerator Start() {
             // Bind();
 
             healthComponent.OnDeath += () => StartCoroutine(Die());
+
+            yield return null;
+            
+            SetStateBehavioursReferences();
         }
 
         private void OnDestroy() {
@@ -132,7 +137,7 @@ namespace Player {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
 
-            _animator.SetBool(AnimatorIsAttackingBool, true);
+            _animator.SetTrigger(AnimatorIsAttackingBool);
             FMODManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
@@ -151,7 +156,6 @@ namespace Player {
         public void AttackFinished() {
             debugLogger.Log("Attack finished");
             _canAttack = true;
-            _animator.SetBool(AnimatorIsAttackingBool, false);
             isAttacking = false;
         }
 
@@ -228,6 +232,12 @@ namespace Player {
 
         private Collider2D InteractCheck() {
             return Physics2D.OverlapBox(transform.position, transform.localScale, 0, whatIsInteractable);
+        }
+
+        private void SetStateBehavioursReferences() {
+            foreach (var playerAttackBehaviour in _animator.GetBehaviours<PlayerAttackBehaviour>()) {
+                playerAttackBehaviour.hitbox = hitbox;
+            }
         }
 
         #region ---DataBindingMethods---

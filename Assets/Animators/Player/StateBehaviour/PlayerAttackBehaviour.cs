@@ -1,12 +1,12 @@
-using Gaskellgames;
 using Player;
 using UnityEngine;
 
 public class PlayerAttackBehaviour : StateMachineBehaviour {
-    [ReadOnly] public PlayerHitbox hitbox;
+    public PlayerHitbox hitbox;
     public DamageInstance damageInstance;
-    
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        hitbox = ServiceLocator.Get<PlayerHitbox>();
         damageInstance.OnHitAction += hitbox.TriggerOnHitAction;
         damageInstance.OnKillAction += hitbox.TriggerOnKillAction;
         hitbox.damageInstance = damageInstance;
