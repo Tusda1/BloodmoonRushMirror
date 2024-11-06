@@ -10,7 +10,16 @@ public class Skeleton : ReactiveBase
     
     protected override void Scan()
     {
+        //Send a ray to the right
         RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition() + Vector2.up, facingDirection, detectionDistance, LayerMask.GetMask("Player"));
+        if (hit.collider != null)
+        {
+            currentState = EnemyState.Moving;
+            _agroOject = hit.transform;
+        }
+        
+        //Send a ray to the left
+        hit = Physics2D.Raycast(GetBottomPosition() + Vector2.up, -facingDirection, detectionDistance, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
             currentState = EnemyState.Moving;
