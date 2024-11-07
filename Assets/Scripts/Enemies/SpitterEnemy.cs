@@ -52,6 +52,7 @@ public class SpitterEnemy : ReactiveBase
     
     private void ShootProjectile()
     {
+        print("spawned projectile");
         // Shoot a projectile in the facingdirection. Spawn it so that it is outside of the collider of the spitter
         GameObject projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity);
         projectile.GetComponent<Rigidbody2D>().linearVelocity = facingDirection * projectileSpeed;

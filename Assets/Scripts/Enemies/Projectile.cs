@@ -8,8 +8,9 @@ public class Projectile : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if (other.gameObject == shooter) return; 
         
+        if (other.gameObject == shooter) return; 
+        print(other.name);
         if (!other.TryGetComponent<IDamageable>(out var damageable)) {Destroy(gameObject); return; }
         
         // set the knockback direction based on the velocity of the projectile
