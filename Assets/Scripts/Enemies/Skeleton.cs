@@ -14,7 +14,7 @@ public class Skeleton : ReactiveBase
         RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition() + Vector2.up, facingDirection, detectionDistance, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
-            currentState = EnemyState.Moving;
+            currentState = EnemyState.Action;
             _agroOject = hit.transform;
         }
         
@@ -22,7 +22,7 @@ public class Skeleton : ReactiveBase
         hit = Physics2D.Raycast(GetBottomPosition() + Vector2.up, -facingDirection, detectionDistance, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
-            currentState = EnemyState.Moving;
+            currentState = EnemyState.Action;
             _agroOject = hit.transform;
         }
     }

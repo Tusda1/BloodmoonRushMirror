@@ -32,7 +32,7 @@ public class ChaseEnemy : ReactiveBase
         {
             // Return the direction to the player
             _agroObject = hitClose.gameObject;
-            currentState = EnemyState.Moving;
+            currentState = EnemyState.Action;
         }
     }
 

@@ -47,7 +47,7 @@ public class Ghoul : ReactiveBase
         {
             // Return the direction to the player
             facingDirection = (hitClose.transform.position.x > transform.position.x) ? Vector2.right : Vector2.left;
-            currentState = EnemyState.Moving;
+            currentState = EnemyState.Action;
             return;
         }
 
@@ -57,7 +57,7 @@ public class Ghoul : ReactiveBase
         {
             // Return the direction to the player
             facingDirection = Vector2.right;
-            currentState = EnemyState.Moving;
+            currentState = EnemyState.Action;
             return;
         }
 
@@ -67,7 +67,7 @@ public class Ghoul : ReactiveBase
         {
             // Return the direction to the player
             facingDirection = Vector2.left;
-            currentState = EnemyState.Moving;
+            currentState = EnemyState.Action;
         }
     }
 }

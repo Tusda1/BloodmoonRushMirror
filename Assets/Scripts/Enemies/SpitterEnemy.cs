@@ -24,8 +24,7 @@ public class SpitterEnemy : ReactiveBase
         if (player != null)
         {
             // Set the direction to the player
-            facingDirection = (player.transform.position.x > transform.position.x) ? Vector2.right : Vector2.left;
-            currentState = EnemyState.Moving;
+            currentState = EnemyState.Action;
             _player = player.transform;
         }
     }

@@ -5,7 +5,7 @@ public class ReactiveBase : EnemyBase
     protected enum EnemyState
     {
         Scanning,
-        Moving
+        Action
     }
     
     protected EnemyState currentState = EnemyState.Scanning;
@@ -24,7 +24,7 @@ public class ReactiveBase : EnemyBase
                 Scan();
                 break;
 
-            case EnemyState.Moving:
+            case EnemyState.Action:
                 
                 Action();
                 break;
