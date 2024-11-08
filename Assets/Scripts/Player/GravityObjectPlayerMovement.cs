@@ -158,7 +158,7 @@ namespace Player {
                 killCharges = 0;
             }
 
-            if (isGrounded && IsValidSpawnPoint())
+            if (isActuallyGrounded && IsValidSpawnPoint())
                 _lastSpikePoint = new Vector2(Mathf.Round(transform.position.x),
                     Mathf.Round(transform.position.y) - 0.4f);
 
@@ -167,7 +167,7 @@ namespace Player {
 
         private bool IsValidSpawnPoint() {
             var quantizedPosition =
-                new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .4f);
+                new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .3f);
             var hitColliders = Physics.OverlapBox(quantizedPosition, transform.localScale, 
                 Quaternion.identity, whatIsInvalidSpawnPoint);
             var i = 0;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SpikeScript : MonoBehaviour
 {
-    [GetOrAddComponent] BoxCollider2D spikeCollider;
+    [SerializeField] private CompositeCollider2D spikeCollider;
     [SerializeField] private DamageInstance spikeDamageInstance;
 
     private void OnTriggerEnter2D(Collider2D other)
