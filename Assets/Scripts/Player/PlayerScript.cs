@@ -15,9 +15,9 @@ using Utilities.DataBinding;
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {
         #region ---Fields---
-        [GetOrAddComponent, HideInInspector] public PlayerHealth healthComponent;
-        [GetOrAddComponent] private GravityObjectPlayerMovement _playerMovement;
-        [GetOrAddComponent] private Animator _animator;
+        [SerializeField] public PlayerHealth healthComponent;
+        [SerializeField] private GravityObjectPlayerMovement _playerMovement;
+        [SerializeField] private Animator _animator;
 
         [Header("Player")] public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;

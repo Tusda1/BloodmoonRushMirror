@@ -126,7 +126,7 @@ namespace Player {
                     ref _referenceSmoothVelocity, smoothTime);
             }
             else {
-                if (isHoldingDuck && !isJumping && !isDucking && isGrounded) {
+                if (isHoldingDuck && !isJumping && !isDucking && isActuallyGrounded) {
                     EnterDuck();
                 }
                 else if (isDucking && !isHoldingDuck) {
@@ -148,15 +148,16 @@ namespace Player {
 
                 if (!player.isAttacking)
                 {
+                    var transformLocalScale = transform.localScale;
                     switch (_smoothMovement.x)
                     {
                         case > 0.01f:
                             isFacingRight = true;
-                            transform.localScale = new Vector3(1, 1, 1);
+                            transform.localScale = transformLocalScale.With(1);
                             break;
                         case < -0.01f:
                             isFacingRight = false;
-                            transform.localScale = new Vector3(-1, 1, 1);
+                            transform.localScale = transformLocalScale.With(-1);
                             break;
                     }
                 }
@@ -311,6 +312,7 @@ namespace Player {
             isDucking = true;
             //boxCollider.size = new Vector2(boxCollider.size.x, 2);
             gameObject.transform.localScale = new Vector3(1.5f, .5f, 1); //TEST
+            debugLogger.Log("Changed player scale down");
         }
 
         public void Knockback(Vector2 argumentKnockback) {
