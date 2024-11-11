@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour 
+public class Projectile : MonoBehaviour, IDamageable
 {
     [SerializeField] private DamageInstance damageInstance;
     
@@ -19,6 +19,11 @@ public class Projectile : MonoBehaviour
         
         damageable.TakeDamage(damageInstance);
         
+        Destroy(gameObject);
+    }
+    
+    public void TakeDamage(DamageInstance damageInstance)
+    {
         Destroy(gameObject);
     }
 }

@@ -66,6 +66,7 @@ public class EnemyBase :  GravityObject, IDamageable
 
         StartCoroutine(FlashWhite());
         
+        print(damageInstance.knockback);
         // Play hit animation
         // Play hit sound
         if (damageInstance.knockback.normalized == Vector2.up)

@@ -1,22 +1,29 @@
 using System.Collections;
 using UnityEngine;
+using Player;
 
 public class DraculaScript : GravityObject
 {
     private GameObject _pingPongCircle;
     private Coroutine _currentAttack;
+    private GameObject _player;
     
     private void Start()
     {
         _pingPongCircle = Resources.Load<GameObject>("Prefabs/PingPongCircle");
         
         _currentAttack = StartCoroutine(PingPongAttack());
+        
+        _player = ServiceLocator.Get<PlayerScript>().gameObject;
     }
 
     private IEnumerator PingPongAttack()
     {
         // Spawn ping pong circle and send it to the player
         GameObject pingPongCircle = Instantiate(_pingPongCircle, transform.position, Quaternion.identity);
+        // send the circle in the x direction of the player with no y movement
+        Vector2 direction = (_player.transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
+        pingPongCircle.GetComponent<Rigidbody2D>().linearVelocity = direction * 5;
         
         yield return null;
     }
