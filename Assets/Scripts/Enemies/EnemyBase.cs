@@ -22,6 +22,7 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] protected float maxHealth;
     protected float currentHealth;
     [SerializeField] private float invulnerableTime = 0.5f;
+    [SerializeField] private float knockbackDuration = 0.1f;
     [SerializeField] private DamageInstance enemyDamageInstance;
     [SerializeField] protected float weight;
     [SerializeField] protected int rubyDropAmount = 3;
@@ -67,7 +68,6 @@ public class EnemyBase :  GravityObject, IDamageable
         StartCoroutine(FlashWhite());
         
         print(damageInstance.knockback);
-        Vector2 temp = Vector2.left * 5;
         // Play hit animation
         // Play hit sound
         if (damageInstance.knockback.normalized == Vector2.up)
@@ -76,7 +76,7 @@ public class EnemyBase :  GravityObject, IDamageable
         }
         else
         {
-            StartCoroutine(Knockback(temp));
+            StartCoroutine(Knockback(damageInstance.knockback));
         }
     }
     
@@ -104,12 +104,13 @@ public class EnemyBase :  GravityObject, IDamageable
     private IEnumerator Knockback(Vector2 knockbackStrength)
     {
         isStunned = true;
-        print(velocity.x);
-        targetVelocity.x = knockbackStrength.magnitude * knockbackStrength.normalized.x / weight;
-        print(velocity.x);
-        while (velocity.x != 0)
+        float knockbackVelocity = knockbackStrength.magnitude * knockbackStrength.normalized.x / weight;
+        float timer = 0f;
+        while (timer < knockbackDuration)
         {
-            targetVelocity.x = Mathf.MoveTowards(velocity.x, 0, 0.1f);
+            velocity.y = 1f;
+            targetVelocity.x = knockbackVelocity;
+            timer += Time.deltaTime;
             yield return null;
         }
         isStunned = false;
