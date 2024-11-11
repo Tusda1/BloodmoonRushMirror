@@ -104,12 +104,11 @@ public class EnemyBase :  GravityObject, IDamageable
     private IEnumerator Knockback(Vector2 knockbackStrength)
     {
         isStunned = true;
-        float knockbackVelocity = knockbackStrength.magnitude * knockbackStrength.normalized.x / weight;
+        Vector2 knockbackVelocity = knockbackStrength.magnitude * knockbackStrength.normalized / weight;
         float timer = 0f;
         while (timer < knockbackDuration)
         {
-            velocity.y = 1f;
-            targetVelocity.x = knockbackVelocity;
+            targetVelocity = knockbackVelocity;
             timer += Time.deltaTime;
             yield return null;
         }
