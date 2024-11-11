@@ -10,6 +10,7 @@ public class EnemyBase :  GravityObject, IDamageable
     protected bool isDead;
     protected bool isVulnerable;
     protected bool isStunned;
+    private float _takeDamageTimer;
     protected Vector2 facingDirection;
     protected Collider2D boxCollider;
     private GameObject _rubyPrefab;
@@ -20,6 +21,7 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected float maxHealth;
     protected float currentHealth;
+    [SerializeField] private float invulnerableTime = 0.5f;
     [SerializeField] private DamageInstance enemyDamageInstance;
     [SerializeField] protected float weight;
     [SerializeField] protected int rubyDropAmount = 3;
@@ -29,6 +31,8 @@ public class EnemyBase :  GravityObject, IDamageable
     protected new void Start()
     {
         base.Start();
+        
+        currentHealth = maxHealth;
         
         facingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
         
@@ -47,6 +51,12 @@ public class EnemyBase :  GravityObject, IDamageable
 
     public void TakeDamage(DamageInstance damageInstance)
     {
+        if (Time.time - _takeDamageTimer < invulnerableTime)
+        {
+            return;
+        }
+        _takeDamageTimer = Time.time;
+        
         currentHealth -= damageInstance.damage;
         
         if (currentHealth <= 0)

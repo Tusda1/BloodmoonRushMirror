@@ -1,4 +1,6 @@
+using System.Numerics;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
 
 public class PingPongScript : MonoBehaviour, IDamageable
 {
@@ -20,6 +22,17 @@ public class PingPongScript : MonoBehaviour, IDamageable
     
     public void TakeDamage(DamageInstance damageInstance)
     {
-        throw new System.NotImplementedException();
+        Vector2 velocity = GetComponent<Rigidbody2D>().linearVelocity;
+        
+        // If knocked back, reverse direction
+        if (damageInstance.knockback.x > 0)
+        {
+            // Reverse velocity
+            velocity.x = -Mathf.Abs(velocity.x);
+        }
+        else if (damageInstance.knockback.x < 0)
+        {
+            velocity.x = Mathf.Abs(velocity.x);
+        }
     }
 }
