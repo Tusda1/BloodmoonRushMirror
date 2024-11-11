@@ -47,6 +47,7 @@ namespace Player {
 
         [Header("Knockback")] public bool isKnockbacked;
         [SerializeField] private float knockBackTime;
+        [SerializeField] private float spikeStunTime;
         public int killCharges;
 
         [Header("Player Can Move")] [SerializeField, Required]
@@ -65,6 +66,7 @@ namespace Player {
         private CountdownTimer _jumpBufferTimer;
         private CountdownTimer _knockbackTimer;
         private CountdownTimer _coyoteTimer;
+        private CountdownTimer _spikeStunTimer;
         private Vector2 _smoothMovement;
         private Vector2 _referenceSmoothVelocity;
         private Vector2 _lastSpikePoint;
@@ -323,10 +325,20 @@ namespace Player {
             knockbackVector = argumentKnockback;
         }
 
+        private void SpikeStunStart()
+        {
+            isKnockbacked = true;
+        }
+
+        private void SpikeStunStop()
+        {
+            isKnockbacked = false;
+        }
+
         public void SpikeReset() {
             gameObject.transform.position = _lastSpikePoint;
             ResetMovement(0);
-            Knockback(new Vector2(0, 0));
+            _spikeStunTimer.StartTimer();
             isDashing = false;
         }
 
@@ -373,6 +385,10 @@ namespace Player {
             _knockbackTimer = new CountdownTimer(knockBackTime);
             _knockbackTimer.OnComplete += FinishKnockBack;
 
+            _spikeStunTimer = new CountdownTimer(spikeStunTime);
+            _spikeStunTimer.OnBegin += SpikeStunStart;
+            _spikeStunTimer.OnComplete += SpikeStunStop;
+
             _coyoteTimer = new CountdownTimer(coyoteTime);
         }
 
@@ -382,6 +398,7 @@ namespace Player {
             if (_minJumpTimer != null) _minJumpTimer.Duration = minJumpTime;
             if (_knockbackTimer != null) _knockbackTimer.Duration = knockBackTime;
             if (_coyoteTimer != null) _coyoteTimer.Duration = coyoteTime;
+            if (_spikeStunTimer != null) _spikeStunTimer.Duration = spikeStunTime;
         }
         #endregion
 

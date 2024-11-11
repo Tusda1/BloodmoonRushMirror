@@ -192,10 +192,11 @@ MonoBehaviour:
   fallSpeed: 0.5
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
   isActuallyGrounded: 0
   isKnockbacked: 0
   knockBackTime: 0.2
+  spikeStunTime: 0
   killCharges: 0
   playerCanMove: {fileID: 11400000, guid: f2f25efabb8f0d74bbfdba92ceb38155, type: 2}
   debugLogger: {fileID: 11400000, guid: 75da1efa7b0197041a121d1e562d1a0b, type: 2}
@@ -554,6 +555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c24d8cc2d82c6a408157b0d8d31a0ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerScript: {fileID: 0}
   damageInstance:
     damage: 1
     knockback: {x: 0, y: 0}
