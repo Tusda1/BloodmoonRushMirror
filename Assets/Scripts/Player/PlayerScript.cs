@@ -54,7 +54,7 @@ namespace Player {
 
         #region ***---AnimatorStringToHash---***
         private static readonly int AnimatorIsAttackingTrigger = Animator.StringToHash("IsAttacking");
-        private static readonly int AnimatorIsCrouchAttackingBool = Animator.StringToHash("IsCrouchAttacking");
+        private static readonly int AnimatorDuckAttackTrigger = Animator.StringToHash("DuckAttack");
         private static readonly int AnimatorTakeDamageTrigger = Animator.StringToHash("TakeDamage");
         private static readonly int AnimatorDeathTrigger = Animator.StringToHash("Death");
         private static readonly int AnimatorRespawnTrigger = Animator.StringToHash("Respawn");
@@ -102,7 +102,7 @@ namespace Player {
         #region ***---InputActions---***
         public void OnPause(InputAction.CallbackContext context) {
             if (!context.performed) return;
-
+            
             PauseMenu.PauseToggle();
         }
 
@@ -119,10 +119,12 @@ namespace Player {
         }
 
         public void OnAttack(InputAction.CallbackContext context) {
-            if (!context.performed || !_canAttack || !PlayerMovementEnabled) return;
+            if (!context.performed) return;
+            debugLogger.Log($"canAttack: {_canAttack} | canMove: {PlayerMovementEnabled}");
+            if (!_canAttack || !PlayerMovementEnabled) return;
 
             if (_playerMovement.isDucking) {
-                CrouchAttack();
+                DuckAttack();
             }
             else {
                 Attack();
@@ -142,11 +144,11 @@ namespace Player {
             isAttacking = true;
         }
 
-        private void CrouchAttack() {
+        private void DuckAttack() {
             if (!_canAttack) return;
-            debugLogger.Log("CrouchAttack");
+            debugLogger.Log("DuckAttack");
 
-            _animator.SetBool(AnimatorIsCrouchAttackingBool, true);
+            _animator.SetTrigger(AnimatorDuckAttackTrigger);
             FMODManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
