@@ -4,6 +4,8 @@ using UnityEngine;
 namespace Player {
     [RequireComponent(typeof(BoxCollider2D))]
     public class PlayerHitbox : MonoBehaviour {
+        [SerializeField] private PlayerScript playerScript;
+        
         public DamageInstance damageInstance;
 
         public event Action OnHitAction = delegate { };
@@ -17,10 +19,7 @@ namespace Player {
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Player") || !other.TryGetComponent<IDamageable>(out var damageable)) return;
             
-            // var directionToPlayer = (other.transform.position - transform.position).normalized;
-            // var knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
-            // 
-            // damageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * damageInstance.knockbackStrength;
+            damageInstance.knockback.x *= playerScript.transform.localScale.x;
             
             damageable.TakeDamage(damageInstance);
         }
