@@ -109,6 +109,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthComponent: {fileID: 627531695120340738}
+  _playerMovement: {fileID: 9170211437487459540}
+  _animator: {fileID: 4896941881637286329}
   playerLives: 5
   whatIsInteractable:
     serializedVersion: 2
@@ -160,7 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrounded: 0
   lockToAxis: 0
-  player: {fileID: 0}
+  player: {fileID: 3298925456892397176}
   inputVector: {x: 0, y: 0}
   isDucking: 0
   isHoldingDuck: 0
@@ -330,14 +332,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0489e84a-4833-4c40-bfae-cea84b696689
     m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 24908448-c609-4bc3-a128-ea258674378a
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
-    m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 1999f157-35e6-43dc-9dfe-1cb993f337d6
