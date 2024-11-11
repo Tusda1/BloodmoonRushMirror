@@ -7,6 +7,8 @@ public class PatrolEnemy : EnemyBase
     {
         base.Update();
         
+        print(velocity);
+        
         if (isDead) { return; }
 
         if (isStunned) { return; }

@@ -67,6 +67,7 @@ public class EnemyBase :  GravityObject, IDamageable
         StartCoroutine(FlashWhite());
         
         print(damageInstance.knockback);
+        Vector2 temp = Vector2.left * 5;
         // Play hit animation
         // Play hit sound
         if (damageInstance.knockback.normalized == Vector2.up)
@@ -75,7 +76,7 @@ public class EnemyBase :  GravityObject, IDamageable
         }
         else
         {
-            StartCoroutine(Knockback(damageInstance.knockback));
+            StartCoroutine(Knockback(temp));
         }
     }
     
@@ -103,10 +104,12 @@ public class EnemyBase :  GravityObject, IDamageable
     private IEnumerator Knockback(Vector2 knockbackStrength)
     {
         isStunned = true;
-        velocity.x = knockbackStrength.magnitude * knockbackStrength.normalized.x / weight;
+        print(velocity.x);
+        targetVelocity.x = knockbackStrength.magnitude * knockbackStrength.normalized.x / weight;
+        print(velocity.x);
         while (velocity.x != 0)
         {
-            velocity.x = Mathf.MoveTowards(velocity.x, 0, 3f);
+            targetVelocity.x = Mathf.MoveTowards(velocity.x, 0, 0.1f);
             yield return null;
         }
         isStunned = false;
