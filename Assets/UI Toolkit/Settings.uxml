@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"> 
+    <engine:Template name="SettingsMenuVisualTree" src="project://database/Assets/Utilities/UI/SettingsMenuVisualTree.uxml?fileID=9197481963319205126&amp;guid=c1153ba98d3bc7b4aab6bc557e3a78b6&amp;type=3#SettingsMenuVisualTree" />
+    <engine:Template name="AudioSettingsMenuVisualTree" src="project://database/Assets/UI%20Toolkit/AudioSettingsMenuVisualTree.uxml?fileID=9197481963319205126&amp;guid=6a63a028bbaa7c642838ebf542d0bf1d&amp;type=3#AudioSettingsMenuVisualTree" />
+    <Style src="project://database/Assets/UI%20Toolkit/Menu.uss?fileID=7433441132597879392&amp;guid=11ac15a71fcec9a46a277054ddd917f6&amp;type=3#Menu" />
+    <engine:Label text="Settings" style="align-self: center; font-size: 83px; -unity-font-style: normal; -unity-text-align: upper-left; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/Fonts/NPC%20_%20Ui.ttf?fileID=12800000&amp;guid=b9b48acb196babc4a9e6b515041cda24&amp;type=3#NPC _ Ui&quot;); margin-top: 150px; margin-bottom: 26px;" />
+    <engine:TabView name="TabbedView" style="height: 75%; align-self: center; align-items: center; width: 75%; -unity-font-definition: url(&quot;project://database/Packages/com.erlend-eiken-oppedal.debuglogger/Editor/home-video-font/HomeVideo-BLG6G.ttf?fileID=12800000&amp;guid=5f2ba05984567144fba2558348923b14&amp;type=3#HomeVideo-BLG6G&quot;);">
+        <engine:Tab label="Video" name="VideoTab" tabindex="1" focusable="false" class="tab">
+            <engine:ScrollView class="scrollView" style="height: 769px;">
+                <engine:Instance template="SettingsMenuVisualTree" style="width: auto; height: 100%; align-self: center;" />
+            </engine:ScrollView>
+        </engine:Tab>
+        <engine:Tab label="Audio" name="AudioTab" tabindex="2" focusable="false" data-source-type="FmodManager, Assembly-CSharp" class="tab">
+            <engine:ScrollView class="scrollView">
+                <engine:Instance template="AudioSettingsMenuVisualTree" name="AudioSettingsMenuVisualTree" />
+            </engine:ScrollView>
+        </engine:Tab>
+        <engine:Tab label="Controls" name="ControlsTab" tabindex="3" focusable="false" class="tab">
+            <engine:ScrollView class="scrollView">
+                <engine:TextField label="Text Field" placeholder-text="filler text" />
+            </engine:ScrollView>
+        </engine:Tab>
+    </engine:TabView>
+</engine:UXML>
