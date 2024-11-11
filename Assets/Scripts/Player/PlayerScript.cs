@@ -15,9 +15,9 @@ using Utilities.DataBinding;
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {
         #region ---Fields---
-         public PlayerHealth healthComponent;
-        [SerializeField] private GravityObjectPlayerMovement _playerMovement;
-        [SerializeField] private Animator _animator;
+        [GetOrAddComponent, HideInInspector] public PlayerHealth healthComponent;
+        [GetOrAddComponent] private GravityObjectPlayerMovement _playerMovement;
+        [GetOrAddComponent] private Animator _animator;
 
         [Header("Player")] public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
@@ -53,7 +53,7 @@ namespace Player {
         private DebugLoggerSO debugLogger;
 
         #region ***---AnimatorStringToHash---***
-        private static readonly int AnimatorIsAttackingBool = Animator.StringToHash("IsAttacking");
+        private static readonly int AnimatorIsAttackingTrigger = Animator.StringToHash("IsAttacking");
         private static readonly int AnimatorIsCrouchAttackingBool = Animator.StringToHash("IsCrouchAttacking");
         private static readonly int AnimatorTakeDamageTrigger = Animator.StringToHash("TakeDamage");
         private static readonly int AnimatorDeathTrigger = Animator.StringToHash("Death");
@@ -73,7 +73,8 @@ namespace Player {
 
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
-        [field: SerializeField] public string ID { get; set; } = Guid.NewGuid().ToString();
+        [field: SerializeField]
+        public string ID { get; set; } = Guid.NewGuid().ToString();
 
         [field: SerializeField] public PlayerData SaveSystemData { get; set; }
         public PlayerData DataInGameData => SaveLoadSystemManager.Instance.gameData.playerData;
@@ -86,13 +87,11 @@ namespace Player {
             debugLogger.messageOrigin = this;
         }
 
-        private IEnumerator Start() {
-            // Bind();
+        private void Start() {
+            Bind();
 
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
-            yield return null;
-            
             SetStateBehavioursReferences();
         }
 
@@ -133,11 +132,11 @@ namespace Player {
         #endregion
 
         #region ---Combat---
-        public void Attack() {
+        private void Attack() {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
 
-            _animator.SetTrigger(AnimatorIsAttackingBool);
+            _animator.SetTrigger(AnimatorIsAttackingTrigger);
             FMODManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
@@ -235,7 +234,8 @@ namespace Player {
         }
 
         private void SetStateBehavioursReferences() {
-            foreach (var playerAttackBehaviour in _animator.GetBehaviours<PlayerAttackBehaviour>()) {
+            var playerAttackBehaviours = _animator.GetBehaviours<PlayerAttackBehaviour>();
+            foreach (var playerAttackBehaviour in playerAttackBehaviours) {
                 playerAttackBehaviour.hitbox = hitbox;
             }
         }
@@ -244,7 +244,7 @@ namespace Player {
         public void Bind() {
             SaveLoadSystemManager.Bind(this, DataInGameData);
         }
-        
+
 #if UNITY_EDITOR
         private void OnValidate() {
             if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
@@ -253,7 +253,7 @@ namespace Player {
             }
         }
 #endif
-        
+
         [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
             healthComponent.Health = SaveSystemData.health;

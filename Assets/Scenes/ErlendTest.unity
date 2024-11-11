@@ -489,11 +489,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.53
+      value: -3.82
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.36
+      value: 6.26
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.z
@@ -527,6 +527,62 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: Keyboard&Mouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_NeverAutoSwitchControlSchemes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_ActionId
+      value: 1999f157-35e6-43dc-9dfe-1cb993f337d6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_ActionId
+      value: 6484fd12-4cb3-44f7-b276-f7ac1cab2a1c
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_ActionName
+      value: 'UI/TabNavigation[/Keyboard/q,/Keyboard/e]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_ActionName
+      value: 'Player/Duck[/Keyboard/s,/Keyboard/downArrow]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1472768839}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DuckInput
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GravityPlayer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237709658354518102, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1472768841}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1752,6 +1808,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3498597279493152290, guid: 58a18738661ad7c4a90e9969b5fa5de4, type: 3}
   m_PrefabInstance: {fileID: 1471453023}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1472768839 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+  m_PrefabInstance: {fileID: 575723698}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccff21e192f9e96428749b266d5fdbac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1472768841 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3298925456892397176, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+  m_PrefabInstance: {fileID: 575723698}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34de162bb9e1d641b01ad6758b3d05b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1679793108
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8677,7 +8755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8858118747165755070, guid: e3f88d9a55d4d5f48a00898af7f7f341, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

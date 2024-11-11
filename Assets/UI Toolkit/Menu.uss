@@ -1,0 +1,83 @@
+.button {
+    width: 362px;
+    margin-top: 16px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    margin-left: 16px;
+    transition-duration: 0s;
+    height: 80px;
+    opacity: 1;
+}
+
+:focus {
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.5);
+}
+
+.scrollView {
+    width: 100%;
+    align-self: center;
+}
+
+.right {
+    translate: 100% 0;
+    transition-duration: 1s;
+}
+
+.left {
+    transition-duration: 1s;
+    translate: -100% 0;
+}
+
+.page {
+    transition-duration: 1s;
+}
+
+.tab {
+    width: 300%;
+    height: 100%;
+    align-self: center;
+}
+
+.heartBar {
+    flex-direction: row;
+}
+
+.DavidUIText {
+    -unity-font-definition: url('project://database/Assets/Fonts/David.ttf?fileID=12800000&guid=3a1bf8d7abe93284390d857df10dc795&type=3#David');
+    font-size: 8px;
+    position: absolute;
+    color: rgb(255, 255, 255);
+}
+
+Button {
+    background-image: url('project://database/Assets/Art/Placeholders/UI_concept.png?fileID=141909818695681162&guid=cc3d34451658be643a15fb8e564912b7&type=3#UI_concept_0');
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    -unity-font-definition: url('project://database/Assets/Fonts/NPC%20_%20Ui.ttf?fileID=12800000&guid=b9b48acb196babc4a9e6b515041cda24&type=3#NPC _ Ui');
+    font-size: 25px;
+    height: 96px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.opacity0 {
+    opacity: 0;
+}
+
+.deathScreenButton {
+    color: rgb(255, 255, 255);
+}
+
+.deathScreenButton:focus {
+    color: rgb(173, 65, 74);
+}
+
+.deathScreenButton:hover {
+    color: rgb(142, 52, 59);
+}
+
+.settingsText {
+    -unity-font-definition: resource('Fonts/NPCUi');
+    font-size: 16px;
+}
