@@ -11,6 +11,10 @@ using UnityEngine.InputSystem;
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
         #region ---Fields---
+        
+        [Header("References")]
+        [SerializeField] private PlayerScript player;
+        
         [Header("Player Movement")] [SerializeField, ReadOnly]
         private Vector2 inputVector;
 
@@ -23,7 +27,7 @@ namespace Player {
         [SerializeField] private LayerMask whatIsLadder;
         [SerializeField] private LayerMask whatIsInvalidSpawnPoint;
         [SerializeField] private float climbSpeed;
-
+        
         [Header("Dash")] public bool isDashing;
         public bool canDash;
         [SerializeField] private float dashTime;
@@ -142,11 +146,20 @@ namespace Player {
 
                 targetVelocity = _smoothMovement * maxSpeed;
 
-                isFacingRight = _smoothMovement.x switch {
-                    > 0.01f => true,
-                    < -0.01f => false,
-                    _ => isFacingRight
-                };
+                if (!player.isAttacking)
+                {
+                    switch (_smoothMovement.x)
+                    {
+                        case > 0.01f:
+                            isFacingRight = true;
+                            transform.localScale = new Vector3(1, 1, 1);
+                            break;
+                        case < -0.01f:
+                            isFacingRight = false;
+                            transform.localScale = new Vector3(-1, 1, 1);
+                            break;
+                    }
+                }
             }
 
             if (Mathf.Abs(velocity.x) < 0.01f) {
