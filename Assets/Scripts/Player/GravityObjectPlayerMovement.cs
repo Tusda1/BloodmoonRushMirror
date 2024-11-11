@@ -326,6 +326,7 @@ namespace Player {
         public void SpikeReset() {
             gameObject.transform.position = _lastSpikePoint;
             ResetMovement(0);
+            Knockback(new Vector2(0, 0));
             isDashing = false;
         }
 
