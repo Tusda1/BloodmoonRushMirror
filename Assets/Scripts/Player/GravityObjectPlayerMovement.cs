@@ -147,24 +147,24 @@ namespace Player {
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, move, ref _referenceSmoothVelocity, smoothTime);
 
                 targetVelocity = _smoothMovement * maxSpeed;
-
-                if (!player.isAttacking)
+            }
+            
+            if (!player.isAttacking)
+            {
+                var transformLocalScale = transform.localScale;
+                switch (_smoothMovement.x)
                 {
-                    var transformLocalScale = transform.localScale;
-                    switch (_smoothMovement.x)
-                    {
-                        case > 0.01f:
-                            isFacingRight = true;
-                            transform.localScale = transformLocalScale.With(1);
-                            break;
-                        case < -0.01f:
-                            isFacingRight = false;
-                            transform.localScale = transformLocalScale.With(-1);
-                            break;
-                    }
+                    case > 0.01f:
+                        isFacingRight = true;
+                        transform.localScale = transformLocalScale.With(1);
+                        break;
+                    case < -0.01f:
+                        isFacingRight = false;
+                        transform.localScale = transformLocalScale.With(-1);
+                        break;
                 }
             }
-
+            
             if (Mathf.Abs(velocity.x) < 0.01f) {
                 _smoothMovement.x = 0;
             }
