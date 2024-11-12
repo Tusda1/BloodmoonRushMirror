@@ -14,6 +14,7 @@ namespace Player {
         
         [Header("References")]
         [SerializeField] private PlayerScript player;
+        private SpriteRenderer _color;
         
         [Header("Player Movement")] [SerializeField, ReadOnly]
         private Vector2 inputVector;
@@ -78,7 +79,9 @@ namespace Player {
 
         private new void Start() {
             GravityModifier = gravityMultiplier;
-
+            
+            _color = gameObject.GetComponent<SpriteRenderer>();
+            
             InitializeTimers();
         }
 
@@ -327,11 +330,13 @@ namespace Player {
 
         private void SpikeStunStart()
         {
+            _color.color = new Color(1, 1, 1, 0.1f);
             isKnockbacked = true;
         }
 
         private void SpikeStunStop()
         {
+            _color.color = new Color(1, 1, 1, 1);
             isKnockbacked = false;
         }
 
