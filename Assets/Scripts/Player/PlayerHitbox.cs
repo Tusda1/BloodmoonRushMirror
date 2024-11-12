@@ -5,7 +5,7 @@ namespace Player {
     [RequireComponent(typeof(BoxCollider2D))]
     public class PlayerHitbox : MonoBehaviour {
         [SerializeField] private PlayerScript playerScript;
-        
+
         public DamageInstance damageInstance;
 
         public event Action OnHitAction = delegate { };
@@ -18,9 +18,9 @@ namespace Player {
 
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Player") || !other.TryGetComponent<IDamageable>(out var damageable)) return;
-            
+
             damageInstance.knockback.x *= playerScript.transform.localScale.x;
-            
+
             damageable.TakeDamage(damageInstance);
         }
 

@@ -165,6 +165,7 @@ namespace Player {
 
             damageInstance.TriggerOnHitAction();
             healthComponent.TakeDamage(damageInstance.damage);
+            _playerMovement.Knockback(damageInstance.knockback);
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
             //_animator.SetTrigger(AnimatorTakeDamageTrigger);
         }
