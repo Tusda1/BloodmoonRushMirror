@@ -186,6 +186,8 @@ MonoBehaviour:
   faceLeftOnStart: 0
   moveSpeed: 2
   maxHealth: 3
+  invulnerableTime: 0.5
+  knockbackDuration: 0.1
   enemyDamageInstance:
     damage: 0
     knockback: {x: 0, y: 0}
@@ -195,6 +197,7 @@ MonoBehaviour:
   rubyDropAmount: 3
   detectionDistance: 10
   keepAgroDistance: 20
+  smoothTime: 0.1
 --- !u!50 &4267033224681295998
 Rigidbody2D:
   serializedVersion: 5

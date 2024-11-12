@@ -15,15 +15,20 @@ using Utilities.DataBinding;
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {
         #region ---Fields---
-        [SerializeField] public PlayerHealth healthComponent;
-        [SerializeField] private GravityObjectPlayerMovement _playerMovement;
-        [SerializeField] private Animator _animator;
-
-        [Header("Player")] public int playerLives = 5;
+        #region ***---LocalComponentRefrences---***
+        [GetOrAddComponent, HideInInspector] public PlayerHealth healthComponent;
+        [GetOrAddComponent, HideInInspector] public Animator animator;
+        [GetOrAddComponent, HideInInspector] public SpriteRenderer spriteRenderer;
+        [GetOrAddComponent, HideInInspector] public GravityObjectPlayerMovement playerMovement;
+        #endregion
+        
+        [Header("Player")] 
+        public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         public Vector3 lastGroundedPosition;
         [SerializeField] private PlayerHitbox hitbox;
+        [SerializeField] private float alphaWhenTakingDamage = 0.2f;
 
         private bool _isDead;
         private bool _canAttack = true;
@@ -56,9 +61,10 @@ namespace Player {
         private static readonly int AnimatorIsAttackingTrigger = Animator.StringToHash("IsAttacking");
         private static readonly int AnimatorDuckAttackTrigger = Animator.StringToHash("DuckAttack");
         private static readonly int AnimatorTakeDamageTrigger = Animator.StringToHash("TakeDamage");
-        private static readonly int AnimatorDeathTrigger = Animator.StringToHash("Death");
-        private static readonly int AnimatorRespawnTrigger = Animator.StringToHash("Respawn");
         private static readonly int AnimatorIsDeadBool = Animator.StringToHash("IsDead");
+        private static readonly int AnimatorRespawnTrigger = Animator.StringToHash("Respawn");
+        private static readonly int AnimatorDeathTrigger = Animator.StringToHash("Death");
+        
         #endregion
 
         #region ***---GameManagers---***
@@ -91,6 +97,9 @@ namespace Player {
             Bind();
 
             healthComponent.OnDeath += () => StartCoroutine(Die());
+            
+            healthComponent.InvulnerabilityTimer.OnBegin += () => spriteRenderer.color = new Color(1,1,1,alphaWhenTakingDamage);
+            healthComponent.InvulnerabilityTimer.OnComplete += () => spriteRenderer.color = new Color(1,1,1,1);
 
             SetStateBehavioursReferences();
         }
@@ -123,7 +132,7 @@ namespace Player {
             debugLogger.Log($"canAttack: {_canAttack} | canMove: {PlayerMovementEnabled}");
             if (!_canAttack || !PlayerMovementEnabled) return;
 
-            if (_playerMovement.isDucking) {
+            if (playerMovement.isDucking) {
                 DuckAttack();
             }
             else {
@@ -138,7 +147,7 @@ namespace Player {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
 
-            _animator.SetTrigger(AnimatorIsAttackingTrigger);
+            animator.SetTrigger(AnimatorIsAttackingTrigger);
             FMODManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
@@ -148,7 +157,7 @@ namespace Player {
             if (!_canAttack) return;
             debugLogger.Log("DuckAttack");
 
-            _animator.SetTrigger(AnimatorDuckAttackTrigger);
+            animator.SetTrigger(AnimatorDuckAttackTrigger);
             FMODManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
@@ -165,6 +174,7 @@ namespace Player {
 
             damageInstance.TriggerOnHitAction();
             healthComponent.TakeDamage(damageInstance.damage);
+            playerMovement.Knockback(damageInstance.knockback);
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
             //_animator.SetTrigger(AnimatorTakeDamageTrigger);
         }
@@ -173,16 +183,16 @@ namespace Player {
         private IEnumerator Die() {
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
-            _animator.SetBool(AnimatorIsDeadBool, true);
+            animator.SetBool(AnimatorIsDeadBool, true);
             FMODManager.StopAllSound();
             FMODManager.PlaySfx("Player/Player_death");
 
-            _animator.ResetTrigger(AnimatorTakeDamageTrigger);
+            animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");
-            _animator.SetTrigger(AnimatorDeathTrigger);
+            animator.SetTrigger(AnimatorDeathTrigger);
 
-            yield return new WaitUntil(() => _animator.GetCurrentAnimationClip().name == "Death");
-            yield return new WaitForSeconds(_animator.GetCurrentAnimationClip().length + 2f);
+            yield return new WaitUntil(() => animator.GetCurrentAnimationClip().name == "Death");
+            yield return new WaitForSeconds(animator.GetCurrentAnimationClip().length + 2f);
 
             playerLives--;
 
@@ -201,15 +211,15 @@ namespace Player {
             playerCanMove.ChangeVote(_isAliveVotePair, true);
 
             _isDead = false;
-            _animator.SetBool(AnimatorIsDeadBool, false);
+            animator.SetBool(AnimatorIsDeadBool, false);
             healthComponent.Health = healthComponent.maxHealth;
 
             LoseGems();
 
             OnRespawn.Invoke();
 
-            _animator.ResetTrigger(AnimatorDeathTrigger);
-            _animator.SetTrigger(AnimatorRespawnTrigger);
+            animator.ResetTrigger(AnimatorDeathTrigger);
+            animator.SetTrigger(AnimatorRespawnTrigger);
         }
 
         private void LoseGems() {
@@ -228,7 +238,7 @@ namespace Player {
         #endregion
 
         public void HitSpike() {
-            _playerMovement.SpikeReset();
+            playerMovement.SpikeReset();
         }
 
         private Collider2D InteractCheck() {
@@ -236,7 +246,7 @@ namespace Player {
         }
 
         private void SetStateBehavioursReferences() {
-            var playerAttackBehaviours = _animator.GetBehaviours<PlayerAttackBehaviour>();
+            var playerAttackBehaviours = animator.GetBehaviours<PlayerAttackBehaviour>();
             foreach (var playerAttackBehaviour in playerAttackBehaviours) {
                 playerAttackBehaviour.hitbox = hitbox;
             }

@@ -108,12 +108,14 @@ MonoBehaviour:
   faceLeftOnStart: 0
   moveSpeed: 5
   maxHealth: 0
+  invulnerableTime: 0.5
+  knockbackDuration: 0.1
   enemyDamageInstance:
     damage: 0
     knockback: {x: 0, y: 0}
     knockbackStrength: 0
     staggerStrength: 0
-  weight: 0
+  weight: 1
   rubyDropAmount: 3
   detectionDistance: 10
   jumpForce: 10
