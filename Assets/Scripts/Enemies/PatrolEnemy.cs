@@ -5,6 +5,7 @@ using UnityEngine;
 public class PatrolEnemy : EnemyBase
 {
     [SerializeField] private SmoothDampScript smoothDampScript = new();
+    [SerializeField] private float ledgeDistance = 1f;
     
     private new void Update()
     {
@@ -29,7 +30,7 @@ public class PatrolEnemy : EnemyBase
         }
         
         // Check if there is a ledge in front of the enemy
-        hit = Physics2D.Raycast(GetBottomPosition() + facingDirection, Vector2.down, 1f, LayerMask.GetMask("Ground"));
+        hit = Physics2D.Raycast(GetBottomPosition() + facingDirection * ledgeDistance, Vector2.down, 1f, LayerMask.GetMask("Ground"));
         if (hit.collider == null)
         {
             // Change direction
