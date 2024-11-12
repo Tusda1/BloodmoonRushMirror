@@ -25,7 +25,7 @@ public abstract class GravityObject : MonoBehaviour {
         rb2d ??= GetComponent<Rigidbody2D>();
     }
 
-    protected void Start() {
+    protected virtual void Start() {
         _contactFilter.useTriggers = false;
         _contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
         //contactFilter.SetLayerMask(layerMask);

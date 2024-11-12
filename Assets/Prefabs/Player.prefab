@@ -109,8 +109,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthComponent: {fileID: 627531695120340738}
-  _playerMovement: {fileID: 9170211437487459540}
-  _animator: {fileID: 4896941881637286329}
+  animator: {fileID: 4896941881637286329}
+  spriteRenderer: {fileID: 7359996412380030738}
+  playerMovement: {fileID: 9170211437487459540}
   playerLives: 5
   whatIsInteractable:
     serializedVersion: 2
@@ -118,6 +119,7 @@ MonoBehaviour:
   isAttacking: 0
   lastGroundedPosition: {x: 0, y: 0, z: 0}
   hitbox: {fileID: 3672109486144381603}
+  alphaWhenTakingDamage: 0.2
   gems: 0
   gemLostMethod: 0
   gemsLostOnDeath: 0
@@ -162,7 +164,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrounded: 0
   lockToAxis: 0
-  player: {fileID: 3298925456892397176}
+  _player: {fileID: 3298925456892397176}
+  _boxCollider: {fileID: 6503705925884822905}
   inputVector: {x: 0, y: 0}
   isDucking: 0
   isHoldingDuck: 0
@@ -194,7 +197,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 576
   isActuallyGrounded: 0
-  isKnockbacked: 0
+  isTakingKnockback: 0
   knockBackTime: 0.2
   spikeStunTime: 0
   killCharges: 0
@@ -555,7 +558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c24d8cc2d82c6a408157b0d8d31a0ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerScript: {fileID: 0}
+  playerScript: {fileID: 3298925456892397176}
   damageInstance:
     damage: 1
     knockback: {x: 0, y: 0}
