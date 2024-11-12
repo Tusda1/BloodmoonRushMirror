@@ -5,10 +5,7 @@ public class Skeleton : ReactiveBase
 {
     [SerializeField] private float detectionDistance = 10f;
     [SerializeField] private float keepAgroDistance = 2f;
-    [SerializeField] private float smoothTime = 0.1f;
-    
-    private Vector2 currentVelocity;
-    private Vector2 smoothVelocity;
+    [SerializeField] private SmoothDampScript smoothDampScript = new();
 
     private Transform _agroOject;
     
@@ -44,7 +41,6 @@ public class Skeleton : ReactiveBase
         facingDirection = (_agroOject.position.x > transform.position.x) ? Vector2.right : Vector2.left;
         
         // Smoothly move towards the target
-        smoothVelocity = Vector2.SmoothDamp(smoothVelocity, facingDirection * moveSpeed, ref currentVelocity, smoothTime);
-        targetVelocity = smoothVelocity;
+        smoothDampScript.SmoothDamp(facingDirection, moveSpeed, ref targetVelocity);
     }
 }
