@@ -57,13 +57,6 @@ public class EnemyBase :  GravityObject, IDamageable
             return;
         }
         _takeDamageTimer = Time.time;
-        
-        currentHealth -= damageInstance.damage;
-        
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
 
         StartCoroutine(FlashWhite());
         
@@ -77,6 +70,13 @@ public class EnemyBase :  GravityObject, IDamageable
         else
         {
             StartCoroutine(Knockback(damageInstance.knockback));
+        }
+        
+        currentHealth -= damageInstance.damage;
+        
+        if (currentHealth <= 0)
+        {
+            Die();
         }
     }
     
@@ -110,7 +110,7 @@ public class EnemyBase :  GravityObject, IDamageable
         while (timer < knockbackDuration)
         {
             targetVelocity = knockbackVelocity;
-            velocity.y = 1f;
+            velocity.y = knockbackVelocity.y;
             timer += Time.deltaTime;
             yield return null;
         }
