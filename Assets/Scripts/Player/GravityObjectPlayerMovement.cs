@@ -402,6 +402,9 @@ namespace Player {
 
         private void SpikeStunStart() {
             _player.spriteRenderer.color = new Color(1, 1, 1, 0.1f);
+            _player.healthComponent.TriggerInvulnerability(0.75f);
+            ResetMovement(0);
+            _knockbackVector = Vector2.zero;
             isTakingKnockback = true;
         }
 
