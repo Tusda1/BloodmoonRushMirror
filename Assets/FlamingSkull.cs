@@ -41,14 +41,11 @@ public class FlamingSkull : MonoBehaviour, IDamageable {
         if (!isFlaming) return;
         if (other.CompareTag("Player")) {
             if (other.TryGetComponent<IDamageable>(out var component)) {
-                if (other.transform.position.x > gameObject.transform.position.x) {
-                    damageInstance.knockback.x = Mathf.Abs(damageInstance.knockback.x);
-                    component.TakeDamage(damageInstance);
-                }
-                else {
-                    damageInstance.knockback.x = -Mathf.Abs(damageInstance.knockback.x);
-                    component.TakeDamage(damageInstance);
-                }
+                Vector2 directionToPlayer = (other.transform.position - transform.position).normalized;
+                Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
+                
+                damageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * damageInstance.knockbackStrength;
+                component.TakeDamage(damageInstance);
             }
         }
     }

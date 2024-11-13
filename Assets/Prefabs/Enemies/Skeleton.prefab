@@ -183,6 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrounded: 0
   lockToAxis: 0
+  GravityModifier: 1
   faceLeftOnStart: 0
   moveSpeed: 2
   maxHealth: 3
@@ -195,9 +196,12 @@ MonoBehaviour:
     staggerStrength: 0
   weight: 2
   rubyDropAmount: 3
+  knockbackSmoothDampScript:
+    smoothTime: 0.1
   detectionDistance: 10
   keepAgroDistance: 20
-  smoothTime: 0.1
+  smoothDampScript:
+    smoothTime: 0.1
 --- !u!50 &4267033224681295998
 Rigidbody2D:
   serializedVersion: 5
