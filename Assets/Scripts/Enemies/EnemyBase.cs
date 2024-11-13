@@ -26,6 +26,7 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] private DamageInstance enemyDamageInstance;
     [SerializeField] protected float weight;
     [SerializeField] protected int rubyDropAmount = 3;
+    [SerializeField] private SmoothDampScript knockbackSmoothDampScript = new();
     
     protected LayerMask EnemyAndGroundLayerMask;
 
@@ -60,7 +61,6 @@ public class EnemyBase :  GravityObject, IDamageable
 
         StartCoroutine(FlashWhite());
         
-        print(damageInstance.knockback);
         // Play hit animation
         // Play hit sound
         if (damageInstance.knockback.normalized == Vector2.up)
@@ -105,8 +105,10 @@ public class EnemyBase :  GravityObject, IDamageable
     {
         isStunned = true;
         Vector2 knockbackVelocity = knockbackStrength.magnitude * knockbackStrength.normalized / weight;
-        print(knockbackVelocity);
+        Vector2 smoothedVelocity = knockbackVelocity;
+        smoothedVelocity.y = 0;
         float timer = 0f;
+
         while (timer < knockbackDuration)
         {
             targetVelocity = knockbackVelocity;
@@ -114,6 +116,16 @@ public class EnemyBase :  GravityObject, IDamageable
             timer += Time.deltaTime;
             yield return null;
         }
+
+        knockbackSmoothDampScript.SetStartVelocity(smoothedVelocity);
+        while (!isGrounded)
+        {
+            // Smoothly come to a stop from knockback
+            knockbackSmoothDampScript.SmoothDamp(knockbackVelocity.normalized, 0f, ref smoothedVelocity);
+            targetVelocity = smoothedVelocity;
+            yield return null;
+        }
+
         isStunned = false;
     }
 
