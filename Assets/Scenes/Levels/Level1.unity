@@ -206,10 +206,6 @@ PrefabInstance:
       value: PhysicsPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 3672109486144381603, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: playerScript
-      value: 
-      objectReference: {fileID: 38061777}
-    - target: {fileID: 3672109486144381603, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: damageInstance.knockback.x
       value: 1
       objectReference: {fileID: 0}
@@ -273,21 +269,9 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.95
       objectReference: {fileID: 0}
-    - target: {fileID: 7359996412380030738, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7359996412380030738, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7359996412380030738, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7359996412380030738, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_Color.r
-      value: 1
+    - target: {fileID: 6503705925884822905, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9158515747129067295, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_Size.x
@@ -310,40 +294,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 38061777}
-    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: maxSpeed
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: jumpForce
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: knockBackTime
       value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: spikeStunTime
       value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 9170211437487459540, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: whatIsGround.m_Bits
-      value: 576
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -360,17 +316,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1016095211261194371, guid: 21b4133c71a311248ba67b9579271143, type: 3}
   m_PrefabInstance: {fileID: 38061765}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &38061777 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3298925456892397176, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-  m_PrefabInstance: {fileID: 38061765}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 38061769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a34de162bb9e1d641b01ad6758b3d05b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &54025606 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5245557192519107077, guid: 34d4109ea306efb4abc2db23fff83cf9, type: 3}

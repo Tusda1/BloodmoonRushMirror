@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class FlamingSkull : MonoBehaviour, IDamageable {
     #region ---Fields---
-    private DamageInstance damageInstance;
+    [SerializeField] DamageInstance damageInstance;
     [SerializeField] private BoxCollider2D boxCollider;
     private bool isFlaming;
     private CountdownTimer flameTimer;
@@ -17,6 +17,7 @@ public class FlamingSkull : MonoBehaviour, IDamageable {
         flameTimer = new CountdownTimer(flameChargeTime);
         flameTimer.OnBegin += FlameOff;
         flameTimer.OnComplete += FlameOn;
+        FlameOn();
     }
 
     private void FlameOn() {
@@ -32,24 +33,27 @@ public class FlamingSkull : MonoBehaviour, IDamageable {
         flameRenderer.color = new Color(1f, 1f, 1f, 0.2f);
     }
 
-    public void TakeDamage(DamageInstance damageInstance) {
+    public void TakeDamage(DamageInstance playerDamageInstance) {
         flameTimer.StartTimer();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
+    private void OnTriggerEnter2D(Collider2D other) {
         if (!isFlaming) return;
-        if (other.CompareTag("Player"))
-        {
-            if (other.TryGetComponent<IDamageable>(out var component))
-            {
-                component.TakeDamage(damageInstance);
+        if (other.CompareTag("Player")) {
+            if (other.TryGetComponent<IDamageable>(out var component)) {
+                if (other.transform.position.x > gameObject.transform.position.x) {
+                    damageInstance.knockback.x = Mathf.Abs(damageInstance.knockback.x);
+                    component.TakeDamage(damageInstance);
+                }
+                else {
+                    damageInstance.knockback.x = -Mathf.Abs(damageInstance.knockback.x);
+                    component.TakeDamage(damageInstance);
+                }
             }
         }
     }
 
-    private void OnValidate()
-    {
+    private void OnValidate() {
         if (flameTimer != null) flameTimer.Duration = flameChargeTime;
     }
 }
