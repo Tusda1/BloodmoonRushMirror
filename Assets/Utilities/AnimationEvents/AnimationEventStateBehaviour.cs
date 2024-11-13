@@ -1,30 +1,42 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class AnimationEventStateBehaviour : StateMachineBehaviour {
     public string eventName;
     [Range(0f, 1f)] public float triggerTime;
-    
-    bool hasTriggered;
-    AnimationEventReceiver receiver;
+
+    private bool _hasTriggered;
+    private AnimationEventReceiver _receiver;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        hasTriggered = false;
-        receiver = animator.GetComponent<AnimationEventReceiver>();
+        _hasTriggered = false;
+        _receiver = animator.GetComponent<AnimationEventReceiver>();
+        
+        if (triggerTime == 0) {
+            NotifyReceiver();
+        }
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        float currentTime = stateInfo.normalizedTime % 1f;
+        if (triggerTime is 0 or 1) return;
+        
+        var currentTime = stateInfo.normalizedTime % 1f;
 
-        if (!hasTriggered && currentTime >= triggerTime) {
-            NotifyReceiver(animator);
-            hasTriggered = true;
+        if (!_hasTriggered && currentTime >= triggerTime) {
+            NotifyReceiver();
         }
     }
 
-    void NotifyReceiver(Animator animator) {
-        if (receiver != null) {
-            receiver.OnAnimationEventTriggered(eventName);
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        if (triggerTime >= 1) {
+            NotifyReceiver();
         }
+    }
+
+    private void NotifyReceiver() {
+        if (_receiver != null) {
+            _receiver.OnAnimationEventTriggered(eventName);
+        }
+        
+        _hasTriggered = true;
     }
 }

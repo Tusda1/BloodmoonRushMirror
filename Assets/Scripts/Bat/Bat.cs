@@ -15,8 +15,9 @@ namespace Bat {
         [SerializeField] private float yJitter;
         [SerializeField] private float jitterDuration;
 
-        [Header("Health And Damage")] [SerializeField]
-        private int health = 1;
+        [Header("Health And Damage")]
+        public int defaultHealth = 1;
+        public int currentHealth = 1;
 
         [SerializeField] private DamageInstance attackDamageInstance = new() {
             damage = 1
@@ -70,12 +71,12 @@ namespace Bat {
         }
 
         public void TakeDamage(DamageInstance damageInstance) {
-            if (health == 0) return;
+            if (currentHealth == 0) return;
             damageInstance.TriggerOnHitAction();
 
             FMODManager.PlaySfx(takeDamageSfx);
-            health -= damageInstance.damage;
-            if (health > 0) return;
+            currentHealth -= damageInstance.damage;
+            if (currentHealth > 0) return;
             damageInstance.TriggerOnKillAction();
 
             batSpawner.DespawnBat(this);

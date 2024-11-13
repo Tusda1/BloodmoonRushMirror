@@ -1,6 +1,7 @@
 using System;
 using Attributes;
 using PlayerLoopTimer;
+using TetraCreations.Attributes;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Splines;
@@ -10,8 +11,11 @@ namespace Bat {
         #region ---Fields---
         [GetOrAddComponent, HideInInspector] public SplineContainer batPath;
 
-        [SerializeField] private float timeBetweenBats;
-        [SerializeField] private int maxBats;
+        [Header("Bat Settings")]
+        [SerializeField] private float timeBetweenBats = 2;
+        [SerializeField] private float batMoveSpeed = 5;
+        [SerializeField] private bool limitBatAmount;
+        [SerializeField, DrawIf(nameof(limitBatAmount), true)] private int maxBats = 20;
 
         private readonly RuntimeSet<Bat> _batRuntimeSet = new();
 
@@ -20,7 +24,7 @@ namespace Bat {
 
         private RepeatingTimer _timer;
         #endregion
-        
+
         private void Start() {
             if (BatPoolManager.Instance == null) {
                 throw new Exception($"{nameof(BatPoolManager)} does not exist!");
@@ -32,7 +36,7 @@ namespace Bat {
             _timer.OnBegin += SpawnBat;
             _timer.StartTimer();
         }
-        
+
 #if UNITY_EDITOR
         private void OnValidate() {
             if (_timer != null) {
@@ -42,12 +46,13 @@ namespace Bat {
 #endif
 
         private void SpawnBat() {
-            if (_batRuntimeSet.Count >= maxBats) return;
+            if (limitBatAmount && _batRuntimeSet.Count >= maxBats) return;
 
             var bat = _batPool.Get();
             _batRuntimeSet.Add(bat);
 
             bat.batSpawner = this;
+            bat.splineAnimate.MaxSpeed = batMoveSpeed;
         }
 
         public void DespawnBat(Bat bat) {
