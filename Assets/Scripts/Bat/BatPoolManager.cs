@@ -44,6 +44,8 @@ namespace Bat {
 
         private void ActionOnGet(Bat bat) {
             bat.gameObject.SetActive(true);
+            bat.currentHealth = bat.defaultHealth;
+            bat.splineAnimate.Restart(true);
         }
 
         private Bat CreateBat() {
