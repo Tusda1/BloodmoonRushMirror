@@ -72,7 +72,7 @@ namespace Player {
         private Vector2 _smoothMovement;
         private Vector2 _referenceSmoothVelocity;
         private Vector2 _lastSpikePoint;
-        private bool _wasGroundedLastFrame;
+        [HideInInspector] public bool _wasGroundedLastFrame;
         private Ladder _ladder;
         private bool _notClimbing;
         #endregion

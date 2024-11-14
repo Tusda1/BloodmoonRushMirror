@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2395060478557711334}
   m_Layer: 8
   m_Name: Ghoul
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,6 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrounded: 0
   lockToAxis: 0
+  GravityModifier: 1
   faceLeftOnStart: 0
   moveSpeed: 5
   maxHealth: 0
@@ -117,6 +118,8 @@ MonoBehaviour:
     staggerStrength: 0
   weight: 1
   rubyDropAmount: 3
+  knockbackSmoothDampScript:
+    smoothTime: 0.1
   detectionDistance: 10
   jumpForce: 10
   universalAgroDistance: 2
