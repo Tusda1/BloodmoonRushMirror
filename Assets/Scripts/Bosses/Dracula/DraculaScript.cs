@@ -4,17 +4,21 @@ using Player;
 
 public class DraculaScript : GravityObject
 {
+    private BossStateMachine _stateMachine;
+    
+    private Animator _animator;
     private GameObject _pingPongCircle;
     private Coroutine _currentAttack;
     private GameObject _player;
     
     private void Start()
     {
+        _stateMachine = new BossStateMachine();
+        _animator = GetComponent<Animator>();
         _pingPongCircle = Resources.Load<GameObject>("Prefabs/PingPongCircle");
+        _player = ServiceLocator.Get<PlayerScript>().gameObject;
         
         _currentAttack = StartCoroutine(PingPongAttack());
-        
-        _player = ServiceLocator.Get<PlayerScript>().gameObject;
     }
 
     private IEnumerator PingPongAttack()
