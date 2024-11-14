@@ -91,9 +91,9 @@ GameObject:
   - component: {fileID: 8619958111878317817}
   - component: {fileID: 8960105064451551744}
   - component: {fileID: 3060070911030600510}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spitter
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -196,6 +196,8 @@ MonoBehaviour:
     staggerStrength: 0
   weight: 2
   rubyDropAmount: 3
+  knockbackSmoothDampScript:
+    smoothTime: 0.1
   detectionDistance: 20
   projectileSpeed: 9
   projectileCooldown: 1.2

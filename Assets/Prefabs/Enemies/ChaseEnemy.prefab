@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4262033073353352129}
   m_Layer: 8
   m_Name: ChaseEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrounded: 0
   lockToAxis: 0
+  GravityModifier: 1
   faceLeftOnStart: 0
   moveSpeed: 1
   maxHealth: 0
@@ -146,6 +147,8 @@ MonoBehaviour:
     staggerStrength: 0
   weight: 1
   rubyDropAmount: 3
+  knockbackSmoothDampScript:
+    smoothTime: 0.1
   agroDistance: 2
   nextWaypointDistance: 1
   repeatRate: 0.5

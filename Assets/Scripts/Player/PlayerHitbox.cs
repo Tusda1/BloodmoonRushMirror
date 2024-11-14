@@ -19,6 +19,9 @@ namespace Player {
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Player") || !other.TryGetComponent<IDamageable>(out var damageable)) return;
 
+            if (other.CompareTag("Enemy") && !playerScript.playerMovement._wasGroundedLastFrame)
+                playerScript.playerMovement.killCharges++;
+            
             if (playerScript.transform.localScale.x > 0) {
                 damageInstance.knockback.x = Mathf.Abs(damageInstance.knockback.x);
             }
