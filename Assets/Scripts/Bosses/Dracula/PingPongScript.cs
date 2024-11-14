@@ -22,17 +22,21 @@ public class PingPongScript : MonoBehaviour, IDamageable
     
     public void TakeDamage(DamageInstance damageInstance)
     {
-        Vector2 velocity = GetComponent<Rigidbody2D>().linearVelocity;
+        print(damageInstance.knockback);
+        Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
+        Vector2 velocity = rb2d.linearVelocity;
         
         // If knocked back, reverse direction
         if (damageInstance.knockback.x > 0)
         {
             // Reverse velocity
-            velocity.x = -Mathf.Abs(velocity.x);
+            velocity.x = Mathf.Abs(velocity.x);
         }
         else if (damageInstance.knockback.x < 0)
         {
-            velocity.x = Mathf.Abs(velocity.x);
+            velocity.x = -Mathf.Abs(velocity.x);
         }
+        
+        rb2d.linearVelocity = velocity;
     }
 }

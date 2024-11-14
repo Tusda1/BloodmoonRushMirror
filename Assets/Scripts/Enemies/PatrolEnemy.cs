@@ -10,8 +10,12 @@ public class PatrolEnemy : EnemyBase
     private new void Update()
     {
         base.Update();
-        
-        if (isDead || isStunned || !isGrounded) { return; }
+
+        if (isDead || isStunned || !isGrounded)
+        {
+            smoothDampScript.SetStartVelocity(velocity);
+            return;
+        }
 
         Patrol();
     }
