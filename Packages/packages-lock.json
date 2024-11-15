@@ -12,7 +12,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "4c65d64a295712304384b9ff42092f45467b1e74"
+      "hash": "9b763b7dc83a812122d4ee3af9caa4628e69fbc8"
     },
     "com.erlend-eiken-oppedal.debuglogger": {
       "version": "https://github.com/EOppedal/DebugLogger.git",
@@ -27,8 +27,10 @@
       "version": "https://github.com/EOppedal/ExtensionsAndAttributes.git",
       "depth": 0,
       "source": "git",
-      "dependencies": {},
-      "hash": "d42bb00a24a855534137edc6238d7097e4d3ee96"
+      "dependencies": {
+        "com.unity.inputsystem": ""
+      },
+      "hash": "5db6a67bef7a3e1e3b558d1b3df5542cefb2eb01"
     },
     "com.erlend-eiken-oppedal.healthcomponent": {
       "version": "https://github.com/EOppedal/HealthComponent.git",
@@ -37,7 +39,7 @@
       "dependencies": {
         "com.erlend-eiken-oppedal.timers": "https://github.com/EOppedal/Timers.git"
       },
-      "hash": "01aac7a46611e2527ad253baa9dd0be0fa4f5a04"
+      "hash": "2db11410cd1edf289f3b51961c062fb8c5c671e2"
     },
     "com.erlend-eiken-oppedal.parallax": {
       "version": "https://github.com/EOppedal/Parallax.git",
@@ -96,7 +98,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "d3f0f2fc00f6e67483543219f6ac57eb90aae61c"
+      "hash": "1d58fbadc6e9855b0715bb8d711544630809aa51"
     },
     "com.erlend-eiken-oppedal.uitoolkittools": {
       "version": "https://github.com/EOppedal/UIToolkitTools.git",
@@ -306,7 +308,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.11.1",
+      "version": "1.11.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {

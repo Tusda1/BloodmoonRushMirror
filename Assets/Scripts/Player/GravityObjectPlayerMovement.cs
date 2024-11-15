@@ -153,6 +153,7 @@ namespace Player {
 
         private void InitializeCoyoteTimer() {
             _coyoteTimer = new CountdownTimer(coyoteTime);
+            _coyoteTimer.OnBegin += () => isGrounded = false;
         }
         #endregion
 
@@ -365,8 +366,6 @@ namespace Player {
         private void ForceExitDuck() {
             debugLogger.Log("exiting duck");
             isDucking = false;
-            //boxCollider.size = new Vector2(boxCollider.size.x, 2);
-            gameObject.transform.localScale = new Vector3(1, 1, 1); //TEST
             _player.animator.SetBool(AnimatorDuckBool, false);
         }
 
@@ -387,8 +386,6 @@ namespace Player {
             isDucking = true;
             _player.animator.SetTrigger(AnimatorDuckTrigger);
             _player.animator.SetBool(AnimatorDuckBool, true);
-            //boxCollider.size = new Vector2(boxCollider.size.x, 2);
-            gameObject.transform.localScale = new Vector3(1.5f, .5f, 1); //TEST
             debugLogger.Log("Changed player scale down");
         }
 
