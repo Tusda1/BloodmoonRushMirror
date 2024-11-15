@@ -1,10 +1,10 @@
-using System.Numerics;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
 public class PingPongScript : MonoBehaviour, IDamageable
 {
     private DamageInstance projectileDamageInstance;
+    public GameObject lastHitObject;
     
     private void OnTriggerEnter2D(Collider2D other) 
     {
@@ -26,6 +26,7 @@ public class PingPongScript : MonoBehaviour, IDamageable
         Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
         Vector2 velocity = rb2d.linearVelocity;
         
+        velocity.x = Mathf.Abs(velocity.x) + 5f;
         // If knocked back, reverse direction
         if (damageInstance.knockback.x > 0)
         {
