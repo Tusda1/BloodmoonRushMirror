@@ -224,8 +224,8 @@ namespace Player {
 
                 targetVelocity = (_smoothMovement * maxSpeed);
                 
-                targetVelocity.x += affectingVelocity.x;
-                velocity.y += affectingVelocity.y*0.9f;
+                targetVelocity += affectingVelocity;
+                
             }
 
             if (!_player.isAttacking) {
