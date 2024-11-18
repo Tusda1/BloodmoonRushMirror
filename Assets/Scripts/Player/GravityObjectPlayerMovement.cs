@@ -22,6 +22,7 @@ namespace Player {
         [ReadOnly] public bool isHoldingDuck;
         [ReadOnly] public bool isFacingRight = true;
         [ReadOnly] public bool isClimbing;
+        public Vector2 affectingVelocity = Vector2.zero;
         [SerializeField] private float smoothTime;
         [SerializeField] private float maxSpeed;
         [SerializeField] private LayerMask whatIsLadder;
@@ -221,7 +222,10 @@ namespace Player {
 
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, move, ref _referenceSmoothVelocity, smoothTime);
 
-                targetVelocity = _smoothMovement * maxSpeed;
+                targetVelocity = (_smoothMovement * maxSpeed);
+                
+                targetVelocity += affectingVelocity;
+                
             }
 
             if (!_player.isAttacking) {
