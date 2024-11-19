@@ -6,7 +6,7 @@ using FMODUnity;
 using UnityEngine;
 
 namespace FMODScripts {
-    public class FMODManager : PersistentSingleton<FMODManager> {
+    public class FMODManager : Singleton<FMODManager> {
         [Header("DebugLogger")] 
         [SerializeField, Required] private DebugLoggerSO debugLogger;
 

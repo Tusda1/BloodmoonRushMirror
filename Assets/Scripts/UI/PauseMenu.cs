@@ -1,13 +1,11 @@
-using Eflatun.SceneReference;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace UI {
     public class PauseMenu : Singleton<PauseMenu> {
         #region ---Fields---
         [SerializeField] private UIDocument uiDocument;
-        [SerializeField] private SceneReference mainMenuScene;
+        [SerializeField] private SceneCollection mainMenusSceneCollection;
         
         private VisualElement _root;
         private VisualElement _pauseMenuRoot;
@@ -35,7 +33,7 @@ namespace UI {
 
             _resumeButton.clicked += ResumeGame;
             _settingsButton.clicked += SettingsButtonPressed;
-            _mainMenuButton.clicked += () => SceneManager.LoadScene(mainMenuScene.BuildIndex);
+            _mainMenuButton.clicked += () => SceneCollectionManager.LoadSceneCollection(mainMenusSceneCollection);
             _backButton.clicked += BackButtonPressed;
 
             ResumeGame();

@@ -10,5 +10,8 @@
                 <engine:DataBinding property="text" data-source-path="dialogueText" binding-mode="ToTarget" />
             </Bindings>
         </engine:Label>
+        <Bindings>
+            <engine:DataBinding property="style.display" data-source-path="uiDocumentVisible" binding-mode="ToTarget" source-to-ui-converters="Bool To DisplayStyle" />
+        </Bindings>
     </engine:VisualElement>
 </engine:UXML>
