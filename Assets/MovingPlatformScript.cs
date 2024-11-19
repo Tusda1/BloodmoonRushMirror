@@ -61,11 +61,16 @@ public class MovingPlatformScript : GravityObject {
         return false;
     }
 
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.CompareTag("Player"))
+            if (other.transform.TryGetComponent<GravityObjectPlayerMovement>(out GravityObjectPlayerMovement playerMovement))
+                playerMovement.MovingPlatformEnter();
+    }
+
     private void OnTriggerStay2D(Collider2D other) {
         if (other.transform.CompareTag("Player"))
             if (other.transform.TryGetComponent<GravityObjectPlayerMovement>(out GravityObjectPlayerMovement playerMovement)) {
                 playerMovement.affectingVelocity = _carryingPosition;
-                print("entered collision");
             }
     }
 
@@ -73,6 +78,7 @@ public class MovingPlatformScript : GravityObject {
         if (other.transform.CompareTag("Player"))
             if (other.transform.TryGetComponent<GravityObjectPlayerMovement>(out GravityObjectPlayerMovement playerMovement)) {
                 playerMovement.affectingVelocity = Vector2.zero;
+                playerMovement.MovingPLatformExit();
                 print("exited collision");
             }
     }

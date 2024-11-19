@@ -19,7 +19,7 @@ namespace Bat {
         }
 
         private void CreateBatPool() {
-            batParentTransform ??= new GameObject("BatPoolParent").transform;
+            batParentTransform ??= new GameObject("BatPoolParent " + name).transform;
 
             Pool = new ObjectPool<Bat>(CreateBat, ActionOnGet, ActionOnRelease, ActionOnDestroy, true,
                 initialBatPoolSize);
@@ -34,6 +34,7 @@ namespace Bat {
             }
         }
 
+        #region ---ObjectPoolMethods---
         private void ActionOnDestroy(Bat bat) {
             Destroy(bat.gameObject);
         }
@@ -53,5 +54,6 @@ namespace Bat {
             obj.SetActive(false);
             return obj.GetComponent<Bat>();
         }
+        #endregion
     }
 }

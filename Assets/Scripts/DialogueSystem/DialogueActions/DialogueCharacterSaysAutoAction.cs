@@ -3,6 +3,7 @@ using FMODScripts;
 using UI;
 using Unity.Properties;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
@@ -16,7 +17,7 @@ namespace Unity.Behavior {
         [SerializeReference] public BlackboardVariable<string> dialogue;
 
         [SerializeReference] public BlackboardVariable<Sprite> imagePortraitOverride;
-        [SerializeReference] public BlackboardVariable<Font> dialogueFontOverride;
+        [SerializeReference] public BlackboardVariable<FontAsset> dialogueFontOverride;
         [SerializeReference] public BlackboardVariable<float> textSizeOverride;
         [SerializeReference] public BlackboardVariable<Color> dialogueColorOverride;
         [SerializeReference] public BlackboardVariable<float> textSpeedOverride;
@@ -31,12 +32,11 @@ namespace Unity.Behavior {
         private static DialogueUI DialogueUI => DialogueUI.Instance;
         private static FMODManager FMODManager => FMODManager.Instance;
         private DialogueCharacterSO DialogueCharacterSO => dialogueCharacterReference.Value;
-        
+
         private DialogueCharacterSO.WhenIsSfxPlayed _whenIsSfxPlayed;
 
         protected override Status OnStart() {
             #region ---FailureConditions---
-
             if (DialogueCharacterSO == null) {
                 Debug.LogWarning("DialogueCharacter not set!");
                 return Status.Failure;
@@ -46,26 +46,32 @@ namespace Unity.Behavior {
                 Debug.LogWarning("DialogueUI not set!");
                 return Status.Failure;
             }
-
             #endregion
 
             DialogueUI.dialogueFont = dialogueFontOverride.Value == null
                 ? DialogueCharacterSO.dialogueFont
                 : dialogueFontOverride.Value;
+            
             DialogueUI.imagePortrait = imagePortraitOverride.Value == null
                 ? DialogueCharacterSO.dialogueImage
                 : imagePortraitOverride.Value;
+            
             DialogueUI.dialogueColor = dialogueColorOverride.Value == default
                 ? DialogueCharacterSO.dialogueColor
                 : dialogueColorOverride.Value;
+            
             DialogueUI.textSize = textSizeOverride.Value == 0 ? DialogueCharacterSO.textSize : textSizeOverride.Value;
+            
             DialogueUI.dialogueText = "";
+            
             _timePerChar = 1f / (textSpeedOverride == 0 ? DialogueCharacterSO.textSpeed : textSpeedOverride.Value);
 
             _currentCharIndex = -1;
             _displayText = dialogue.Value;
 
-            _whenIsSfxPlayed = overwriteWhenIsSfxPlayed ? whenIsSfxPlayed.Value : DialogueCharacterSO.whenIsSfxPlayed;
+            _whenIsSfxPlayed = overwriteWhenIsSfxPlayed 
+                ? whenIsSfxPlayed.Value 
+                : DialogueCharacterSO.whenIsSfxPlayed;
 
             if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.InTheBeginning) !=
                 DialogueCharacterSO.WhenIsSfxPlayed.Nowhere ||
@@ -89,7 +95,7 @@ namespace Unity.Behavior {
                         _currentCharIndex++;
                         if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerWord) !=
                             DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
-                            FMODManager.PlayOneShot(DialogueCharacterSO.textAudioSoundEventPath);
+                            FMODManager.PlaySfx(DialogueCharacterSO.textAudioSoundEventPath);
                         }
                     }
                 }
@@ -102,7 +108,7 @@ namespace Unity.Behavior {
 
                 if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerCharacter) !=
                     DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
-                    FMODManager.PlayOneShot(DialogueCharacterSO.textAudioSoundEventPath);
+                    FMODManager.PlaySfx(DialogueCharacterSO.textAudioSoundEventPath);
                 }
 
                 if (_currentCharIndex >= _displayText.Length) {

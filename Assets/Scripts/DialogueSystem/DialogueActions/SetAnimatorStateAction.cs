@@ -16,7 +16,7 @@ namespace Unity.Behavior {
         protected override Status OnStart() {
             animator.Value.Play(name.Value);
 
-            return Node.Status.Success;
+            return Status.Success;
         }
     }
 }

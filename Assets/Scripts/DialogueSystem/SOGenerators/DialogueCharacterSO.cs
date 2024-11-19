@@ -1,14 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 [CreateAssetMenu(fileName = nameof(DialogueCharacterSO), menuName = "Behavior/Create " + nameof(DialogueCharacterSO))]
 public class DialogueCharacterSO : ScriptableObject {
     public Sprite dialogueImage;
-    public Font dialogueFont;
+    public string characterName;
+    public FontAsset dialogueFont;
     public float textSize = 8;
     public float textSpeed = 16;
     public Color dialogueColor = Color.black;
-    public string textAudioSoundEventPath = "event:/Sfx/Talk/";
+    public string textAudioSoundEventPath = "Talk/";
     public WhenIsSfxPlayed whenIsSfxPlayed;
 
     [Serializable, Flags] public enum WhenIsSfxPlayed {

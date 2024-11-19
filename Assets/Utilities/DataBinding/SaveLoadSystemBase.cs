@@ -7,7 +7,7 @@ namespace Utilities.DataBinding {
     /// <summary>
     /// Abstract base class for managing save and load operations.
     /// </summary>
-    public abstract class SaveLoadSystemBase<TComponent, TGameData> : PersistentSingletonLazyLoad<TComponent>
+    public abstract class SaveLoadSystemBase<TComponent, TGameData> : SingletonLazyLoad<TComponent>
         where TGameData : class, IGameData where TComponent : Component {
         public TGameData gameData;
 

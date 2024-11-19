@@ -10,6 +10,7 @@ public class EnemyBase :  GravityObject, IDamageable
     protected bool isDead;
     protected bool isVulnerable;
     protected bool isStunned;
+    [SerializeField] private bool _takesSpikeDamage;
     private float _takeDamageTimer;
     protected Vector2 facingDirection;
     protected Collider2D boxCollider;

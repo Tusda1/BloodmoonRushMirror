@@ -1,24 +1,29 @@
 using System;
 using Consensus;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 
 namespace UI {
     public class DialogueUI : Singleton<DialogueUI> {
+        #region ---Fields---
         [SerializeField] private UIDocument uiDocument;
         [SerializeField] public AllInFavourConsensusSO playerCanMove;
         public event Action OnSkipDialogue = delegate { };
 
-        [Header("DialogueUI Settings")] public bool uiDocumentVisible;
+        [Header("DialogueUI Settings")]
+        public bool uiDocumentVisible;
         public Sprite imagePortrait;
+        public string characterName;
         public string dialogueText;
-        public Font dialogueFont;
+        public FontAsset dialogueFont;
         public float textSize;
         public Color dialogueColor;
 
         private VisualElement _root;
         [HideInInspector] public ScriptVotePair scriptVotePair = new();
-
+        #endregion
+        
         protected override void Awake() {
             base.Awake();
 

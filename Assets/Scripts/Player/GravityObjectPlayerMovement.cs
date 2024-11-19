@@ -171,8 +171,8 @@ namespace Player {
             var move = Vector2.zero;
 
             if (isTakingKnockback) {
-                velocity.y = _knockbackVector.y;
-                targetVelocity.x = _knockbackVector.x;
+                velocity = _knockbackVector;
+                targetVelocity = _knockbackVector; //changed here
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, _knockbackVector.normalized,
                     ref _referenceSmoothVelocity, smoothTime);
 
@@ -188,14 +188,17 @@ namespace Player {
                 ResetMovement(2);
                 isDashing = false;
                 velocity.y = jumpForce;
+                targetVelocity.y = jumpForce;
                 doubleJumping = false;
             }
             else if (!isHoldingJump && !isJumping) {
                 if (velocity.y > 0)
                     velocity.y *= fallSpeed;
+                targetVelocity.y *= fallSpeed;
             }
             else if (isJumping) {
                 velocity.y = jumpForce;
+                targetVelocity.y = jumpForce;
             }
 
             if (isDashing) {
@@ -222,7 +225,7 @@ namespace Player {
 
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, move, ref _referenceSmoothVelocity, smoothTime);
 
-                targetVelocity = (_smoothMovement * maxSpeed);
+                targetVelocity.x = (_smoothMovement.x * maxSpeed);
                 
                 targetVelocity += affectingVelocity;
                 
@@ -272,45 +275,39 @@ namespace Player {
                 i++;
             }
 
-            RaycastHit2D hit = Physics2D.Raycast(quantizedPosition, Vector2.down, .5f);
-            if (hit.collider != null && !hit.collider.CompareTag("Hazard") && hit.collider.CompareTag("Ground"))
-                return true;
-            return false;
+            var hit = Physics2D.Raycast(quantizedPosition, Vector2.down, .5f);
+            return hit.collider != null && !hit.collider.CompareTag("Hazard") && hit.collider.CompareTag("Ground");
         }
 
         #region ---EventFunctions---
-        public void Jump(InputAction.CallbackContext context) {
-            if (context.performed) {
-                isHoldingJump = true;
-                ForceExitDuck();
-                Debug.Log(string.Join('|', isGrounded, isActuallyGrounded, _coyoteTimer.IsRunning));
-                if (isGrounded || killCharges > 0) {
-                    isJumping = true;
-                    _minJumpTimer.StartTimer();
-                    _coyoteTimer.StopTimer();
+        public void OnJump(InputValue inputValue) {
+            isHoldingJump = inputValue.isPressed;
+            if (!isHoldingJump) return;
+            
+            ForceExitDuck();
+            Debug.Log(string.Join('|', isGrounded, isActuallyGrounded, _coyoteTimer.IsRunning));
+            if (isGrounded || killCharges > 0) {
+                isJumping = true;
+                _minJumpTimer.StartTimer();
+                _coyoteTimer.StopTimer();
 
-                    if (killCharges > 0) {
-                        doubleJumping = true;
-                        killCharges--;
-                    }
-                }
-                else {
-                    _jumpBufferTimer.StartTimer();
+                if (killCharges > 0) {
+                    doubleJumping = true;
+                    killCharges--;
                 }
             }
-
-            if (context.canceled) {
-                isHoldingJump = false;
+            else {
+                _jumpBufferTimer.StartTimer();
             }
         }
 
-        public void Run(InputAction.CallbackContext context) {
-            var referenceVector = context.ReadValue<Vector2>();
+        public void OnMove(InputValue inputValue) {
+            var referenceVector = inputValue.Get<Vector2>();
             inputVector = referenceVector.normalized;
         }
 
-        public void Dash(InputAction.CallbackContext context) {
-            if (!context.performed) return;
+        public void OnDash(InputValue inputValue) {
+            if (!inputValue.isPressed) return;
             if (isDashing || !canDash) {
                 _coyoteTimer.StopTimer();
 
@@ -334,19 +331,8 @@ namespace Player {
                 dashForce = -Mathf.Abs(dashForce);
         }
 
-        public void TestFunction(InputAction.CallbackContext context) {
-            killCharges += 1;
-            Knockback(new Vector2(1, 0));
-        }
-
-        public void DuckInput(InputAction.CallbackContext context) {
-            if (context.performed) {
-                isHoldingDuck = true;
-            }
-
-            if (context.canceled) {
-                isHoldingDuck = false;
-            }
+        public void OnDuck(InputValue inputValue) {
+            isHoldingDuck = inputValue.isPressed;
         }
 
         private void OnTriggerStay2D(Collider2D other) {
@@ -419,6 +405,14 @@ namespace Player {
             ResetMovement(0);
             _spikeStunTimer.StartTimer();
             isDashing = false;
+        }
+
+        public void MovingPlatformEnter() {
+            GravityModifier = 0f;
+        }
+
+        public void MovingPLatformExit() {
+            GravityModifier = gravityMultiplier;
         }
 
 

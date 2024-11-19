@@ -109,14 +109,14 @@ namespace Player {
         }
 
         #region ***---InputActions---***
-        public void OnPause(InputAction.CallbackContext context) {
-            if (!context.performed) return;
+        public void OnPause(InputValue inputValue) {
+            if (!inputValue.isPressed) return;
             
             PauseMenu.PauseToggle();
         }
 
-        public void OnInteract(InputAction.CallbackContext context) {
-            if (!context.performed || !PlayerMovementEnabled) return;
+        public void OnInteract(InputValue inputValue) {
+            if (!inputValue.isPressed || !PlayerMovementEnabled) return;
 
             var interactable = InteractCheck();
             if (interactable == null) return;
@@ -127,8 +127,8 @@ namespace Player {
             }
         }
 
-        public void OnAttack(InputAction.CallbackContext context) {
-            if (!context.performed) return;
+        public void OnAttack(InputValue inputValue) {
+            if (!inputValue.isPressed) return;
             debugLogger.Log($"canAttack: {_canAttack} | canMove: {PlayerMovementEnabled}");
             if (!_canAttack || !PlayerMovementEnabled) return;
 
