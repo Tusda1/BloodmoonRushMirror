@@ -1,42 +1,42 @@
+using Eflatun.SceneReference;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace UI {
     public class PauseMenu : Singleton<PauseMenu> {
+        #region ---Fields---
         [SerializeField] private UIDocument uiDocument;
-
-        private bool _paused;
-
+        [SerializeField] private SceneReference mainMenuScene;
+        
         private VisualElement _root;
+        private VisualElement _pauseMenuRoot;
+        private VisualElement _settingsMenuRoot;
+        
         private Button _resumeButton;
         private Button _settingsButton;
-        private Button _quitButton;
+        private Button _mainMenuButton;
         private Button _backButton;
+        
+        private bool _paused;
+        #endregion
 
         protected override void Awake() {
             base.Awake();
 
             _root = uiDocument.rootVisualElement;
+            _pauseMenuRoot = _root.Q<VisualElement>("PauseMenuRoot");
+            _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
 
             _resumeButton = _root.Q<Button>("ResumeButton");
             _settingsButton = _root.Q<Button>("SettingsButton");
-            _quitButton = _root.Q<Button>("QuitButton");
+            _mainMenuButton = _root.Q<Button>("MainMenuButton");
             _backButton = _root.Q<Button>("BackButton");
 
-            var pause = _root.Q<VisualElement>("Pause");
-            var settings = _root.Q<VisualElement>("Settings");
-
             _resumeButton.clicked += ResumeGame;
-            _settingsButton.clicked += () => {
-                settings.RemoveFromClassList("right");
-                pause.AddToClassList("left");
-            };
-            _quitButton.clicked += () => { SceneManager.LoadScene("MainMenu"); };
-            _backButton.clicked += () => {
-                settings.AddToClassList("right");
-                pause.RemoveFromClassList("left");
-            };
+            _settingsButton.clicked += SettingsButtonPressed;
+            _mainMenuButton.clicked += () => SceneManager.LoadScene(mainMenuScene.BuildIndex);
+            _backButton.clicked += BackButtonPressed;
 
             ResumeGame();
         }
@@ -48,6 +48,21 @@ namespace UI {
             else {
                 PauseGame();
             }
+        }
+
+        #region ---Private Methods---
+        private void SettingsButtonPressed() {
+            _pauseMenuRoot.AddToClassList("left");
+            _pauseMenuRoot.enabledSelf = false;
+            _settingsMenuRoot.RemoveFromClassList("right");
+            _settingsMenuRoot.enabledSelf = true;
+        }
+
+        private void BackButtonPressed() {
+            _pauseMenuRoot.RemoveFromClassList("left");
+            _pauseMenuRoot.enabledSelf = true;
+            _settingsMenuRoot.AddToClassList("right");
+            _settingsMenuRoot.enabledSelf = false;
         }
 
         private void PauseGame() {
@@ -64,6 +79,9 @@ namespace UI {
 
             _root.style.display = DisplayStyle.None;
             _root.enabledSelf = false;
+
+            BackButtonPressed();
         }
+        #endregion
     }
 }

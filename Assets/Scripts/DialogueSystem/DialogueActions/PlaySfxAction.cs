@@ -16,7 +16,7 @@ namespace Unity.Behavior {
         private static FMODManager FMODManager => FMODManager.Instance;
 
         protected override Status OnStart() {
-            FMODManager.PlayOneShot(sfxName.Value);
+            FMODManager.PlaySfx(sfxName.Value);
 
             return Status.Success;
         }
