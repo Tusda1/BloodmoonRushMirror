@@ -171,8 +171,8 @@ namespace Player {
             var move = Vector2.zero;
 
             if (isTakingKnockback) {
-                velocity.y = _knockbackVector.y;
-                targetVelocity.x = _knockbackVector.x;
+                velocity = _knockbackVector;
+                targetVelocity = _knockbackVector; //changed here
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, _knockbackVector.normalized,
                     ref _referenceSmoothVelocity, smoothTime);
 
@@ -188,14 +188,17 @@ namespace Player {
                 ResetMovement(2);
                 isDashing = false;
                 velocity.y = jumpForce;
+                targetVelocity.y = jumpForce;
                 doubleJumping = false;
             }
             else if (!isHoldingJump && !isJumping) {
                 if (velocity.y > 0)
                     velocity.y *= fallSpeed;
+                targetVelocity.y *= fallSpeed;
             }
             else if (isJumping) {
                 velocity.y = jumpForce;
+                targetVelocity.y = jumpForce;
             }
 
             if (isDashing) {
@@ -222,7 +225,7 @@ namespace Player {
 
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, move, ref _referenceSmoothVelocity, smoothTime);
 
-                targetVelocity = (_smoothMovement * maxSpeed);
+                targetVelocity.x = (_smoothMovement.x * maxSpeed);
                 
                 targetVelocity += affectingVelocity;
                 
@@ -419,6 +422,14 @@ namespace Player {
             ResetMovement(0);
             _spikeStunTimer.StartTimer();
             isDashing = false;
+        }
+
+        public void MovingPlatformEnter() {
+            GravityModifier = 0f;
+        }
+
+        public void MovingPLatformExit() {
+            GravityModifier = gravityMultiplier;
         }
 
 
