@@ -1,17 +1,58 @@
+using Animancer;
+using Animancer.FSM;
 using UnityEngine;
 
-public abstract class BossState
+public enum BossStatePriority
 {
-    protected Animator animator;
+    Low,
+    Medium,
+    High
+}
+
+public class BossState : StateBehaviour
+{
+    [SerializeField] private BossBase _boss;
+    public BossBase Boss => _boss;
     
-    public void Initialize(Animator bossAnimator)
+    public virtual BossStatePriority Priority => BossStatePriority.Low;
+
+    public virtual bool CanInterruptSelf => false;
+
+    public override bool CanEnterState => true;
+    
+    public override bool CanExitState
     {
-        animator = bossAnimator;
+        get
+        {
+            // There are several different ways of accessing the state change details:
+            // CharacterState nextState = StateChange<CharacterState>.NextState;
+            // CharacterState nextState = this.GetNextState();
+            BossState nextState = _boss.StateMachine.NextState;
+            if (nextState == this)
+                return CanInterruptSelf;
+            if (Priority == BossStatePriority.Low)
+                return true;
+            
+            return nextState.Priority > Priority;
+        }
     }
     
-    public abstract void Enter();
-
-    public abstract void Update();
+    public override void OnEnterState()
+    {
+        throw new System.NotImplementedException();
+    }
     
-    public abstract void Exit();
+    public override void OnExitState()
+    {
+        throw new System.NotImplementedException();
+    }
+    
+#if UNITY_EDITOR
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+
+        gameObject.GetComponentInParentOrChildren(ref _boss);
+    }
+#endif
 }

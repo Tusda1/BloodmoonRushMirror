@@ -22,7 +22,7 @@ public abstract class GravityObject : MonoBehaviour {
     private ContactFilter2D _contactFilter;
     private const float MinGroundNormalY = 0.65f;
 
-    private void Awake() {
+    protected void Awake() {
         rb2d ??= GetComponent<Rigidbody2D>();
     }
 
