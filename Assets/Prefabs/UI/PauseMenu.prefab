@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8251505631962613021
+--- !u!1 &4875595237995187263
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2204642212546522861}
-  - component: {fileID: 3758192024081010831}
-  - component: {fileID: 3240370688794494285}
+  - component: {fileID: 317674731108022442}
+  - component: {fileID: 1344609031287201620}
+  - component: {fileID: 8598516997904334095}
   m_Layer: 0
-  m_Name: DialogueUI
+  m_Name: PauseMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2204642212546522861
+--- !u!4 &317674731108022442
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8251505631962613021}
+  m_GameObject: {fileID: 4875595237995187263}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.670207, y: -2.2060184, z: -0.043642286}
+  m_LocalPosition: {x: 1.8913289, y: -0.8182969, z: -9.879582}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3758192024081010831
+--- !u!114 &1344609031287201620
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8251505631962613021}
+  m_GameObject: {fileID: 4875595237995187263}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
@@ -47,30 +47,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: e93a3f3523783734e98e7d898716c81f, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 6957345ea65a9da4e90748617c70c002, type: 3}
   m_SortingOrder: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
---- !u!114 &3240370688794494285
+--- !u!114 &8598516997904334095
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8251505631962613021}
+  m_GameObject: {fileID: 4875595237995187263}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 424faf8ae72477c4a9431a5b4a9e4989, type: 3}
+  m_Script: {fileID: 11500000, guid: 77232dca3cb1acb40914312b5cee94c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiDocument: {fileID: 3758192024081010831}
-  playerCanMove: {fileID: 11400000, guid: f2f25efabb8f0d74bbfdba92ceb38155, type: 2}
-  uiDocumentVisible: 0
-  imagePortrait: {fileID: 0}
-  dialogueText: 
-  dialogueFont: {fileID: 0}
-  textSize: 0
-  dialogueColor: {r: 0, g: 0, b: 0, a: 0}
-  scriptVotePair:
-    vote: 0
+  uiDocument: {fileID: 1344609031287201620}
+  mainMenuScene:
+    asset: {fileID: 102900000, guid: a217a883e63697648929831d050d4252, type: 3}
+    guid: a217a883e63697648929831d050d4252

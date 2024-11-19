@@ -17,6 +17,7 @@ namespace Unity.Behavior {
 
         protected override Status OnStart() {
             FMODManager.PlayMusic(path.Value);
+            
             return Status.Success;
         }
     }

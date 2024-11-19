@@ -13,18 +13,18 @@ namespace Unity.Behavior {
     public class SetInConversationAction : Action {
         [SerializeReference] public BlackboardVariable<bool> value;
 
-        private DialogueUI dialogueUI => DialogueUI.Instance;
+        private DialogueUI DialogueUI => DialogueUI.Instance;
 
         protected override Status OnStart() {
-            if (dialogueUI == null) return Status.Failure;
+            if (DialogueUI == null) return Status.Failure;
 
             if (value.Value == false) {
-                dialogueUI.uiDocumentVisible = value.Value;
+                DialogueUI.uiDocumentVisible = value.Value;
             }
 
-            dialogueUI.dialogueText = "";
+            DialogueUI.dialogueText = "";
 
-            dialogueUI.playerCanMove.ChangeVote(dialogueUI.scriptVotePair, !value.Value);
+            DialogueUI.playerCanMove.ChangeVote(DialogueUI.scriptVotePair, !value.Value);
             return Status.Success;
         }
     }

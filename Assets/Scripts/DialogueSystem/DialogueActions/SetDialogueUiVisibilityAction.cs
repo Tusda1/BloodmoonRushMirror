@@ -13,12 +13,12 @@ namespace Unity.Behavior {
     public class SetDialogueUiVisibilityAction : Action {
         [SerializeReference] public BlackboardVariable<bool> value;
 
-        private DialogueUI dialogueUI => DialogueUI.Instance;
+        private DialogueUI DialogueUI => DialogueUI.Instance;
 
         protected override Status OnStart() {
-            if (dialogueUI == null) return Status.Failure;
+            if (DialogueUI == null) return Status.Failure;
 
-            dialogueUI.uiDocumentVisible = value.Value;
+            DialogueUI.uiDocumentVisible = value.Value;
             return Status.Success;
         }
     }
