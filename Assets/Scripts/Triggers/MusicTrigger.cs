@@ -4,8 +4,8 @@ using UnityEngine;
 namespace Triggers {
     public class MusicTrigger : TriggerBox {
         #region ---Fields---
-        [SerializeField] private int musicStage;
         [SerializeField] private string musicName;
+        [SerializeField] private int musicStage;
         #endregion
 
         private static FMODManager FMODManager => FMODManager.Instance;

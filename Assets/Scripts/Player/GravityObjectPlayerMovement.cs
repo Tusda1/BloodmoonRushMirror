@@ -285,7 +285,7 @@ namespace Player {
             if (!isHoldingJump) return;
             
             ForceExitDuck();
-            Debug.Log(string.Join('|', isGrounded, isActuallyGrounded, _coyoteTimer.IsRunning));
+            // Debug.Log(string.Join('|', isGrounded, isActuallyGrounded, _coyoteTimer.IsRunning));
             if (isGrounded || killCharges > 0) {
                 isJumping = true;
                 _minJumpTimer.StartTimer();

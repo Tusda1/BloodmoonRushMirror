@@ -10,9 +10,11 @@ namespace Triggers {
         #endregion
 
         private void OnTriggerEnter2D(Collider2D other) {
-            if (colliderTag != default && !other.CompareTag(colliderTag) && !_hasBeenTriggered) return;
+            if (_hasBeenTriggered) return;
+            if (colliderTag != default && !other.CompareTag(colliderTag)) return;
 
             TriggeredAction();
+            _hasBeenTriggered = true;
         }
 
         public abstract void TriggeredAction();

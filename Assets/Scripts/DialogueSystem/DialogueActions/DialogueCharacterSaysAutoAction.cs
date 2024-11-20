@@ -9,11 +9,11 @@ namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
         name: "DialogueCharacter Says Auto",
-        story: "[dialogueCharacterReference] says [dialogue] | Auto |",
+        story: "[dialogueCharacter] says [dialogue] | Auto |",
         category: "DialogueAction",
         id: "0466ecf5f83b7ef25e26fd10319bf1e2")]
     public class DialogueCharacterSaysAutoAction : Action {
-        [SerializeReference] public BlackboardVariable<DialogueCharacterSO> dialogueCharacterReference;
+        [SerializeReference] public BlackboardVariable<DialogueCharacterSO> dialogueCharacter;
         [SerializeReference] public BlackboardVariable<string> dialogue;
 
         [SerializeReference] public BlackboardVariable<Sprite> imagePortraitOverride;
@@ -31,7 +31,7 @@ namespace Unity.Behavior {
         private string _displayText;
         private static DialogueUI DialogueUI => DialogueUI.Instance;
         private static FMODManager FMODManager => FMODManager.Instance;
-        private DialogueCharacterSO DialogueCharacterSO => dialogueCharacterReference.Value;
+        private DialogueCharacterSO DialogueCharacterSO => dialogueCharacter.Value;
 
         private DialogueCharacterSO.WhenIsSfxPlayed _whenIsSfxPlayed;
 
