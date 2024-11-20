@@ -388,15 +388,15 @@ namespace Player {
         }
 
         private void SpikeStunStart() {
-            _player.spriteRenderer.color = new Color(1, 1, 1, 0.1f);
-            _player.healthComponent.TriggerInvulnerability(0.75f);
+            //_player.spriteRenderer.color = new Color(1, 1, 1, 0.1f);
+            _player.healthComponent.TriggerInvulnerability(spikeStunTime);
             ResetMovement(0);
             _knockbackVector = Vector2.zero;
             isTakingKnockback = true;
         }
 
         private void SpikeStunStop() {
-            _player.spriteRenderer.color = new Color(1, 1, 1, 1);
+            //_player.spriteRenderer.color = new Color(1, 1, 1, 1);
             isTakingKnockback = false;
         }
 
