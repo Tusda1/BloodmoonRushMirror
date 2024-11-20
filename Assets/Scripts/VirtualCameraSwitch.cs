@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Attributes;
 using Player;
@@ -14,8 +13,10 @@ public class VirtualCameraSwitch : MonoBehaviour {
     [SerializeField, Required] private GameObject enemyGameObject;
 
     [SerializeField] private UnityEvent onEnable;
+    [SerializeField] private UnityEvent onEnableLate;
     [SerializeField] private UnityEvent onDisable;
-
+    [SerializeField] private UnityEvent onDisableLate;
+ 
     [HideInInspector] public bool isActiveRoom;
 
     private bool _isDeactivating;
@@ -63,6 +64,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
     }
 
     private IEnumerator DelayedDeactivation() {
+        onDisable.Invoke();
         _isDeactivating = true;
         yield return new WaitForSeconds(cinemachineBrain.DefaultBlend.Time);
         if (!_isDeactivating) {
@@ -70,13 +72,13 @@ public class VirtualCameraSwitch : MonoBehaviour {
         }
 
         ManualDeactivation();
-        onDisable.Invoke();
+        onDisableLate.Invoke();
     }
     
     private IEnumerator DelayedActivation() {
-        yield return new WaitForSeconds(cinemachineBrain.DefaultBlend.Time);
-        
         onEnable.Invoke();
+        yield return new WaitForSeconds(cinemachineBrain.DefaultBlend.Time);
+        onEnableLate.Invoke();
     }
 
     public void ManualActivation() {
