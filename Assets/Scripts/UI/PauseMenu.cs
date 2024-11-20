@@ -33,7 +33,7 @@ namespace UI {
 
             _resumeButton.clicked += ResumeGame;
             _settingsButton.clicked += SettingsButtonPressed;
-            _mainMenuButton.clicked += () => SceneCollectionManager.LoadSceneCollection(mainMenusSceneCollection);
+            _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollection(mainMenusSceneCollection);
             _backButton.clicked += BackButtonPressed;
 
             ResumeGame();

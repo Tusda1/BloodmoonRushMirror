@@ -50,15 +50,17 @@
 }
 
 Button {
-    background-image: url('project://database/Assets/Art/Placeholders/UI_concept.png?fileID=141909818695681162&guid=cc3d34451658be643a15fb8e564912b7&type=3#UI_concept_0');
+    background-image: url("project://database/Assets/AstarPathfindingProject/ExampleScenes/Example2_Terrain/checkerGround.psd?fileID=2800000&guid=ee2523340e7944c4297a80937a51484c&type=3#checkerGround");
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    -unity-font-definition: url('project://database/Assets/Fonts/NPC%20_%20Ui.ttf?fileID=12800000&guid=b9b48acb196babc4a9e6b515041cda24&type=3#NPC _ Ui');
-    font-size: 25px;
-    height: 96px;
+    -unity-font-definition: resource('Fonts/NPCUi');
+    font-size: 24px;
+    height: 48px;
     background-color: rgba(0, 0, 0, 0);
+    width: 226px;
+    align-self: center;
 }
 
 .opacity0 {

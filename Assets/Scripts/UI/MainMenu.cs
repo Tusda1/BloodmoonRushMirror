@@ -1,18 +1,22 @@
 using System.Collections.Generic;
+using Attributes;
 using FMODScripts;
 using Unity.Mathematics;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace UI {
     public class MainMenu : MonoBehaviour {
-        [SerializeField] private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField] private UIDocument _uiDocument;
 
         [SerializeField] private InputActionReference tabNavigateAction;
+        
+        [SerializeField] private SceneCollection startSceneCollection;
 
         private VisualElement _rootElement;
 
@@ -32,11 +36,11 @@ namespace UI {
         
         private static FMODManager FMODManager => FMODManager.Instance;
 
-        private void Awake() {
+        private void Start() {
             FMODManager.SetParameterValue("levelMusicProgression", 0);
             FMODManager.PlayMusic("event:/Music/Music_level1");
             
-            _rootElement = uiDocument.rootVisualElement;
+            _rootElement = _uiDocument.rootVisualElement;
 
             _startButton = _rootElement.Q<Button>("StartButton");
             _settingsButton = _rootElement.Q<Button>("SettingsButton");
@@ -44,8 +48,8 @@ namespace UI {
         
             _menuButton = _rootElement.Q<Button>("MenuButton");
 
-            _mainMenu = _rootElement.Q<VisualElement>("MainMenu");
-            _settings = _rootElement.Q<VisualElement>("Settings");
+            _mainMenu = _rootElement.Q<VisualElement>("MainMenuRoot");
+            _settings = _rootElement.Q<VisualElement>("SettingsMenuRoot");
 
             _tabbedView = _rootElement.Q<TabView>("TabbedView");
             _tabs = _rootElement.Query(className: "tab").OfType<Tab>().ToList();
@@ -54,7 +58,7 @@ namespace UI {
             _settingsButton.clicked += SettingsButtonClicked;
             _quitButton.clicked += QuitButtonClicked;
 
-            _menuButton.clicked += SettingsButtonClicked;
+            // _menuButton.clicked += SettingsButtonClicked;
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -86,7 +90,7 @@ namespace UI {
 
 
         private void StartButtonClicked() {
-            SceneManager.LoadScene("CutScene");
+            _ = SceneCollectionManager.LoadSceneCollection(startSceneCollection);
         }
 
         private void SettingsButtonClicked() {

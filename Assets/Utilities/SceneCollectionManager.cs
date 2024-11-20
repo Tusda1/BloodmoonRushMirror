@@ -1,39 +1,41 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
-using UnityEngine;
 #endif
 
 public static class SceneCollectionManager {
     private static readonly List<SceneCollection.SceneInstance> ActiveScenes = new();
     private static readonly List<SceneCollection.SceneInstance> PersistentScenes = new();
 
-    public static void LoadSceneCollection(SceneCollection sceneCollection) {
+    public static async Task LoadSceneCollection(SceneCollection sceneCollection) {
         foreach (var sceneInstance in ActiveScenes.ToArray()) {
-            if (ActiveScenes.Contains(sceneInstance)) {
-                if (!sceneInstance.getsReloadedWhenLoadedAgain) continue;
-            }
+            if (sceneInstance.persistentScene) continue;
+            if (sceneCollection.scenes.Contains(sceneInstance) && !sceneInstance.getsReloadedWhenLoadedAgain) continue;
 
-            SceneManager.UnloadSceneAsync(sceneInstance.BuildIndex);
+            await SceneManager.UnloadSceneAsync(sceneInstance.BuildIndex);
+            Debug.Log("unloading: " + sceneInstance.Name);
             ActiveScenes.Remove(sceneInstance);
         }
 
         foreach (var sceneInstance in sceneCollection.scenes) {
             if (!ActiveScenes.Contains(sceneInstance)) {
-                SceneManager.LoadScene(sceneInstance.BuildIndex, LoadSceneMode.Additive);
+                await SceneManager.LoadSceneAsync(sceneInstance.BuildIndex, LoadSceneMode.Additive);
+                Debug.Log("Loading: " + sceneInstance.Name);
 
                 if (sceneInstance.persistentScene) {
                     PersistentScenes.Add(sceneInstance);
                 }
-                else {
-                    ActiveScenes.Add(sceneInstance);
-                }
+                ActiveScenes.Add(sceneInstance);
+                
             }
 
             if (sceneInstance.activeScene) {
                 SceneManager.SetActiveScene(sceneInstance.LoadedScene);
+                Debug.Log("Set Active Scene: " + sceneInstance.Name);
             }
         }
     }
@@ -80,7 +82,7 @@ public static class SceneCollectionManager {
 
     private static IEnumerable<Scene> GetAllScenes() {
         var countLoaded = SceneManager.sceneCount;
-
+    
         for (var i = 0; i < countLoaded; i++) {
             yield return SceneManager.GetSceneAt(i);
         }
