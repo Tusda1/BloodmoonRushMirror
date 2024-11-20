@@ -12,11 +12,11 @@ using UnityEditor;
 
 namespace UI {
     public class MainMenu : MonoBehaviour {
-        [GetOrAddComponent, SerializeField] private UIDocument _uiDocument;
+        [GetOrAddComponent] private UIDocument _uiDocument;
 
         [SerializeField] private InputActionReference tabNavigateAction;
         
-        [SerializeField] private SceneCollection startSceneCollection;
+        [SerializeField] private SceneCollectionSO startSceneCollectionSO;
 
         private VisualElement _rootElement;
 
@@ -90,7 +90,7 @@ namespace UI {
 
 
         private void StartButtonClicked() {
-            _ = SceneCollectionManager.LoadSceneCollection(startSceneCollection);
+            _ = SceneCollectionManager.LoadSceneCollection(startSceneCollectionSO);
         }
 
         private void SettingsButtonClicked() {

@@ -1,11 +1,13 @@
+using Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UI {
     public class PauseMenu : Singleton<PauseMenu> {
         #region ---Fields---
-        [SerializeField] private UIDocument uiDocument;
-        [SerializeField] private SceneCollection mainMenusSceneCollection;
+        [GetOrAddComponent] private UIDocument _uiDocument;
+        
+        [SerializeField] private SceneCollectionSO mainMenusSceneCollectionSO;
         
         private VisualElement _root;
         private VisualElement _pauseMenuRoot;
@@ -22,7 +24,7 @@ namespace UI {
         protected override void Awake() {
             base.Awake();
 
-            _root = uiDocument.rootVisualElement;
+            _root = _uiDocument.rootVisualElement;
             _pauseMenuRoot = _root.Q<VisualElement>("PauseMenuRoot");
             _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
 
@@ -33,7 +35,7 @@ namespace UI {
 
             _resumeButton.clicked += ResumeGame;
             _settingsButton.clicked += SettingsButtonPressed;
-            _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollection(mainMenusSceneCollection);
+            _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollection(mainMenusSceneCollectionSO);
             _backButton.clicked += BackButtonPressed;
 
             ResumeGame();
@@ -64,7 +66,7 @@ namespace UI {
         }
 
         private void PauseGame() {
-            Time.timeScale = 0;
+            // Time.timeScale = 0;
             _paused = true;
 
             _root.style.display = DisplayStyle.Flex;

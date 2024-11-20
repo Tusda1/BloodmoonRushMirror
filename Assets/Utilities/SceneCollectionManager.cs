@@ -8,20 +8,20 @@ using UnityEditor.SceneManagement;
 #endif
 
 public static class SceneCollectionManager {
-    private static readonly List<SceneCollection.SceneInstance> ActiveScenes = new();
-    private static readonly List<SceneCollection.SceneInstance> PersistentScenes = new();
+    private static readonly List<SceneCollectionSO.SceneInstance> ActiveScenes = new();
+    private static readonly List<SceneCollectionSO.SceneInstance> PersistentScenes = new();
 
-    public static async Task LoadSceneCollection(SceneCollection sceneCollection) {
+    public static async Task LoadSceneCollection(SceneCollectionSO sceneCollectionSO) {
         foreach (var sceneInstance in ActiveScenes.ToArray()) {
             if (sceneInstance.persistentScene) continue;
-            if (sceneCollection.scenes.Contains(sceneInstance) && !sceneInstance.getsReloadedWhenLoadedAgain) continue;
+            if (sceneCollectionSO.scenes.Contains(sceneInstance) && !sceneInstance.getsReloadedWhenLoadedAgain) continue;
 
             await SceneManager.UnloadSceneAsync(sceneInstance.BuildIndex);
             Debug.Log("unloading: " + sceneInstance.Name);
             ActiveScenes.Remove(sceneInstance);
         }
 
-        foreach (var sceneInstance in sceneCollection.scenes) {
+        foreach (var sceneInstance in sceneCollectionSO.scenes) {
             if (!ActiveScenes.Contains(sceneInstance)) {
                 await SceneManager.LoadSceneAsync(sceneInstance.BuildIndex, LoadSceneMode.Additive);
                 Debug.Log("Loading: " + sceneInstance.Name);
@@ -29,8 +29,8 @@ public static class SceneCollectionManager {
                 if (sceneInstance.persistentScene) {
                     PersistentScenes.Add(sceneInstance);
                 }
+
                 ActiveScenes.Add(sceneInstance);
-                
             }
 
             if (sceneInstance.activeScene) {
@@ -41,13 +41,13 @@ public static class SceneCollectionManager {
     }
 
 #if UNITY_EDITOR
-    public static void LoadSceneCollectionEditor(SceneCollection sceneCollection) {
+    public static void LoadSceneCollectionEditor(SceneCollectionSO sceneCollectionSO) {
         ActiveScenes.Clear();
 
-        EditorLoadScene(sceneCollection.scenes.First(), false);
+        EditorLoadScene(sceneCollectionSO.scenes.First(), false);
 
-        for (var i = 1; i < sceneCollection.scenes.Length; i++) {
-            var sceneInstance = sceneCollection.scenes[i];
+        for (var i = 1; i < sceneCollectionSO.scenes.Length; i++) {
+            var sceneInstance = sceneCollectionSO.scenes[i];
 
             EditorLoadScene(sceneInstance);
         }
@@ -58,7 +58,7 @@ public static class SceneCollectionManager {
         }
     }
 
-    private static void EditorLoadScene(SceneCollection.SceneInstance sceneInstance, bool additive = true) {
+    private static void EditorLoadScene(SceneCollectionSO.SceneInstance sceneInstance, bool additive = true) {
         if (sceneInstance.persistentScene) {
             if (!PersistentScenes.Contains(sceneInstance)) {
                 PersistentScenes.Add(sceneInstance);
@@ -78,14 +78,6 @@ public static class SceneCollectionManager {
 
         ActiveScenes.Add(sceneInstance);
         Debug.Log("Adding scene");
-    }
-
-    private static IEnumerable<Scene> GetAllScenes() {
-        var countLoaded = SceneManager.sceneCount;
-    
-        for (var i = 0; i < countLoaded; i++) {
-            yield return SceneManager.GetSceneAt(i);
-        }
     }
 #endif
 }

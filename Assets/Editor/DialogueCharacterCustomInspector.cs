@@ -6,7 +6,8 @@ using UnityEngine.UIElements;
 
 [CustomEditor(typeof(DialogueCharacterSO))]
 public class DialogueCharacterCustomInspector : Editor {
-    [FormerlySerializedAs("m_InspectorXML")] public VisualTreeAsset inspectorXML;
+    [FormerlySerializedAs("m_InspectorXML")]
+    public VisualTreeAsset inspectorXML;
 
     public override VisualElement CreateInspectorGUI() {
         var myInspector = new VisualElement();

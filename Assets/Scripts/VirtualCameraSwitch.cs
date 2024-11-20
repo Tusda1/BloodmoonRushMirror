@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Attributes;
 using Player;
@@ -55,6 +56,10 @@ public class VirtualCameraSwitch : MonoBehaviour {
                 _coroutine = null;
             }
         }
+    }
+
+    private void OnDestroy() {
+        StopAllCoroutines();
     }
 
     private IEnumerator DelayedDeactivation() {
