@@ -1,13 +1,14 @@
 using Attributes;
 using UI.Settings;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace UI {
     [RequireComponent(typeof(SettingsMenu))]
     public class PauseMenu : Singleton<PauseMenu> {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField] private UIDocument _uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
         
         [SerializeField] private SceneCollectionSO mainMenusSceneCollectionSO;
         
@@ -26,7 +27,7 @@ namespace UI {
         protected override void Awake() {
             base.Awake();
 
-            _root = _uiDocument.rootVisualElement;
+            _root = uiDocument.rootVisualElement;
             _pauseMenuRoot = _root.Q<VisualElement>("PauseMenuRoot");
             _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
 

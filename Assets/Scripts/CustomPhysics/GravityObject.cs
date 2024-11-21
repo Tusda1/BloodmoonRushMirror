@@ -10,7 +10,7 @@ public abstract class GravityObject : MonoBehaviour {
 
     protected Vector2 targetVelocity;
     protected Vector2 velocity;
-    [GetOrAddComponent] protected Rigidbody2D rb2d;
+    [GetOrAddComponent, SerializeField, HideInInspector] protected Rigidbody2D rb2d;
     [Tooltip("If Gravidimodifyer is 0, set: GroundNormal = new Vector2 (0f, 1f); in start function in inherited class")]
     [SerializeField] protected float GravityModifier = 1f;
     protected Vector2 GroundNormal; //set this to Vector2.Right in child if you want to make projectiles

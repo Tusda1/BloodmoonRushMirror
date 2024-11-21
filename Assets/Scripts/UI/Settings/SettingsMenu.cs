@@ -9,7 +9,7 @@ namespace UI.Settings {
     [RequireComponent(typeof(VideoSettingsMenu), typeof(AudioSettingsMenu), typeof(ControlsSettingsMenu))]
     public class SettingsMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent] private UIDocument _uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
         
         [SerializeField] private InputActionReference tabNavigateAction;
         

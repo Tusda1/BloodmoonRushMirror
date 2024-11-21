@@ -1,14 +1,15 @@
 using Attributes;
 using Unity.Behavior;
+using UnityEngine;
 
 namespace Triggers {
     public class TriggerBoxStartConversation : TriggerBox {
         #region ---Fields---
-        [GetOrAddComponent] private BehaviorGraphAgent _agent;
+        [GetOrAddComponent, SerializeField, HideInInspector] private BehaviorGraphAgent agent;
         #endregion
 
         public override void TriggeredAction() {
-            _agent.enabled = true;
+            agent.enabled = true;
         }
     }
 }

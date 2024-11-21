@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 namespace UI.Settings {
     public class AudioSettingsMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField] private UIDocument _uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
         private Tab _audioTab;
         private Slider _masterVolumeSlider;
@@ -17,11 +17,11 @@ namespace UI.Settings {
         #endregion
 
         private void Awake() {
-            _audioTab = _uiDocument.rootVisualElement.Q<Tab>("AudioTab");
+            _audioTab = uiDocument.rootVisualElement.Q<Tab>("AudioTab");
 
-            _masterVolumeSlider = _uiDocument.rootVisualElement.Q<Slider>("MasterVolumeSlider");
-            _sfxVolumeSlider = _uiDocument.rootVisualElement.Q<Slider>("SFXVolumeSlider");
-            _musicVolumeSlider = _uiDocument.rootVisualElement.Q<Slider>("MusicVolumeSlider");
+            _masterVolumeSlider = uiDocument.rootVisualElement.Q<Slider>("MasterVolumeSlider");
+            _sfxVolumeSlider = uiDocument.rootVisualElement.Q<Slider>("SFXVolumeSlider");
+            _musicVolumeSlider = uiDocument.rootVisualElement.Q<Slider>("MusicVolumeSlider");
         }
 
         private void Start() {

@@ -7,7 +7,7 @@ using Utilities.UI.DisplaySettings;
 namespace UI.Settings {
     public class VideoSettingsMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField] private UIDocument _settingsUiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
         [Header("Display Settings Data")]
         [SerializeField, Required] private FullScreenModeSO fullScreenModeSo;
@@ -35,7 +35,7 @@ namespace UI.Settings {
         private void Awake() {
             debugLogger.messageOrigin = this;
 
-            var settingsRoot = _settingsUiDocument.rootVisualElement;
+            var settingsRoot = uiDocument.rootVisualElement;
 
             _screenModeDropdownMenu = settingsRoot.Q<DropdownField>("ScreenModeSelectDropdown");
             _displayDropdownMenu = settingsRoot.Q<DropdownField>("DisplaySelectDropdown");

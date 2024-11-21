@@ -12,8 +12,8 @@ namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
         #region ---Fields---
         [Header("References")]
-        [GetOrAddComponent, SerializeField] private PlayerScript _player;
-        [GetOrAddComponent, SerializeField] private BoxCollider2D _boxCollider;
+        [GetOrAddComponent, SerializeField, HideInInspector] private PlayerScript player;
+        [GetOrAddComponent, SerializeField, HideInInspector] private BoxCollider2D boxCollider;
 
         [Header("Player Movement")] 
         [SerializeField, ReadOnly] private Vector2 inputVector;
@@ -114,15 +114,15 @@ namespace Player {
         private void InitializeDashTimer() {
             _dashTimer = new CountdownTimer(dashTime);
             _dashTimer.OnBegin += () => {
-                _player.animator.SetTrigger(AnimatorDashTrigger);
-                _player.animator.SetBool(AnimatorDashBool, true);
-                _player.healthComponent.TriggerInvulnerability(dashTime);
+                player.animator.SetTrigger(AnimatorDashTrigger);
+                player.animator.SetBool(AnimatorDashBool, true);
+                player.healthComponent.TriggerInvulnerability(dashTime);
             };
             _dashTimer.OnStop += () => {
                 lockToAxis = 0;
                 isDashing = false;
                 ResetMovement(2);
-                _player.animator.SetBool(AnimatorDashBool, false);
+                player.animator.SetBool(AnimatorDashBool, false);
             };
         }
 
@@ -227,7 +227,7 @@ namespace Player {
 
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, move, ref _referenceSmoothVelocity, smoothTime);
 
-                _player.animator.SetFloat(AnimatorMovementFloat, Mathf.Abs(_smoothMovement.x));
+                player.animator.SetFloat(AnimatorMovementFloat, Mathf.Abs(_smoothMovement.x));
                 
                 targetVelocity.x = _smoothMovement.x * maxSpeed;
                 
@@ -235,7 +235,7 @@ namespace Player {
                 
             }
 
-            if (!_player.isAttacking) {
+            if (!player.isAttacking) {
                 var transformLocalScale = transform.localScale;
                 switch (_smoothMovement.x) {
                     case > 0.01f:
@@ -258,7 +258,7 @@ namespace Player {
                 killCharges = 0;
                 
                 if (!isJumping) {
-                    _player.animator.SetBool(AnimatorJumpBool, false);
+                    player.animator.SetBool(AnimatorJumpBool, false);
                 }
             }
 
@@ -297,7 +297,7 @@ namespace Player {
                 isJumping = true;
                 _minJumpTimer.StartTimer();
                 _coyoteTimer.StopTimer();
-                _player.animator.SetBool(AnimatorJumpBool, true);
+                player.animator.SetBool(AnimatorJumpBool, true);
 
                 if (killCharges > 0) {
                     doubleJumping = true;
@@ -363,7 +363,7 @@ namespace Player {
         private void ForceExitDuck() {
             debugLogger.Log("exiting duck");
             isDucking = false;
-            _player.animator.SetBool(AnimatorDuckBool, false);
+            player.animator.SetBool(AnimatorDuckBool, false);
         }
 
         private void EnterDuck() {
@@ -381,8 +381,8 @@ namespace Player {
             }
 
             isDucking = true;
-            _player.animator.SetTrigger(AnimatorDuckTrigger);
-            _player.animator.SetBool(AnimatorDuckBool, true);
+            player.animator.SetTrigger(AnimatorDuckTrigger);
+            player.animator.SetBool(AnimatorDuckBool, true);
             debugLogger.Log("Changed player scale down");
         }
 
@@ -396,7 +396,7 @@ namespace Player {
 
         private void SpikeStunStart() {
             //_player.spriteRenderer.color = new Color(1, 1, 1, 0.1f);
-            _player.healthComponent.TriggerInvulnerability(spikeStunTime);
+            player.healthComponent.TriggerInvulnerability(spikeStunTime);
             ResetMovement(0);
             _knockbackVector = Vector2.zero;
             isTakingKnockback = true;

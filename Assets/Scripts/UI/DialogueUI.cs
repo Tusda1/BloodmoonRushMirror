@@ -1,4 +1,5 @@
 using System;
+using Attributes;
 using Consensus;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -7,7 +8,8 @@ using UnityEngine.UIElements;
 namespace UI {
     public class DialogueUI : Singleton<DialogueUI> {
         #region ---Fields---
-        [SerializeField] private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        
         [SerializeField] public AllInFavourConsensusSO playerCanMove;
         public event Action OnSkipDialogue = delegate { };
 
