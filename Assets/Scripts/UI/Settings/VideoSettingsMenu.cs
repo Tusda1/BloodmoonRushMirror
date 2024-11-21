@@ -7,7 +7,7 @@ using Utilities.UI.DisplaySettings;
 namespace UI.Settings {
     public class VideoSettingsMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent] private UIDocument _settingsUiDocument;
+        [GetOrAddComponent, SerializeField] private UIDocument _settingsUiDocument;
 
         [Header("Display Settings Data")]
         [SerializeField, Required] private FullScreenModeSO fullScreenModeSo;

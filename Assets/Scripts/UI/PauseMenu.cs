@@ -7,7 +7,7 @@ namespace UI {
     [RequireComponent(typeof(SettingsMenu))]
     public class PauseMenu : Singleton<PauseMenu> {
         #region ---Fields---
-        [GetOrAddComponent] private UIDocument _uiDocument;
+        [GetOrAddComponent, SerializeField] private UIDocument _uiDocument;
         
         [SerializeField] private SceneCollectionSO mainMenusSceneCollectionSO;
         

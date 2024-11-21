@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 namespace UI.Settings {
     public class AudioSettingsMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent] private UIDocument _uiDocument;
+        [GetOrAddComponent, SerializeField] private UIDocument _uiDocument;
 
         private Tab _audioTab;
         private Slider _masterVolumeSlider;

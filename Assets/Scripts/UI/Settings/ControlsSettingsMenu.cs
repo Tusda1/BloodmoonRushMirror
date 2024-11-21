@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 namespace UI.Settings {
     public class ControlsSettingsMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent] private UIDocument _uiDocument;
+        [GetOrAddComponent, SerializeField] private UIDocument _uiDocument;
         
         private Tab _controlsTab;
         #endregion

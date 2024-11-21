@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5471481447901216593}
   - component: {fileID: 8654472328657529724}
   - component: {fileID: 8907773847491202315}
+  - component: {fileID: 1067861080814233624}
   m_Layer: 0
   m_Name: TriggerConversationBox
   m_TagString: Untagged
@@ -46,9 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderTag: Player
-  eventChannel: {fileID: 11400000, guid: aab9ab00cf337944b8f9ff4a4c37e1d8, type: 2}
-  conversationGraph: {fileID: 0}
-  script: {fileID: 0}
 --- !u!61 &8907773847491202315
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -95,3 +93,29 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1067861080814233624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4719493960834511567}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Graph: {fileID: -7973833189144408391, guid: a7474ac9dcace624a8bdf8c3ed943b69, type: 2}
+  m_BlackboardVariableOverridesList:
+  - rid: 4541842205752164934
+  references:
+    version: 2
+    RefIds:
+    - rid: 4541842205752164934
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 4719493960834511567}

@@ -83,6 +83,8 @@ namespace Player {
         private static readonly int AnimatorDashBool = Animator.StringToHash("IsDashing");
         private static readonly int AnimatorDuckTrigger = Animator.StringToHash("DuckStart");
         private static readonly int AnimatorDuckBool = Animator.StringToHash("IsDucking");
+        private static readonly int AnimatorMovementFloat = Animator.StringToHash("Movement");
+        private static readonly int AnimatorJumpBool = Animator.StringToHash("IsJumping");
         #endregion
         #endregion
 
@@ -188,7 +190,7 @@ namespace Player {
                 ResetMovement(2);
                 isDashing = false;
                 velocity.y = jumpForce;
-                targetVelocity.y = jumpForce;
+                // targetVelocity.y = jumpForce;
                 doubleJumping = false;
             }
             else if (!isHoldingJump && !isJumping) {
@@ -198,7 +200,7 @@ namespace Player {
             }
             else if (isJumping) {
                 velocity.y = jumpForce;
-                targetVelocity.y = jumpForce;
+                // targetVelocity.y = jumpForce;
             }
 
             if (isDashing) {
@@ -225,7 +227,9 @@ namespace Player {
 
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, move, ref _referenceSmoothVelocity, smoothTime);
 
-                targetVelocity.x = (_smoothMovement.x * maxSpeed);
+                _player.animator.SetFloat(AnimatorMovementFloat, Mathf.Abs(_smoothMovement.x));
+                
+                targetVelocity.x = _smoothMovement.x * maxSpeed;
                 
                 targetVelocity += affectingVelocity;
                 
@@ -252,6 +256,10 @@ namespace Player {
             if (isGrounded) {
                 if (!isDashing) canDash = true;
                 killCharges = 0;
+                
+                if (!isJumping) {
+                    _player.animator.SetBool(AnimatorJumpBool, false);
+                }
             }
 
             if (isActuallyGrounded && IsValidSpawnPoint())
@@ -285,11 +293,11 @@ namespace Player {
             if (!isHoldingJump) return;
             
             ForceExitDuck();
-            // Debug.Log(string.Join('|', isGrounded, isActuallyGrounded, _coyoteTimer.IsRunning));
             if (isGrounded || killCharges > 0) {
                 isJumping = true;
                 _minJumpTimer.StartTimer();
                 _coyoteTimer.StopTimer();
+                _player.animator.SetBool(AnimatorJumpBool, true);
 
                 if (killCharges > 0) {
                     doubleJumping = true;
@@ -302,8 +310,7 @@ namespace Player {
         }
 
         public void OnMove(InputValue inputValue) {
-            var referenceVector = inputValue.Get<Vector2>();
-            inputVector = referenceVector.normalized;
+            inputVector = inputValue.Get<Vector2>();
         }
 
         public void OnDash(InputValue inputValue) {

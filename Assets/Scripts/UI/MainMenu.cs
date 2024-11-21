@@ -12,7 +12,7 @@ namespace UI {
     [RequireComponent(typeof(SettingsMenu))]
     public class MainMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent] private UIDocument _uiDocument;
+        [GetOrAddComponent, SerializeField] private UIDocument _uiDocument;
         
         [SerializeField] private SceneCollectionSO startSceneCollectionSO;
 
