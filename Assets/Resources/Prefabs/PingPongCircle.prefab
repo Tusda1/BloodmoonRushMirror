@@ -102,7 +102,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 689d3bc77a0a5d444bacea34c81defcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastHitObject: {fileID: 0}
+  projectileDamageInstance:
+    damage: 0
+    knockback: {x: 0, y: 0}
+    knockbackStrength: 0
+    staggerStrength: 0
 --- !u!50 &8471337427822004300
 Rigidbody2D:
   serializedVersion: 5

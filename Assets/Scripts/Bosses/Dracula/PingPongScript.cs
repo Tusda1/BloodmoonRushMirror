@@ -3,8 +3,7 @@ using Vector2 = UnityEngine.Vector2;
 
 public class PingPongScript : MonoBehaviour, IDamageable
 {
-    private DamageInstance projectileDamageInstance;
-    public GameObject lastHitObject;
+    [SerializeField] private DamageInstance projectileDamageInstance;
     
     private void OnTriggerEnter2D(Collider2D other) 
     {
@@ -22,7 +21,6 @@ public class PingPongScript : MonoBehaviour, IDamageable
     
     public void TakeDamage(DamageInstance damageInstance)
     {
-        print(damageInstance.knockback);
         Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
         Vector2 velocity = rb2d.linearVelocity;
         

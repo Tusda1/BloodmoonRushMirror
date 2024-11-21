@@ -11,7 +11,7 @@ public class PingPongState : BossState
     
     [SerializeField] private float pingPongStartSpeed = 5f;
     
-    public override void OnEnterState()
+    private void OnEnable()
     {
         //Initialize variables
         _pingPongCircle = Resources.Load<GameObject>("Prefabs/PingPongCircle");
@@ -19,7 +19,7 @@ public class PingPongState : BossState
         
         // Spawn ping pong circle and send it to the player
         var position = transform.position;
-        GameObject pingPongCircle = Object.Instantiate(_pingPongCircle, position, Quaternion.identity);
+        GameObject pingPongCircle = Instantiate(_pingPongCircle, position, Quaternion.identity);
         
         // send the circle in the x direction of the player with no y movement
         _directionToPingPong = (_player.transform.position - position).normalized.x > 0 ? Vector2.right : Vector2.left;
@@ -28,6 +28,7 @@ public class PingPongState : BossState
     
     public void Update()
     {
+        print("pingpongUpdate");
         // Use Raycast to check if the pingpongcircle is close enough to be hit back
         RaycastHit2D hit = Physics2D.Raycast(transform.position, _directionToPingPong, 1);
         if (hit.collider != null && hit.collider.CompareTag("PingPongCircle"))
@@ -45,7 +46,7 @@ public class PingPongState : BossState
         }
     }
     
-    public override void OnExitState()
+    private void OnDisable()
     {
         Debug.Log("PingPongState Exit");
     }
