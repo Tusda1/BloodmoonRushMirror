@@ -8,6 +8,8 @@ public class MovingPlatformScript : GravityObject {
     [SerializeField] private GameObject start;
     [SerializeField] private GameObject end;
     [SerializeField] private float searchRadius;
+    private GravityObjectPlayerMovement _playerMovement;
+    private bool _playerIsOnPlatform;
     private Vector2 _velocity = Vector2.zero;
     private Vector2 _targetPosition;
     private Vector2 _carryingPosition;
@@ -49,8 +51,10 @@ public class MovingPlatformScript : GravityObject {
         _targetPosition *= speed;
         
         _carryingPosition = Vector2.SmoothDamp(_carryingPosition, _targetPosition, ref _velocity, smoothTime);
-
+        
         targetVelocity = _carryingPosition;
+        
+        if (_playerIsOnPlatform) _playerMovement.affectingVelocity = targetVelocity;
     }
 
     private bool IsInsideCircle(Vector2 center, float radius, Vector2 point) {
@@ -63,20 +67,16 @@ public class MovingPlatformScript : GravityObject {
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.CompareTag("Player"))
-            if (other.transform.TryGetComponent<GravityObjectPlayerMovement>(out GravityObjectPlayerMovement playerMovement))
-                playerMovement.MovingPlatformEnter();
-    }
-
-    private void OnTriggerStay2D(Collider2D other) {
-        if (other.transform.CompareTag("Player"))
-            if (other.transform.TryGetComponent<GravityObjectPlayerMovement>(out GravityObjectPlayerMovement playerMovement)) {
-                playerMovement.affectingVelocity = _carryingPosition;
+            if (other.transform.TryGetComponent<GravityObjectPlayerMovement>(out _playerMovement)) {
+                _playerIsOnPlatform = true;
+                _playerMovement.MovingPlatformEnter();
             }
     }
 
     private void OnTriggerExit2D(Collider2D other) {
         if (other.transform.CompareTag("Player"))
             if (other.transform.TryGetComponent<GravityObjectPlayerMovement>(out GravityObjectPlayerMovement playerMovement)) {
+                _playerIsOnPlatform = false;
                 playerMovement.affectingVelocity = Vector2.zero;
                 playerMovement.MovingPLatformExit();
                 print("exited collision");
