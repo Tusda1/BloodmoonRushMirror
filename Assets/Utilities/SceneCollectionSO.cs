@@ -3,8 +3,8 @@ using Eflatun.SceneReference;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[CreateAssetMenu(fileName = nameof(SceneCollection), menuName = "Scriptable Objects/Create " + nameof(SceneCollection))]
-public class SceneCollection : ScriptableObject {
+[CreateAssetMenu(fileName = nameof(SceneCollectionSO), menuName = "Scriptable Objects/Create " + nameof(SceneCollectionSO))]
+public class SceneCollectionSO : ScriptableObject {
     public SceneInstance[] scenes;
 
     [ContextMenu(nameof(LoadSceneCollection))]
@@ -16,7 +16,7 @@ public class SceneCollection : ScriptableObject {
         }
 #endif
         
-        SceneCollectionManager.LoadSceneCollection(this);
+        _ = SceneCollectionManager.LoadSceneCollection(this);
     }
 
     [Serializable] public record SceneInstance {

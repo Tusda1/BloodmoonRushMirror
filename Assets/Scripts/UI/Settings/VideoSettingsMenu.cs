@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Utilities.UI.DisplaySettings;
 
-namespace Utilities.UI {
+namespace UI.Settings {
     public class VideoSettingsMenu : MonoBehaviour {
         #region ---Fields---
         [GetOrAddComponent] private UIDocument _settingsUiDocument;
@@ -31,6 +31,7 @@ namespace Utilities.UI {
         private int _currentDisplay;
         #endregion
 
+        #region ---EventFunctions---
         private void Awake() {
             debugLogger.messageOrigin = this;
 
@@ -42,10 +43,6 @@ namespace Utilities.UI {
             _resolutionDropdownMenu = settingsRoot.Q<DropdownField>("ResolutionSelectDropdown");
             _vsyncToggle = settingsRoot.Q<Toggle>("VsyncToggle");
             _fpsLimitSlider = settingsRoot.Q<SliderInt>("FPSLimiterSlider");
-            settingsRoot.Q<Button>("MenuButton");
-
-            settingsRoot.Q<VisualElement>("SettingsDiv");
-            settingsRoot.Q<VisualElement>("Elements");
 
             if (_screenModeDropdownMenu != null) {
                 _screenModeDropdownMenu.choices.Clear();
@@ -135,7 +132,9 @@ namespace Utilities.UI {
 
             debugLogger.Log("Disposing and clearing delegates and scrubs");
         }
+        #endregion
 
+        #region ---EventHandlers---
         private void OnHasMadeChangeThatRequiresRestartValueChanged(bool value) {
             debugLogger.Log("Has made change that requires restart: " + value);
         }
@@ -191,5 +190,6 @@ namespace Utilities.UI {
 
             debugLogger.Log("***FPS Limit changed to " + changeEvent.newValue);
         }
+        #endregion
     }
 }

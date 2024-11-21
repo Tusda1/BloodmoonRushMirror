@@ -22,12 +22,14 @@ public class FlamingSkull : MonoBehaviour, IDamageable {
 
     private void FlameOn() {
         isFlaming = true;
+        boxCollider.enabled = true;
         //change animation
         flameRenderer.color = Color.red;
     }
 
     private void FlameOff() {
         isFlaming = false;
+        boxCollider.enabled = false;
         flameTimer.StartTimer();
         //change animation
         flameRenderer.color = new Color(1f, 1f, 1f, 0.2f);

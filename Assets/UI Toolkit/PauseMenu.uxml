@@ -1,14 +1,16 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="SettingsMenu" src="project://database/Assets/UI%20Toolkit/SettingsMenu.uxml?fileID=9197481963319205126&amp;guid=774d38d636bfb324eab883249e6c0099&amp;type=3#SettingsMenu" />
     <Style src="project://database/Assets/UI%20Toolkit/Menu.uss?fileID=7433441132597879392&amp;guid=11ac15a71fcec9a46a277054ddd917f6&amp;type=3#Menu" />
-    <engine:VisualElement style="flex-grow: 1; flex-direction: column; position: absolute; width: 100%; height: 100%;">
-        <engine:Label text="Paused" name="Paused" style="-unity-text-align: middle-center; position: relative; font-size: 64px; margin-top: 32px; margin-right: 32px; margin-bottom: 32px; margin-left: 32px;" />
-        <engine:Button text="Resume" name="ResumeButton" style="background-image: none; -unity-background-image-tint-color: rgba(0, 0, 0, 0); background-color: rgb(255, 255, 255); width: 128px; height: 32px; align-self: center; -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); font-size: 16px;" />
-        <engine:Button text="Settings" name="SettingsButton" style="background-image: none; -unity-background-image-tint-color: rgba(0, 0, 0, 0); background-color: rgb(255, 255, 255); width: 128px; height: 32px; align-self: center; -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); font-size: 16px;" />
-        <engine:Button text="Main Menu" name="MainMenuButton" style="background-image: none; -unity-background-image-tint-color: rgba(0, 0, 0, 0); background-color: rgb(255, 255, 255); width: 128px; height: 32px; align-self: center; -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); font-size: 16px;" />
-    </engine:VisualElement>
-    <engine:VisualElement style="flex-grow: 1; width: 100%; height: 100%; position: absolute; translate: 100% 0;">
-        <engine:Instance template="SettingsMenu" />
-        <engine:Button text="Back" name="BackButton" style="position: absolute; width: 221px; height: 27px; top: 410px; left: 298px; -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); background-image: none; background-color: rgb(255, 255, 255);" />
+    <engine:VisualElement style="flex-grow: 1;">
+        <engine:VisualElement name="PauseMenuRoot" style="flex-grow: 1; flex-direction: column; position: absolute; width: 100%; height: 100%;">
+            <engine:Label text="Paused" name="Paused" style="-unity-text-align: middle-center; position: relative; font-size: 64px; margin-top: 32px; margin-right: 32px; margin-bottom: 32px; margin-left: 32px;" />
+            <engine:Button text="Resume" name="ResumeButton" style="background-image: none; -unity-background-image-tint-color: rgba(0, 0, 0, 0); background-color: rgb(255, 255, 255); width: 128px; height: 32px; align-self: center; -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); font-size: 16px;" />
+            <engine:Button text="Settings" name="SettingsButton" style="background-image: none; -unity-background-image-tint-color: rgba(0, 0, 0, 0); background-color: rgb(255, 255, 255); width: 128px; height: 32px; align-self: center; -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); font-size: 16px;" />
+            <engine:Button text="Main Menu" name="MainMenuButton" style="background-image: none; -unity-background-image-tint-color: rgba(0, 0, 0, 0); background-color: rgb(255, 255, 255); width: 128px; height: 32px; align-self: center; -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); font-size: 16px;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="SettingsMenuRoot" enabled="false" style="flex-grow: 1; width: 100%; height: 100%; position: absolute; translate: 100% 0;">
+            <engine:Instance template="SettingsMenu" />
+            <engine:Button text="Back" name="BackButton" style="position: absolute; width: 221px; height: 27px; top: 410px; left: 298px; -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); background-image: none; background-color: rgb(255, 255, 255);" />
+        </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

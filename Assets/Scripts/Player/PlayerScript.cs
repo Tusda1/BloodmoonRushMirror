@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Attributes;
 using Consensus;
 using ExtensionMethods;
@@ -26,6 +27,8 @@ namespace Player {
         public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
+        public int keyAmount = 0;
+        public List<GameObject> keyObjects = new List<GameObject>();
         public Vector3 lastGroundedPosition;
         [SerializeField] private PlayerHitbox hitbox;
         [SerializeField] private float alphaWhenTakingDamage = 0.2f;
@@ -243,6 +246,32 @@ namespace Player {
 
         private Collider2D InteractCheck() {
             return Physics2D.OverlapBox(transform.position, transform.localScale, 0, whatIsInteractable);
+        }
+
+        public void GetKey(GameObject key) {
+            if (key.GetComponent<KeyScript>().isCollected) return;
+            key.GetComponent<KeyScript>().isCollected = true;
+            keyAmount++;
+            keyObjects.Add(key);
+            if (keyObjects.Count == 1) {
+                key.GetComponent<KeyScript>().SetFollowTransform(transform, Vector2.up);
+                print("collected key");
+            }
+            else {
+                key.GetComponent<KeyScript>().SetFollowTransform(keyObjects[^2].transform);
+                print("collected another key");
+            }
+        }
+        
+        public void UseKey(Transform doorTransform, int usedKeys, float destructionTime) {
+            for (int i = 0; i < usedKeys; i++) {
+                var keyScript = keyObjects[^1].GetComponent<KeyScript>();
+                keyScript.SetFollowTransform(doorTransform);
+                keyScript.StartDestructionTimer(destructionTime);
+                keyObjects.RemoveAt(keyObjects.Count - 1);
+                print("used key: " + i);
+            }
+            keyAmount = 0;
         }
 
         private void SetStateBehavioursReferences() {
