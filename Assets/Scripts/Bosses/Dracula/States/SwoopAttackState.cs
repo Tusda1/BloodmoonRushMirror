@@ -7,6 +7,9 @@ public class SwoopAttackState : BossState
     private Vector2 _swoopTarget;
     private SwoopState _swoopState;
     
+    private Teleport _teleport;
+    private bool _isTeleporting;
+    
     private enum SwoopState 
     {
         Teleporting,
@@ -14,15 +17,19 @@ public class SwoopAttackState : BossState
         Shooting,
         Finished
     }
-    
+
+    private void Start()
+    {
+        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
+    }
+
     private void OnEnable()
     {
-        Vector2 roof;
         // Send a ray straight up and find the roof
-        var hit = Physics2D.Raycast(transform.position, Vector2.up, 100, LayerMask.GetMask("Roof"));
+        var hit = Physics2D.Raycast(transform.position, Vector2.up, 100, LayerMask.GetMask("Ground"));
         if (hit.collider == null){Debug.LogError("Couldn't find roof"); return;}
         
-        roof = hit.point;
+        var roof = hit.point;
         roof.y -= 0.1f;
         
         // Find the right corner
@@ -59,6 +66,7 @@ public class SwoopAttackState : BossState
         switch (_swoopState)
         {
             case SwoopState.Teleporting:
+                if (!_isTeleporting) TeleportToOrigin();
                 break;
             case SwoopState.Swooping:
                 Swoop();
@@ -69,6 +77,18 @@ public class SwoopAttackState : BossState
             case SwoopState.Finished:
                 break;
         }
+    }
+    
+    private void TeleportToOrigin()
+    {
+        _teleport.TeleportToLocation(_swoopOrigin);
+        _isTeleporting = true;
+    }
+    
+    private void OnTeleportEnd()
+    {
+        _isTeleporting = false;
+        _swoopState = SwoopState.Swooping;
     }
     
     private void Swoop()

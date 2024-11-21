@@ -11,6 +11,11 @@ public class BossBase : GravityObject
     
     [SerializeField] private StateMachine<BossState>.WithDefault _stateMachine;
     public StateMachine<BossState>.WithDefault StateMachine => _stateMachine;
+
+    [SerializeField] private AnimationClip teleportEnter;
+    public AnimationClip TeleportEnter => teleportEnter;
+    [SerializeField] private AnimationClip teleportExit;
+    public AnimationClip TeleportExit => teleportExit;
     
     protected new virtual void Awake()
     {
@@ -22,10 +27,10 @@ public class BossBase : GravityObject
     protected new virtual void Start()
     {
         base.Start();
-        StartCoroutine(LateTeleport());
+        StartCoroutine(LateActivation());
     }
 
-    private IEnumerator LateTeleport()
+    private IEnumerator LateActivation()
     {
         yield return new WaitForSeconds(1);
         _stateMachine.ForceSetState(_stateMachine.DefaultState);
