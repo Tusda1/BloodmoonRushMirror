@@ -11,13 +11,15 @@ using UnityEngine.InputSystem;
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
         #region ---Fields---
-        [Header("References")]
-        [GetOrAddComponent, SerializeField, HideInInspector] private PlayerScript player;
-        [GetOrAddComponent, SerializeField, HideInInspector] private BoxCollider2D boxCollider;
+        [Header("References")] [GetOrAddComponent, SerializeField, HideInInspector]
+        private PlayerScript player;
 
-        [Header("Player Movement")] 
-        [SerializeField, ReadOnly] private Vector2 inputVector;
-        
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private BoxCollider2D boxCollider;
+
+        [Header("Player Movement")] [SerializeField, ReadOnly]
+        private Vector2 inputVector;
+
         [ReadOnly] public bool isDucking;
         [ReadOnly] public bool isHoldingDuck;
         [ReadOnly] public bool isFacingRight = true;
@@ -29,14 +31,12 @@ namespace Player {
         [SerializeField] private LayerMask whatIsInvalidSpawnPoint;
         [SerializeField] private float climbSpeed;
 
-        [Header("Dash")] 
-        [ReadOnly] public bool isDashing;
+        [Header("Dash")] [ReadOnly] public bool isDashing;
         [ReadOnly] public bool canDash;
         [SerializeField] private float dashTime;
         [SerializeField] private float dashForce;
 
-        [Header("Jump / Fall")] 
-        [ReadOnly] public bool isJumping;
+        [Header("Jump / Fall")] [ReadOnly] public bool isJumping;
         [ReadOnly] public bool isHoldingJump;
         [ReadOnly] public bool doubleJumping;
         [SerializeField] private float jumpForce;
@@ -48,15 +48,15 @@ namespace Player {
         [SerializeField] private LayerMask whatIsGround;
         [SerializeField] private bool isActuallyGrounded;
 
-        [Header("Knockback")]
-        [ReadOnly] public bool isTakingKnockback;
+        [Header("Knockback")] [ReadOnly] public bool isTakingKnockback;
         [SerializeField] private float knockBackTime;
         [SerializeField] private float spikeStunTime;
         public int killCharges;
         private Vector2 _knockbackVector;
 
-        [Header("Player Can Move")] 
-        [SerializeField, Required] private AllInFavourConsensusSO playerCanMove;
+        [Header("Player Can Move")] [SerializeField, Required]
+        private AllInFavourConsensusSO playerCanMove;
+
         private bool PlayerMovementEnabled => playerCanMove.consensus;
 
         [Header("Debug Logger")] [SerializeField, Required]
@@ -69,28 +69,29 @@ namespace Player {
         private CountdownTimer _knockbackTimer;
         private CountdownTimer _coyoteTimer;
         private CountdownTimer _spikeStunTimer;
-        
+
         private Vector2 _smoothMovement;
         private Vector2 _referenceSmoothVelocity;
         private Vector2 _lastSpikePoint;
-        [HideInInspector] public bool _wasGroundedLastFrame;
+        [HideInInspector] public bool wasGroundedLastFrame;
         private Ladder _ladder;
         private bool _notClimbing;
         #endregion
 
         #region ***---AnimatorStringToHash---***
-        private static readonly int AnimatorDashTrigger = Animator.StringToHash("DashStart");
         private static readonly int AnimatorDashBool = Animator.StringToHash("IsDashing");
         private static readonly int AnimatorDuckTrigger = Animator.StringToHash("DuckStart");
         private static readonly int AnimatorDuckBool = Animator.StringToHash("IsDucking");
         private static readonly int AnimatorMovementFloat = Animator.StringToHash("Movement");
         private static readonly int AnimatorJumpBool = Animator.StringToHash("IsJumping");
+        private static readonly int AnimatorClimbBool = Animator.StringToHash("IsClimbing");
+        private static readonly int AnimatorYMovementFloat = Animator.StringToHash("YMovement");
         #endregion
         #endregion
 
         protected override void Start() {
             base.Start();
-            
+
             GravityModifier = gravityMultiplier;
 
             InitializeTimers();
@@ -99,22 +100,21 @@ namespace Player {
         #region ---TimerInitialization---
         private void InitializeTimers() {
             InitializeDashTimer();
-            
+
             InitializeMinJumpTimer();
 
             InitializeJumpBufferTimer();
-            
+
             InitializeKnockbackTimer();
-            
+
             InitializeSpikeStunTimer();
-            
+
             InitializeCoyoteTimer();
         }
 
         private void InitializeDashTimer() {
             _dashTimer = new CountdownTimer(dashTime);
             _dashTimer.OnBegin += () => {
-                player.animator.SetTrigger(AnimatorDashTrigger);
                 player.animator.SetBool(AnimatorDashBool, true);
                 player.healthComponent.TriggerInvulnerability(dashTime);
             };
@@ -163,7 +163,13 @@ namespace Player {
         protected override void ComputeVelocity() {
             if (!PlayerMovementEnabled) return;
 
-            if (LadderLogic()) return;
+            if (LadderLogic()) {
+                player.animator.SetBool(AnimatorClimbBool, true);
+                player.animator.SetFloat(AnimatorYMovementFloat, inputVector.y);
+                return;
+            }
+
+            player.animator.SetBool(AnimatorClimbBool, false);
 
             GroundCheck();
             isActuallyGrounded = isGrounded;
@@ -228,11 +234,10 @@ namespace Player {
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, move, ref _referenceSmoothVelocity, smoothTime);
 
                 player.animator.SetFloat(AnimatorMovementFloat, Mathf.Abs(_smoothMovement.x));
-                
+
                 targetVelocity.x = _smoothMovement.x * maxSpeed;
-                
+
                 targetVelocity += affectingVelocity;
-                
             }
 
             if (!player.isAttacking) {
@@ -256,7 +261,7 @@ namespace Player {
             if (isGrounded) {
                 if (!isDashing) canDash = true;
                 killCharges = 0;
-                
+
                 if (!isJumping) {
                     player.animator.SetBool(AnimatorJumpBool, false);
                 }
@@ -266,7 +271,7 @@ namespace Player {
                 _lastSpikePoint = new Vector2(Mathf.Round(transform.position.x),
                     Mathf.Round(transform.position.y) - 0.4f);
 
-            _wasGroundedLastFrame = isActuallyGrounded;
+            wasGroundedLastFrame = isActuallyGrounded;
         }
 
         private bool IsValidSpawnPoint() {
@@ -291,7 +296,7 @@ namespace Player {
         public void OnJump(InputValue inputValue) {
             isHoldingJump = inputValue.isPressed;
             if (!isHoldingJump) return;
-            
+
             ForceExitDuck();
             if (isGrounded || killCharges > 0) {
                 isJumping = true;
@@ -477,7 +482,7 @@ namespace Player {
         }
 
         private void CoyoteTimeLogic() {
-            if (!isActuallyGrounded && _wasGroundedLastFrame && !isJumping && !isDashing) {
+            if (!isActuallyGrounded && wasGroundedLastFrame && !isJumping && !isDashing) {
                 Debug.Log("Start coyote timer");
                 _coyoteTimer.RestartTimer();
             }

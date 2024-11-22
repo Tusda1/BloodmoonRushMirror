@@ -63,6 +63,7 @@ namespace Player {
 
         #region ***---AnimatorStringToHash---***
         private static readonly int AnimatorIsAttackingTrigger = Animator.StringToHash("IsAttacking");
+        private static readonly int AnimatorIsAttackingBool = Animator.StringToHash("IsAttacking 0");
         private static readonly int AnimatorDuckAttackTrigger = Animator.StringToHash("DuckAttack");
         private static readonly int AnimatorTakeDamageTrigger = Animator.StringToHash("TakeDamage");
         private static readonly int AnimatorIsDeadBool = Animator.StringToHash("IsDead");
@@ -157,6 +158,7 @@ namespace Player {
             FMODManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
+            animator.SetBool(AnimatorIsAttackingBool, true);
         }
 
         private void DuckAttack() {
@@ -167,12 +169,14 @@ namespace Player {
             FMODManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
+            animator.SetBool(AnimatorIsAttackingBool, true);
         }
 
         public void AttackFinished() {
             debugLogger.Log("Attack finished");
             _canAttack = true;
             isAttacking = false;
+            animator.SetBool(AnimatorIsAttackingBool, false);
         }
 
         public void TakeDamage(DamageInstance damageInstance) {
