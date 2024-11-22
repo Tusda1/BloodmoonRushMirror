@@ -90,9 +90,9 @@ MonoBehaviour:
   hitbox: {fileID: 0}
   damageInstance:
     damage: 1
-    knockback: {x: 2, y: 8}
-    knockbackStrength: 0
-    staggerStrength: 0
+    knockback: {x: 10, y: 50}
+    knockbackStrength: 100
+    staggerStrength: 2
 --- !u!1101 &-7888341818171476172
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -717,7 +717,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: DuckAttack
-  m_Speed: 1.25
+  m_Speed: 1.37
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8716593807439800442}
@@ -1466,7 +1466,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TakeDamage
-  m_Speed: 0.21
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 5040264687510861784}
