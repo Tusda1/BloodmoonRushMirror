@@ -183,10 +183,14 @@ namespace Player {
             if (_isDead) return;
 
             damageInstance.TriggerOnHitAction();
-            healthComponent.TakeDamage(damageInstance.damage);
             playerMovement.Knockback(damageInstance.knockback);
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
             animator.SetTrigger(AnimatorTakeDamageTrigger);
+            
+            // TODO: REMOVE THIS!
+            return;
+            
+            healthComponent.TakeDamage(damageInstance.damage);
         }
 
         #region ***---Death---***
