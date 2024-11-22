@@ -17,14 +17,14 @@ public static class SceneCollectionManager {
             if (sceneCollectionSO.scenes.Contains(sceneInstance) && !sceneInstance.getsReloadedWhenLoadedAgain) continue;
 
             await SceneManager.UnloadSceneAsync(sceneInstance.BuildIndex);
-            Debug.Log("unloading: " + sceneInstance.Name);
+            Debug.Log($"[{nameof(SceneCollectionManager)}] Unloading: {sceneInstance.Name}");
             ActiveScenes.Remove(sceneInstance);
         }
 
         foreach (var sceneInstance in sceneCollectionSO.scenes) {
             if (!ActiveScenes.Contains(sceneInstance)) {
                 await SceneManager.LoadSceneAsync(sceneInstance.BuildIndex, LoadSceneMode.Additive);
-                Debug.Log("Loading: " + sceneInstance.Name);
+                Debug.Log($"[{nameof(SceneCollectionManager)}] Loading: {sceneInstance.Name}");
 
                 if (sceneInstance.persistentScene) {
                     PersistentScenes.Add(sceneInstance);
