@@ -10,7 +10,7 @@ public class SceneCollectionSO : ScriptableObject {
     [ContextMenu(nameof(LoadSceneCollection))]
     public void LoadSceneCollection() {
 #if UNITY_EDITOR
-        if (Application.isEditor) {
+        if (!Application.isPlaying) {
             SceneCollectionManager.LoadSceneCollectionEditor(this);
             return;
         }

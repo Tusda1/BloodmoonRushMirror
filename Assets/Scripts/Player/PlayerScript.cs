@@ -21,6 +21,7 @@ namespace Player {
         [GetOrAddComponent, HideInInspector] public Animator animator;
         [GetOrAddComponent, HideInInspector] public SpriteRenderer spriteRenderer;
         [GetOrAddComponent, HideInInspector] public GravityObjectPlayerMovement playerMovement;
+        [GetOrAddComponent, SerializeField, HideInInspector] private PlayerInput playerInput;
         #endregion
         
         [Header("Player")] 
@@ -105,6 +106,8 @@ namespace Player {
             healthComponent.InvulnerabilityTimer.OnComplete += () => spriteRenderer.color = new Color(1,1,1,1);
 
             SetStateBehavioursReferences();
+
+            StartCoroutine(ResetPlayerInput());
         }
 
         private void OnDestroy() {
@@ -279,6 +282,14 @@ namespace Player {
             foreach (var playerAttackBehaviour in playerAttackBehaviours) {
                 playerAttackBehaviour.hitbox = hitbox;
             }
+        }
+
+        private IEnumerator ResetPlayerInput() {
+            yield return null;
+            yield return null;
+            playerInput.enabled = false;
+            yield return null;
+            playerInput.enabled = true;
         }
 
         #region ---DataBindingMethods---

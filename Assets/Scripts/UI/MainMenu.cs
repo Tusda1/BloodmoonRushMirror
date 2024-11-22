@@ -15,7 +15,7 @@ namespace UI {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
         
-        [SerializeField] private SceneCollectionSO startSceneCollectionSO;
+        [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
 
         private VisualElement _rootElement;
 
@@ -62,6 +62,8 @@ namespace UI {
         }
 
         private void StartButtonClicked() {
+            
+            
             _ = SceneCollectionManager.LoadSceneCollection(startSceneCollectionSO);
         }
 
