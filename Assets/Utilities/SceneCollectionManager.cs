@@ -16,7 +16,7 @@ public static class SceneCollectionManager {
             if (sceneInstance.persistentScene) continue;
             if (sceneCollectionSO.scenes.Contains(sceneInstance) && !sceneInstance.getsReloadedWhenLoadedAgain) continue;
 
-            await SceneManager.UnloadSceneAsync(sceneInstance.BuildIndex);
+            await SceneManager.UnloadSceneAsync(sceneInstance.BuildIndex, UnloadSceneOptions.None);
             Debug.Log($"[{nameof(SceneCollectionManager)}] Unloading: {sceneInstance.Name}");
             ActiveScenes.Remove(sceneInstance);
         }
@@ -35,7 +35,7 @@ public static class SceneCollectionManager {
 
             if (sceneInstance.activeScene) {
                 SceneManager.SetActiveScene(sceneInstance.LoadedScene);
-                Debug.Log("Set Active Scene: " + sceneInstance.Name);
+                Debug.Log($"[{nameof(SceneCollectionManager)}] Set Active Scene: {sceneInstance.Name}");
             }
         }
     }
