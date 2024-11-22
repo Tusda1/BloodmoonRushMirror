@@ -5,11 +5,12 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     [SerializeField] private DamageInstance damageInstance;
     
     public GameObject shooter;
+    private bool _deflected;
     
     private void OnTriggerEnter2D(Collider2D other) 
     {
         
-        if (other.gameObject == shooter) return;
+        if (other.gameObject == shooter && !_deflected) return;
 
         // if the object collided with ground, destroy gameobject
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground")) { Destroy(gameObject); return; }
@@ -42,5 +43,6 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         }
         
         rb2d.linearVelocity = velocity;
+        _deflected = true;
     }
 }
