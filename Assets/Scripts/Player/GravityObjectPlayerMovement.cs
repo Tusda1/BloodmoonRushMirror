@@ -12,8 +12,8 @@ namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
         #region ---Fields---
         [Header("References")]
-        [GetOrAddComponent, SerializeField] private PlayerScript _player;
-        [GetOrAddComponent, SerializeField] private BoxCollider2D _boxCollider;
+        [GetOrAddComponent, SerializeField, HideInInspector] private PlayerScript player;
+        [GetOrAddComponent, SerializeField, HideInInspector] private BoxCollider2D boxCollider;
 
         [Header("Player Movement")] 
         [SerializeField, ReadOnly] private Vector2 inputVector;
@@ -83,6 +83,8 @@ namespace Player {
         private static readonly int AnimatorDashBool = Animator.StringToHash("IsDashing");
         private static readonly int AnimatorDuckTrigger = Animator.StringToHash("DuckStart");
         private static readonly int AnimatorDuckBool = Animator.StringToHash("IsDucking");
+        private static readonly int AnimatorMovementFloat = Animator.StringToHash("Movement");
+        private static readonly int AnimatorJumpBool = Animator.StringToHash("IsJumping");
         #endregion
         #endregion
 
@@ -112,15 +114,15 @@ namespace Player {
         private void InitializeDashTimer() {
             _dashTimer = new CountdownTimer(dashTime);
             _dashTimer.OnBegin += () => {
-                _player.animator.SetTrigger(AnimatorDashTrigger);
-                _player.animator.SetBool(AnimatorDashBool, true);
-                _player.healthComponent.TriggerInvulnerability(dashTime);
+                player.animator.SetTrigger(AnimatorDashTrigger);
+                player.animator.SetBool(AnimatorDashBool, true);
+                player.healthComponent.TriggerInvulnerability(dashTime);
             };
             _dashTimer.OnStop += () => {
                 lockToAxis = 0;
                 isDashing = false;
                 ResetMovement(2);
-                _player.animator.SetBool(AnimatorDashBool, false);
+                player.animator.SetBool(AnimatorDashBool, false);
             };
         }
 
@@ -188,7 +190,7 @@ namespace Player {
                 ResetMovement(2);
                 isDashing = false;
                 velocity.y = jumpForce;
-                targetVelocity.y = jumpForce;
+                // targetVelocity.y = jumpForce;
                 doubleJumping = false;
             }
             else if (!isHoldingJump && !isJumping) {
@@ -198,7 +200,7 @@ namespace Player {
             }
             else if (isJumping) {
                 velocity.y = jumpForce;
-                targetVelocity.y = jumpForce;
+                // targetVelocity.y = jumpForce;
             }
 
             if (isDashing) {
@@ -225,13 +227,15 @@ namespace Player {
 
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, move, ref _referenceSmoothVelocity, smoothTime);
 
-                targetVelocity.x = (_smoothMovement.x * maxSpeed);
+                player.animator.SetFloat(AnimatorMovementFloat, Mathf.Abs(_smoothMovement.x));
+                
+                targetVelocity.x = _smoothMovement.x * maxSpeed;
                 
                 targetVelocity += affectingVelocity;
                 
             }
 
-            if (!_player.isAttacking) {
+            if (!player.isAttacking) {
                 var transformLocalScale = transform.localScale;
                 switch (_smoothMovement.x) {
                     case > 0.01f:
@@ -252,6 +256,10 @@ namespace Player {
             if (isGrounded) {
                 if (!isDashing) canDash = true;
                 killCharges = 0;
+                
+                if (!isJumping) {
+                    player.animator.SetBool(AnimatorJumpBool, false);
+                }
             }
 
             if (isActuallyGrounded && IsValidSpawnPoint())
@@ -285,11 +293,11 @@ namespace Player {
             if (!isHoldingJump) return;
             
             ForceExitDuck();
-            // Debug.Log(string.Join('|', isGrounded, isActuallyGrounded, _coyoteTimer.IsRunning));
             if (isGrounded || killCharges > 0) {
                 isJumping = true;
                 _minJumpTimer.StartTimer();
                 _coyoteTimer.StopTimer();
+                player.animator.SetBool(AnimatorJumpBool, true);
 
                 if (killCharges > 0) {
                     doubleJumping = true;
@@ -302,8 +310,7 @@ namespace Player {
         }
 
         public void OnMove(InputValue inputValue) {
-            var referenceVector = inputValue.Get<Vector2>();
-            inputVector = referenceVector.normalized;
+            inputVector = inputValue.Get<Vector2>();
         }
 
         public void OnDash(InputValue inputValue) {
@@ -356,7 +363,7 @@ namespace Player {
         private void ForceExitDuck() {
             debugLogger.Log("exiting duck");
             isDucking = false;
-            _player.animator.SetBool(AnimatorDuckBool, false);
+            player.animator.SetBool(AnimatorDuckBool, false);
         }
 
         private void EnterDuck() {
@@ -374,8 +381,8 @@ namespace Player {
             }
 
             isDucking = true;
-            _player.animator.SetTrigger(AnimatorDuckTrigger);
-            _player.animator.SetBool(AnimatorDuckBool, true);
+            player.animator.SetTrigger(AnimatorDuckTrigger);
+            player.animator.SetBool(AnimatorDuckBool, true);
             debugLogger.Log("Changed player scale down");
         }
 
@@ -389,7 +396,7 @@ namespace Player {
 
         private void SpikeStunStart() {
             //_player.spriteRenderer.color = new Color(1, 1, 1, 0.1f);
-            _player.healthComponent.TriggerInvulnerability(spikeStunTime);
+            player.healthComponent.TriggerInvulnerability(spikeStunTime);
             ResetMovement(0);
             _knockbackVector = Vector2.zero;
             isTakingKnockback = true;

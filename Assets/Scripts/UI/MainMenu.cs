@@ -2,6 +2,7 @@ using Attributes;
 using FMODScripts;
 using UI.Settings;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
 #if UNITY_EDITOR
@@ -12,7 +13,7 @@ namespace UI {
     [RequireComponent(typeof(SettingsMenu))]
     public class MainMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent] private UIDocument _uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
         
         [SerializeField] private SceneCollectionSO startSceneCollectionSO;
 
@@ -31,7 +32,7 @@ namespace UI {
         #endregion
 
         private void Awake() {
-            _rootElement = _uiDocument.rootVisualElement;
+            _rootElement = uiDocument.rootVisualElement;
 
             _startButton = _rootElement.Q<Button>("StartButton");
             _settingsButton = _rootElement.Q<Button>("SettingsButton");

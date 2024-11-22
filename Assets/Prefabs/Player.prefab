@@ -85,9 +85,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 1766183112093479742, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
+  m_Sprite: {fileID: 1463876067486329821, guid: 69f18a3a43ec9a2478054f477ebb50c9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -121,7 +121,7 @@ MonoBehaviour:
   keyObjects: []
   lastGroundedPosition: {x: 0, y: 0, z: 0}
   hitbox: {fileID: 3672109486144381603}
-  alphaWhenTakingDamage: 0.2
+  alphaWhenTakingDamage: 0.65
   gems: 0
   gemLostMethod: 0
   gemsLostOnDeath: 0
@@ -166,9 +166,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrounded: 0
   lockToAxis: 0
+  rb2d: {fileID: 1222319225997515202}
   GravityModifier: 1
-  _player: {fileID: 3298925456892397176}
-  _boxCollider: {fileID: 6503705925884822905}
+  player: {fileID: 3298925456892397176}
+  boxCollider: {fileID: 6503705925884822905}
   inputVector: {x: 0, y: 0}
   isDucking: 0
   isHoldingDuck: 0
@@ -430,8 +431,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.95}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 1, y: 2.2}
+    pivot: {x: 0.58421046, y: 0}
+    oldSize: {x: 0.95, y: 1.8}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -603,7 +604,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 1.2116394, y: -0.38282394}
+  m_Offset: {x: 0.86996436, y: -0.34102178}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -613,5 +614,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.375061, y: 1.7656479}
+  m_Size: {x: 2.769277, y: 2.2394052}
   m_EdgeRadius: 0

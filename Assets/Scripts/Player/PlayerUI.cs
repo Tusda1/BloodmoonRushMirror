@@ -1,3 +1,4 @@
+using Attributes;
 using UIToolkitTools;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -5,7 +6,7 @@ using UnityEngine.UIElements;
 namespace Player {
     public class PlayerUI : MonoBehaviour {
         #region ---Fields---
-        [SerializeField] private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
         private VisualElement _root;
         private PlayerScript _player;
