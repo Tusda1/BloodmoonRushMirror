@@ -1,10 +1,15 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SwoopAttackState : BossState
 {
+    [SerializeField] private float swoopDuration = 2f;
+    [SerializeField] private float swoopStartTime;
+    
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
+    private Vector2 _swoopArcBottom;
     private SwoopState _swoopState;
     
     private Teleport _teleport;
@@ -59,6 +64,15 @@ public class SwoopAttackState : BossState
             _swoopOrigin = leftCorner;
             _swoopTarget = rightCorner;
         }
+        
+        // Send a ray from exactly between the two corners to find the arc bottom
+        _swoopArcBottom = (rightCorner + leftCorner) / 2;
+        hit = Physics2D.Raycast(_swoopArcBottom, Vector2.down, 100, LayerMask.GetMask("Ground"));
+        if (hit.collider == null){Debug.LogError("Couldn't find arc bottom"); return;}
+        
+        _swoopArcBottom = hit.point + Vector2.up;
+        
+        _swoopState = SwoopState.Teleporting;
     }
     
     private void Update()
@@ -88,16 +102,39 @@ public class SwoopAttackState : BossState
     private void OnTeleportEnd()
     {
         _isTeleporting = false;
+        SwoopStart();
+    }
+    
+    private void SwoopStart()
+    {
         _swoopState = SwoopState.Swooping;
+        swoopStartTime = Time.time;
     }
     
     private void Swoop()
     {
-        // Teleport to the origin
-        transform.position = _swoopOrigin;
-        
-        // Swoop to the target
-        _swoopState = SwoopState.Swooping;
+        float t = (Time.time - swoopStartTime) / swoopDuration;
+        if (t > 1f)
+        {
+            t = 1f;
+            _swoopState = SwoopState.Shooting;
+        }
+
+        Vector2 position = CalculateBezierPoint(t, _swoopOrigin, _swoopArcBottom, _swoopTarget);
+        transform.position = position;
+    }
+
+    private Vector2 CalculateBezierPoint(float t, Vector2 p0, Vector2 p1, Vector2 p2)
+    {
+        float u = 1 - t;
+        float tt = t * t;
+        float uu = u * u;
+
+        Vector2 p = uu * p0; // (1-t)^2 * p0
+        p += 2 * u * t * p1; // 2 * (1-t) * t * p1
+        p += tt * p2; // t^2 * p2
+
+        return p;
     }
     
     private void Shoot()
