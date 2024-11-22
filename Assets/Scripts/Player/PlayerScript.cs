@@ -186,7 +186,7 @@ namespace Player {
             healthComponent.TakeDamage(damageInstance.damage);
             playerMovement.Knockback(damageInstance.knockback);
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
-            //_animator.SetTrigger(AnimatorTakeDamageTrigger);
+            animator.SetTrigger(AnimatorTakeDamageTrigger);
         }
 
         #region ***---Death---***
