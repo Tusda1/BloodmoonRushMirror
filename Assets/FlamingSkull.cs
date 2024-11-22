@@ -1,16 +1,20 @@
 using System;
+using Attributes;
 using PlayerLoopTimer;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class FlamingSkull : MonoBehaviour, IDamageable {
+    private static readonly int Ignite = Animator.StringToHash("Ignite");
+    private static readonly int Extinguish = Animator.StringToHash("Extinguish");
+
     #region ---Fields---
     [SerializeField] DamageInstance damageInstance;
     [SerializeField] private BoxCollider2D boxCollider;
     private bool isFlaming;
     private CountdownTimer flameTimer;
     [SerializeField] private float flameChargeTime;
-    [SerializeField] private SpriteRenderer flameRenderer;
+    [GetOrAddComponent, SerializeField, HideInInspector] private Animator animator;
     #endregion
 
     private void Start() {
@@ -23,16 +27,14 @@ public class FlamingSkull : MonoBehaviour, IDamageable {
     private void FlameOn() {
         isFlaming = true;
         boxCollider.enabled = true;
-        //change animation
-        flameRenderer.color = Color.red;
+        animator.SetTrigger(Ignite);
     }
 
     private void FlameOff() {
         isFlaming = false;
         boxCollider.enabled = false;
         flameTimer.StartTimer();
-        //change animation
-        flameRenderer.color = new Color(1f, 1f, 1f, 0.2f);
+        animator.SetTrigger(Extinguish);
     }
 
     public void TakeDamage(DamageInstance playerDamageInstance) {
