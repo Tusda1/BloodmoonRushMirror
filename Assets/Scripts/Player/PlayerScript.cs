@@ -34,6 +34,7 @@ namespace Player {
         [SerializeField] private float alphaWhenTakingDamage = 0.2f;
         [SerializeField] private float takeDamageScreenShakeIntensity = 0.2f;
         [SerializeField] private float takeDamageScreenShakeDuration = 0.2f;
+        [SerializeField] private float takeDamageTimeSlowDuration = 0.5f;
 
         [Header("Keys")]
         public int keyAmount;
@@ -191,7 +192,11 @@ namespace Player {
             playerMovement.Knockback(damageInstance.knockback);
             animator.SetTrigger(AnimatorTakeDamageTrigger);
             healthComponent.TakeDamage(damageInstance.damage);
-            _ = ServiceLocator.Get<CameraEffects>().ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
+            var cameraEffects = ServiceLocator.Get<CameraEffects>();
+            
+            _ = cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
+            // _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
+            StartCoroutine(cameraEffects.TimeSlow(takeDamageTimeSlowDuration));
         }
 
         #region ***---Death---***
@@ -254,6 +259,7 @@ namespace Player {
 
         public void HitSpike() {
             playerMovement.SpikeReset();
+            TakeDamage(new DamageInstance{damage = 1});
         }
 
         private Collider2D InteractCheck() {
