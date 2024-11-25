@@ -150,10 +150,23 @@ public class EnemyBase :  GravityObject, IDamageable
         //Drop as many rubies as the RubyDropAmount
         for (int i = 0; i < rubyDropAmount; i++)
         {
-            // Generate a small random offset
-            Vector3 offset = new Vector3(Random.Range(1.5f, 0.5f), Random.Range(0.5f, 0.5f), 0);
-            // Add the offset to the enemy's position
-            Vector3 spawnPosition = transform.position + offset;
+            bool acceptablePosition = false;
+            Vector3 spawnPosition = Vector3.zero;
+            
+            while (acceptablePosition == false)
+            {
+                // Generate a small random offset
+                Vector3 offset = new Vector3(Random.Range(1.5f, 0.5f), Random.Range(0.5f, 0.5f), 0);
+                // Add the offset to the enemy's position
+                spawnPosition = transform.position + offset;
+                // Check if the position is valid
+                Collider2D hit = Physics2D.OverlapCircle(spawnPosition, 0.2f, LayerMask.GetMask("Ground"));
+
+                if (hit == null)
+                {
+                    acceptablePosition = true;
+                }
+            }
             
             GameObject ruby = Instantiate(_rubyPrefab, spawnPosition, Quaternion.identity);
             ruby.GetComponent<BetterRuby>().fall = true;
