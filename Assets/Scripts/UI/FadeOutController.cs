@@ -1,13 +1,16 @@
 using System.Collections.Generic;
+using Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UI {
     public class FadeOutController : Singleton<FadeOutController> {
-        [SerializeField] private UIDocument uiDocument;
+        #region ---Fields---
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
         private VisualElement _root;
         private VisualElement _overlay;
+        #endregion
 
         private void Start() {
             _root = uiDocument.rootVisualElement;

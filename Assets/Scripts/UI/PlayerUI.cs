@@ -1,5 +1,5 @@
 using Attributes;
-using UIToolkitTools;
+using UI_Toolkit;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,10 +8,10 @@ namespace Player {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
-        private VisualElement _root;
         private PlayerScript _player;
-        private HeartBar _playerHeartBar;
-        private HeartBar _playerTempHeartBar;
+        private VisualElement _root;
+        private Hearts _playerHeartBar;
+        private Hearts _playerTempHeartBar;
         #endregion
 
         private void Start() {
@@ -20,8 +20,8 @@ namespace Player {
             _root = uiDocument.rootVisualElement;
             _root.dataSource = _player;
 
-            _playerHeartBar = _root.Q<HeartBar>("PlayerHeartBar");
-            _playerTempHeartBar = _root.Q<HeartBar>("PlayerTempHeartBar");
+            _playerHeartBar = _root.Q<Hearts>("PlayerHearts");
+            _playerTempHeartBar = _root.Q<Hearts>("PlayerTempHearts");
 
             _player.healthComponent.OnHealthChanged += health =>
                 OnHealthOnOnHealthChanged(health, _player.healthComponent.TempHealth);
@@ -30,8 +30,8 @@ namespace Player {
         }
 
         private void OnHealthOnOnHealthChanged(int health, int tempHealth) {
-            _playerHeartBar.heartCount = health;
-            _playerTempHeartBar.heartCount = tempHealth;
+            _playerHeartBar.HeartCount = health;
+            _playerTempHeartBar.HeartCount = tempHealth;
         }
     }
 }

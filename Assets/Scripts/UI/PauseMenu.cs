@@ -1,7 +1,6 @@
 using Attributes;
 using UI.Settings;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace UI {
@@ -9,24 +8,22 @@ namespace UI {
     public class PauseMenu : Singleton<PauseMenu> {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
-        
+
         [SerializeField] private SceneCollectionSO mainMenusSceneCollectionSO;
-        
+
         private VisualElement _root;
         private VisualElement _pauseMenuRoot;
         private VisualElement _settingsMenuRoot;
-        
+
         private Button _resumeButton;
         private Button _settingsButton;
         private Button _mainMenuButton;
         private Button _backButton;
-        
+
         private bool _paused;
         #endregion
 
-        protected override void Awake() {
-            base.Awake();
-
+        private void Start() {
             _root = uiDocument.rootVisualElement;
             _pauseMenuRoot = _root.Q<VisualElement>("PauseMenuRoot");
             _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
@@ -69,7 +66,7 @@ namespace UI {
         }
 
         private void PauseGame() {
-            // Time.timeScale = 0;
+            Time.timeScale = 0;
             _paused = true;
 
             _root.style.display = DisplayStyle.Flex;

@@ -80,12 +80,14 @@ namespace Player {
 
         #region ***---AnimatorStringToHash---***
         private static readonly int AnimatorDashBool = Animator.StringToHash("IsDashing");
-        private static readonly int AnimatorDuckTrigger = Animator.StringToHash("DuckStart");
-        private static readonly int AnimatorDuckBool = Animator.StringToHash("IsDucking");
-        private static readonly int AnimatorMovementFloat = Animator.StringToHash("Movement");
+        private static readonly int AnimatorCrouchBool = Animator.StringToHash("IsCrouching");
+        
+        private static readonly int AnimatorMovementFloat = Animator.StringToHash("XMovement");
+        private static readonly int AnimatorYMovementFloat = Animator.StringToHash("YMovement");
+        
         private static readonly int AnimatorJumpBool = Animator.StringToHash("IsJumping");
         private static readonly int AnimatorClimbBool = Animator.StringToHash("IsClimbing");
-        private static readonly int AnimatorYMovementFloat = Animator.StringToHash("YMovement");
+        private static readonly int AnimatorGunJumpTrigger = Animator.StringToHash("GunJump");
         #endregion
         #endregion
 
@@ -307,6 +309,7 @@ namespace Player {
                 if (killCharges > 0) {
                     doubleJumping = true;
                     killCharges--;
+                    player.animator.SetTrigger(AnimatorGunJumpTrigger);
                 }
             }
             else {
@@ -368,7 +371,7 @@ namespace Player {
         private void ForceExitDuck() {
             debugLogger.Log("exiting duck");
             isDucking = false;
-            player.animator.SetBool(AnimatorDuckBool, false);
+            player.animator.SetBool(AnimatorCrouchBool, false);
         }
 
         private void EnterDuck() {
@@ -386,8 +389,7 @@ namespace Player {
             }
 
             isDucking = true;
-            player.animator.SetTrigger(AnimatorDuckTrigger);
-            player.animator.SetBool(AnimatorDuckBool, true);
+            player.animator.SetBool(AnimatorCrouchBool, true);
             debugLogger.Log("Changed player scale down");
         }
 
@@ -483,12 +485,12 @@ namespace Player {
 
         private void CoyoteTimeLogic() {
             if (!isActuallyGrounded && wasGroundedLastFrame && !isJumping && !isDashing) {
-                Debug.Log("Start coyote timer");
+                debugLogger.Log("Start coyote timer");
                 _coyoteTimer.RestartTimer();
             }
 
             if (_coyoteTimer.IsRunning) {
-                Debug.Log("Timer running");
+                debugLogger.Log("Timer running");
                 isGrounded = true;
             }
         }
