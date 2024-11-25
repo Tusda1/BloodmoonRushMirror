@@ -12,7 +12,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     private AnimancerComponent _animancerComponent;
     private Rigidbody2D rb2d;
     public GameObject shooter;
-    private bool _deflected;
+    private Vector2 _velocityDirection;
 
     private float _colliderRadius;
     private CircleCollider2D _circleCollider2D;
@@ -20,6 +20,12 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        _velocityDirection = rb2d.linearVelocity.normalized;
+        
+        var scale = transform.localScale;
+        scale.x *= rb2d.linearVelocity.x > 0 ? -1 : 1;
+        transform.localScale = scale;
+        
         _animancerComponent = GetComponent<AnimancerComponent>();
         _animancerComponent.Play(baseAnimation);
         
@@ -37,18 +43,18 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         {
             // Create an overlap circle to check if the projectile is colliding with anything. If it isn't, enable the collider
             Collider2D[] results = Physics2D.OverlapCircleAll(transform.position, _colliderRadius, layerMask);
-            bool hasNonTriggerCollisions = false;
+            bool hasShooterCollision = false;
 
             foreach (var collider in results)
             {
-                if (!collider.isTrigger)
+                if (collider.gameObject == shooter)
                 {
-                    hasNonTriggerCollisions = true;
+                    hasShooterCollision = true;
                     break;
                 }
             }
 
-            if (!hasNonTriggerCollisions)
+            if (!hasShooterCollision)
             {
                 _circleCollider2D.enabled = true;
             }
@@ -59,14 +65,12 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject == shooter && !_deflected) return;
-        
         if (other.gameObject.TryGetComponent<IDamageable>(out var damageable))
         {
             // set the knockback direction based on the velocity of the projectile
-            var knockbackDirection = GetComponent<Rigidbody2D>().linearVelocity.normalized.x > 0 ? Vector2.right : Vector2.left;
+            var knockbackDirection = _velocityDirection.x > 0 ? Vector2.right : Vector2.left;
             damageInstance.knockback = knockbackDirection * damageInstance.knockbackStrength;
-        
+            
             damageable.TakeDamage(damageInstance);
         }
         
@@ -80,8 +84,6 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     
     public void TakeDamage(DamageInstance damageInstance)
     {
-        if (_deflected) return;
-        
         Vector2 velocity = rb2d.linearVelocity;
         
         // If knocked back, reverse direction
@@ -96,6 +98,6 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         }
         
         rb2d.linearVelocity = velocity * 3;
-        _deflected = true;
+        _velocityDirection = rb2d.linearVelocity.normalized;
     }
 }

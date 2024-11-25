@@ -6,6 +6,7 @@ public class SwoopAttackState : BossState
 {
     [SerializeField] private float swoopDuration = 2f;
     [SerializeField] private float swoopStartTime;
+    [SerializeField] private float easePower = 2f;
     
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
@@ -30,6 +31,9 @@ public class SwoopAttackState : BossState
 
     private void OnEnable()
     {
+        // Set variables
+        Boss.gravity = 0;
+        
         // Send a ray straight up and find the roof
         var hit = Physics2D.Raycast(transform.position, Vector2.up, 100, LayerMask.GetMask("Ground"));
         if (hit.collider == null){Debug.LogError("Couldn't find roof"); return;}
@@ -74,7 +78,12 @@ public class SwoopAttackState : BossState
         
         _swoopState = SwoopState.Teleporting;
     }
-    
+
+    private void OnDisable()
+    {
+        Boss.gravity = 1;
+    }
+
     private void Update()
     {
         switch (_swoopState)
@@ -113,19 +122,37 @@ public class SwoopAttackState : BossState
     
     private void Swoop()
     {
+        // Calculate t with easing for smooth acceleration and deceleration
         float t = (Time.time - swoopStartTime) / swoopDuration;
+    
+        // Clamp t to the range [0, 1]
         if (t > 1f)
         {
-            t = 1f;
             _swoopState = SwoopState.Shooting;
+            return;
         }
 
-        Vector2 position = CalculateBezierPoint(t, _swoopOrigin, _swoopArcBottom, _swoopTarget);
+        // Apply easing using easePower
+        if (t < 0.5f)
+        {
+            t = Mathf.Pow(t * 2, easePower) / 2f; // Ease-in
+        }
+        else
+        {
+            t = 1 - Mathf.Pow(2 * (1 - t), easePower) / 2f; // Ease-out
+        }
+
+        // Calculate the position using the eased t
+        Vector2 position = CalculateBezierPoint(t, _swoopOrigin, _swoopTarget, _swoopArcBottom);
         transform.position = position;
     }
 
-    private Vector2 CalculateBezierPoint(float t, Vector2 p0, Vector2 p1, Vector2 p2)
+    private Vector2 CalculateBezierPoint(float t, Vector2 p0, Vector2 p2, Vector2 peak)
     {
+        // Calculate the control point p1 based on the desired peak
+        Vector2 p1 = 2 * peak - 0.5f * p0 - 0.5f * p2;
+
+        // Standard quadratic Bézier curve calculation
         float u = 1 - t;
         float tt = t * t;
         float uu = u * u;
@@ -136,9 +163,11 @@ public class SwoopAttackState : BossState
 
         return p;
     }
+
     
     private void Shoot()
     {
         // Shoot a projectile at the player
+        
     }
 }

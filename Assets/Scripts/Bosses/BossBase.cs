@@ -16,6 +16,9 @@ public class BossBase : GravityObject
     public AnimationClip TeleportEnter => teleportEnter;
     [SerializeField] private AnimationClip teleportExit;
     public AnimationClip TeleportExit => teleportExit;
+
+    [HideInInspector] public float gravity;
+    [HideInInspector] public float targetVelocityX;
     
     protected new virtual void Awake()
     {
@@ -34,5 +37,12 @@ public class BossBase : GravityObject
     {
         yield return new WaitForSeconds(1);
         _stateMachine.ForceSetState(_stateMachine.DefaultState);
+    }
+
+    private new void Update()
+    {
+        base.Update();
+        targetVelocity.x = targetVelocityX;
+        GravityModifier = gravity;
     }
 }
