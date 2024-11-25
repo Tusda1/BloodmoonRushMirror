@@ -28,12 +28,17 @@ namespace Player {
         public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
-        public int keyAmount = 0;
-        public List<GameObject> keyObjects = new List<GameObject>();
-        public Vector3 lastGroundedPosition;
         [SerializeField] private PlayerHitbox hitbox;
+        
+        [Header("Taking Damage")]
         [SerializeField] private float alphaWhenTakingDamage = 0.2f;
+        [SerializeField] private float takeDamageScreenShakeIntensity = 0.2f;
+        [SerializeField] private float takeDamageScreenShakeDuration = 0.2f;
 
+        [Header("Keys")]
+        public int keyAmount;
+        public List<GameObject> keyObjects = new();
+        
         private bool _isDead;
         private bool _canAttack = true;
 
@@ -180,11 +185,13 @@ namespace Player {
         public void TakeDamage(DamageInstance damageInstance) {
             if (healthComponent.HasInvincibilityFrames || _isDead) return;
 
+            debugLogger.Log($"Taking Damage: {damageInstance.damage}");
+            
             damageInstance.TriggerOnHitAction();
             playerMovement.Knockback(damageInstance.knockback);
-            debugLogger.Log($"Taking Damage: {damageInstance.damage}");
             animator.SetTrigger(AnimatorTakeDamageTrigger);
             healthComponent.TakeDamage(damageInstance.damage);
+            _ = ServiceLocator.Get<CameraEffects>().ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
         }
 
         #region ***---Death---***
