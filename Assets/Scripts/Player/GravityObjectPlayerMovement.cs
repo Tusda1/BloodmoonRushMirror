@@ -7,6 +7,7 @@ using PlayerLoopTimer;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
@@ -73,7 +74,7 @@ namespace Player {
 
         private Vector2 _smoothMovement;
         private Vector2 _referenceSmoothVelocity;
-        private Vector2 _lastSpikePoint;
+        [HideInInspector] public Vector2 lastPlatformCheckpoint;
         [HideInInspector] public bool wasGroundedLastFrame;
         private Ladder _ladder;
         private bool _notClimbing;
@@ -96,6 +97,8 @@ namespace Player {
             base.Start();
 
             GravityModifier = gravityMultiplier;
+
+            lastPlatformCheckpoint = transform.position;
 
             InitializeTimers();
         }
@@ -278,14 +281,10 @@ namespace Player {
                 }
             }
 
-            if (isActuallyGrounded && IsValidSpawnPoint())
-                _lastSpikePoint = new Vector2(Mathf.Round(transform.position.x),
-                    Mathf.Round(transform.position.y) - 0.4f);
-
             wasGroundedLastFrame = isActuallyGrounded;
         }
 
-        private bool IsValidSpawnPoint() {
+        /*private bool IsValidSpawnPoint() {
             var quantizedPosition =
                 new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .3f);
             var hitColliders = Physics.OverlapBox(quantizedPosition, transform.localScale,
@@ -301,7 +300,7 @@ namespace Player {
 
             var hit = Physics2D.Raycast(quantizedPosition, Vector2.down, .5f);
             return hit.collider != null && !hit.collider.CompareTag("Hazard") && hit.collider.CompareTag("Ground");
-        }
+        }*/
 
         #region ---EventFunctions---
         public void OnJump(InputValue inputValue) {
@@ -424,7 +423,7 @@ namespace Player {
         }
 
         public void SpikeReset() {
-            gameObject.transform.position = _lastSpikePoint;
+            gameObject.transform.position = lastPlatformCheckpoint;
             ResetMovement(0);
             _spikeStunTimer.StartTimer();
             isDashing = false;
