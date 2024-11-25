@@ -13,6 +13,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     private Rigidbody2D rb2d;
     public GameObject shooter;
     private Vector2 _velocityDirection;
+    private bool _isDeflected;
 
     private float _colliderRadius;
     private CircleCollider2D _circleCollider2D;
@@ -84,6 +85,10 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     
     public void TakeDamage(DamageInstance damageInstance)
     {
+        if (_isDeflected) return;
+        
+        _isDeflected = true;
+        
         Vector2 velocity = rb2d.linearVelocity;
         
         // If knocked back, reverse direction
