@@ -348,7 +348,7 @@ namespace Player {
             lockToAxis = 1;
             _dashTimer.StartTimer();
 
-            if (isFacingRight)
+            if (inputVector.x > 0.1f)
                 dashForce = Mathf.Abs(dashForce);
             else
                 dashForce = -Mathf.Abs(dashForce);
