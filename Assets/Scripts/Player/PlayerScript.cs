@@ -16,30 +16,31 @@ using Utilities.DataBinding;
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {
         #region ---Fields---
-        #region ***---LocalComponentRefrences---***
+        #region ***---GetOrAddComponents---***
         [GetOrAddComponent, HideInInspector] public PlayerHealth healthComponent;
         [GetOrAddComponent, HideInInspector] public Animator animator;
         [GetOrAddComponent, HideInInspector] public SpriteRenderer spriteRenderer;
         [GetOrAddComponent, HideInInspector] public GravityObjectPlayerMovement playerMovement;
-        [GetOrAddComponent, SerializeField, HideInInspector] private PlayerInput playerInput;
+        [GetOrAddComponent, HideInInspector] public PlayerInput playerInput;
         #endregion
-        
-        [Header("Player")] 
-        public int playerLives = 5;
+
+        public event Action<int> TabNavigation = delegate { };
+
+        [Header("Player")] public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         [SerializeField] private PlayerHitbox hitbox;
-        
-        [Header("Taking Damage")]
-        [SerializeField] private float alphaWhenTakingDamage = 0.2f;
+
+        [Header("Taking Damage")] [SerializeField]
+        private float alphaWhenTakingDamage = 0.2f;
+
         [SerializeField] private float takeDamageScreenShakeIntensity = 0.2f;
         [SerializeField] private float takeDamageScreenShakeDuration = 0.2f;
         [SerializeField] private float takeDamageTimeSlowDuration = 0.5f;
 
-        [Header("Keys")]
-        public int keyAmount;
+        [Header("Keys")] public int keyAmount;
         public List<GameObject> keyObjects = new();
-        
+
         private bool _isDead;
         private bool _canAttack = true;
 
@@ -74,7 +75,6 @@ namespace Player {
         private static readonly int AnimatorIsDeadBool = Animator.StringToHash("IsDead");
         private static readonly int AnimatorRespawnTrigger = Animator.StringToHash("Respawn");
         private static readonly int AnimatorDeathTrigger = Animator.StringToHash("Death");
-        
         #endregion
 
         #region ***---GameManagers---***
@@ -107,9 +107,10 @@ namespace Player {
             Bind();
 
             healthComponent.OnDeath += () => StartCoroutine(Die());
-            
-            healthComponent.InvulnerabilityTimer.OnBegin += () => spriteRenderer.color = new Color(1,1,1,alphaWhenTakingDamage);
-            healthComponent.InvulnerabilityTimer.OnComplete += () => spriteRenderer.color = new Color(1,1,1,1);
+
+            healthComponent.InvulnerabilityTimer.OnBegin +=
+                () => spriteRenderer.color = new Color(1, 1, 1, alphaWhenTakingDamage);
+            healthComponent.InvulnerabilityTimer.OnComplete += () => spriteRenderer.color = new Color(1, 1, 1, 1);
 
             SetStateBehavioursReferences();
 
@@ -121,9 +122,13 @@ namespace Player {
         }
 
         #region ***---InputActions---***
+        public void OnTabNavigation(InputValue inputValue) {
+            TabNavigation.Invoke((int)inputValue.Get<float>());
+        }
+
         public void OnPause(InputValue inputValue) {
             if (!inputValue.isPressed) return;
-            
+
             PauseMenu.PauseToggle();
         }
 
@@ -187,16 +192,15 @@ namespace Player {
             if (healthComponent.HasInvincibilityFrames || _isDead) return;
 
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
-            
+
             damageInstance.TriggerOnHitAction();
             playerMovement.Knockback(damageInstance.knockback);
             animator.SetTrigger(AnimatorTakeDamageTrigger);
             healthComponent.TakeDamage(damageInstance.damage);
             var cameraEffects = ServiceLocator.Get<CameraEffects>();
-            
+
             _ = cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
-            // _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
-            StartCoroutine(cameraEffects.TimeSlow(takeDamageTimeSlowDuration));
+            _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
         }
 
         #region ***---Death---***
@@ -259,7 +263,7 @@ namespace Player {
 
         public void HitSpike() {
             playerMovement.SpikeReset();
-            TakeDamage(new DamageInstance{damage = 1});
+            TakeDamage(new DamageInstance { damage = 1 });
         }
 
         private Collider2D InteractCheck() {
@@ -280,7 +284,7 @@ namespace Player {
                 print("collected another key");
             }
         }
-        
+
         public void UseKey(Transform doorTransform, int usedKeys, float destructionTime) {
             for (int i = 0; i < usedKeys; i++) {
                 var keyScript = keyObjects[^1].GetComponent<KeyScript>();
@@ -289,6 +293,7 @@ namespace Player {
                 keyObjects.RemoveAt(keyObjects.Count - 1);
                 print("used key: " + i);
             }
+
             keyAmount = 0;
         }
 
