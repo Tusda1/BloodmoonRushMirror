@@ -125,7 +125,7 @@ MonoBehaviour:
   Composition:
     ScreenPosition: {x: 0, y: 0}
     DeadZone:
-      Enabled: 0
+      Enabled: 1
       Size: {x: 0.2, y: 0.2}
     HardLimits:
       Enabled: 0
@@ -242,6 +242,18 @@ MonoBehaviour:
   cinemachineCamera: {fileID: 8798351002445025831}
   areaGameObjects: {fileID: 9093227878091812984}
   enemyGameObject: {fileID: 534372104746981164}
+  onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  onEnableLate:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisable:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisableLate:
+    m_PersistentCalls:
+      m_Calls: []
   isActiveRoom: 0
 --- !u!60 &5781193630542163248
 PolygonCollider2D:

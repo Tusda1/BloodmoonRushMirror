@@ -1,0 +1,17 @@
+using Attributes;
+using UnityEngine;
+using UnityEngine.UIElements;
+#NOTRIM#
+#ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# : MonoBehaviour {
+    #region ---Fields---
+    [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+    #NOTRIM#
+    private VisualElement _root;
+    #endregion
+    #NOTRIM#
+    private void Start() {
+        _root = uiDocument.rootVisualElement;
+    }
+}
+#ROOTNAMESPACEEND#

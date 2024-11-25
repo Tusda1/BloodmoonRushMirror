@@ -1,3 +1,4 @@
+using Attributes;
 using FMODScripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,10 +6,12 @@ using UnityEngine.UIElements;
 
 namespace UI {
     public class DeathScreenController : MonoBehaviour {
-        [SerializeField] private UIDocument uiDocument;
+        #region ---Fields---
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
         
         private static FMODManager FMODManager => FMODManager.Instance;
-
+        #endregion
+        
         private void Start() {
             // TODO
             FMODManager.StopMusic();

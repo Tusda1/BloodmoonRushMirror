@@ -62,8 +62,7 @@ namespace Player {
         private DebugLoggerSO debugLogger;
 
         #region ***---AnimatorStringToHash---***
-        private static readonly int AnimatorIsAttackingTrigger = Animator.StringToHash("IsAttacking");
-        private static readonly int AnimatorIsAttackingBool = Animator.StringToHash("IsAttacking 0");
+        private static readonly int AnimatorIsAttackingBool = Animator.StringToHash("IsAttacking");
         private static readonly int AnimatorDuckAttackTrigger = Animator.StringToHash("DuckAttack");
         private static readonly int AnimatorTakeDamageTrigger = Animator.StringToHash("TakeDamage");
         private static readonly int AnimatorIsDeadBool = Animator.StringToHash("IsDead");
@@ -154,7 +153,6 @@ namespace Player {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
 
-            animator.SetTrigger(AnimatorIsAttackingTrigger);
             FMODManager.PlaySfx("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
@@ -180,13 +178,13 @@ namespace Player {
         }
 
         public void TakeDamage(DamageInstance damageInstance) {
-            if (_isDead) return;
+            if (healthComponent.HasInvincibilityFrames || _isDead) return;
 
             damageInstance.TriggerOnHitAction();
-            healthComponent.TakeDamage(damageInstance.damage);
             playerMovement.Knockback(damageInstance.knockback);
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
             animator.SetTrigger(AnimatorTakeDamageTrigger);
+            healthComponent.TakeDamage(damageInstance.damage);
         }
 
         #region ***---Death---***

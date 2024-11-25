@@ -79,7 +79,6 @@ public class MovingPlatformScript : GravityObject {
                 _playerIsOnPlatform = false;
                 playerMovement.affectingVelocity = Vector2.zero;
                 playerMovement.MovingPLatformExit();
-                print("exited collision");
             }
     }
 }

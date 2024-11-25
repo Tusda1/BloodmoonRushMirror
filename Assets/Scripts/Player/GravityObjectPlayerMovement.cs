@@ -7,6 +7,7 @@ using PlayerLoopTimer;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
@@ -69,10 +70,11 @@ namespace Player {
         private CountdownTimer _knockbackTimer;
         private CountdownTimer _coyoteTimer;
         private CountdownTimer _spikeStunTimer;
+        private CountdownTimer _platformTimer;
 
         private Vector2 _smoothMovement;
         private Vector2 _referenceSmoothVelocity;
-        private Vector2 _lastSpikePoint;
+        [HideInInspector] public Vector2 lastPlatformCheckpoint;
         [HideInInspector] public bool wasGroundedLastFrame;
         private Ladder _ladder;
         private bool _notClimbing;
@@ -80,12 +82,14 @@ namespace Player {
 
         #region ***---AnimatorStringToHash---***
         private static readonly int AnimatorDashBool = Animator.StringToHash("IsDashing");
-        private static readonly int AnimatorDuckTrigger = Animator.StringToHash("DuckStart");
-        private static readonly int AnimatorDuckBool = Animator.StringToHash("IsDucking");
-        private static readonly int AnimatorMovementFloat = Animator.StringToHash("Movement");
+        private static readonly int AnimatorCrouchBool = Animator.StringToHash("IsCrouching");
+        
+        private static readonly int AnimatorMovementFloat = Animator.StringToHash("XMovement");
+        private static readonly int AnimatorYMovementFloat = Animator.StringToHash("YMovement");
+        
         private static readonly int AnimatorJumpBool = Animator.StringToHash("IsJumping");
         private static readonly int AnimatorClimbBool = Animator.StringToHash("IsClimbing");
-        private static readonly int AnimatorYMovementFloat = Animator.StringToHash("YMovement");
+        private static readonly int AnimatorGunJumpTrigger = Animator.StringToHash("GunJump");
         #endregion
         #endregion
 
@@ -93,6 +97,8 @@ namespace Player {
             base.Start();
 
             GravityModifier = gravityMultiplier;
+
+            lastPlatformCheckpoint = transform.position;
 
             InitializeTimers();
         }
@@ -110,6 +116,8 @@ namespace Player {
             InitializeSpikeStunTimer();
 
             InitializeCoyoteTimer();
+
+            InitializePlatformTimer();
         }
 
         private void InitializeDashTimer() {
@@ -158,6 +166,10 @@ namespace Player {
             _coyoteTimer = new CountdownTimer(coyoteTime);
             _coyoteTimer.OnBegin += () => isGrounded = false;
         }
+
+        private void InitializePlatformTimer() {
+            _platformTimer = new CountdownTimer(minJumpTime);
+        }
         #endregion
 
         protected override void ComputeVelocity() {
@@ -193,6 +205,7 @@ namespace Player {
             //     velocity.y = jumpForce;
             // } else
             if (doubleJumping && isJumping) {
+                MovingPLatformExit();
                 ResetMovement(2);
                 isDashing = false;
                 velocity.y = jumpForce;
@@ -205,6 +218,7 @@ namespace Player {
                 targetVelocity.y *= fallSpeed;
             }
             else if (isJumping) {
+                MovingPLatformExit();
                 velocity.y = jumpForce;
                 // targetVelocity.y = jumpForce;
             }
@@ -267,14 +281,10 @@ namespace Player {
                 }
             }
 
-            if (isActuallyGrounded && IsValidSpawnPoint())
-                _lastSpikePoint = new Vector2(Mathf.Round(transform.position.x),
-                    Mathf.Round(transform.position.y) - 0.4f);
-
             wasGroundedLastFrame = isActuallyGrounded;
         }
 
-        private bool IsValidSpawnPoint() {
+        /*private bool IsValidSpawnPoint() {
             var quantizedPosition =
                 new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .3f);
             var hitColliders = Physics.OverlapBox(quantizedPosition, transform.localScale,
@@ -290,7 +300,7 @@ namespace Player {
 
             var hit = Physics2D.Raycast(quantizedPosition, Vector2.down, .5f);
             return hit.collider != null && !hit.collider.CompareTag("Hazard") && hit.collider.CompareTag("Ground");
-        }
+        }*/
 
         #region ---EventFunctions---
         public void OnJump(InputValue inputValue) {
@@ -307,6 +317,7 @@ namespace Player {
                 if (killCharges > 0) {
                     doubleJumping = true;
                     killCharges--;
+                    player.animator.SetTrigger(AnimatorGunJumpTrigger);
                 }
             }
             else {
@@ -368,7 +379,7 @@ namespace Player {
         private void ForceExitDuck() {
             debugLogger.Log("exiting duck");
             isDucking = false;
-            player.animator.SetBool(AnimatorDuckBool, false);
+            player.animator.SetBool(AnimatorCrouchBool, false);
         }
 
         private void EnterDuck() {
@@ -386,8 +397,7 @@ namespace Player {
             }
 
             isDucking = true;
-            player.animator.SetTrigger(AnimatorDuckTrigger);
-            player.animator.SetBool(AnimatorDuckBool, true);
+            player.animator.SetBool(AnimatorCrouchBool, true);
             debugLogger.Log("Changed player scale down");
         }
 
@@ -413,13 +423,14 @@ namespace Player {
         }
 
         public void SpikeReset() {
-            gameObject.transform.position = _lastSpikePoint;
+            gameObject.transform.position = lastPlatformCheckpoint;
             ResetMovement(0);
             _spikeStunTimer.StartTimer();
             isDashing = false;
         }
 
         public void MovingPlatformEnter() {
+            if (_platformTimer.IsRunning) return;
             GravityModifier = 0f;
         }
 
@@ -483,12 +494,12 @@ namespace Player {
 
         private void CoyoteTimeLogic() {
             if (!isActuallyGrounded && wasGroundedLastFrame && !isJumping && !isDashing) {
-                Debug.Log("Start coyote timer");
+                debugLogger.Log("Start coyote timer");
                 _coyoteTimer.RestartTimer();
             }
 
             if (_coyoteTimer.IsRunning) {
-                Debug.Log("Timer running");
+                debugLogger.Log("Timer running");
                 isGrounded = true;
             }
         }
