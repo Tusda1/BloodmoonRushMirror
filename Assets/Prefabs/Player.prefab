@@ -118,11 +118,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   isAttacking: 0
-  keyAmount: 0
-  keyObjects: []
-  lastGroundedPosition: {x: 0, y: 0, z: 0}
   hitbox: {fileID: 3672109486144381603}
   alphaWhenTakingDamage: 0.65
+  takeDamageScreenShakeIntensity: 0.2
+  takeDamageScreenShakeDuration: 0.2
+  keyAmount: 0
+  keyObjects: []
   gems: 0
   gemLostMethod: 0
   gemsLostOnDeath: 0
@@ -150,7 +151,7 @@ MonoBehaviour:
   health: 7
   maxHealth: 7
   invulnerabilityTime: 1
-  <HasInvincibilityFrames>k__BackingField: 1
+  <HasInvincibilityFrames>k__BackingField: 0
   tempHealth: 0
   maxTempHealth: 7
 --- !u!114 &9170211437487459540
@@ -205,7 +206,7 @@ MonoBehaviour:
   isActuallyGrounded: 0
   isTakingKnockback: 0
   knockBackTime: 0.15
-  spikeStunTime: 0.75
+  spikeStunTime: 0.8
   killCharges: 0
   playerCanMove: {fileID: 11400000, guid: f2f25efabb8f0d74bbfdba92ceb38155, type: 2}
   debugLogger: {fileID: 11400000, guid: 75da1efa7b0197041a121d1e562d1a0b, type: 2}
@@ -363,7 +364,7 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6484fd12-4cb3-44f7-b276-f7ac1cab2a1c
     m_ActionName: 'Player/Duck[/Keyboard/s,/Keyboard/downArrow]'
-  m_NeverAutoSwitchControlSchemes: 1
+  m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
