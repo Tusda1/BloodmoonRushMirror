@@ -69,6 +69,7 @@ namespace Player {
         private CountdownTimer _knockbackTimer;
         private CountdownTimer _coyoteTimer;
         private CountdownTimer _spikeStunTimer;
+        private CountdownTimer _platformTimer;
 
         private Vector2 _smoothMovement;
         private Vector2 _referenceSmoothVelocity;
@@ -112,6 +113,8 @@ namespace Player {
             InitializeSpikeStunTimer();
 
             InitializeCoyoteTimer();
+
+            InitializePlatformTimer();
         }
 
         private void InitializeDashTimer() {
@@ -160,6 +163,10 @@ namespace Player {
             _coyoteTimer = new CountdownTimer(coyoteTime);
             _coyoteTimer.OnBegin += () => isGrounded = false;
         }
+
+        private void InitializePlatformTimer() {
+            _platformTimer = new CountdownTimer(minJumpTime);
+        }
         #endregion
 
         protected override void ComputeVelocity() {
@@ -195,6 +202,7 @@ namespace Player {
             //     velocity.y = jumpForce;
             // } else
             if (doubleJumping && isJumping) {
+                MovingPLatformExit();
                 ResetMovement(2);
                 isDashing = false;
                 velocity.y = jumpForce;
@@ -207,6 +215,7 @@ namespace Player {
                 targetVelocity.y *= fallSpeed;
             }
             else if (isJumping) {
+                MovingPLatformExit();
                 velocity.y = jumpForce;
                 // targetVelocity.y = jumpForce;
             }
@@ -422,6 +431,7 @@ namespace Player {
         }
 
         public void MovingPlatformEnter() {
+            if (_platformTimer.IsRunning) return;
             GravityModifier = 0f;
         }
 
