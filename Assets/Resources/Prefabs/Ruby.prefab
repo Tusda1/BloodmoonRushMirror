@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 297019097923360878}
   - component: {fileID: 2566817279321913625}
-  - component: {fileID: 3781198608820044560}
+  - component: {fileID: 3074973757347776551}
   - component: {fileID: 431150157885778079}
   - component: {fileID: 4432568419903292125}
   m_Layer: 0
@@ -90,7 +90,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3781198608820044560
+--- !u!114 &3074973757347776551
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,18 +99,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8672961612316918638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 176c50976dc5d6e4a841a0182e25e39d, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f60ef8d3369b21449b0de55ff170fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isGrounded: 0
   lockToAxis: 0
   rb2d: {fileID: 431150157885778079}
   GravityModifier: 1
-  groundDistance: 0
-  hoverSpeed: 2
+  groundDistance: 1
+  hoverSpeed: 1.5
   hoverHeight: 0.3
   despawnDistance: 0.1
   moveSpeed: 10
+  pickupableTime: 0.2
   fall: 0
 --- !u!50 &431150157885778079
 Rigidbody2D:
