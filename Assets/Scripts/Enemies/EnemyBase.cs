@@ -156,7 +156,7 @@ public class EnemyBase :  GravityObject, IDamageable
             Vector3 spawnPosition = transform.position + offset;
             
             GameObject ruby = Instantiate(_rubyPrefab, spawnPosition, Quaternion.identity);
-            ruby.GetComponent<RubyScript>().fall = true;
+            ruby.GetComponent<BetterRuby>().fall = true;
         }
 
         rubyDropAmount = 0;
