@@ -10,6 +10,8 @@ public class Teleport
     private readonly AnimationClip teleportExit;
     private readonly Action onTeleportEnd;
     
+    public bool IsTeleporting { get; private set; }
+    
     public Teleport(Transform externalTransform, AnimancerComponent externalAnimancerComponent, AnimationClip externalTeleportEnter, AnimationClip externalTeleportExit, Action externalOnTeleportEnd = null)
     {
         transform = externalTransform;
@@ -21,6 +23,8 @@ public class Teleport
     
     public void TeleportToLocation(Vector2 destination)
     {
+        IsTeleporting = true;
+        
         AnimancerState animancerState = animancerComponent.Play(teleportEnter);
         animancerState.Events(this).OnEnd ??= () =>
         {
@@ -30,6 +34,8 @@ public class Teleport
             {
                 animancerState.Stop();
                 onTeleportEnd?.Invoke();
+                
+                IsTeleporting = false;
             };
         };
     }

@@ -6,12 +6,29 @@ public class DashAttackState : BossState
 {
     [SerializeField] private int dashAmount = 5;
     [SerializeField] private float dashSpeed = 10f;
+    [SerializeField] private float dashCooldown = 1f;
     
+    private Teleport _teleport;
     private Vector2 _dashOrigin;
     private Vector2 _dashTarget;
     private int _dashCount;
-    private bool _isDashing;
+    private float _cooldownStartTime;
+
+    private enum DashState
+    {
+        Teleporting,
+        PreparingDash,
+        Dashing,
+        Cooldown
+    }
     
+    private DashState _dashState;
+
+    private void Start()
+    {
+        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
+    }
+
     private void OnEnable()
     {
         // Find bottom right and left corner by sending a ray straight down and then right
@@ -26,6 +43,7 @@ public class DashAttackState : BossState
         
         var rightCorner = hit.point;
         rightCorner.x -= 1f;
+        rightCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         
         // Find the left corner
         hit = Physics2D.Raycast(bottom, Vector2.left, 100, LayerMask.GetMask("Ground"));
@@ -33,9 +51,10 @@ public class DashAttackState : BossState
         
         var leftCorner = hit.point;
         leftCorner.x += 1f;
+        leftCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         
         // 50% chance to go left or right
-        if (UnityEngine.Random.value > 0.5f)
+        if (UnityEngine.Random.Range(0, 2) == 0)
         {
             _dashOrigin = rightCorner;
             _dashTarget = leftCorner;
@@ -45,23 +64,67 @@ public class DashAttackState : BossState
             _dashOrigin = leftCorner;
             _dashTarget = rightCorner;
         }
+        
+        _dashState = DashState.Teleporting;
     }
     
     private void Update()
     {
-        if (_dashCount < dashAmount && !_isDashing)
+        switch (_dashState)
         {
-            StartCoroutine(Dash());
+            case DashState.Teleporting:
+                if (!_teleport.IsTeleporting) _teleport.TeleportToLocation(_dashOrigin);
+                break;
+            case DashState.PreparingDash:
+                PrepareDash();
+                break;
+            case DashState.Dashing:
+                Dash();
+                break;
+            case DashState.Cooldown:
+                Cooldown();
+                break;
         }
     }
     
-    private IEnumerator Dash()
+    private void OnTeleportEnd()
     {
-        _isDashing = true;
-        _dashCount++;
+        _dashState = DashState.PreparingDash;
+    }
+
+    private void PrepareDash()
+    {
+        if (!Boss.bossGrounded) return;
+
+        var position = transform.position;
+        _dashOrigin.y = position.y;
+        _dashTarget.y = position.y;
+        _dashState = DashState.Dashing;
+    }
+    
+    private void Dash()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, _dashTarget, dashSpeed * Time.deltaTime);
+        if (Vector2.Distance(transform.position, _dashTarget) < 0.1f)
+        {
+            _dashCount++;
+            _dashState = DashState.Cooldown;
+            _cooldownStartTime = Time.time;
+        }
+    }
+    
+    private void Cooldown()
+    {
+        if (_dashCount >= dashAmount)
+        {
+            //TODO: Change state
+            return;
+        }
         
-        
-        
-        yield return null;
+        if (Time.time - _cooldownStartTime > dashCooldown)
+        {
+            _dashState = DashState.Dashing;
+            (_dashOrigin, _dashTarget) = (_dashTarget, _dashOrigin);
+        }
     }
 }

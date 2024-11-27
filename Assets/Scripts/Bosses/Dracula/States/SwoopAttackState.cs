@@ -5,16 +5,15 @@ using UnityEngine.Serialization;
 public class SwoopAttackState : BossState
 {
     [SerializeField] private float swoopDuration = 2f;
-    [SerializeField] private float swoopStartTime;
     [SerializeField] private float easePower = 2f;
     
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
     private Vector2 _swoopArcBottom;
+    private float swoopStartTime;
     private SwoopState _swoopState;
-    
+
     private Teleport _teleport;
-    private bool _isTeleporting;
     
     private enum SwoopState 
     {
@@ -89,7 +88,7 @@ public class SwoopAttackState : BossState
         switch (_swoopState)
         {
             case SwoopState.Teleporting:
-                if (!_isTeleporting) TeleportToOrigin();
+                if (!_teleport.IsTeleporting) _teleport.TeleportToLocation(_swoopOrigin);
                 break;
             case SwoopState.Swooping:
                 Swoop();
@@ -102,15 +101,8 @@ public class SwoopAttackState : BossState
         }
     }
     
-    private void TeleportToOrigin()
-    {
-        _teleport.TeleportToLocation(_swoopOrigin);
-        _isTeleporting = true;
-    }
-    
     private void OnTeleportEnd()
     {
-        _isTeleporting = false;
         SwoopStart();
     }
     

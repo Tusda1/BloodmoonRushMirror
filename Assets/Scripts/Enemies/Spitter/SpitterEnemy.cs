@@ -9,12 +9,17 @@ public class SpitterEnemy : ReactiveBase
     
     private GameObject _projectilePrefab;
     private Transform _player;
+    private SpitterAnimation _spitterAnimation;
+    private bool _attacking;
     
+    private const float YOffset = 0.5f;
+
     protected new void Start()
     {
         base.Start();
         
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile");
+        _spitterAnimation = GetComponent<SpitterAnimation>();
     }
     
     protected override void Scan()
@@ -38,10 +43,12 @@ public class SpitterEnemy : ReactiveBase
             return;
         }
         
+        if (_attacking) return; // if already attacking, return
+        
         // check if the cooldown has passed
         if (cooldownTimer <= 0)
         {
-            ShootProjectile();
+            Attack();
             cooldownTimer = projectileCooldown;
         }
         else
@@ -49,13 +56,22 @@ public class SpitterEnemy : ReactiveBase
             cooldownTimer -= Time.deltaTime;
         }
     }
+
+    private void Attack()
+    {
+        _attacking = true;
+        _spitterAnimation.Attack(ShootProjectile);
+    }
     
     private void ShootProjectile()
     {
-        print("spawned projectile");
+        var position = transform.position;
+        var spawnPosition = new Vector2(position.x, position.y + YOffset);
+        
         // Shoot a projectile in the facingdirection. Spawn it so that it is outside of the collider of the spitter
-        GameObject projectile = Instantiate(_projectilePrefab, transform.position, Quaternion.identity);
+        GameObject projectile = Instantiate(_projectilePrefab, spawnPosition, Quaternion.identity);
         projectile.GetComponent<Rigidbody2D>().linearVelocity = facingDirection * projectileSpeed;
         projectile.GetComponent<ProjectileDeflectable>().shooter = gameObject;
+        _attacking = false;
     }
 }
