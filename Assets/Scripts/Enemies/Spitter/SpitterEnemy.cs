@@ -12,7 +12,7 @@ public class SpitterEnemy : ReactiveBase
     private SpitterAnimation _spitterAnimation;
     private bool _attacking;
     
-    private const float YOffset = 0.5f;
+    private const float YOffset = 0.45f;
 
     protected new void Start()
     {

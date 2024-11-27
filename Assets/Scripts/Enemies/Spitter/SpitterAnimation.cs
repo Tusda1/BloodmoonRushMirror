@@ -5,8 +5,8 @@ using UnityEngine.Serialization;
 
 public class SpitterAnimation : MonoBehaviour
 {
-    [SerializeField] private AnimationClip attackWindUp;
-    [SerializeField] private AnimationClip attack;
+    [SerializeField] private AnimationClip spitWindUp;
+    [SerializeField] private AnimationClip spit;
     [SerializeField] private AnimationClip idle;
     
     private AnimancerComponent _animancerComponent;
@@ -23,14 +23,15 @@ public class SpitterAnimation : MonoBehaviour
 
     public void Attack(Action followUpAction)
     {
-        var attackState = _animancerComponent.Play(attackWindUp);
+        var attackState = _animancerComponent.Play(spitWindUp);
         // When the animation ends play the spit animation
         attackState.Events(this).OnEnd = () =>
         {
-            _animancerComponent.Play(attack);
+            followUpAction?.Invoke();
+            attackState = _animancerComponent.Play(spit);
             attackState.Events(this).OnEnd = () =>
             {
-                followUpAction?.Invoke();
+                attackState.Events(this).OnEnd = null;
                 _animancerComponent.Play(idle);
             };
         };
