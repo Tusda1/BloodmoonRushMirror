@@ -3,14 +3,16 @@ using PlayerLoopTimer;
 using UnityEngine;
 
 public class RetractingPlatformScript : MonoBehaviour {
+    private static readonly int Up = Animator.StringToHash("Up");
+    private static readonly int Down = Animator.StringToHash("Down");
+
     #region ---Fields---
     [SerializeField] private BoxCollider2D boxCollider;
     [SerializeField] private BoxCollider2D triggerCollider;
     [SerializeField] private float retractingTime;
     [SerializeField] private float backUpTime;
-    [SerializeField] private Color solidColor;
-    [SerializeField] private Color retractedColor; //colors are test stuff before assets
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Animator animator;
     private bool _retracted;
     private bool _readyToRetract = false;
     private bool _playerIsInFront;
@@ -23,15 +25,12 @@ public class RetractingPlatformScript : MonoBehaviour {
         _backUpTimer = new CountdownTimer(backUpTime);
         _retractingTimer.OnComplete += Retract;
         _backUpTimer.OnComplete += BackUp;
-        
-        spriteRenderer.color = solidColor; //test
     }
 
     private void Retract() {
         boxCollider.enabled = false;
-        spriteRenderer.color = retractedColor; //test
+        animator.SetTrigger(Down);
         _retracted = true;
-        //do animation here hihihehe
         _backUpTimer.StartTimer();
     }
 
@@ -41,9 +40,8 @@ public class RetractingPlatformScript : MonoBehaviour {
             return;
         }
         boxCollider.enabled = true;
-        spriteRenderer.color = solidColor; //test
+        animator.SetTrigger(Up);
         _retracted = false;
-        //do animation here hihi
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
