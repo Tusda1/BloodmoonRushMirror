@@ -1,16 +1,24 @@
+using System.Collections;
 using Attributes;
+using Consensus;
 using UI.Settings;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 namespace UI {
     [RequireComponent(typeof(SettingsMenu))]
     public class PauseMenu : Singleton<PauseMenu> {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private UIDocument uiDocument;
+        
+        [SerializeField, Required] private SceneCollectionSO mainMenusSceneCollectionSO;
+        [SerializeField, Required] private AllInFavourConsensusSO playerCanMove;
+        [SerializeField, Required] private EventSystem eventSystem;
 
-        [SerializeField] private SceneCollectionSO mainMenusSceneCollectionSO;
-
+        #region ---PrivateFields---
         private VisualElement _root;
         private VisualElement _pauseMenuRoot;
         private VisualElement _settingsMenuRoot;
@@ -21,9 +29,12 @@ namespace UI {
         private Button _backButton;
 
         private bool _paused;
+
+        private readonly ScriptVotePair _currentVote = new();
+        #endregion
         #endregion
 
-        private void Start() {
+        private IEnumerator Start() {
             _root = uiDocument.rootVisualElement;
             _pauseMenuRoot = _root.Q<VisualElement>("PauseMenuRoot");
             _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
@@ -35,9 +46,15 @@ namespace UI {
 
             _resumeButton.clicked += ResumeGame;
             _settingsButton.clicked += SettingsButtonPressed;
-            _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollection(mainMenusSceneCollectionSO);
+            _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenusSceneCollectionSO);
             _backButton.clicked += BackButtonPressed;
+            
+            Assert.IsNotNull(eventSystem, "EventSystem reference is not set!");
 
+            yield return null;
+            yield return null;
+            yield return null;
+            
             ResumeGame();
         }
 
@@ -54,31 +71,38 @@ namespace UI {
         private void SettingsButtonPressed() {
             _pauseMenuRoot.AddToClassList("left");
             _pauseMenuRoot.enabledSelf = false;
-            _settingsMenuRoot.RemoveFromClassList("right");
             _settingsMenuRoot.enabledSelf = true;
+            _settingsMenuRoot.RemoveFromClassList("right");
         }
 
         private void BackButtonPressed() {
-            _pauseMenuRoot.RemoveFromClassList("left");
             _pauseMenuRoot.enabledSelf = true;
+            _pauseMenuRoot.RemoveFromClassList("left");
             _settingsMenuRoot.AddToClassList("right");
             _settingsMenuRoot.enabledSelf = false;
         }
 
+        [ContextMenu(nameof(PauseGame))]
         private void PauseGame() {
             Time.timeScale = 0;
             _paused = true;
 
             _root.style.display = DisplayStyle.Flex;
             _root.enabledSelf = true;
+            playerCanMove.ChangeVote(_currentVote, false);
+            
+            eventSystem.SetSelectedGameObject(gameObject);
+            _resumeButton.Focus();
         }
 
+        [ContextMenu(nameof(ResumeGame))]
         private void ResumeGame() {
             Time.timeScale = 1;
             _paused = false;
 
             _root.style.display = DisplayStyle.None;
             _root.enabledSelf = false;
+            playerCanMove.ChangeVote(_currentVote, true);
 
             BackButtonPressed();
         }

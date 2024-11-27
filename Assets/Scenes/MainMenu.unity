@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1144680748043829820}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &300045713
@@ -276,6 +276,10 @@ PrefabInstance:
       propertyPath: eventSystem
       value: 
       objectReference: {fileID: 300045710}
+    - target: {fileID: 1723220102761852235, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
+      propertyPath: m_PanelSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: b2f2771eade62f64b932fc82ce3134b2, type: 2}
     - target: {fileID: 2864453458472516519, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
       propertyPath: m_LocalPosition.x
       value: 33.29454
@@ -320,11 +324,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: MenuUI
       objectReference: {fileID: 0}
+    - target: {fileID: 3623942027125754274, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
+--- !u!1 &1144680748043829820 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3623942027125754274, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
+  m_PrefabInstance: {fileID: 1144680748043829819}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

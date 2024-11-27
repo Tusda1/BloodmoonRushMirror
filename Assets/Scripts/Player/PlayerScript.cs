@@ -83,7 +83,7 @@ namespace Player {
         private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
         #endregion
 
-        private ScriptVotePair _playerCanMoveVotePair;
+        private ScriptVotePair _playerCanMoveVotePair = new();
 
         public event Action OnRespawn = delegate { };
 
