@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using Attributes;
+using Player;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
 namespace UI.Settings {
@@ -10,36 +11,44 @@ namespace UI.Settings {
     public class SettingsMenu : MonoBehaviour {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
-        
-        [SerializeField] private InputActionReference tabNavigateAction;
-        
+
+        #region ---PrivateFields---
+        private PlayerScript _player;
+
+        private VisualElement _root;
         private VisualElement _settings;
-        private List<Tab> _tabs;
+        private readonly List<Tab> _tabs = new();
         private TabView _tabView;
         private int _tabIndex;
         #endregion
+        #endregion
 
         #region ---EventFunctions---
-        private void Start() {
+        private void Awake() {
+            _root = uiDocument.rootVisualElement;
+            _settings = _root.Q<VisualElement>("SettingsMenuRoot");
+            Assert.IsNotNull(_settings);
+            _settings.Query(classes: ".tab")
+                .Where(x => x is Tab)
+                .ForEach(x => _tabs.Add(x as Tab));
         }
 
-        private void OnEnable() {
-            tabNavigateAction.action.performed += ChangeTabIndex;
-        }
-        
-        private void OnDisable() {
-            tabNavigateAction.action.performed -= ChangeTabIndex;
+        private void Start() {
+            _player = ServiceLocator.Get<PlayerScript>();
+            _player.TabNavigation += ChangeTabIndex;
         }
         #endregion
-        
-        private void ChangeTabIndex(InputAction.CallbackContext obj) {
+
+        #region ---PrivateFunctions---
+        private void ChangeTabIndex(int change) {
             if (!_settings.enabledSelf) return;
-        
-            _tabIndex += (int)obj.ReadValue<float>();
-        
+
+            _tabIndex += change;
+
             _tabIndex = math.clamp(_tabIndex, 0, _tabs.Count - 1);
-        
+
             _tabView.activeTab = _tabs[_tabIndex];
         }
+        #endregion
     }
 }

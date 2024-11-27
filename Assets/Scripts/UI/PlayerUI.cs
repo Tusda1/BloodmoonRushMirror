@@ -1,3 +1,4 @@
+using System;
 using Attributes;
 using UI_Toolkit;
 using UnityEngine;
@@ -14,14 +15,17 @@ namespace Player {
         private Hearts _playerTempHeartBar;
         #endregion
 
-        private void Start() {
-            _player = ServiceLocator.Get<PlayerScript>();
-
+        private void Awake() {
             _root = uiDocument.rootVisualElement;
             _root.dataSource = _player;
 
             _playerHeartBar = _root.Q<Hearts>("PlayerHearts");
             _playerTempHeartBar = _root.Q<Hearts>("PlayerTempHearts");
+            
+        }
+
+        private void Start() {
+            _player = ServiceLocator.Get<PlayerScript>();
 
             _player.healthComponent.OnHealthChanged += health =>
                 OnHealthOnOnHealthChanged(health, _player.healthComponent.TempHealth);
