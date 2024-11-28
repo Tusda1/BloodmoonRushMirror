@@ -17,6 +17,7 @@ public class EnemyBase :  GravityObject, IDamageable
     private GameObject _rubyPrefab;
     private Material _whiteMaterial;
     private Material _defaultMaterial;
+    protected EnemyAnimationBase enemyAnimationBase;
 
     [SerializeField] private bool faceLeftOnStart;
     [SerializeField] protected float moveSpeed;
@@ -31,6 +32,13 @@ public class EnemyBase :  GravityObject, IDamageable
     
     protected LayerMask EnemyAndGroundLayerMask;
 
+    protected new void Awake()
+    {
+        base.Awake();
+        
+        enemyAnimationBase = GetComponent<EnemyAnimationBase>();
+    }
+    
     protected new void Start()
     {
         base.Start();
@@ -52,14 +60,24 @@ public class EnemyBase :  GravityObject, IDamageable
         StopAllCoroutines();
     }
 
+    protected new void Update()
+    {
+        base.Update();
+        
+        // Set the localscale of the enemy to face the direction it is moving
+        transform.localScale = new Vector3(-facingDirection.x, 1, 1);
+    }
+
     public void TakeDamage(DamageInstance damageInstance)
     {
+        print("taking damage");
         if (Time.time - _takeDamageTimer < invulnerableTime)
         {
             return;
         }
         _takeDamageTimer = Time.time;
-
+        
+        enemyAnimationBase.PlayHitAnimation();
         StartCoroutine(FlashWhite());
         
         // Play hit animation
@@ -100,6 +118,7 @@ public class EnemyBase :  GravityObject, IDamageable
         yield return new WaitUntil((() => isGrounded));
         isStunned = false;
         isVulnerable = false;
+        enemyAnimationBase.PlayDefaultAnimation();
     }
     
     private IEnumerator Knockback(Vector2 knockbackStrength)
@@ -128,15 +147,18 @@ public class EnemyBase :  GravityObject, IDamageable
         }
 
         isStunned = false;
+        enemyAnimationBase.PlayDefaultAnimation();
     }
 
     private void Die()
     {
         isDead = true;
-        // Play death animation
-        // Play death sound
-        DropRubies();
-        gameObject.SetActive(false);
+        
+        enemyAnimationBase.PlayDeathAnimation(() =>
+        {
+            DropRubies();
+            gameObject.SetActive(false);
+        });
     }
     
     private void DropRubies()

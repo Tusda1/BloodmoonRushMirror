@@ -5,12 +5,12 @@ public class SpitterEnemy : ReactiveBase
     [SerializeField] private float detectionDistance = 20f;
     [SerializeField] private float projectileSpeed = 10f;
     [SerializeField] private float projectileCooldown = 2f;
-    [SerializeField] private float cooldownTimer;
     
     private GameObject _projectilePrefab;
     private Transform _player;
     private SpitterAnimation _spitterAnimation;
     private bool _attacking;
+    private float cooldownTimer;
     
     private const float YOffset = 0.45f;
 
@@ -19,7 +19,7 @@ public class SpitterEnemy : ReactiveBase
         base.Start();
         
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile");
-        _spitterAnimation = GetComponent<SpitterAnimation>();
+        _spitterAnimation = enemyAnimationBase as SpitterAnimation;
     }
     
     protected override void Scan()
@@ -42,14 +42,17 @@ public class SpitterEnemy : ReactiveBase
             currentState = EnemyState.Scanning;
             return;
         }
-        
-        if (_attacking) return; // if already attacking, return
+
+        if (_spitterAnimation.isAttacking)
+        {
+            cooldownTimer = projectileCooldown;
+            return;
+        }
         
         // check if the cooldown has passed
         if (cooldownTimer <= 0)
         {
             Attack();
-            cooldownTimer = projectileCooldown;
         }
         else
         {
@@ -59,7 +62,6 @@ public class SpitterEnemy : ReactiveBase
 
     private void Attack()
     {
-        _attacking = true;
         _spitterAnimation.Attack(ShootProjectile);
     }
     
@@ -72,6 +74,5 @@ public class SpitterEnemy : ReactiveBase
         GameObject projectile = Instantiate(_projectilePrefab, spawnPosition, Quaternion.identity);
         projectile.GetComponent<Rigidbody2D>().linearVelocity = facingDirection * projectileSpeed;
         projectile.GetComponent<ProjectileDeflectable>().shooter = gameObject;
-        _attacking = false;
     }
 }

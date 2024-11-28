@@ -39,8 +39,10 @@ public class BetterRuby : GravityObject
         }
     }
 
-    private void Update()
+    private new void Update()
     {
+        base.Update();
+        
         switch (_state)
         {
             case RubyState.Falling:

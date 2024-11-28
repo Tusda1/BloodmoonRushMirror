@@ -206,7 +206,6 @@ MonoBehaviour:
   detectionDistance: 20
   projectileSpeed: 9
   projectileCooldown: 1.2
-  cooldownTimer: 0
 --- !u!114 &-518531707119575430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,9 +218,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0f5fc6712325b40b2156c5ae12a7f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathAnimation: {fileID: 0}
+  hitAnimation: {fileID: 2963219463598164401, guid: 8ce6ea38f429d2c4392c868725bf7f0a, type: 3}
   spitWindUp: {fileID: -625108043801040003, guid: 8ce6ea38f429d2c4392c868725bf7f0a, type: 3}
   spit: {fileID: 3246823104408817120, guid: 8ce6ea38f429d2c4392c868725bf7f0a, type: 3}
   idle: {fileID: -5252816984213320552, guid: 8ce6ea38f429d2c4392c868725bf7f0a, type: 3}
+  isAttacking: 0
 --- !u!50 &8960105064451551744
 Rigidbody2D:
   serializedVersion: 5
@@ -279,7 +281,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

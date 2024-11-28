@@ -3,36 +3,39 @@ using Animancer;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class SpitterAnimation : MonoBehaviour
+public class SpitterAnimation : EnemyAnimationBase
 {
     [SerializeField] private AnimationClip spitWindUp;
     [SerializeField] private AnimationClip spit;
     [SerializeField] private AnimationClip idle;
-    
-    private AnimancerComponent _animancerComponent;
-    
-    private void Awake()
-    {
-        _animancerComponent = GetComponent<AnimancerComponent>();
-    }
 
+    public bool isAttacking;
+    
     private void Start()
     {
-        _animancerComponent.Play(idle);
+        PlayDefaultAnimation();
+    }
+    
+    public override void PlayDefaultAnimation()
+    {
+        animancerComponent.Play(idle);
+        isAttacking = false;
     }
 
     public void Attack(Action followUpAction)
     {
-        var attackState = _animancerComponent.Play(spitWindUp);
+        isAttacking = true;
+        var attackState = animancerComponent.Play(spitWindUp);
         // When the animation ends play the spit animation
         attackState.Events(this).OnEnd = () =>
         {
             followUpAction?.Invoke();
-            attackState = _animancerComponent.Play(spit);
+            isAttacking = false;
+            attackState = animancerComponent.Play(spit);
             attackState.Events(this).OnEnd = () =>
             {
                 attackState.Events(this).OnEnd = null;
-                _animancerComponent.Play(idle);
+                PlayDefaultAnimation();
             };
         };
     }
