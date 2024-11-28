@@ -11,6 +11,7 @@ public class ActivatingBook : MonoBehaviour, IDamageable {
     private static readonly int Hit = Animator.StringToHash("Hit");
 
     #region ---Fields---
+
     [SerializeField] private List<GameObject> bookList = new List<GameObject>();
     [SerializeField] private float activationTime;
     private CountdownTimer _activationTimer;
@@ -29,12 +30,13 @@ public class ActivatingBook : MonoBehaviour, IDamageable {
             books.GetComponent<BookScript>().OpenThisBook();
         }
 
-        if (_activationTimer.IsRunning) {
-            _activationTimer.RestartTimer();
-        }
-        else {
+        if (!_activationTimer.IsRunning) {
             _activationTimer.StartTimer();
         }
+        else {
+            _activationTimer.RestartTimer();
+        }
+        
     }
 
     private void CloseBooks() {
