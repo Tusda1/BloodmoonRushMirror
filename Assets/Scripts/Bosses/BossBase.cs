@@ -19,6 +19,8 @@ public class BossBase : GravityObject
 
     [HideInInspector] public float gravity;
     [HideInInspector] public float targetVelocityX;
+    [HideInInspector] public bool bossGrounded;
+    [HideInInspector] public Collider2D bossCollider;
     
     protected new virtual void Awake()
     {
@@ -30,6 +32,9 @@ public class BossBase : GravityObject
     protected new virtual void Start()
     {
         base.Start();
+        bossCollider = GetComponent<Collider2D>();
+        gravity = GravityModifier;
+        
         StartCoroutine(LateActivation());
     }
 
@@ -44,5 +49,6 @@ public class BossBase : GravityObject
         base.Update();
         targetVelocity.x = targetVelocityX;
         GravityModifier = gravity;
+        bossGrounded = isGrounded;
     }
 }

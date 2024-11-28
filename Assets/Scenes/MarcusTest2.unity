@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 172654490}
   - component: {fileID: 172654491}
   - component: {fileID: 172654493}
+  - component: {fileID: 172654496}
   - component: {fileID: 172654492}
   m_Layer: 0
   m_Name: Dracula
@@ -461,11 +462,13 @@ MonoBehaviour:
   animancer: {fileID: 172654494}
   _stateMachine:
     _CurrentState: {fileID: 172654490}
-    _DefaultState: {fileID: 172654493}
+    _DefaultState: {fileID: 172654491}
   teleportEnter: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
   teleportExit: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
   gravity: 0
   targetVelocityX: 0
+  bossGrounded: 0
+  bossCollider: {fileID: 0}
 --- !u!114 &172654490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,7 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boss: {fileID: 172654489}
-  attackLength: 5
+  attackLength: 1
 --- !u!114 &172654492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,7 +525,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _boss: {fileID: 172654489}
   swoopDuration: 2
-  swoopStartTime: 0
   easePower: 6
 --- !u!114 &172654494
 MonoBehaviour:
@@ -561,6 +563,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &172654496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172654479}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0bce7a4f1ec4148be73d388aab0ae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _boss: {fileID: 172654489}
+  dashAmount: 5
+  dashSpeed: 20
+  dashCooldown: 1
 --- !u!1 &252259201
 GameObject:
   m_ObjectHideFlags: 0
@@ -574,7 +592,7 @@ GameObject:
   - component: {fileID: 252259204}
   m_Layer: 6
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -709,11 +727,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7
+      value: -5.76
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.41
+      value: 9.45
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.z

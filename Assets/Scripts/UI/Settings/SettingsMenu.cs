@@ -3,6 +3,7 @@ using Attributes;
 using Player;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
 namespace UI.Settings {
@@ -25,8 +26,9 @@ namespace UI.Settings {
         #region ---EventFunctions---
         private void Awake() {
             _root = uiDocument.rootVisualElement;
-            _settings = _root.Q<VisualElement>("Settings");
-            _settings.Query(className: "tab")
+            _settings = _root.Q<VisualElement>("SettingsMenuRoot");
+            Assert.IsNotNull(_settings);
+            _settings.Query(classes: ".tab")
                 .Where(x => x is Tab)
                 .ForEach(x => _tabs.Add(x as Tab));
         }

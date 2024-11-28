@@ -64,7 +64,7 @@ namespace UI {
         private void StartButtonClicked() {
             
             
-            _ = SceneCollectionManager.LoadSceneCollection(startSceneCollectionSO);
+            _ = SceneCollectionManager.LoadSceneCollectionAsync(startSceneCollectionSO);
         }
 
         private void SettingsButtonClicked() {

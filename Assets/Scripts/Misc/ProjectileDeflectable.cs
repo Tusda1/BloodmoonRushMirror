@@ -23,9 +23,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         rb2d = GetComponent<Rigidbody2D>();
         _velocityDirection = rb2d.linearVelocity.normalized;
         
-        var scale = transform.localScale;
-        scale.x *= rb2d.linearVelocity.x > 0 ? -1 : 1;
-        transform.localScale = scale;
+        transform.localScale = _velocityDirection.x > 0 ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
         
         _animancerComponent = GetComponent<AnimancerComponent>();
         _animancerComponent.Play(baseAnimation);

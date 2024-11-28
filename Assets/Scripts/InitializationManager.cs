@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
+using Attributes;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class InitializationManager : MonoBehaviour {
     #region ---Fields---
-    [SerializeField] private SceneCollectionSO startSceneCollectionSO;
+    [SerializeField, Required] private SceneCollectionSO thisSceneCollectionSO;
+    [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
     #endregion
 
     private void Start() {
@@ -13,8 +13,17 @@ public class InitializationManager : MonoBehaviour {
     }
 
     private async Task AwaitLoading() {
-        var scene = SceneManager.GetActiveScene();
-        await SceneCollectionManager.LoadSceneCollection(startSceneCollectionSO);
-        await SceneManager.UnloadSceneAsync(scene);
+        foreach (var sceneInstance in thisSceneCollectionSO.scenes) {
+            SceneCollectionManager.AddToActiveScenes(sceneInstance);
+        }
+        
+        await SceneCollectionManager.LoadSceneCollectionAsync(startSceneCollectionSO);
     }
+
+#if UNITY_EDITOR
+    [ContextMenu(nameof(DebugSceneCollection))]
+    public void DebugSceneCollection() {
+        Debug.Log(SceneCollectionManager.CurrentSceneCollectionSO != null);
+    }
+#endif
 }
