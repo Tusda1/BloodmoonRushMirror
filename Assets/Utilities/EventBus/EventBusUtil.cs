@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -29,8 +30,8 @@ namespace Utilities.EventBus {
             EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
-    
-        static void OnPlayModeStateChanged(PlayModeStateChange state) {
+
+        private static void OnPlayModeStateChanged(PlayModeStateChange state) {
             PlayModeState = state;
             if (state == PlayModeStateChange.ExitingPlayMode) {
                 ClearAllBuses();
@@ -49,28 +50,22 @@ namespace Utilities.EventBus {
         public static void Initialize() {
             EventTypes = PredefinedAssemblyUtil.GetTypes(typeof(IEvent));
             EventBusTypes = InitializeAllBuses();
+            
+            Debug.Log("Initialized EventBuses | count: " + EventBusTypes.Count);
         }
 
-        static List<Type> InitializeAllBuses() {
-            List<Type> eventBusTypes = new List<Type>();
-        
+        private static List<Type> InitializeAllBuses() {
             var typedef = typeof(EventBus<>);
-            foreach (var eventType in EventTypes) {
-                var busType = typedef.MakeGenericType(eventType);
-                eventBusTypes.Add(busType);
-                // Debug.Log($"Initialized EventBus<{eventType.Name}>");
-            }
-        
-            return eventBusTypes;
+
+            return EventTypes.Select(eventType => typedef.MakeGenericType(eventType)).ToList();
         }
 
         /// <summary>
         /// Clears (removes all listeners from) all event buses in the application.
         /// </summary>
-        public static void ClearAllBuses() {
-            // Debug.Log("Clearing all buses...");
-            for (int i = 0; i < EventBusTypes.Count; i++) {
-                var busType = EventBusTypes[i];
+        private static void ClearAllBuses() {
+            Debug.Log("Clearing all buses...");
+            foreach (var busType in EventBusTypes) {
                 var clearMethod = busType.GetMethod("Clear", BindingFlags.Static | BindingFlags.NonPublic);
                 clearMethod?.Invoke(null, null);
             }
