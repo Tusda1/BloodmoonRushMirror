@@ -33,7 +33,6 @@ namespace Unity.Behavior {
         private string _displayText;
 
         private static DialogueUI DialogueUI => DialogueUI.Instance;
-        private static FMODManager FMODManager => FMODManager.Instance;
 
         private DialogueCharacterSO.WhenIsSfxPlayed _whenIsSfxPlayed;
         #endregion
@@ -65,7 +64,8 @@ namespace Unity.Behavior {
                 ? dialogueCharacter.Value.dialogueColor
                 : dialogueColorOverride.Value;
 
-            DialogueUI.textSize = textSizeOverride.Value == 0 ? dialogueCharacter.Value.textSize : textSizeOverride.Value;
+            DialogueUI.textSize =
+                textSizeOverride.Value == 0 ? dialogueCharacter.Value.textSize : textSizeOverride.Value;
 
             DialogueUI.dialogueText = "";
 
@@ -84,7 +84,7 @@ namespace Unity.Behavior {
                 DialogueCharacterSO.WhenIsSfxPlayed.Nowhere ||
                 (_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerWord) !=
                 DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
-                FMODManager.PlayOneShot(dialogueCharacter.Value.textAudioSoundEventPath);
+                PlayTextAudio();
             }
 
             return Status.Running;
@@ -119,7 +119,7 @@ namespace Unity.Behavior {
                         _currentCharIndex++;
                         if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerWord) !=
                             DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
-                            FMODManager.PlaySfx(dialogueCharacter.Value.textAudioSoundEventPath);
+                            PlayTextAudio();
                         }
                     }
                 }
@@ -132,7 +132,7 @@ namespace Unity.Behavior {
 
                 if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerCharacter) !=
                     DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
-                    FMODManager.PlaySfx(dialogueCharacter.Value.textAudioSoundEventPath);
+                    PlayTextAudio();
                 }
 
                 if (_currentCharIndex >= _displayText.Length) {
@@ -150,6 +150,10 @@ namespace Unity.Behavior {
 
         private void Skip() {
             _skipped = true;
+        }
+
+        private void PlayTextAudio() {
+            FMODManager.RaiseSFXEvent(dialogueCharacter.Value.textAudioSoundEventPath);
         }
     }
 }

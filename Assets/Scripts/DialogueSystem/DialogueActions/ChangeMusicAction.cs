@@ -12,11 +12,9 @@ namespace Unity.Behavior {
         id: "f9a0355a2faa61db84e8afde6179d44e")]
     public class ChangeMusicAction : Action {
         [SerializeReference] public BlackboardVariable<string> path;
-        
-        private static FMODManager FMODManager => FMODManager.Instance;
 
         protected override Status OnStart() {
-            FMODManager.PlayMusic(path.Value);
+            FMODManager.RaiseMusicEvent(path.Value);
             
             return Status.Success;
         }

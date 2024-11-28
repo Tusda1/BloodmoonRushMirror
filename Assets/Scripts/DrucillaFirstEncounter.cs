@@ -12,8 +12,6 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
     [SerializeField] private Animator floorAnimator;
     [SerializeField] private AnimationClip floorAnimation;
 
-    private static FMODManager FMODManager => FMODManager.Instance;
-
     private Animator _animator;
     #endregion
 
@@ -38,7 +36,7 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
     }
 
     public void PlayShotSfx() {
-        FMODManager.PlaySfx("Misc/Spell_blast");
+        FMODManager.RaiseMusicEvent("Misc/Spell_blast");
     }
 
     public void BreakFloor() {

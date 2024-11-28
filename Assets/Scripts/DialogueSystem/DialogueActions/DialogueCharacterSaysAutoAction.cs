@@ -30,7 +30,6 @@ namespace Unity.Behavior {
 
         private string _displayText;
         private static DialogueUI DialogueUI => DialogueUI.Instance;
-        private static FMODManager FMODManager => FMODManager.Instance;
         private DialogueCharacterSO DialogueCharacterSO => dialogueCharacter.Value;
 
         private DialogueCharacterSO.WhenIsSfxPlayed _whenIsSfxPlayed;
@@ -77,7 +76,7 @@ namespace Unity.Behavior {
                 DialogueCharacterSO.WhenIsSfxPlayed.Nowhere ||
                 (_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerWord) !=
                 DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
-                FMODManager.PlayOneShot(DialogueCharacterSO.textAudioSoundEventPath);
+                PlayTextAudio();
             }
 
             return Status.Running;
@@ -95,7 +94,7 @@ namespace Unity.Behavior {
                         _currentCharIndex++;
                         if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerWord) !=
                             DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
-                            FMODManager.PlaySfx(DialogueCharacterSO.textAudioSoundEventPath);
+                            PlayTextAudio();
                         }
                     }
                 }
@@ -108,7 +107,7 @@ namespace Unity.Behavior {
 
                 if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.PerCharacter) !=
                     DialogueCharacterSO.WhenIsSfxPlayed.Nowhere) {
-                    FMODManager.PlaySfx(DialogueCharacterSO.textAudioSoundEventPath);
+                    PlayTextAudio();
                 }
 
                 if (_currentCharIndex >= _displayText.Length) {
@@ -118,6 +117,10 @@ namespace Unity.Behavior {
             }
 
             return Status.Running;
+        }
+
+        private void PlayTextAudio() {
+            FMODManager.RaiseSFXEvent(dialogueCharacter.Value.textAudioSoundEventPath);
         }
     }
 }

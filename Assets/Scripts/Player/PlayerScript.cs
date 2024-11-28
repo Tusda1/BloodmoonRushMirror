@@ -78,7 +78,6 @@ namespace Player {
         #endregion
 
         #region ***---GameManagers---***
-        private static FMODManager FMODManager => FMODManager.Instance;
         private static PauseMenu PauseMenu => PauseMenu.Instance;
         private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
         #endregion
@@ -164,8 +163,8 @@ namespace Player {
         private void Attack() {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
-
-            FMODManager.PlaySfx("Player/Player_slash");
+            
+            FMODManager.RaiseSFXEvent("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -176,7 +175,7 @@ namespace Player {
             debugLogger.Log("DuckAttack");
 
             animator.SetTrigger(AnimatorDuckAttackTrigger);
-            FMODManager.PlaySfx("Player/Player_slash");
+            FMODManager.RaiseSFXEvent("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -209,8 +208,8 @@ namespace Player {
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
-            FMODManager.StopAllSound();
-            FMODManager.PlaySfx("Player/Player_death");
+            FMODManager.RaiseStopSoundEvent(StopSoundType.All);
+            FMODManager.RaiseSFXEvent("Player/Player_death");
 
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");

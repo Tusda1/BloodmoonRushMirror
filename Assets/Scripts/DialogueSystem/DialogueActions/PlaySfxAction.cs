@@ -12,11 +12,9 @@ namespace Unity.Behavior {
         id: "a7c30756d907cc458e2475160bdbb3ef")]
     public class PlaySfxAction : Action {
         [SerializeReference] public BlackboardVariable<string> sfxName;
-        
-        private static FMODManager FMODManager => FMODManager.Instance;
 
         protected override Status OnStart() {
-            FMODManager.PlaySfx(sfxName.Value);
+            FMODManager.RaiseSFXEvent(sfxName.Value);
 
             return Status.Success;
         }

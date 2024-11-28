@@ -6,8 +6,6 @@ public class CheckpointData : MonoBehaviour {
     private PlayerScript _playerScript;
     private Vector2 _playerRespawnPos;
     [HideInInspector] public CombatCheckpoint[] combatCheckpoints;
-    
-    private static FMODManager FMODManager => FMODManager.Instance;
 
     public void Initialize() {
         _playerScript = ServiceLocator.Get<PlayerScript>();
@@ -25,7 +23,7 @@ public class CheckpointData : MonoBehaviour {
     }
 
     private void Respawn() {
-        FMODManager.PlaySfx("Player/SpawnPlayer");
+        FMODManager.RaiseMusicEvent("Player/SpawnPlayer");
         _playerScript.gameObject.transform.position = _playerRespawnPos;
     }
 }

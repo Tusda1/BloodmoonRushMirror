@@ -26,8 +26,6 @@ namespace Bat {
         [SerializeField] private string takeDamageSfx = "Misc/Generic_impact";
 
         [HideInInspector] public BatSpawner batSpawner;
-
-        private static FMODManager FMODManager => FMODManager.Instance;
         #endregion
 
         private void OnEnable() {
@@ -74,7 +72,7 @@ namespace Bat {
             if (currentHealth == 0) return;
             damageInstance.TriggerOnHitAction();
 
-            FMODManager.PlaySfx(takeDamageSfx);
+            FMODManager.RaiseMusicEvent(takeDamageSfx);
             currentHealth -= damageInstance.damage;
             if (currentHealth > 0) return;
             damageInstance.TriggerOnKillAction();
