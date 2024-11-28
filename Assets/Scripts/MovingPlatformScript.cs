@@ -8,6 +8,7 @@ public class MovingPlatformScript : GravityObject {
     [SerializeField] private GameObject start;
     [SerializeField] private GameObject end;
     [SerializeField] private float searchRadius;
+    [SerializeField] private bool goesBackwards;
     private GravityObjectPlayerMovement _playerMovement;
     private bool _playerIsOnPlatform;
     private Vector2 _velocity = Vector2.zero;
@@ -23,8 +24,14 @@ public class MovingPlatformScript : GravityObject {
 
     private void Start()
     {
-        _startPosition = start.transform.position;
-        _endPosition = end.transform.position;
+        if (goesBackwards) {
+            _startPosition = end.transform.position;
+            _endPosition = start.transform.position;
+        }
+        else {
+            _startPosition = start.transform.position;
+            _endPosition = end.transform.position;
+        }
         transform.position = _startPosition;
         start.SetActive(false);
         end.SetActive(false);

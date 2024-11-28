@@ -11,6 +11,8 @@ public class ActivatingBookEditor : Editor {
         ActivatingBook book = (ActivatingBook)target;
         if (GUILayout.Button("Add Book")) book.AddBook();
         if (GUILayout.Button("Remove Book")) book.RemoveBook();
+        
+        EditorUtility.SetDirty(target);
     }
     
 }
