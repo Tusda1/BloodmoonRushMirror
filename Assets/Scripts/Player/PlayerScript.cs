@@ -119,6 +119,7 @@ namespace Player {
 
         private void OnDestroy() {
             ServiceLocator.Unregister<PlayerScript>();
+            playerCanMove.Clear();
         }
 
         #region ***---InputActions---***

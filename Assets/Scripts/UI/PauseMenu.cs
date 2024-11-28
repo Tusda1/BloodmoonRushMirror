@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using Attributes;
 using Consensus;
 using UI.Settings;
@@ -8,7 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 namespace UI {
-    [RequireComponent(typeof(SettingsMenu))]
+    [RequireComponent(typeof(SettingsMenu), typeof(UITK_WorldSpaceInteractive))]
     public class PauseMenu : Singleton<PauseMenu> {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector]
@@ -18,7 +19,7 @@ namespace UI {
         [SerializeField, Required] private AllInFavourConsensusSO playerCanMove;
         [SerializeField, Required] private EventSystem eventSystem;
 
-        #region ---PrivateFields---
+        #region ***---PrivateFields---***
         private VisualElement _root;
         private VisualElement _pauseMenuRoot;
         private VisualElement _settingsMenuRoot;
@@ -48,6 +49,8 @@ namespace UI {
             _settingsButton.clicked += SettingsButtonPressed;
             _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenusSceneCollectionSO);
             _backButton.clicked += BackButtonPressed;
+            
+            eventSystem ??= FindObjectsByType<EventSystem>(FindObjectsSortMode.None).First();
             
             Assert.IsNotNull(eventSystem, "EventSystem reference is not set!");
 
