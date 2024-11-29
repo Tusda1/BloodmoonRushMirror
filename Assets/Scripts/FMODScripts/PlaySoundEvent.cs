@@ -3,23 +3,21 @@ using UnityEngine;
 using Utilities.EventBus;
 
 namespace FMODScripts {
-    public class PlaySoundEvent : IEvent {
+    public struct PlaySoundEvent : IEvent {
         public SoundType SoundType;
-        public GameObject SoundObject;
-        
-        public string SoundPath {
-            get {
-                return SoundType switch {
-                    SoundType.SFX => FMODManager.SFXPath + _soundPath,
-                    SoundType.Music => FMODManager.MusicPath + _soundPath,
-                    _ => throw new ArgumentOutOfRangeException(nameof(SoundType), SoundType, null)
-                };
-            }
-            
-            set => _soundPath = value;
+        public readonly GameObject SoundObject;
+
+        public readonly string SoundPath;
+
+        public PlaySoundEvent(SoundType soundType, string soundPath, GameObject soundObject = null) {
+            SoundType = soundType;
+            SoundPath = SoundType switch {
+                SoundType.SFX => FMODManager.SFXPath + soundPath,
+                SoundType.Music => FMODManager.MusicPath + soundPath,
+                _ => throw new ArgumentOutOfRangeException(nameof(SoundType), SoundType, null)
+            };
+            SoundObject = soundObject;
         }
-        
-        private string _soundPath;
     }
 
     public enum SoundType { SFX, Music }

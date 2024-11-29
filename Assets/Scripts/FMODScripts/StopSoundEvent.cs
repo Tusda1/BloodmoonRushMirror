@@ -1,8 +1,12 @@
 ﻿using Utilities.EventBus;
 
 namespace FMODScripts {
-    public class StopSoundEvent : IEvent {
-        public StopSoundType SoundType;
+    public struct StopSoundEvent : IEvent {
+        public readonly StopSoundType SoundType;
+
+        public StopSoundEvent(StopSoundType soundType) {
+            SoundType = soundType;
+        }
     }
 
     public enum StopSoundType { Music, All }

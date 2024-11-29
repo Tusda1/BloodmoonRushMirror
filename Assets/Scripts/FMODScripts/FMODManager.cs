@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Attributes;
 using FMOD.Studio;
 using FMODUnity;
@@ -27,16 +28,12 @@ namespace FMODScripts {
 
         #region ***---EventBus---***
         private EventBinding<SetVolumeEvent> _setVolumeEventBinding;
-        private static readonly SetVolumeEvent SetVolumeEvent = new();
         
         private EventBinding<PlaySoundEvent> _playSoundEventBinding;
-        private static readonly PlaySoundEvent PlaySoundEvent = new();
         
         private EventBinding<SetParameterEvent> _setParameterEventBinding;
-        private static readonly SetParameterEvent SetParameterEvent = new();
         
         private EventBinding<StopSoundEvent> _stopSoundEventBinding;
-        private static readonly StopSoundEvent StopSoundEvent = new();
         #endregion
         #endregion
 
@@ -79,23 +76,15 @@ namespace FMODScripts {
 
         #region ***---RaiseEvents---***
         public static void RaiseSetVolumeEvent(VolumeChanel volumeChanel, float volume) {
-            SetVolumeEvent.VolumeChanel = volumeChanel;
-            SetVolumeEvent.Volume = volume;
-            EventBus<SetVolumeEvent>.Raise(SetVolumeEvent);
+            EventBus<SetVolumeEvent>.Raise(new SetVolumeEvent(volumeChanel, volume));
         }
 
         public static void RaiseSFXEvent(string soundName, GameObject soundObject = null) {
-            PlaySoundEvent.SoundType = SoundType.SFX;
-            PlaySoundEvent.SoundPath = soundName;
-            PlaySoundEvent.SoundObject = soundObject;
-            EventBus<PlaySoundEvent>.Raise(PlaySoundEvent);
+            EventBus<PlaySoundEvent>.Raise(new PlaySoundEvent(SoundType.SFX, soundName, soundObject));
         }
         
         public static void RaiseMusicEvent(string soundName, GameObject soundObject = null) {
-            PlaySoundEvent.SoundType = SoundType.Music;
-            PlaySoundEvent.SoundPath = soundName;
-            PlaySoundEvent.SoundObject = null;
-            EventBus<PlaySoundEvent>.Raise(PlaySoundEvent);
+            EventBus<PlaySoundEvent>.Raise(new PlaySoundEvent(SoundType.Music, soundName, soundObject));
         }
         
         public static void RaiseMusicEvent(string soundName, string parameter, float value, bool ignoreSeekSpeed = false) {
@@ -107,16 +96,11 @@ namespace FMODScripts {
         }
 
         public static void RaiseSetParameterEvent(string parameter, float value, bool ignoreSeekSpeed = false) {
-            SetParameterEvent.Parameter = parameter;
-            SetParameterEvent.Value = value;
-            SetParameterEvent.IgnoreSeekSpeed = ignoreSeekSpeed;
-            
-            EventBus<SetParameterEvent>.Raise(SetParameterEvent);
+            EventBus<SetParameterEvent>.Raise(new SetParameterEvent(parameter, value, ignoreSeekSpeed));
         }
 
         public static void RaiseStopSoundEvent(StopSoundType soundType) {
-            StopSoundEvent.SoundType = soundType;
-            EventBus<StopSoundEvent>.Raise(StopSoundEvent);
+            EventBus<StopSoundEvent>.Raise(new StopSoundEvent(soundType));
         }
         #endregion
         #endregion
@@ -139,8 +123,6 @@ namespace FMODScripts {
         }
 
         private void SetMasterVolume(float volume) {
-            volume = Mathf.Clamp01(volume);
-
             _masterBus.setVolume(volume);
             PlayerPrefs.SetFloat("MasterVolume", volume);
 
@@ -148,8 +130,6 @@ namespace FMODScripts {
         }
 
         private void SetSfxVolume(float volume) {
-            volume = Mathf.Clamp01(volume);
-
             _sfxBus.setVolume(volume);
             PlayerPrefs.SetFloat("SFXVolume", volume);
 
@@ -157,8 +137,6 @@ namespace FMODScripts {
         }
 
         private void SetMusicVolume(float volume) {
-            volume = Mathf.Clamp01(volume);
-
             _musicBus.setVolume(volume);
             PlayerPrefs.SetFloat("MusicVolume", volume);
 
