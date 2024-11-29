@@ -147,11 +147,13 @@ namespace FMODScripts {
         #region ---PlaySound---
         private void HandlePlaySound(PlaySoundEvent playSoundEvent) {
             switch (playSoundEvent.SoundType) {
-                case SoundType.SFX when playSoundEvent.SoundObject != null:
-                    PlayOneShot(playSoundEvent.SoundPath, playSoundEvent.SoundObject);
-                    break;
+                case SoundType.None:
                 case SoundType.SFX:
-                    PlayOneShot(playSoundEvent.SoundPath);
+                    if (playSoundEvent.SoundObject != null) {
+                        PlayOneShotAttached(playSoundEvent.SoundPath, playSoundEvent.SoundObject);
+                    } else {
+                        PlayOneShot(playSoundEvent.SoundPath);
+                    }
                     break;
                 case SoundType.Music:
                     PlayMusic(playSoundEvent.SoundPath);
@@ -161,7 +163,7 @@ namespace FMODScripts {
             }
         }
 
-        private void PlayOneShot(string path, GameObject emitter) {
+        private void PlayOneShotAttached(string path, GameObject emitter) {
             if (CheckIfStringIsEmpty(path)) return;
 
             RuntimeManager.PlayOneShotAttached(path, emitter);

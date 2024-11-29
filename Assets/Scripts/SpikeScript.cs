@@ -1,21 +1,24 @@
-using System;
-using Attributes;
 using Player;
 using UnityEngine;
 
-public class SpikeScript : MonoBehaviour
-{
-    [SerializeField] private CompositeCollider2D spikeCollider;
-    [SerializeField] private DamageInstance spikeDamageInstance;
+public class SpikeScript : MonoBehaviour {
+    [SerializeField] private DamageInstance damageInstance = new();
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            //var playerScript = other.gameObject.GetComponent<PlayerScript>();
-            //playerScript.TakeDamage(spikeDamageInstance);
-            var gravityObjectPlayerMovement = other.gameObject.GetComponent<GravityObjectPlayerMovement>();
-            gravityObjectPlayerMovement.SpikeReset();
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (!other.transform.TryGetComponent<IDamageable>(out var damageable)) return;
+        
+        switch (damageable) {
+            case PlayerScript playerScript:
+#if UNITY_EDITOR
+                damageInstance.damage = 0;
+#endif
+                playerScript.TakeDamage(damageInstance);
+                playerScript.playerMovement.SpikeReset();
+                break;
+            case EnemyBase enemyBase:
+                damageInstance.damage = 99;
+                enemyBase.TakeDamage(damageInstance);
+                break;
         }
     }
 }

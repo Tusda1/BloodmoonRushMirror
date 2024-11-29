@@ -300,6 +300,7 @@ MonoBehaviour:
     knockback: {x: 30, y: 10}
     knockbackStrength: 100
     staggerStrength: 1
+    ignoreInvincibility: 0
 --- !u!1101 &-5804649138356080282
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -393,6 +394,7 @@ MonoBehaviour:
     knockback: {x: 30, y: 10}
     knockbackStrength: 150
     staggerStrength: 0
+    ignoreInvincibility: 0
 --- !u!1101 &-5509791377348258617
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -493,7 +495,7 @@ AnimatorState:
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
   m_Mirror: 0
-  m_SpeedParameterActive: 1
+  m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
@@ -702,7 +704,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerController
+  m_Name: Player
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: XMovement
@@ -1052,6 +1054,7 @@ MonoBehaviour:
     knockback: {x: 10, y: 50}
     knockbackStrength: 100
     staggerStrength: 2
+    ignoreInvincibility: 0
 --- !u!1101 &3106722316439285380
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1402,7 +1405,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -6239216113759591374, guid: 69f18a3a43ec9a2478054f477ebb50c9, type: 3}
+  m_Motion: {fileID: 7106672821980029601, guid: 69f18a3a43ec9a2478054f477ebb50c9, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1438,7 +1441,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0
+  m_ExitTime: 1
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
