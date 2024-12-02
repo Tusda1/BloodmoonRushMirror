@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Pathfinding;
 
+[RequireComponent(typeof(Seeker))]
 public class ChaseEnemy : ReactiveBase
 {
     [SerializeField] private float agroDistance = 2f;
@@ -18,7 +19,7 @@ public class ChaseEnemy : ReactiveBase
     private Seeker _seeker;
     private bool _isAttacking;
 
-    private new void Start()
+    protected override void Start()
     {
         base.Start();
 

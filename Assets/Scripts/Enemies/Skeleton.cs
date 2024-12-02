@@ -41,6 +41,6 @@ public class Skeleton : ReactiveBase
         facingDirection = (_agroOject.position.x > transform.position.x) ? Vector2.right : Vector2.left;
         
         // Smoothly move towards the target
-        smoothDampScript.SmoothDamp(facingDirection, moveSpeed, ref targetVelocity);
+        smoothDampScript.SmoothDampFloat(facingDirection, moveSpeed, ref targetVelocity);
     }
 }

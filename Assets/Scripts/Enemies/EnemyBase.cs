@@ -40,7 +40,7 @@ public class EnemyBase :  GravityObject, IDamageable
         enemyAnimationBase = GetComponent<EnemyAnimationBase>();
     }
     
-    protected new void Start()
+    protected override void Start()
     {
         base.Start();
         
@@ -151,7 +151,7 @@ public class EnemyBase :  GravityObject, IDamageable
         while (!isGrounded)
         {
             // Smoothly come to a stop from knockback
-            knockbackSmoothDampScript.SmoothDamp(knockbackVelocity.normalized, 0f, ref smoothedVelocity);
+            knockbackSmoothDampScript.SmoothDampFloat(knockbackVelocity.normalized, 0f, ref smoothedVelocity);
             targetVelocity = smoothedVelocity;
             yield return null;
         }

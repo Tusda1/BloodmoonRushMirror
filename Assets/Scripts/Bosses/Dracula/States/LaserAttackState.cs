@@ -6,6 +6,7 @@ public class LaserAttackState : DraculaState
 {
     [SerializeField] private float trackingTime;
     [SerializeField] private float waitingTime;
+    [SerializeField] private float firingTime;
     
     private Teleport _teleport;
     private Vector2 _teleportDestination;
@@ -17,6 +18,8 @@ public class LaserAttackState : DraculaState
     private LineRenderer _lineRenderer;
     private float waitingTimer;
     private GameObject _laserPrefab;
+    private float _firingTimer;
+    private GameObject _laserObject;
     
     private enum LaserAttackStage
     {
@@ -74,8 +77,10 @@ public class LaserAttackState : DraculaState
                 Tracking();
                 break;
             case LaserAttackStage.Waiting:
+                WaitBeforeFire();
                 break;
             case LaserAttackStage.Firing:
+                Fire();
                 break;
         }
     }
@@ -119,7 +124,15 @@ public class LaserAttackState : DraculaState
     
     private void Fire()
     {
-        // Fire laser
-        GameObject laser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+        if (_laserObject == null)
+        {
+            _laserObject = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+        }
+        
+        _firingTimer += Time.deltaTime;
+        if (_firingTimer >= firingTime)
+        {
+            StateFinished = true;
+        }
     }
 }

@@ -67,7 +67,7 @@ public class PingPongState : DraculaState
     
     public void Update()
     {
-        switch ((PingPong)_pingPongHitCount)
+        switch (_pingPongState)
         {
             case PingPong.Teleport:
                 if (_teleport.IsTeleporting) _teleport.TeleportToLocation(_teleportPosition);
