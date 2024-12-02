@@ -8,14 +8,8 @@ namespace Triggers {
         [SerializeField] private int musicStage;
         #endregion
 
-        private static FMODManager FMODManager => FMODManager.Instance;
-
         public override void TriggeredAction() {
-            if (!FMODManager.IsMusicPlaying()) {
-                FMODManager.PlayMusic(musicName);
-            }
-
-            FMODManager.SetParameterValue("levelMusicProgression", musicStage);
+            FMODManager.RaiseMusicEvent(musicName, "levelMusicProgression", musicStage);
         }
     }
 }

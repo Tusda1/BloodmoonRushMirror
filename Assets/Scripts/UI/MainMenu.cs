@@ -57,8 +57,8 @@ namespace UI {
         }
 
         private void Start() {
-            FMODManager.SetParameterValue("levelMusicProgression", 0);
-            FMODManager.PlayMusic("event:/Music/Music_level1");
+            FMODManager.RaiseSetParameterEvent("levelMusicProgression", 0);
+            FMODManager.RaiseMusicEvent("Music_level1");
         }
 
         private void StartButtonClicked() {

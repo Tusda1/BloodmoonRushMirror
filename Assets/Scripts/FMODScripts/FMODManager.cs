@@ -1,14 +1,16 @@
+using System;
 using System.Collections;
-using System.Runtime.InteropServices;
 using Attributes;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
+using Utilities.EventBus;
 
 namespace FMODScripts {
     public class FMODManager : Singleton<FMODManager> {
-        [Header("DebugLogger")] 
-        [SerializeField, Required] private DebugLoggerSO debugLogger;
+        #region ---Fields---
+        [Header("DebugLogger")] [SerializeField, Required]
+        private DebugLoggerSO debugLogger;
 
         public static float MasterVolume => PlayerPrefs.GetFloat("MasterVolume");
         public static float MusicVolume => PlayerPrefs.GetFloat("SFXVolume");
@@ -20,9 +22,21 @@ namespace FMODScripts {
         private Bus _masterBus;
 
         private static string BusPath => "bus:/";
-        private static string SfxPath => "event:/Sfx/";
-        private static string MusicPath => "event:/Music/";
+        public static string SFXPath => "event:/Sfx/";
+        public static string MusicPath => "event:/Music/";
 
+        #region ***---EventBus---***
+        private EventBinding<SetVolumeEvent> _setVolumeEventBinding;
+
+        private EventBinding<PlaySoundEvent> _playSoundEventBinding;
+
+        private EventBinding<SetParameterEvent> _setParameterEventBinding;
+
+        private EventBinding<StopSoundEvent> _stopSoundEventBinding;
+        #endregion
+        #endregion
+
+        #region ---EventFunctions---
         private IEnumerator Start() {
             debugLogger.Log("Initializing");
 
@@ -37,36 +51,119 @@ namespace FMODScripts {
                 debugLogger.Log("Busses are not valid");
             }
         }
+        #endregion
 
-        #region ---PublicFunctions---
-        public void SetMasterVolume(float volume) {
-            volume = Mathf.Clamp01(volume);
+        #region ---EventBus---
+        private void OnEnable() {
+            _setVolumeEventBinding = new EventBinding<SetVolumeEvent>(HandleSetVolume);
+            _setParameterEventBinding = new EventBinding<SetParameterEvent>(HandleSetParameterValue);
+            _playSoundEventBinding = new EventBinding<PlaySoundEvent>(HandlePlaySound);
+            _stopSoundEventBinding = new EventBinding<StopSoundEvent>(HandleStopSound);
 
+            EventBus<SetVolumeEvent>.Register(_setVolumeEventBinding);
+            EventBus<SetParameterEvent>.Register(_setParameterEventBinding);
+            EventBus<PlaySoundEvent>.Register(_playSoundEventBinding);
+            EventBus<StopSoundEvent>.Register(_stopSoundEventBinding);
+        }
+
+        private void OnDisable() {
+            EventBus<SetVolumeEvent>.Deregister(_setVolumeEventBinding);
+            EventBus<SetParameterEvent>.Deregister(_setParameterEventBinding);
+            EventBus<PlaySoundEvent>.Deregister(_playSoundEventBinding);
+            EventBus<StopSoundEvent>.Deregister(_stopSoundEventBinding);
+        }
+
+        #region ***---RaiseEvents---***
+        public static void RaiseSetVolumeEvent(VolumeChanel volumeChanel, float volume) {
+            EventBus<SetVolumeEvent>.Raise(new SetVolumeEvent(volumeChanel, volume));
+        }
+
+        public static void RaiseSFXEvent(string soundName, GameObject soundObject = null) {
+            EventBus<PlaySoundEvent>.Raise(new PlaySoundEvent(SoundType.SFX, soundName, soundObject));
+        }
+
+        public static void RaiseMusicEvent(string soundName, GameObject soundObject = null) {
+            EventBus<PlaySoundEvent>.Raise(new PlaySoundEvent(SoundType.Music, soundName, soundObject));
+        }
+
+        public static void RaiseMusicEvent(string soundName, string parameter, float value,
+            bool ignoreSeekSpeed = false) {
+            if (Instance == null || !Instance.IsMusicPlaying()) {
+                RaiseMusicEvent(soundName);
+            }
+
+            RaiseSetParameterEvent(parameter, value);
+        }
+
+        public static void RaiseSetParameterEvent(string parameter, float value, bool ignoreSeekSpeed = false) {
+            EventBus<SetParameterEvent>.Raise(new SetParameterEvent(parameter, value, ignoreSeekSpeed));
+        }
+
+        public static void RaiseStopSoundEvent(StopSoundType soundType) {
+            EventBus<StopSoundEvent>.Raise(new StopSoundEvent(soundType));
+        }
+        #endregion
+        #endregion
+
+        #region ---SetVolume---
+        private void HandleSetVolume(SetVolumeEvent setVolumeEvent) {
+            switch (setVolumeEvent.VolumeChanel) {
+                case VolumeChanel.Master:
+                    SetMasterVolume(setVolumeEvent.Volume);
+                    break;
+                case VolumeChanel.SFX:
+                    SetSfxVolume(setVolumeEvent.Volume);
+                    break;
+                case VolumeChanel.Music:
+                    SetMusicVolume(setVolumeEvent.Volume);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void SetMasterVolume(float volume) {
             _masterBus.setVolume(volume);
             PlayerPrefs.SetFloat("MasterVolume", volume);
 
             debugLogger.Log("Master volume set to: " + volume);
         }
 
-        public void SetSfxVolume(float volume) {
-            volume = Mathf.Clamp01(volume);
-
+        private void SetSfxVolume(float volume) {
             _sfxBus.setVolume(volume);
             PlayerPrefs.SetFloat("SFXVolume", volume);
 
             debugLogger.Log("SFX volume set to: " + volume);
         }
 
-        public void SetMusicVolume(float volume) {
-            volume = Mathf.Clamp01(volume);
-
+        private void SetMusicVolume(float volume) {
             _musicBus.setVolume(volume);
             PlayerPrefs.SetFloat("MusicVolume", volume);
 
             debugLogger.Log("Music volume set to: " + volume);
         }
+        #endregion
 
-        public void PlayOneShotAttached(string path, GameObject emitter) {
+        #region ---PlaySound---
+        private void HandlePlaySound(PlaySoundEvent playSoundEvent) {
+            switch (playSoundEvent.SoundType) {
+                case SoundType.None:
+                case SoundType.SFX:
+                    if (playSoundEvent.SoundObject != null) {
+                        PlayOneShotAttached(playSoundEvent.SoundPath, playSoundEvent.SoundObject);
+                    } else {
+                        PlayOneShot(playSoundEvent.SoundPath);
+                    }
+                    break;
+                case SoundType.Music:
+                    PlayMusic(playSoundEvent.SoundPath);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void PlayOneShotAttached(string path, GameObject emitter) {
             if (CheckIfStringIsEmpty(path)) return;
 
             RuntimeManager.PlayOneShotAttached(path, emitter);
@@ -74,7 +171,7 @@ namespace FMODScripts {
             debugLogger.Log($"Playing one shot attached to {emitter.name}");
         }
 
-        public void PlayOneShot(string path) {
+        private void PlayOneShot(string path) {
             if (CheckIfStringIsEmpty(path)) return;
 
             RuntimeManager.PlayOneShot(path);
@@ -82,15 +179,7 @@ namespace FMODScripts {
             debugLogger.Log("Playing one shot global");
         }
 
-        public void PlaySfx(string sfx) {
-            PlayOneShot(SfxPath + sfx);
-        }
-
-        public void PlaySfx(string sfx, GameObject emitter) {
-            PlayOneShotAttached(SfxPath + sfx, emitter);
-        }
-
-        public void PlayMusic(string path) {
+        private void PlayMusic(string path) {
             if (CheckIfStringIsEmpty(path)) return;
 
             _currentMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
@@ -99,35 +188,56 @@ namespace FMODScripts {
 
             debugLogger.Log("Playing new music");
         }
+        #endregion
 
-        public void SetParameterValue(string parameter, float value, [Optional] bool ignoreSeekSpeed) {
+        #region ---SetParameter---
+        private void HandleSetParameterValue(SetParameterEvent setParameterEvent) {
+            SetParameterValue(setParameterEvent.Parameter, setParameterEvent.Value, setParameterEvent.IgnoreSeekSpeed);
+        }
+
+        private void SetParameterValue(string parameter, float value, bool ignoreSeekSpeed = false) {
             if (CheckIfStringIsEmpty(parameter)) return;
 
             _currentMusic.setParameterByName(parameter, value, ignoreSeekSpeed);
 
             debugLogger.Log($"Parameter {parameter} set to {value}");
         }
+        #endregion
 
-        public void StopMusic() {
+        #region ---StopSound---
+        private void HandleStopSound(StopSoundEvent stopSoundEvent) {
+            switch (stopSoundEvent.SoundType) {
+                case StopSoundType.Music:
+                    StopMusic();
+                    break;
+                case StopSoundType.All:
+                    StopAllSound();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void StopMusic() {
             _currentMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
             debugLogger.Log("Stopped music");
         }
 
-        public void StopAllSound() {
+        private void StopAllSound() {
             _masterBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
             debugLogger.Log("Stopped all sound");
         }
+        #endregion
 
-        public bool IsMusicPlaying() {
+        private bool IsMusicPlaying() {
             return _currentMusic.GetPlaybackState() == PLAYBACK_STATE.PLAYING;
         }
-        #endregion
 
         private bool CheckIfStringIsEmpty(string s) {
             if (!string.IsNullOrWhiteSpace(s)) return false;
-            debugLogger.Log("String received is null or empty");
+            Debug.LogWarning($"[{debugLogger.logPrefix}] String received is null or empty");
             return true;
         }
     }

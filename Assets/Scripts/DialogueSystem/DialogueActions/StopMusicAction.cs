@@ -13,7 +13,7 @@ namespace Unity.Behavior {
         private static FMODManager FMODManager => FMODManager.Instance;
         
         protected override Status OnStart() {
-            FMODManager.StopMusic();
+            FMODManager.RaiseStopSoundEvent(StopSoundType.Music);
 
             return Status.Success;
         }

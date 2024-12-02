@@ -8,13 +8,11 @@ namespace UI {
     public class DeathScreenController : MonoBehaviour {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
-        
-        private static FMODManager FMODManager => FMODManager.Instance;
         #endregion
         
         private void Start() {
             // TODO
-            FMODManager.StopMusic();
+            FMODManager.RaiseStopSoundEvent(StopSoundType.Music);
 
             var root = uiDocument.rootVisualElement;
             

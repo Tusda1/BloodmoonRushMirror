@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Attributes;
 using Consensus;
-using ExtensionMethods;
 using FMODScripts;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
@@ -18,11 +17,12 @@ namespace Player {
         #region ---Fields---
         #region ***---GetOrAddComponents---***
         [GetOrAddComponent, HideInInspector] public PlayerHealth healthComponent;
-        [GetOrAddComponent, HideInInspector] public Animator animator;
         [GetOrAddComponent, HideInInspector] public SpriteRenderer spriteRenderer;
         [GetOrAddComponent, HideInInspector] public GravityObjectPlayerMovement playerMovement;
         [GetOrAddComponent, HideInInspector] public PlayerInput playerInput;
         #endregion
+        
+        [SerializeField] public MultipleAnimatorControllers animator;
 
         public event Action<int> TabNavigation = delegate { };
 
@@ -30,6 +30,7 @@ namespace Player {
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         [SerializeField] private PlayerHitbox hitbox;
+        [SerializeField] private ParticleSystem bloodSplatter;
 
         [Header("Taking Damage")] [SerializeField]
         private float alphaWhenTakingDamage = 0.2f;
@@ -68,6 +69,8 @@ namespace Player {
         [Header("Debug Logger"), SerializeField, Attributes.Required]
         private DebugLoggerSO debugLogger;
 
+        public event Action OnRespawn = delegate { };
+
         #region ***---AnimatorStringToHash---***
         private static readonly int AnimatorIsAttackingBool = Animator.StringToHash("IsAttacking");
         private static readonly int AnimatorDuckAttackTrigger = Animator.StringToHash("DuckAttack");
@@ -78,14 +81,9 @@ namespace Player {
         #endregion
 
         #region ***---GameManagers---***
-        private static FMODManager FMODManager => FMODManager.Instance;
         private static PauseMenu PauseMenu => PauseMenu.Instance;
         private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
         #endregion
-
-        private ScriptVotePair _playerCanMoveVotePair = new();
-
-        public event Action OnRespawn = delegate { };
 
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
@@ -164,8 +162,8 @@ namespace Player {
         private void Attack() {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
-
-            FMODManager.PlaySfx("Player/Player_slash");
+            
+            FMODManager.RaiseSFXEvent("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -176,7 +174,7 @@ namespace Player {
             debugLogger.Log("DuckAttack");
 
             animator.SetTrigger(AnimatorDuckAttackTrigger);
-            FMODManager.PlaySfx("Player/Player_slash");
+            FMODManager.RaiseSFXEvent("Player/Player_slash");
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -190,7 +188,8 @@ namespace Player {
         }
 
         public void TakeDamage(DamageInstance damageInstance) {
-            if (healthComponent.HasInvincibilityFrames || _isDead) return;
+            if (_isDead) return;
+            if (healthComponent.HasInvincibilityFrames && !damageInstance.ignoreInvincibility) return;
 
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
 
@@ -202,6 +201,9 @@ namespace Player {
 
             _ = cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
             _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
+            
+            bloodSplatter.transform.rotation = new Quaternion(0, 0, 180 * (playerMovement.isFacingRight ? 0 : 1), 0);
+            bloodSplatter.Play();
         }
 
         #region ***---Death---***
@@ -209,8 +211,8 @@ namespace Player {
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
-            FMODManager.StopAllSound();
-            FMODManager.PlaySfx("Player/Player_death");
+            FMODManager.RaiseStopSoundEvent(StopSoundType.All);
+            FMODManager.RaiseSFXEvent("Player/Player_death");
 
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");
@@ -262,11 +264,6 @@ namespace Player {
         #endregion
         #endregion
 
-        public void HitSpike() {
-            playerMovement.SpikeReset();
-            TakeDamage(new DamageInstance { damage = 1 });
-        }
-
         private Collider2D InteractCheck() {
             return Physics2D.OverlapBox(transform.position, transform.localScale, 0, whatIsInteractable);
         }
@@ -287,7 +284,7 @@ namespace Player {
         }
 
         public void UseKey(Transform doorTransform, int usedKeys, float destructionTime) {
-            for (int i = 0; i < usedKeys; i++) {
+            for (var i = 0; i < usedKeys; i++) {
                 var keyScript = keyObjects[^1].GetComponent<KeyScript>();
                 keyScript.SetFollowTransform(doorTransform);
                 keyScript.StartDestructionTimer(destructionTime);

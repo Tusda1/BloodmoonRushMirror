@@ -6,14 +6,13 @@ using UnityEngine.UIElements;
 namespace UI.Settings {
     public class AudioSettingsMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private UIDocument uiDocument;
 
         private Tab _audioTab;
         private Slider _masterVolumeSlider;
         private Slider _sfxVolumeSlider;
         private Slider _musicVolumeSlider;
-
-        private static FMODManager FMODManager => FMODManager.Instance;
         #endregion
 
         private void Awake() {
@@ -25,15 +24,18 @@ namespace UI.Settings {
         }
 
         private void Start() {
-            _audioTab.dataSource = FMODManager;
-
             _masterVolumeSlider.value = FMODManager.MasterVolume;
             _sfxVolumeSlider.value = FMODManager.SfxVolume;
             _musicVolumeSlider.value = FMODManager.MusicVolume;
 
-            _masterVolumeSlider.RegisterValueChangedCallback(evt => FMODManager.SetMasterVolume(evt.newValue));
-            _sfxVolumeSlider.RegisterValueChangedCallback(evt => FMODManager.SetSfxVolume(evt.newValue));
-            _musicVolumeSlider.RegisterValueChangedCallback(evt => FMODManager.SetMusicVolume(evt.newValue));
+            _masterVolumeSlider.RegisterValueChangedCallback(evt =>
+                FMODManager.RaiseSetVolumeEvent(VolumeChanel.Master, evt.newValue));
+            
+            _sfxVolumeSlider.RegisterValueChangedCallback(evt =>
+                FMODManager.RaiseSetVolumeEvent(VolumeChanel.SFX, evt.newValue));
+            
+            _musicVolumeSlider.RegisterValueChangedCallback(evt =>
+                FMODManager.RaiseSetVolumeEvent(VolumeChanel.Music, evt.newValue));
         }
     }
 }

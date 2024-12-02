@@ -1,4 +1,5 @@
 using System;
+using HealthComponent;
 using UnityEngine;
 
 public interface IDamageable {
@@ -10,6 +11,7 @@ public interface IDamageable {
     public Vector2 knockback;
     public float knockbackStrength;
     public int staggerStrength;
+    public bool ignoreInvincibility;
         
     public event Action OnHitAction = delegate { };
     public event Action OnKillAction = delegate { };
