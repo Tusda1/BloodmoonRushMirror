@@ -23,7 +23,7 @@ public class PatrolEnemy : EnemyBase
     private void Patrol()
     {
         // Smoothly move towards the target
-        smoothDampScript.SmoothDamp(facingDirection, moveSpeed, ref targetVelocity);
+        smoothDampScript.SmoothDampFloat(facingDirection, moveSpeed, ref targetVelocity);
         
         // Check if there is a wall in front of the enemy
         RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition(), facingDirection, 1f, EnemyAndGroundLayerMask);

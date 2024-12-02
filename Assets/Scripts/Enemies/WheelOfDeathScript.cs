@@ -1,7 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
-public class FireWheelOfDeathScript : MonoBehaviour
+public class WheelOfDeathScript : MonoBehaviour
 {
     [SerializeField] private Transform centerPoint; // The center point around which the object will move
     [SerializeField] private float radius = 5f; // The radius of the circular path
