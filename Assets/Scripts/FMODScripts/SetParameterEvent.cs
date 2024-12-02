@@ -1,7 +1,5 @@
-﻿using Utilities.EventBus;
-
-namespace FMODScripts {
-    public struct SetParameterEvent : IEvent {
+﻿namespace FMODScripts {
+    public struct SetParameterEvent : IFMODEvent {
         public readonly string Parameter;
         public readonly float Value;
         public readonly bool IgnoreSeekSpeed;

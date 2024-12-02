@@ -25,15 +25,7 @@ namespace FMODScripts {
         public static string SFXPath => "event:/Sfx/";
         public static string MusicPath => "event:/Music/";
 
-        #region ***---EventBus---***
-        private EventBinding<SetVolumeEvent> _setVolumeEventBinding;
-
-        private EventBinding<PlaySoundEvent> _playSoundEventBinding;
-
-        private EventBinding<SetParameterEvent> _setParameterEventBinding;
-
-        private EventBinding<StopSoundEvent> _stopSoundEventBinding;
-        #endregion
+        private EventBinding<IFMODEvent> _eventBinding;
         #endregion
 
         #region ---EventFunctions---
@@ -55,58 +47,36 @@ namespace FMODScripts {
 
         #region ---EventBus---
         private void OnEnable() {
-            _setVolumeEventBinding = new EventBinding<SetVolumeEvent>(HandleSetVolume);
-            _setParameterEventBinding = new EventBinding<SetParameterEvent>(HandleSetParameterValue);
-            _playSoundEventBinding = new EventBinding<PlaySoundEvent>(HandlePlaySound);
-            _stopSoundEventBinding = new EventBinding<StopSoundEvent>(HandleStopSound);
+            _eventBinding = new EventBinding<IFMODEvent>(HandleEvent);
 
-            EventBus<SetVolumeEvent>.Register(_setVolumeEventBinding);
-            EventBus<SetParameterEvent>.Register(_setParameterEventBinding);
-            EventBus<PlaySoundEvent>.Register(_playSoundEventBinding);
-            EventBus<StopSoundEvent>.Register(_stopSoundEventBinding);
+            EventBus<IFMODEvent>.Register(_eventBinding);
         }
 
         private void OnDisable() {
-            EventBus<SetVolumeEvent>.Deregister(_setVolumeEventBinding);
-            EventBus<SetParameterEvent>.Deregister(_setParameterEventBinding);
-            EventBus<PlaySoundEvent>.Deregister(_playSoundEventBinding);
-            EventBus<StopSoundEvent>.Deregister(_stopSoundEventBinding);
+            EventBus<IFMODEvent>.Deregister(_eventBinding);
         }
 
-        #region ***---RaiseEvents---***
-        public static void RaiseSetVolumeEvent(VolumeChanel volumeChanel, float volume) {
-            EventBus<SetVolumeEvent>.Raise(new SetVolumeEvent(volumeChanel, volume));
-        }
-
-        public static void RaiseSFXEvent(string soundName, GameObject soundObject = null) {
-            EventBus<PlaySoundEvent>.Raise(new PlaySoundEvent(SoundType.SFX, soundName, soundObject));
-        }
-
-        public static void RaiseMusicEvent(string soundName, GameObject soundObject = null) {
-            EventBus<PlaySoundEvent>.Raise(new PlaySoundEvent(SoundType.Music, soundName, soundObject));
-        }
-
-        public static void RaiseMusicEvent(string soundName, string parameter, float value,
-            bool ignoreSeekSpeed = false) {
-            if (Instance == null || !Instance.IsMusicPlaying()) {
-                RaiseMusicEvent(soundName);
+        private void HandleEvent(IFMODEvent fmodEvent) {
+            switch (fmodEvent) {
+                case PlaySoundEvent playSoundEvent:
+                    HandlePlaySoundEvent(playSoundEvent);
+                    break;
+                case SetParameterEvent setParameterEvent:
+                    HandleSetParameterEvent(setParameterEvent);
+                    break;
+                case SetVolumeEvent setVolumeEvent:
+                    HandleSetVolumeEvent(setVolumeEvent);
+                    break;
+                case StopSoundEvent stopSoundEvent:
+                    HandleStopSoundEvent(stopSoundEvent);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(fmodEvent));
             }
-
-            RaiseSetParameterEvent(parameter, value);
         }
 
-        public static void RaiseSetParameterEvent(string parameter, float value, bool ignoreSeekSpeed = false) {
-            EventBus<SetParameterEvent>.Raise(new SetParameterEvent(parameter, value, ignoreSeekSpeed));
-        }
-
-        public static void RaiseStopSoundEvent(StopSoundType soundType) {
-            EventBus<StopSoundEvent>.Raise(new StopSoundEvent(soundType));
-        }
-        #endregion
-        #endregion
-
-        #region ---SetVolume---
-        private void HandleSetVolume(SetVolumeEvent setVolumeEvent) {
+        #region ***---HandleEvents---***
+        private void HandleSetVolumeEvent(SetVolumeEvent setVolumeEvent) {
             switch (setVolumeEvent.VolumeChanel) {
                 case VolumeChanel.Master:
                     SetMasterVolume(setVolumeEvent.Volume);
@@ -121,7 +91,81 @@ namespace FMODScripts {
                     throw new ArgumentOutOfRangeException();
             }
         }
+        private void HandlePlaySoundEvent(PlaySoundEvent playSoundEvent) {
+            switch (playSoundEvent.SoundType) {
+                case SoundType.None:
+                case SoundType.SFX:
+                    if (playSoundEvent.SoundObject != null) {
+                        PlayOneShotAttached(playSoundEvent.SoundPath, playSoundEvent.SoundObject);
+                    }
+                    else {
+                        PlayOneShot(playSoundEvent.SoundPath);
+                    }
 
+                    break;
+                case SoundType.Music:
+                    PlayMusic(playSoundEvent.SoundPath);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        
+        private void HandleSetParameterEvent(SetParameterEvent setParameterEvent) {
+            SetParameterValue(setParameterEvent.Parameter, setParameterEvent.Value, setParameterEvent.IgnoreSeekSpeed);
+        }
+        
+        private void HandleStopSoundEvent(StopSoundEvent stopSoundEvent) {
+            switch (stopSoundEvent.SoundType) {
+                case StopSoundType.Music:
+                    StopMusic();
+                    break;
+                case StopSoundType.All:
+                    StopAllSound();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        #endregion
+
+        #region ***---RaiseEvents---***
+        public static void RaiseEvent(IFMODEvent fmodEvent) {
+            EventBus<IFMODEvent>.Raise(fmodEvent);
+        }
+        
+        public static void RaiseSetVolumeEvent(VolumeChanel volumeChanel, float volume) {
+            EventBus<IFMODEvent>.Raise(new SetVolumeEvent(volumeChanel, volume));
+        }
+
+        public static void RaiseSFXEvent(string soundName, GameObject soundObject = null) {
+            EventBus<IFMODEvent>.Raise(new PlaySoundEvent(SoundType.SFX, soundName, soundObject));
+        }
+
+        public static void RaiseMusicEvent(string soundName, GameObject soundObject = null) {
+            EventBus<IFMODEvent>.Raise(new PlaySoundEvent(SoundType.Music, soundName, soundObject));
+        }
+
+        public static void RaiseMusicEvent(string soundName, string parameter, float value,
+            bool ignoreSeekSpeed = false) {
+            if (Instance == null || !Instance.IsMusicPlaying()) {
+                RaiseMusicEvent(soundName);
+            }
+
+            RaiseSetParameterEvent(parameter, value, ignoreSeekSpeed);
+        }
+
+        public static void RaiseSetParameterEvent(string parameter, float value, bool ignoreSeekSpeed = false) {
+            EventBus<IFMODEvent>.Raise(new SetParameterEvent(parameter, value, ignoreSeekSpeed));
+        }
+
+        public static void RaiseStopSoundEvent(StopSoundType soundType) {
+            EventBus<IFMODEvent>.Raise(new StopSoundEvent(soundType));
+        }
+        #endregion
+        #endregion
+
+        #region ---SetVolume---
         private void SetMasterVolume(float volume) {
             _masterBus.setVolume(volume);
             PlayerPrefs.SetFloat("MasterVolume", volume);
@@ -145,24 +189,6 @@ namespace FMODScripts {
         #endregion
 
         #region ---PlaySound---
-        private void HandlePlaySound(PlaySoundEvent playSoundEvent) {
-            switch (playSoundEvent.SoundType) {
-                case SoundType.None:
-                case SoundType.SFX:
-                    if (playSoundEvent.SoundObject != null) {
-                        PlayOneShotAttached(playSoundEvent.SoundPath, playSoundEvent.SoundObject);
-                    } else {
-                        PlayOneShot(playSoundEvent.SoundPath);
-                    }
-                    break;
-                case SoundType.Music:
-                    PlayMusic(playSoundEvent.SoundPath);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
         private void PlayOneShotAttached(string path, GameObject emitter) {
             if (CheckIfStringIsEmpty(path)) return;
 
@@ -191,10 +217,6 @@ namespace FMODScripts {
         #endregion
 
         #region ---SetParameter---
-        private void HandleSetParameterValue(SetParameterEvent setParameterEvent) {
-            SetParameterValue(setParameterEvent.Parameter, setParameterEvent.Value, setParameterEvent.IgnoreSeekSpeed);
-        }
-
         private void SetParameterValue(string parameter, float value, bool ignoreSeekSpeed = false) {
             if (CheckIfStringIsEmpty(parameter)) return;
 
@@ -205,19 +227,6 @@ namespace FMODScripts {
         #endregion
 
         #region ---StopSound---
-        private void HandleStopSound(StopSoundEvent stopSoundEvent) {
-            switch (stopSoundEvent.SoundType) {
-                case StopSoundType.Music:
-                    StopMusic();
-                    break;
-                case StopSoundType.All:
-                    StopAllSound();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
         private void StopMusic() {
             _currentMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 

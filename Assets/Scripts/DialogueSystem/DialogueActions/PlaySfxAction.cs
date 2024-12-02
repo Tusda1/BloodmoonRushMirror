@@ -7,14 +7,15 @@ namespace Unity.Behavior {
     [Serializable, GeneratePropertyBag]
     [NodeDescription(
         name: "Play SFX",
-        story: "Play SFX: [sfxName]",
+        story: "Play SoundEvent: [sfxName] | Optional path prefix [soundType]",
         category: "DialogueAction",
         id: "a7c30756d907cc458e2475160bdbb3ef")]
     public class PlaySfxAction : Action {
         [SerializeReference] public BlackboardVariable<string> sfxName;
+        [SerializeReference] public BlackboardVariable<SoundType> soundType;
 
         protected override Status OnStart() {
-            FMODManager.RaiseSFXEvent(sfxName.Value);
+            FMODManager.RaiseEvent(new PlaySoundEvent(soundType.Value, sfxName.Value));
 
             return Status.Success;
         }

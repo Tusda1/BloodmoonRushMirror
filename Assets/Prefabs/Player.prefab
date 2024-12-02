@@ -110,10 +110,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthComponent: {fileID: 627531695120340738}
-  animator: {fileID: 4896941881637286329}
   spriteRenderer: {fileID: 7359996412380030738}
   playerMovement: {fileID: 9170211437487459540}
   playerInput: {fileID: 4237709658354518102}
+  animator:
+    animators: []
   playerLives: 5
   whatIsInteractable:
     serializedVersion: 2
@@ -437,8 +438,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.95}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.58421046, y: 0}
-    oldSize: {x: 0.95, y: 1.8}
+    pivot: {x: 0.45909086, y: 0}
+    oldSize: {x: 1.1, y: 1.15}
     newSize: {x: 0.85, y: 2.1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -576,6 +577,7 @@ MonoBehaviour:
     knockback: {x: 1, y: 2}
     knockbackStrength: 0
     staggerStrength: 0
+    ignoreInvincibility: 0
 --- !u!61 &9158515747129067295
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -1,13 +1,17 @@
 ﻿using System;
 using UnityEngine;
-using Utilities.EventBus;
 
 namespace FMODScripts {
-    public struct PlaySoundEvent : IEvent {
+    public struct PlaySoundEvent : IFMODEvent {
+        public readonly string SoundPath;
         public SoundType SoundType;
         public readonly GameObject SoundObject;
 
-        public readonly string SoundPath;
+        public PlaySoundEvent(string soundPath, GameObject soundObject = null) {
+            SoundPath = soundPath;
+            SoundType = SoundType.None;
+            SoundObject = soundObject;
+        }
 
         public PlaySoundEvent(SoundType soundType, string soundPath, GameObject soundObject = null) {
             SoundType = soundType;
@@ -21,5 +25,5 @@ namespace FMODScripts {
         }
     }
 
-    public enum SoundType { None, SFX, Music }
+    [Serializable] public enum SoundType { None, SFX, Music }
 }

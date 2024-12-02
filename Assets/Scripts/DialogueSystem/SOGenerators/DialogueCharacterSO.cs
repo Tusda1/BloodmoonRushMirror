@@ -13,7 +13,7 @@ public class DialogueCharacterSO : ScriptableObject {
     public string textAudioSoundEventPath = "Talk/";
     public WhenIsSfxPlayed whenIsSfxPlayed;
 
-    [Serializable, Flags] public enum WhenIsSfxPlayed {
+    [Serializable, Flags] public enum WhenIsSfxPlayed : byte {
         Nowhere = 0,
         InTheBeginning = 1 << 0,
         PerWord = 1 << 1,

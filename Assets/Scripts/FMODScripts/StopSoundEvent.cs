@@ -1,7 +1,5 @@
-﻿using Utilities.EventBus;
-
-namespace FMODScripts {
-    public struct StopSoundEvent : IEvent {
+﻿namespace FMODScripts {
+    public struct StopSoundEvent : IFMODEvent {
         public readonly StopSoundType SoundType;
 
         public StopSoundEvent(StopSoundType soundType) {
