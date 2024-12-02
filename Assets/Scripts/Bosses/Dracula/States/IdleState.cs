@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class IdleState : BossState
+public class IdleState : DraculaState
 {
     private void OnEnable()
     {

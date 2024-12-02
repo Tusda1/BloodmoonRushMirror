@@ -1,19 +1,28 @@
 using System;
+using Player;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class SwoopAttackState : BossState
+public class SwoopAttackState : DraculaState
 {
     [SerializeField] private float swoopDuration = 2f;
     [SerializeField] private float easePower = 2f;
+    [SerializeField] private float shootCooldown = 0.5f;
+    [SerializeField] private int swoopAmount = 3;
+    [SerializeField] private int shootAmount = 6;
     
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
     private Vector2 _swoopArcBottom;
     private float swoopStartTime;
+    private int swoopCount;
     private SwoopState _swoopState;
+    private float _shootTimer;
+    private int _shootCount;
+    private GameObject _projectilePrefab;
 
     private Teleport _teleport;
+    private Transform _player;
     
     private enum SwoopState 
     {
@@ -26,6 +35,8 @@ public class SwoopAttackState : BossState
     private void Start()
     {
         _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
+        _player = ServiceLocator.Get<PlayerScript>().transform;
+        _projectilePrefab = Resources.Load<GameObject>("Prefabs/DraculaBat");
     }
 
     private void OnEnable()
@@ -97,6 +108,7 @@ public class SwoopAttackState : BossState
                 Shoot();
                 break;
             case SwoopState.Finished:
+                Finished();
                 break;
         }
     }
@@ -121,6 +133,7 @@ public class SwoopAttackState : BossState
         if (t > 1f)
         {
             _swoopState = SwoopState.Shooting;
+            swoopCount++;
             return;
         }
 
@@ -155,11 +168,42 @@ public class SwoopAttackState : BossState
 
         return p;
     }
-
+    
     
     private void Shoot()
     {
         // Shoot a projectile at the player
-        
+        if (Time.time - _shootTimer > shootCooldown)
+        {
+            _shootTimer = Time.time;
+            
+            // Find a random point in a radius around the player
+            Vector2 randomPoint = (Vector2)_player.position + UnityEngine.Random.insideUnitCircle * 2;
+            
+            // Shoot a projectile at the random point
+            var position = transform.position;
+            GameObject projectile = Instantiate(_projectilePrefab, position, Quaternion.identity);
+            projectile.GetComponent<Rigidbody2D>().linearVelocity = (randomPoint - (Vector2)position).normalized * 5;
+            
+            _shootCount++;
+            
+            if (_shootCount >= shootAmount)
+            {
+                if (swoopCount >= swoopAmount)
+                {
+                    _swoopState = SwoopState.Finished;
+                }
+                else
+                {
+                    (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
+                    _swoopState = SwoopState.Swooping;
+                }
+            }
+        }
+    }
+    
+    private void Finished()
+    {
+        StateFinished = true;
     }
 }

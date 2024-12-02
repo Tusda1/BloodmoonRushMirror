@@ -274,7 +274,6 @@ GameObject:
   - component: {fileID: 172654491}
   - component: {fileID: 172654493}
   - component: {fileID: 172654496}
-  - component: {fileID: 172654492}
   m_Layer: 0
   m_Name: Dracula
   m_TagString: Untagged
@@ -429,6 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boss: {fileID: 172654489}
+  category: 2
   pingPongStartSpeed: 5
 --- !u!114 &172654488
 MonoBehaviour:
@@ -442,7 +442,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d730e7877ae0bec40aca2f0015f4bd70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossBase: {fileID: 0}
+  boss: {fileID: 172654489}
+  baseAttackQueueSize: 3
+  attackQueueSizeIncreaseFactor: 1
 --- !u!114 &172654489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,6 +467,7 @@ MonoBehaviour:
     _DefaultState: {fileID: 172654491}
   teleportEnter: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
   teleportExit: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
+  maxHealth: 3
   gravity: 0
   targetVelocityX: 0
   bossGrounded: 0
@@ -482,6 +485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boss: {fileID: 172654489}
+  category: 2
 --- !u!114 &172654491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,22 +499,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boss: {fileID: 172654489}
+  category: 0
   attackLength: 1
---- !u!114 &172654492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 172654479}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d553b1e708b6904faba35dfc639dd3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _boss: {fileID: 172654489}
-  teleportEnter: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
-  teleportExit: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
 --- !u!114 &172654493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,8 +514,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boss: {fileID: 172654489}
+  category: 0
   swoopDuration: 2
   easePower: 6
+  shootCooldown: 0.5
+  swoopAmount: 3
+  shootAmount: 6
 --- !u!114 &172654494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,6 +570,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boss: {fileID: 172654489}
+  category: 0
   dashAmount: 5
   dashSpeed: 20
   dashCooldown: 1

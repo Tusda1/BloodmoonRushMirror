@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class DashAttackState : BossState
+public class DashAttackState : DraculaState
 {
     [SerializeField] private int dashAmount = 5;
     [SerializeField] private float dashSpeed = 10f;
@@ -117,7 +117,7 @@ public class DashAttackState : BossState
     {
         if (_dashCount >= dashAmount)
         {
-            //TODO: Change state
+            StateFinished = true;
             return;
         }
         

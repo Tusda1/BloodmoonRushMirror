@@ -12,7 +12,7 @@ public enum BossStatePriority
 public class BossState : StateBehaviour
 {
     [SerializeField] private BossBase _boss;
-    public BossBase Boss => _boss;
+    protected BossBase Boss => _boss;
     
     public virtual BossStatePriority Priority => BossStatePriority.Low;
 

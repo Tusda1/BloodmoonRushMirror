@@ -33,6 +33,7 @@ public class Teleport
             animancerState.Events(this).OnEnd = () =>
             {
                 animancerState.Stop();
+                animancerState.Events(this).OnEnd = null;
                 onTeleportEnd?.Invoke();
                 
                 IsTeleporting = false;

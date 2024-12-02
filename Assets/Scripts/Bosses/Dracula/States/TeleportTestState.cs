@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class TeleportTestState : BossState
+public class TeleportTestState : DraculaState
 {
     private Teleport _teleport;
     [SerializeField] private AnimationClip teleportEnter;

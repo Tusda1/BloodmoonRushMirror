@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BatAttackState : BossState
+public class BatAttackState : DraculaState
 {
     [SerializeField] private float attackLength = 0.5f;
     
@@ -77,6 +77,7 @@ public class BatAttackState : BossState
         // If the attack has been going on for 5 seconds, switch to the next state
         if (Time.time - _timeSinceAttackStart > attackLength)
         {
+            StateFinished = true;
             return;
         }
         

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Animancer;
 using UnityEngine;
@@ -16,20 +17,27 @@ public class BossBase : GravityObject
     public AnimationClip TeleportEnter => teleportEnter;
     [SerializeField] private AnimationClip teleportExit;
     public AnimationClip TeleportExit => teleportExit;
-
+    [SerializeField] private int maxHealth;
+    public int MaxHealth => maxHealth;
+    public int CurrentHealth {get; private set;}
+    
+    public event Action OnBattleStart;
+    
     [HideInInspector] public float gravity;
     [HideInInspector] public float targetVelocityX;
     [HideInInspector] public bool bossGrounded;
     [HideInInspector] public Collider2D bossCollider;
     
-    protected new virtual void Awake()
+    protected new void Awake()
     {
         base.Awake();
         print("!!");
         _stateMachine.InitializeAfterDeserialize();
+        
+        CurrentHealth = maxHealth;
     }
     
-    protected new virtual void Start()
+    protected new void Start()
     {
         base.Start();
         bossCollider = GetComponent<Collider2D>();
@@ -41,7 +49,7 @@ public class BossBase : GravityObject
     private IEnumerator LateActivation()
     {
         yield return new WaitForSeconds(1);
-        _stateMachine.ForceSetState(_stateMachine.DefaultState);
+        OnBattleStart?.Invoke();
     }
 
     private new void Update()
@@ -50,5 +58,10 @@ public class BossBase : GravityObject
         targetVelocity.x = targetVelocityX;
         GravityModifier = gravity;
         bossGrounded = isGrounded;
+    }
+    
+    public void StartBattle()
+    {
+        OnBattleStart?.Invoke();
     }
 }
