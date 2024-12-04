@@ -131,6 +131,11 @@ namespace Player {
             PauseMenu.PauseToggle();
         }
 
+        public void OnSkipAction(InputValue inputValue) {
+            if (!inputValue.isPressed) return;
+            DialogueUI.Instance?.TriggerOnSkipDialogue();
+        }
+
         public void OnInteract(InputValue inputValue) {
             if (!inputValue.isPressed || !PlayerMovementEnabled) return;
 

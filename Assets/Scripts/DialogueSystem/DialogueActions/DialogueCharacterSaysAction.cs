@@ -153,7 +153,7 @@ namespace Unity.Behavior {
         }
 
         private void PlayTextAudio() {
-            FMODManager.RaiseSFXEvent(dialogueCharacter.Value.textAudioSoundEventPath);
+            FMODManager.RaiseEvent(new PlaySoundEvent(dialogueCharacter.Value.textAudioSoundEventPath));
         }
     }
 }

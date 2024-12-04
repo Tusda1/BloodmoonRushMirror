@@ -49,6 +49,10 @@ public class VirtualCameraSwitch : MonoBehaviour {
     }
 
     private void OnTriggerExit2D(Collider2D other) {
+#if UNITY_EDITOR
+        if (!Application.isPlaying) return;
+#endif
+        
         if (other.CompareTag("Player")) {
             StartCoroutine(DelayedDeactivation());
             
