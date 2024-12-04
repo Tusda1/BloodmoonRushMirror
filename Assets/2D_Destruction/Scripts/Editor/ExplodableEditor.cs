@@ -35,7 +35,7 @@ public class ExplodableEditor : Editor {
             }
             if (GUILayout.Button("Destroy Fragments"))
             {
-                myTarget.deleteFragments();
+                myTarget.DeleteFragments();
                 EditorUtility.SetDirty(myTarget);
             }
         }
