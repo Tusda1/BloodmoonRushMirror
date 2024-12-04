@@ -137,7 +137,7 @@ MonoBehaviour:
   GravityModifier: 1
   _takesSpikeDamage: 0
   faceLeftOnStart: 0
-  moveSpeed: 5
+  moveSpeed: 3
   maxHealth: 0
   invulnerableTime: 0.5
   knockbackDuration: 0.1
@@ -152,9 +152,11 @@ MonoBehaviour:
   knockbackSmoothDampScript:
     smoothTime: 0.1
   detectionRadius: 30
-  nextWaypointDistance: 2
+  attackDistance: 0.1
+  maxWithdrawDistance: 5
+  minWithdrawDistance: 3
   smoothDampScript:
-    smoothTime: 0.5
+    smoothTime: 0.2
 --- !u!50 &7424737010724291516
 Rigidbody2D:
   serializedVersion: 5
