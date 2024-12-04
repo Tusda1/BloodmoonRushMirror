@@ -4,7 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(Seeker))]
 public class Harpy : ReactiveBase
 {
-    [SerializeField] private float detectionRadius;
     [SerializeField] private float nextWaypointDistance;
     [SerializeField] private float hoverHeight;
     [SerializeField] private float xDistanceFromPlayer;
@@ -12,7 +11,6 @@ public class Harpy : ReactiveBase
     [SerializeField] private SmoothDampScript smoothDampScript = new();
     
     
-    private Transform player;
     private Vector2 targetPosition;
     private Path path;
     private int currentWaypoint;
@@ -28,10 +26,10 @@ public class Harpy : ReactiveBase
     
     protected override void Scan()
     {
-        var playerObject = Physics2D.OverlapCircle(transform.position, detectionRadius, LayerMask.GetMask("Player"));
+        var playerObject = Physics2D.OverlapCircle(transform.position, detectionDistance, LayerMask.GetMask("Player"));
         if (playerObject)
         {
-            player = playerObject.transform;
+            targetObject = playerObject.transform;
             currentState = EnemyState.Action;
             StartPath();
         }
@@ -83,12 +81,12 @@ public class Harpy : ReactiveBase
     private void Swoop()
     {
         // Swoop towards the player
-        Vector2 direction = (player.position - transform.position).normalized;
+        Vector2 direction = (targetObject.position - transform.position).normalized;
         Vector2 force = direction * moveSpeed;
         
         smoothDampScript.SmoothDampVector2(force, ref targetVelocity);
         
-        if (Vector2.Distance(transform.position, player.position) < attackDistance)
+        if (Vector2.Distance(transform.position, targetObject.position) < attackDistance)
         {
             _swooping = false;
             StartPath();
@@ -103,7 +101,7 @@ public class Harpy : ReactiveBase
     private Vector2 FindHoverPoint()
     {
         // Choose a random point above the player using hoverHeight
-        var position = player.position;
+        var position = targetObject.position;
         var targetvector = Vector2.zero;
         
         while (true)

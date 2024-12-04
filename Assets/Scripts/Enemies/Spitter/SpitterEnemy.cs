@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class SpitterEnemy : ReactiveBase
 {
-    [SerializeField] private float detectionDistance = 20f;
     [SerializeField] private float projectileSpeed = 10f;
     [SerializeField] private float projectileCooldown = 2f;
     
     private GameObject _projectilePrefab;
-    private Transform _player;
     private SpitterAnimation _spitterAnimation;
     private bool _attacking;
     private float cooldownTimer;
@@ -22,22 +20,10 @@ public class SpitterEnemy : ReactiveBase
         _spitterAnimation = enemyAnimationBase as SpitterAnimation;
     }
     
-    protected override void Scan()
-    {
-        // Use overlap circle to detect the player
-        Collider2D player = Physics2D.OverlapCircle(transform.position, detectionDistance, LayerMask.GetMask("Player"));
-        if (player != null)
-        {
-            // Set the direction to the player
-            currentState = EnemyState.Action;
-            _player = player.transform;
-        }
-    }
-    
     protected override void Action()
     {
         // if distance to player is greater than detection distance, return to scanning
-        if (Vector2.Distance(transform.position, _player.position) > detectionDistance)
+        if (Vector2.Distance(transform.position, targetObject.position) > detectionDistance)
         {
             currentState = EnemyState.Scanning;
             return;

@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class ReactiveBase : EnemyBase
 {
+    [SerializeField] protected float detectionDistance = 20f;
+    
+    protected Transform targetObject;
+    
     protected enum EnemyState
     {
         Scanning,
@@ -33,7 +37,12 @@ public class ReactiveBase : EnemyBase
     
     protected virtual void Scan()
     {
-        
+        Collider2D player = Physics2D.OverlapCircle(transform.position, detectionDistance, LayerMask.GetMask("Player"));
+        if (player != null)
+        {
+            currentState = EnemyState.Action;
+            targetObject = player.transform;
+        }
     }
     
     protected virtual void Action()

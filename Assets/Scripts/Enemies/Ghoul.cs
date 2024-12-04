@@ -2,42 +2,10 @@ using UnityEngine;
 
 public class Ghoul : ReactiveBase
 {
-    [SerializeField] private float detectionDistance = 10f;
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private float universalAgroDistance = 2f;
     
     private bool _isJumping;
-
-    protected override void Action()
-    {
-        targetVelocity = facingDirection * moveSpeed;
-        
-        // Detect if the Ghoul charges into a wall
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, 1.5f, EnemyAndGroundLayerMask);
-        if (hit.collider != null)
-        {
-            // If the Ghoul charges into a wall, stop charging and start scanning
-            targetVelocity = Vector2.zero;
-                
-            currentState = EnemyState.Scanning;
-        }
-            
-        if (!_isJumping)
-        {
-            hit = Physics2D.Raycast(GetBottomPosition() + facingDirection, Vector2.down, 1f, LayerMask.GetMask("Ground"));
-            if (hit.collider == null)
-            {
-                // If the ghoul is about to fall off a ledge, jump off the ledge
-                velocity.y = jumpForce;
-                _isJumping = true;
-            }
-        }
-        
-        else if (isGrounded)
-        {
-            _isJumping = false;
-        }
-    }
     
     protected override void Scan()
     {
@@ -68,6 +36,37 @@ public class Ghoul : ReactiveBase
             // Return the direction to the player
             facingDirection = Vector2.left;
             currentState = EnemyState.Action;
+        }
+    }
+
+    protected override void Action()
+    {
+        targetVelocity = facingDirection * moveSpeed;
+        
+        // Detect if the Ghoul charges into a wall
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, 1.5f, EnemyAndGroundLayerMask);
+        if (hit.collider != null)
+        {
+            // If the Ghoul charges into a wall, stop charging and start scanning
+            targetVelocity = Vector2.zero;
+                
+            currentState = EnemyState.Scanning;
+        }
+            
+        if (!_isJumping)
+        {
+            hit = Physics2D.Raycast(GetBottomPosition() + facingDirection, Vector2.down, 1f, LayerMask.GetMask("Ground"));
+            if (hit.collider == null)
+            {
+                // If the ghoul is about to fall off a ledge, jump off the ledge
+                velocity.y = jumpForce;
+                _isJumping = true;
+            }
+        }
+        
+        else if (isGrounded)
+        {
+            _isJumping = false;
         }
     }
 }

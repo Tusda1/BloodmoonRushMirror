@@ -1,46 +1,56 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class JumpEnemy : ReactiveBase
 {
-    [SerializeField] private float rayDistance = 1f;
     [SerializeField] private float keepAgroDistance = 5f;
+    [SerializeField] private float yPositionTolerance = 0.05f;
     
-    private Transform _playerTransform;
     private Rigidbody2D _playerRb2D;
-    private bool isJumping;
-    
-    protected override void Scan()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, LayerMask.GetMask("Player"));
-        if (hit.collider != null)
-        {
-            currentState = EnemyState.Action;
-            _playerRb2D = hit.collider.attachedRigidbody;
-            _playerTransform = hit.collider.transform;
-        }
-    }
+    private bool _isJumping;
+    private Vector2 _lastFramePosition;
+    private bool _readyToJump;
     
     protected override void Action()
     {
-        if (_playerTransform == null && Vector2.Distance(_playerTransform.position, transform.position) > keepAgroDistance)
+        if (_playerRb2D == null) _playerRb2D = targetObject.GetComponent<Rigidbody2D>();
+        
+        if (targetObject == null && Vector2.Distance(targetObject.position, transform.position) > keepAgroDistance)
         {
             currentState = EnemyState.Scanning;
             return;
         }
+
+        if (Math.Abs(_lastFramePosition.y - targetObject.position.y) < yPositionTolerance)
+        {
+            _readyToJump = true;
+        }
         
-        if (_playerRb2D.linearVelocityY > 0 && !isJumping)
+        if (Math.Abs(_lastFramePosition.y - targetObject.position.y) > yPositionTolerance && _readyToJump)
         {
-            Jump();
+            StartCoroutine(Jump());
         }
-        else if (isGrounded)
-        {
-            isJumping = false;
-        }
+        
+        _lastFramePosition = targetObject.position;
     }
-    
-    private void Jump()
+
+    private IEnumerator Jump()
     {
-        velocity.y = _playerRb2D.linearVelocityY;
-        isJumping = true;
+        _readyToJump = false;
+        GravityModifier = 0;
+        _isJumping = true;
+        float yDifference = targetObject.position.y - _lastFramePosition.y;
+
+        while (yDifference > 0)
+        {
+            yDifference = targetObject.position.y - _lastFramePosition.y;
+            
+            var position = transform.position;
+            transform.position = new Vector2(position.x, position.y + yDifference);
+            yield return null;
+        }
+        
+        GravityModifier = 1;
     }
 }

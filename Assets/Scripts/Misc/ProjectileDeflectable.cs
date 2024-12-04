@@ -64,6 +64,8 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        if (other.gameObject == shooter && !_isDeflected) return;
+        
         if (other.gameObject.TryGetComponent<IDamageable>(out var damageable))
         {
             // set the knockback direction based on the velocity of the projectile

@@ -3,11 +3,8 @@ using UnityEngine;
 
 public class Skeleton : ReactiveBase
 {
-    [SerializeField] private float detectionDistance = 10f;
     [SerializeField] private float keepAgroDistance = 2f;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
-
-    private Transform _agroOject;
     
     protected override void Scan()
     {
@@ -16,7 +13,7 @@ public class Skeleton : ReactiveBase
         if (hit.collider != null)
         {
             currentState = EnemyState.Action;
-            _agroOject = hit.transform;
+            targetObject = hit.transform;
         }
         
         //Send a ray to the left
@@ -24,21 +21,21 @@ public class Skeleton : ReactiveBase
         if (hit.collider != null)
         {
             currentState = EnemyState.Action;
-            _agroOject = hit.transform;
+            targetObject = hit.transform;
         }
     }
 
     protected override void Action()
     {
         // Check if the target is still in range
-        if (Vector2.Distance(_agroOject.position, transform.position) > keepAgroDistance)
+        if (Vector2.Distance(targetObject.position, transform.position) > keepAgroDistance)
         {
             currentState = EnemyState.Scanning;
             return;
         }
         
         // Check if the target is to the left or right
-        facingDirection = (_agroOject.position.x > transform.position.x) ? Vector2.right : Vector2.left;
+        facingDirection = (targetObject.position.x > transform.position.x) ? Vector2.right : Vector2.left;
         
         // Smoothly move towards the target
         smoothDampScript.SmoothDampFloat(facingDirection, moveSpeed, ref targetVelocity);

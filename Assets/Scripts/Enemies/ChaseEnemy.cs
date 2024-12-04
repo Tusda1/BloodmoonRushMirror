@@ -5,14 +5,12 @@ using Pathfinding;
 [RequireComponent(typeof(Seeker))]
 public class ChaseEnemy : ReactiveBase
 {
-    [SerializeField] private float agroDistance = 2f;
     [SerializeField] private float nextWaypointDistance = 0.5f;
     [SerializeField] private float repeatRate = 0.5f;
     [SerializeField] private float radius = 0.5f; // Define the radius property
     [SerializeField] private float attackDistance = 1f;
     private float _repeatTimer;
     
-    private GameObject _agroObject;
     private Path _path;
     private int _currentWaypoint = 0;
     private bool _reachedEndOfPath;
@@ -26,20 +24,9 @@ public class ChaseEnemy : ReactiveBase
         _seeker = GetComponent<Seeker>();
     }
 
-    protected override void Scan()
-    {
-        Collider2D hitClose = Physics2D.OverlapCircle(transform.position, agroDistance, LayerMask.GetMask("Player"));
-        if (hitClose != null)
-        {
-            // Return the direction to the player
-            _agroObject = hitClose.gameObject;
-            currentState = EnemyState.Action;
-        }
-    }
-
     protected override void Action()
     {
-        if (_agroObject == null)
+        if (targetObject == null)
         {
             currentState = EnemyState.Scanning;
             return;
@@ -90,7 +77,7 @@ public class ChaseEnemy : ReactiveBase
         }
         
         // Check if enemy is close enough to attack
-        if (Vector2.Distance(rb2d.position, _agroObject.transform.position) < attackDistance && !_isAttacking)
+        if (Vector2.Distance(rb2d.position, targetObject.transform.position) < attackDistance && !_isAttacking)
         {
             StartCoroutine(Attack());
         }
@@ -98,12 +85,12 @@ public class ChaseEnemy : ReactiveBase
 
     private void StartPath()
     {
-        if (_agroObject == null) { return; }
+        if (targetObject == null) { return; }
 
         if (!_seeker.IsDone()) { return; }
 
         // Start the path without NNConstraint
-        _seeker.StartPath(rb2d.position, _agroObject.transform.position, OnPathComplete);
+        _seeker.StartPath(rb2d.position, targetObject.transform.position, OnPathComplete);
     }
 
     private void OnPathComplete(Path p)
