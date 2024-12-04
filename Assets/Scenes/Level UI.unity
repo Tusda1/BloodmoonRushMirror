@@ -228,10 +228,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: DialogueUI
       objectReference: {fileID: 0}
-    - target: {fileID: 8251505631962613021, guid: a7032ddd958a38843abae2c19bb17835, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -285,10 +281,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1544288664208109252, guid: f5a3e80b1158c414bb4533dc441753b2, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4875595237995187263, guid: f5a3e80b1158c414bb4533dc441753b2, type: 3}
       propertyPath: m_Name
       value: PauseMenu
@@ -296,12 +288,23 @@ PrefabInstance:
     - target: {fileID: 8598516997904334095, guid: f5a3e80b1158c414bb4533dc441753b2, type: 3}
       propertyPath: eventSystem
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1626871246}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5a3e80b1158c414bb4533dc441753b2, type: 3}
+--- !u!114 &1626871246 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6693519583127464479, guid: 2598928933817c045a3cee58977410b2, type: 3}
+  m_PrefabInstance: {fileID: 2089401322}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2089401322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -353,10 +356,6 @@ PrefabInstance:
     - target: {fileID: 8056927771554561613, guid: 2598928933817c045a3cee58977410b2, type: 3}
       propertyPath: m_Name
       value: EventSystem
-      objectReference: {fileID: 0}
-    - target: {fileID: 8056927771554561613, guid: 2598928933817c045a3cee58977410b2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -5,13 +5,14 @@ using UnityEngine.UIElements;
 namespace UI.Settings {
     public class ControlsSettingsMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private UIDocument uiDocument;
         
-        private Tab _controlsTab;
+        private VisualElement _root;
         #endregion
 
         private void Awake() {
-            _controlsTab = uiDocument.rootVisualElement.Q<Tab>("ControlsTab");
+            _root = uiDocument.rootVisualElement;
         }
-    } 
+    }
 }

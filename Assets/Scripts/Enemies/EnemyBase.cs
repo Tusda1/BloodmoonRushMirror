@@ -29,6 +29,7 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] protected float weight;
     [SerializeField] protected int rubyDropAmount = 3;
     [SerializeField] private SmoothDampScript knockbackSmoothDampScript = new();
+    [SerializeField] private ParticleSystem bloodSplatter;
     
     protected LayerMask EnemyAndGroundLayerMask;
 
@@ -79,6 +80,15 @@ public class EnemyBase :  GravityObject, IDamageable
         
         enemyAnimationBase.PlayHitAnimation();
         StartCoroutine(FlashWhite());
+
+        if (bloodSplatter != null) {
+            var deg = Vector2.Angle(damageInstance.knockback.normalized, Vector2.right);
+            bloodSplatter.transform.rotation = new Quaternion(0, 0, deg, 0);
+            bloodSplatter.Play();
+        }
+        else {
+            Debug.LogWarning($"blood splatter on {name} is null");
+        }
         
         // Play hit animation
         // Play hit sound

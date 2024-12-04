@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Utilities.EventBus {
     /// <summary>
@@ -12,9 +13,7 @@ namespace Utilities.EventBus {
         /// Enum that defines the specific predefined types of assemblies for navigation.
         /// </summary>    
         private enum AssemblyType {
-            AssemblyCSharp,
-            AssemblyCSharpEditor,
-            AssemblyCSharpEditorFirstPass,
+            AssemblyCSharp, AssemblyCSharpEditor, AssemblyCSharpEditorFirstPass,
             AssemblyCSharpFirstPass
         }
 
@@ -39,15 +38,14 @@ namespace Utilities.EventBus {
         /// <param name="assemblyTypes">Array of Type objects representing all the types in the assembly.</param>
         /// <param name="interfaceType">Type representing the interface to be checked against.</param>
         /// <param name="results">Collection of types where result should be added.</param>
-        private static void AddTypesFromAssembly(Type[] assemblyTypes, Type interfaceType, ICollection<Type> results) {
+        private static void AddTypesFromAssembly(Type[] assemblyTypes, Type interfaceType, List<Type> types) {
             if (assemblyTypes == null) return;
-            foreach (var type in assemblyTypes) {
-                if (type != interfaceType && interfaceType.IsAssignableFrom(type)) {
-                    results.Add(type);
-                }
-            }
+
+            types.AddRange(assemblyTypes.Where(type =>
+                type.IsInterface && type.GetInterfaces().Length == 1 && type.GetInterfaces().Contains(interfaceType)));
         }
-    
+
+
         /// <summary>
         /// Gets all Types from all assemblies in the current AppDomain that implement the provided interface type.
         /// </summary>
@@ -55,22 +53,22 @@ namespace Utilities.EventBus {
         /// <returns>List of Types implementing the provided interface type.</returns>    
         public static List<Type> GetTypes(Type interfaceType) {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        
+
             var assemblyTypes = new Dictionary<AssemblyType, Type[]>();
             var types = new List<Type>();
             foreach (var t in assemblies) {
                 var assemblyType = GetAssemblyType(t.GetName().Name);
                 if (assemblyType != null) {
-                    assemblyTypes.Add((AssemblyType) assemblyType, t.GetTypes());
+                    assemblyTypes.Add((AssemblyType)assemblyType, t.GetTypes());
                 }
             }
-        
+
             assemblyTypes.TryGetValue(AssemblyType.AssemblyCSharp, out var assemblyCSharpTypes);
             AddTypesFromAssembly(assemblyCSharpTypes, interfaceType, types);
 
             assemblyTypes.TryGetValue(AssemblyType.AssemblyCSharpFirstPass, out var assemblyCSharpFirstPassTypes);
             AddTypesFromAssembly(assemblyCSharpFirstPassTypes, interfaceType, types);
-        
+
             return types;
         }
     }

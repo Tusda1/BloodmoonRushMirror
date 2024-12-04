@@ -7,19 +7,15 @@ using PlayerLoopTimer;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
         #region ---Fields---
-        [Header("References")] [GetOrAddComponent, SerializeField, HideInInspector]
-        private PlayerScript player;
+        [GetOrAddComponent, SerializeField, HideInInspector] private PlayerScript player;
+        [GetOrAddComponent, SerializeField, HideInInspector] private BoxCollider2D boxCollider;
 
-        [GetOrAddComponent, SerializeField, HideInInspector]
-        private BoxCollider2D boxCollider;
-
-        [Header("Player Movement")] [SerializeField, ReadOnly]
-        private Vector2 inputVector;
+        [Header("Player Movement")] 
+        [SerializeField, ReadOnly] private Vector2 inputVector;
 
         [ReadOnly] public bool isDucking;
         [ReadOnly] public bool isHoldingDuck;
@@ -32,12 +28,14 @@ namespace Player {
         [SerializeField] private LayerMask whatIsInvalidSpawnPoint;
         [SerializeField] private float climbSpeed;
 
-        [Header("Dash")] [ReadOnly] public bool isDashing;
+        [Header("Dash")] 
+        [ReadOnly] public bool isDashing;
         [ReadOnly] public bool canDash;
         [SerializeField] private float dashTime;
         [SerializeField] private float dashForce;
 
-        [Header("Jump / Fall")] [ReadOnly] public bool isJumping;
+        [Header("Jump / Fall")] 
+        [ReadOnly] public bool isJumping;
         [ReadOnly] public bool isHoldingJump;
         [ReadOnly] public bool doubleJumping;
         [SerializeField] private float jumpForce;
@@ -49,19 +47,20 @@ namespace Player {
         [SerializeField] private LayerMask whatIsGround;
         [SerializeField] private bool isActuallyGrounded;
 
-        [Header("Knockback")] [ReadOnly] public bool isTakingKnockback;
+        [Header("Knockback")] 
+        [ReadOnly] public bool isTakingKnockback;
         [SerializeField] private float knockBackTime;
         [SerializeField] private float spikeStunTime;
         public int killCharges;
         private Vector2 _knockbackVector;
 
-        [Header("Player Can Move")] [SerializeField, Required]
-        private AllInFavourConsensusSO playerCanMove;
+        [Header("Player Can Move")] 
+        [SerializeField, Required] private AllInFavourConsensusSO playerCanMove;
 
         private bool PlayerMovementEnabled => playerCanMove.consensus;
 
-        [Header("Debug Logger")] [SerializeField, Required]
-        private DebugLoggerSO debugLogger;
+        [Header("Debug Logger")] 
+        [SerializeField, Required] private DebugLoggerSO debugLogger;
 
         #region ***---PrivateFields---***
         private CountdownTimer _dashTimer;
@@ -83,11 +82,13 @@ namespace Player {
         #region ***---AnimatorStringToHash---***
         private static readonly int AnimatorDashBool = Animator.StringToHash("IsDashing");
         private static readonly int AnimatorCrouchBool = Animator.StringToHash("IsCrouching");
-        
+
         private static readonly int AnimatorMovementFloat = Animator.StringToHash("XMovement");
         private static readonly int AnimatorYMovementFloat = Animator.StringToHash("YMovement");
-        
+
         private static readonly int AnimatorJumpBool = Animator.StringToHash("IsJumping");
+        private static readonly int AnimatorIsHoldingJumpBool = Animator.StringToHash("IsHoldingJump");
+        private static readonly int AnimatorIsFallingBool = Animator.StringToHash("IsFalling");
         private static readonly int AnimatorClimbBool = Animator.StringToHash("IsClimbing");
         private static readonly int AnimatorGunJumpTrigger = Animator.StringToHash("GunJump");
         #endregion
@@ -121,54 +122,61 @@ namespace Player {
         }
 
         private void InitializeDashTimer() {
-            _dashTimer = new CountdownTimer(dashTime);
-            _dashTimer.OnBegin += () => {
-                player.animator.SetBool(AnimatorDashBool, true);
-                player.healthComponent.TriggerInvulnerability(dashTime);
-            };
-            _dashTimer.OnStop += () => {
-                lockToAxis = 0;
-                isDashing = false;
-                ResetMovement(2);
-                player.animator.SetBool(AnimatorDashBool, false);
-            };
+            _dashTimer = CountdownTimerBuilder.Start(dashTime)
+                .WithOnBegin(() => {
+                    player.animator.SetBool(AnimatorDashBool, true);
+                    player.healthComponent.TriggerInvulnerability(dashTime);
+                })
+                .WithOnStop(() => {
+                    lockToAxis = 0;
+                    isDashing = false;
+                    ResetMovement(2);
+                    player.animator.SetBool(AnimatorDashBool, false);
+                })
+                .Finish();
         }
 
         private void InitializeMinJumpTimer() {
-            _minJumpTimer = new CountdownTimer(minJumpTime);
-            _minJumpTimer.OnComplete += () => isJumping = false;
+            _minJumpTimer = CountdownTimerBuilder.Start(minJumpTime)
+                .WithOnComplete(() => isJumping = false)
+                .Finish();
         }
 
         private void InitializeJumpBufferTimer() {
-            _jumpBufferTimer = new CountdownTimer(jumpBufferTime);
-            _jumpBufferTimer.OnUpdate += () => {
-                if (!isGrounded) return;
-                isJumping = true;
-                ForceExitDuck();
-                _minJumpTimer.StartTimer();
-                _jumpBufferTimer.StopTimer();
-            };
-            _jumpBufferTimer.OnComplete += () => isJumping = false;
+            _jumpBufferTimer = CountdownTimerBuilder.Start(jumpBufferTime)
+                .WithOnUpdate(() => {
+                    if (!isGrounded) return;
+                    isJumping = true;
+                    ForceExitDuck();
+                    _minJumpTimer.StartTimer();
+                    _jumpBufferTimer.StopTimer();
+                })
+                .WithOnComplete(() => isJumping = false)
+                .Finish();
         }
 
         private void InitializeKnockbackTimer() {
-            _knockbackTimer = new CountdownTimer(knockBackTime);
-            _knockbackTimer.OnComplete += () => isTakingKnockback = false;
+            _knockbackTimer = CountdownTimerBuilder.Start(knockBackTime)
+                .WithOnComplete(() => isTakingKnockback = false)
+                .Finish();
         }
 
         private void InitializeSpikeStunTimer() {
-            _spikeStunTimer = new CountdownTimer(spikeStunTime);
-            _spikeStunTimer.OnBegin += SpikeStunStart;
-            _spikeStunTimer.OnComplete += SpikeStunStop;
+            _spikeStunTimer = CountdownTimerBuilder.Start(spikeStunTime)
+                .WithOnBegin(SpikeStunStart)
+                .WithOnStop(SpikeStunStop)
+                .Finish();
         }
 
         private void InitializeCoyoteTimer() {
-            _coyoteTimer = new CountdownTimer(coyoteTime);
-            _coyoteTimer.OnBegin += () => isGrounded = false;
+            _coyoteTimer = CountdownTimerBuilder.Start(coyoteTime)
+                .WithOnBegin(() => isGrounded = false)
+                .Finish();
         }
 
         private void InitializePlatformTimer() {
-            _platformTimer = new CountdownTimer(minJumpTime);
+            _platformTimer = CountdownTimerBuilder.Start(minJumpTime)
+                .Finish();
         }
         #endregion
 
@@ -182,6 +190,7 @@ namespace Player {
             }
 
             player.animator.SetBool(AnimatorClimbBool, false);
+            player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
 
             GroundCheck();
             isActuallyGrounded = isGrounded;
@@ -200,6 +209,8 @@ namespace Player {
             }
 
             move.x = inputVector.x;
+            
+            player.animator.SetBool(AnimatorIsFallingBool, false);
 
             // if (isGrounded && isJumping) {
             //     velocity.y = jumpForce;
@@ -213,9 +224,9 @@ namespace Player {
                 doubleJumping = false;
             }
             else if (!isHoldingJump && !isJumping) {
-                if (velocity.y > 0)
-                    velocity.y *= fallSpeed;
+                if (velocity.y > 0) velocity.y *= fallSpeed;
                 targetVelocity.y *= fallSpeed;
+                player.animator.SetBool(AnimatorIsFallingBool, true);
             }
             else if (isJumping) {
                 MovingPLatformExit();

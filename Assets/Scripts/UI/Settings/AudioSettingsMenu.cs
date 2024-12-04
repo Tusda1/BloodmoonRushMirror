@@ -9,15 +9,12 @@ namespace UI.Settings {
         [GetOrAddComponent, SerializeField, HideInInspector]
         private UIDocument uiDocument;
 
-        private Tab _audioTab;
         private Slider _masterVolumeSlider;
         private Slider _sfxVolumeSlider;
         private Slider _musicVolumeSlider;
         #endregion
 
         private void Awake() {
-            _audioTab = uiDocument.rootVisualElement.Q<Tab>("AudioTab");
-
             _masterVolumeSlider = uiDocument.rootVisualElement.Q<Slider>("MasterVolumeSlider");
             _sfxVolumeSlider = uiDocument.rootVisualElement.Q<Slider>("SFXVolumeSlider");
             _musicVolumeSlider = uiDocument.rootVisualElement.Q<Slider>("MusicVolumeSlider");

@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using Utilities.EventBus;
 
 namespace FMODScripts {
-    public struct SetVolumeEvent : IEvent {
+    public struct SetVolumeEvent : IFMODEvent {
         public readonly VolumeChanel VolumeChanel;
         public readonly float Volume;
 

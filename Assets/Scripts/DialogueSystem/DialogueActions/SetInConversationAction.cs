@@ -8,7 +8,7 @@ namespace Unity.Behavior {
     [NodeDescription(
         name: "Set In Conversation",
         story: "Set in conversation to [value]",
-        category: "Action",
+        category: "DialogueAction",
         id: "2c0139d7eada6337995f99f22e9bd8b7")]
     public class SetInConversationAction : Action {
         [SerializeReference] public BlackboardVariable<bool> value;

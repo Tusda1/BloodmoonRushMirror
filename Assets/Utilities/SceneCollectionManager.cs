@@ -47,6 +47,7 @@ public static class SceneCollectionManager {
     #endregion
 
     public static void AddToActiveScenes(SceneCollectionSO.SceneInstance scene) => ActiveScenes.Add(scene);
+    public static void ClearActiveScenes() => ActiveScenes.Clear();
 
     public static async Task LoadSceneCollectionAsync(SceneCollectionSO sceneCollectionSO) {
 #if UNITY_EDITOR
@@ -123,7 +124,7 @@ public static class SceneCollectionManager {
         }
         
         foreach (var sceneInstance in sceneCollectionSO.notAllowedPersistentScenes) {
-            foreach (var instance in PersistentScenes.Where(x => x.LoadedScene == sceneInstance.LoadedScene)) {
+            foreach (var instance in PersistentScenes.Where(x => x.LoadedScene == sceneInstance.LoadedScene).ToArray()) {
                 PersistentScenes.Remove(instance);
                 EditorSceneManager.CloseScene(instance.LoadedScene, true);
             }
