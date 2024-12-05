@@ -31,7 +31,7 @@ public class SteamHazard : MonoBehaviour {
         _steamHazardTimer.StartTimer();
     }
     
-    private void OnTriggerStay2D(Collider2D other) {
+    private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             if (other.TryGetComponent<IDamageable>(out var component)) {
                 Vector2 directionToPlayer = (other.transform.position - transform.position).normalized;
