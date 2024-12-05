@@ -125,7 +125,7 @@ MonoBehaviour:
   isAttacking: 0
   hitbox: {fileID: 3672109486144381603}
   bloodSplatter: {fileID: 8517574606943572091}
-  alphaWhenTakingDamage: 0.65
+  alphaWhenTakingDamage: 0.85
   takeDamageScreenShakeIntensity: 0.2
   takeDamageScreenShakeDuration: 0.2
   takeDamageTimeSlowDuration: 0.5
@@ -782,12 +782,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
+      propertyPath: ShapeModule.m_Position.x
+      value: 1.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
+      propertyPath: ShapeModule.m_Position.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
       propertyPath: ShapeModule.m_Rotation.z
-      value: -194.7
+      value: -176.3
       objectReference: {fileID: 0}
     - target: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
       propertyPath: ShapeModule.radius.value
-      value: 0.65
+      value: 2.1
       objectReference: {fileID: 0}
     - target: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
       propertyPath: ColorBySpeedModule.enabled

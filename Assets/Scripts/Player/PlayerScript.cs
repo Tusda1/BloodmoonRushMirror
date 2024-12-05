@@ -139,6 +139,8 @@ namespace Player {
         public void OnInteract(InputValue inputValue) {
             if (!inputValue.isPressed || !PlayerMovementEnabled) return;
 
+            PlayBloodSplatter();
+
             var interactable = InteractCheck();
             if (interactable == null) return;
 
@@ -206,8 +208,12 @@ namespace Player {
 
             _ = cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
             _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
-            
-            bloodSplatter.transform.rotation = new Quaternion(0, 0, 180 * (playerMovement.isFacingRight ? 0 : 1), 0);
+
+            PlayBloodSplatter();
+        }
+
+        public void PlayBloodSplatter() {
+            bloodSplatter.transform.localScale = transform.localScale;
             bloodSplatter.Play();
         }
 
