@@ -292,6 +292,11 @@ namespace Player {
                 }
             }
 
+            if (_smoothMovement.x > 0.1f)
+                isFacingRight = true;
+            else if (_smoothMovement.x < -0.1f)
+                isFacingRight = false;
+
             wasGroundedLastFrame = isActuallyGrounded;
         }
 
@@ -361,8 +366,14 @@ namespace Player {
 
             if (inputVector.x > 0.1f)
                 dashForce = Mathf.Abs(dashForce);
-            else
+            else if (inputVector.x < -0.1f)
                 dashForce = -Mathf.Abs(dashForce);
+            else {
+                if (isFacingRight)
+                    dashForce = Mathf.Abs(dashForce);
+                else
+                    dashForce = -Mathf.Abs(dashForce);
+            }
         }
 
         public void OnDuck(InputValue inputValue) {
