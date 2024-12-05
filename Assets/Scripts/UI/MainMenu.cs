@@ -1,8 +1,8 @@
+using System;
 using Attributes;
 using FMODScripts;
 using UI.Settings;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
 #if UNITY_EDITOR
@@ -13,8 +13,9 @@ namespace UI {
     [RequireComponent(typeof(SettingsMenu))]
     public class MainMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
-        
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private UIDocument uiDocument;
+
         [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
 
         private VisualElement _rootElement;
@@ -28,7 +29,7 @@ namespace UI {
         private VisualElement _mainMenu;
         private VisualElement _settings;
         
-        private static FMODManager FMODManager => FMODManager.Instance;
+        private Action _updateActions = delegate { };
         #endregion
 
         private void Awake() {
@@ -37,7 +38,7 @@ namespace UI {
             _startButton = _rootElement.Q<Button>("StartButton");
             _settingsButton = _rootElement.Q<Button>("SettingsButton");
             _quitButton = _rootElement.Q<Button>("QuitButton");
-        
+
             _menuButton = _rootElement.Q<Button>("MenuButton");
 
             _mainMenu = _rootElement.Q<VisualElement>("MainMenuRoot");
@@ -54,6 +55,15 @@ namespace UI {
             Cursor.lockState = CursorLockMode.None;
 
             _settings.enabledSelf = false;
+
+            _updateActions += AnyKeyPressed;
+        }
+
+        private void AnyKeyPressed() {
+            if (!Input.anyKeyDown) return;
+            _updateActions -= AnyKeyPressed;
+            
+            
         }
 
         private void Start() {
@@ -62,9 +72,11 @@ namespace UI {
         }
 
         private void StartButtonClicked() {
-            
-            
             _ = SceneCollectionManager.LoadSceneCollectionAsync(startSceneCollectionSO);
+        }
+
+        private void Update() {
+            _updateActions.Invoke();
         }
 
         private void SettingsButtonClicked() {
