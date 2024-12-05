@@ -131,7 +131,7 @@ namespace Player {
             PauseMenu.PauseToggle();
         }
 
-        public void OnSkipAction(InputValue inputValue) {
+        public void OnSkipDialogue(InputValue inputValue) {
             if (!inputValue.isPressed) return;
             DialogueUI.Instance?.TriggerOnSkipDialogue();
         }
@@ -317,7 +317,7 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            SaveLoadSystemManager.Bind(this, DataInGameData);
+            SaveLoadSystemManager?.Bind(this, DataInGameData);
         }
 
 #if UNITY_EDITOR
