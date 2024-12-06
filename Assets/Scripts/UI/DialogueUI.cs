@@ -42,6 +42,7 @@ namespace UI {
         }
 
         public void TriggerOnSkipDialogue() {
+            Debug.Log("*** Trigger: OnSkipDialogue event ***");
             OnSkipDialogue.Invoke();
         }
     }

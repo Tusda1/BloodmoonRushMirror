@@ -34,7 +34,9 @@ public class InitializationManager : MonoBehaviour {
 #if UNITY_EDITOR
     [ContextMenu(nameof(DebugSceneCollection))]
     public void DebugSceneCollection() {
-        Debug.Log(SceneCollectionManager.CurrentSceneCollectionSO != null);
+        if (SceneCollectionManager.CurrentSceneCollectionSO == null) {
+            Debug.Log(nameof(SceneCollectionManager.CurrentSceneCollectionSO) + " is null!");
+        }
     }
 #endif
 }

@@ -131,13 +131,15 @@ namespace Player {
             PauseMenu.PauseToggle();
         }
 
-        public void OnSkipAction(InputValue inputValue) {
+        public void OnSkipDialogue(InputValue inputValue) {
             if (!inputValue.isPressed) return;
             DialogueUI.Instance?.TriggerOnSkipDialogue();
         }
 
         public void OnInteract(InputValue inputValue) {
             if (!inputValue.isPressed || !PlayerMovementEnabled) return;
+
+            PlayBloodSplatter();
 
             var interactable = InteractCheck();
             if (interactable == null) return;
@@ -206,8 +208,12 @@ namespace Player {
 
             _ = cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
             _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
-            
-            bloodSplatter.transform.rotation = new Quaternion(0, 0, 180 * (playerMovement.isFacingRight ? 0 : 1), 0);
+
+            PlayBloodSplatter();
+        }
+
+        public void PlayBloodSplatter() {
+            bloodSplatter.transform.localScale = transform.localScale;
             bloodSplatter.Play();
         }
 
@@ -317,7 +323,7 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            SaveLoadSystemManager.Bind(this, DataInGameData);
+            SaveLoadSystemManager?.Bind(this, DataInGameData);
         }
 
 #if UNITY_EDITOR

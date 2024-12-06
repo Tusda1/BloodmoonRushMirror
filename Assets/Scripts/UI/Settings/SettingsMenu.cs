@@ -35,7 +35,7 @@ namespace UI.Settings {
 
         private void Start() {
             _player = ServiceLocator.Get<PlayerScript>();
-            _player.TabNavigation += ChangeTabIndex;
+            // _player.TabNavigation += ChangeTabIndex;
         }
         #endregion
 
