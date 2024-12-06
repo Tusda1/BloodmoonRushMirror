@@ -20,7 +20,6 @@ public class DraculaBatScript : GravityObject
     {
         if (targetVector == Vector2.zero)
         {
-            Debug.LogError("TargetVector is not set");
             gameObject.SetActive(false);
         }
     }

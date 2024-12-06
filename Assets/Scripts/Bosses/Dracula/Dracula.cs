@@ -12,5 +12,8 @@ public class Dracula : BossBase
         
         _batPrefab = Resources.Load<GameObject>("Prefabs/DraculaBat");
         pooler = new Pooler(_batPrefab, 15, gameObject);
+        
+        GravityModifier = 0;
+        DisableGravity();
     }
 }

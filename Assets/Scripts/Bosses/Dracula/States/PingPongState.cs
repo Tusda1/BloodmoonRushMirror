@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 using Player;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class PingPongState : DraculaState
 {
@@ -21,15 +23,18 @@ public class PingPongState : DraculaState
     }
     
     private PingPong _pingPongState;
-    
-    private void OnEnable()
+
+    private void Start()
     {
         //Initialize variables
         _pingPongCircle = Resources.Load<GameObject>("Prefabs/PingPongCircle");
         _player = ServiceLocator.Get<PlayerScript>().gameObject;
         
         _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
-        
+    }
+
+    private void OnEnable()
+    {
         // Find bottom right and left corner by sending a ray straight down and then right
         var hit = Physics2D.Raycast(transform.position, Vector2.down, 100, LayerMask.GetMask("Ground"));
         if (hit.collider == null){Debug.LogError("Couldn't find ground"); return;}
@@ -53,7 +58,7 @@ public class PingPongState : DraculaState
         leftCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         
         // 50% chance to go left or right
-        if (UnityEngine.Random.Range(0, 2) == 0)
+        if (Random.Range(0, 2) == 0)
         {
             _teleportPosition = rightCorner;
         }
@@ -70,7 +75,7 @@ public class PingPongState : DraculaState
         switch (_pingPongState)
         {
             case PingPong.Teleport:
-                if (_teleport.IsTeleporting) _teleport.TeleportToLocation(_teleportPosition);
+                if (!_teleport.IsTeleporting) _teleport.TeleportToLocation(_teleportPosition);
                 break;
             case PingPong.Spawn:
                 SpawnPingPongCircle();

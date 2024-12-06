@@ -28,6 +28,11 @@ public class DraculaBrain : MonoBehaviour
     private void Awake()
     {
         _states = GetComponentsInChildren<DraculaState>();
+
+        foreach (var state in _states)
+        {
+            state.OnStateEnd += CurrentStateEnded;
+        }
     }
 
     private void Start()
@@ -74,6 +79,7 @@ public class DraculaBrain : MonoBehaviour
         for (var i = 0; i < amount; i++)
         {
             _attackQueue.Add(states[Random.Range(0, states.Length)]);
+            print(_attackQueue[i]);
         }
         
         // Add PingPongState to the end of the queue
@@ -87,16 +93,16 @@ public class DraculaBrain : MonoBehaviour
         _attackQueue.RemoveAt(0);
         _lastInQueue = _attackQueue.Count == 0;
     }
-
-    private void Update()
+    
+    private void CurrentStateEnded()
     {
         if (!_isFighting) return;
         
-        if (_currentState.StateFinished && _lastInQueue)
+        if (_lastInQueue)
         {
             FillAttackQueue();
         }
-        else if(_currentState.StateFinished)
+        else
         {
             MoveToNextState();
         }

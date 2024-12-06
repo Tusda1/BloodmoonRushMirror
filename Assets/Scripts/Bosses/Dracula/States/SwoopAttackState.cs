@@ -8,8 +8,8 @@ public class SwoopAttackState : DraculaState
     [SerializeField] private float swoopDuration = 2f;
     [SerializeField] private float easePower = 2f;
     [SerializeField] private float shootCooldown = 0.5f;
+    [SerializeField] private float shootDuration = 1f;
     [SerializeField] private int swoopAmount = 3;
-    [SerializeField] private int shootAmount = 6;
     
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
@@ -18,7 +18,7 @@ public class SwoopAttackState : DraculaState
     private int swoopCount;
     private SwoopState _swoopState;
     private float _shootTimer;
-    private int _shootCount;
+    private float _timeSinceShoot;
 
     private Teleport _teleport;
     private Transform _player;
@@ -39,9 +39,6 @@ public class SwoopAttackState : DraculaState
 
     private void OnEnable()
     {
-        // Set variables
-        Boss.gravity = 0;
-        
         // Send a ray straight up and find the roof
         var hit = Physics2D.Raycast(transform.position, Vector2.up, 100, LayerMask.GetMask("Ground"));
         if (hit.collider == null){Debug.LogError("Couldn't find roof"); return;}
@@ -85,11 +82,8 @@ public class SwoopAttackState : DraculaState
         _swoopArcBottom = hit.point + Vector2.up;
         
         _swoopState = SwoopState.Teleporting;
-    }
-
-    private void OnDisable()
-    {
-        Boss.gravity = 1;
+        
+        print(_swoopState);
     }
 
     private void Update()
@@ -106,7 +100,7 @@ public class SwoopAttackState : DraculaState
                 Shoot();
                 break;
             case SwoopState.Finished:
-                Finished();
+                EndState();
                 break;
         }
     }
@@ -132,6 +126,7 @@ public class SwoopAttackState : DraculaState
         {
             _swoopState = SwoopState.Shooting;
             swoopCount++;
+            _timeSinceShoot = Time.time;
             return;
         }
 
@@ -170,8 +165,23 @@ public class SwoopAttackState : DraculaState
     
     private void Shoot()
     {
+        print(swoopCount);
+        
+        // If the shoot duration has passed, switch to the next swoop
+        if (Time.time - _timeSinceShoot > shootDuration)
+        {
+            if (swoopCount >= swoopAmount)
+            {
+                EndState();
+            }
+            else
+            {
+                (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
+                SwoopStart();
+            }
+        }
         // Shoot a projectile at the player
-        if (Time.time - _shootTimer > shootCooldown)
+        else if (Time.time - _shootTimer > shootCooldown)
         {
             _shootTimer = Time.time;
             
@@ -181,26 +191,9 @@ public class SwoopAttackState : DraculaState
             // Shoot a projectile at the random point
             var position = transform.position;
             var projectile = DraculaReference.pooler.GetPooledObject();
+            projectile.transform.position = position;
             projectile.GetComponent<DraculaBatScript>().targetVector = (randomPoint - (Vector2)position).normalized;
-            
-            _shootCount++;
-
-            if (_shootCount < shootAmount) return;
-            
-            if (swoopCount >= swoopAmount)
-            {
-                _swoopState = SwoopState.Finished;
-            }
-            else
-            {
-                (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
-                _swoopState = SwoopState.Swooping;
-            }
+            projectile.SetActive(true);
         }
-    }
-    
-    private void Finished()
-    {
-        StateFinished = true;
     }
 }

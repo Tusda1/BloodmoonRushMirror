@@ -66,6 +66,8 @@ public class DashAttackState : DraculaState
         }
         
         _dashState = DashState.Teleporting;
+        
+        print(_dashState);
     }
     
     private void Update()
@@ -90,6 +92,7 @@ public class DashAttackState : DraculaState
     private void OnTeleportEnd()
     {
         _dashState = DashState.PreparingDash;
+        Boss.EnableGravity();
     }
 
     private void PrepareDash()
@@ -117,7 +120,8 @@ public class DashAttackState : DraculaState
     {
         if (_dashCount >= dashAmount)
         {
-            StateFinished = true;
+            EndState();
+            Boss.DisableGravity();
             return;
         }
         

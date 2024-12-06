@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 public class BatAttackState : DraculaState
 {
     [SerializeField] private float attackLength = 0.5f;
+    [SerializeField] private float batSpawnRate = 0.1f;
     
     private Collider2D _collider;
     private float _timeSinceAttackStart;
@@ -81,12 +82,12 @@ public class BatAttackState : DraculaState
         // If the attack has been going on for 5 seconds, switch to the next state
         if (Time.time - _timeSinceAttackStart > attackLength)
         {
-            StateFinished = true;
+            EndState();
             return;
         }
         
         // Spawn a bat every 0.5 seconds randomly on the attack side of the collider
-        if (Time.time - _timeSinceLastBatSpawn > 0.1f)
+        if (Time.time - _timeSinceLastBatSpawn > batSpawnRate)
         {
             _timeSinceLastBatSpawn = Time.time;
             var position = _attackDirection == Vector2.left ? _collider.bounds.min : _collider.bounds.max;

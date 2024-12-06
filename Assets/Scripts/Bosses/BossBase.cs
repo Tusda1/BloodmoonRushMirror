@@ -23,7 +23,6 @@ public class BossBase : GravityObject
     
     public event Action OnBattleStart;
     
-    [HideInInspector] public float gravity;
     [HideInInspector] public float targetVelocityX;
     [HideInInspector] public bool bossGrounded;
     [HideInInspector] public Collider2D bossCollider;
@@ -41,7 +40,6 @@ public class BossBase : GravityObject
     {
         base.Start();
         bossCollider = GetComponent<Collider2D>();
-        gravity = GravityModifier;
         
         StartCoroutine(LateActivation());
     }
@@ -55,12 +53,21 @@ public class BossBase : GravityObject
     protected override void ComputeVelocity()
     {
         targetVelocity.x = targetVelocityX;
-        GravityModifier = gravity;
         bossGrounded = isGrounded;
     }
     
     public void StartBattle()
     {
         OnBattleStart?.Invoke();
+    }
+    
+    public void EnableGravity()
+    {
+        GravityModifier = 1f;
+    }
+    
+    public void DisableGravity()
+    {
+        GravityModifier = 0f;
     }
 }

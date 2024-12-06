@@ -8,7 +8,6 @@ public class JumpEnemy : ReactiveBase
     [SerializeField] private float yPositionTolerance = 0.05f;
     
     private Rigidbody2D _playerRb2D;
-    private bool _isJumping;
     private Vector2 _lastFramePosition;
     private bool _readyToJump;
     
@@ -39,7 +38,6 @@ public class JumpEnemy : ReactiveBase
     {
         _readyToJump = false;
         GravityModifier = 0;
-        _isJumping = true;
         float yDifference = targetObject.position.y - _lastFramePosition.y;
 
         while (yDifference > 0)

@@ -21,6 +21,8 @@ public class LaserAttackState : DraculaState
     private float _firingTimer;
     private GameObject _laserObject;
     
+    private bool _hasStartedFiring;
+    
     private enum LaserAttackStage
     {
         Teleporting,
@@ -74,7 +76,7 @@ public class LaserAttackState : DraculaState
         
         stage = LaserAttackStage.Teleporting;
     }
-    
+
     private void Update()
     {
         switch (stage)
@@ -133,17 +135,23 @@ public class LaserAttackState : DraculaState
     
     private void Fire()
     {
-        _laserObject.SetActive(true);
-        _laserObject.transform.position = transform.position;
+        if (!_hasStartedFiring)
+        {
+            _laserObject.SetActive(true);
+            _laserObject.transform.position = transform.position;
         
-        // Set the laser angle to point at the fire position
-        var angle = Mathf.Atan2(_firePosition.y - transform.position.y, _firePosition.x - transform.position.x) * Mathf.Rad2Deg;
-        _laserObject.transform.rotation = Quaternion.Euler(0, 0, angle);
+            // Set the laser angle to point at the fire position
+            var angle = Mathf.Atan2(_firePosition.y - transform.position.y, _firePosition.x - transform.position.x) * Mathf.Rad2Deg;
+            _laserObject.transform.rotation = Quaternion.Euler(0, 0, angle);
+            
+            _hasStartedFiring = true;
+        }
         
         _firingTimer += Time.deltaTime;
         if (_firingTimer >= firingTime)
         {
-            StateFinished = true;
+            _laserObject.SetActive(false);
+            EndState();
         }
     }
 }
