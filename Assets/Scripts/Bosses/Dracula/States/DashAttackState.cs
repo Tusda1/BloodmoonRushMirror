@@ -66,8 +66,6 @@ public class DashAttackState : DraculaState
         }
         
         _dashState = DashState.Teleporting;
-        
-        print(_dashState);
     }
     
     private void Update()

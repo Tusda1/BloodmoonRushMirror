@@ -5,8 +5,6 @@ using UnityEngine.Serialization;
 
 public class SwoopAttackState : DraculaState
 {
-    [SerializeField] private float swoopDuration = 2f;
-    [SerializeField] private float easePower = 2f;
     [SerializeField] private float shootCooldown = 0.5f;
     [SerializeField] private float shootDuration = 1f;
     [SerializeField] private int swoopAmount = 3;
@@ -14,13 +12,14 @@ public class SwoopAttackState : DraculaState
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
     private Vector2 _swoopArcBottom;
-    private float swoopStartTime;
     private int swoopCount;
     private SwoopState _swoopState;
     private float _shootTimer;
     private float _timeSinceShoot;
+    private Vector2 _temporaryPosition;
 
     private Teleport _teleport;
+    [SerializeField] private Swoop swoop = new();
     private Transform _player;
     
     private enum SwoopState 
@@ -34,11 +33,14 @@ public class SwoopAttackState : DraculaState
     private void Start()
     {
         _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
+        swoop.SetOnSwoopEnd(SwoopEnd);
         _player = ServiceLocator.Get<PlayerScript>().transform;
     }
 
     private void OnEnable()
     {
+        swoopCount = 0;
+        
         // Send a ray straight up and find the roof
         var hit = Physics2D.Raycast(transform.position, Vector2.up, 100, LayerMask.GetMask("Ground"));
         if (hit.collider == null){Debug.LogError("Couldn't find roof"); return;}
@@ -82,8 +84,6 @@ public class SwoopAttackState : DraculaState
         _swoopArcBottom = hit.point + Vector2.up;
         
         _swoopState = SwoopState.Teleporting;
-        
-        print(_swoopState);
     }
 
     private void Update()
@@ -94,7 +94,7 @@ public class SwoopAttackState : DraculaState
                 if (!_teleport.IsTeleporting) _teleport.TeleportToLocation(_swoopOrigin);
                 break;
             case SwoopState.Swooping:
-                Swoop();
+                transform.position = swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom);
                 break;
             case SwoopState.Shooting:
                 Shoot();
@@ -107,66 +107,18 @@ public class SwoopAttackState : DraculaState
     
     private void OnTeleportEnd()
     {
-        SwoopStart();
-    }
-    
-    private void SwoopStart()
-    {
         _swoopState = SwoopState.Swooping;
-        swoopStartTime = Time.time;
     }
-    
-    private void Swoop()
+
+    private void SwoopEnd()
     {
-        // Calculate t with easing for smooth acceleration and deceleration
-        float t = (Time.time - swoopStartTime) / swoopDuration;
-    
-        // Clamp t to the range [0, 1]
-        if (t > 1f)
-        {
-            _swoopState = SwoopState.Shooting;
-            swoopCount++;
-            _timeSinceShoot = Time.time;
-            return;
-        }
-
-        // Apply easing using easePower
-        if (t < 0.5f)
-        {
-            t = Mathf.Pow(t * 2, easePower) / 2f; // Ease-in
-        }
-        else
-        {
-            t = 1 - Mathf.Pow(2 * (1 - t), easePower) / 2f; // Ease-out
-        }
-
-        // Calculate the position using the eased t
-        Vector2 position = CalculateBezierPoint(t, _swoopOrigin, _swoopTarget, _swoopArcBottom);
-        transform.position = position;
+        _swoopState = SwoopState.Shooting;
+        swoopCount++;
+        _timeSinceShoot = Time.time;
     }
-
-    private Vector2 CalculateBezierPoint(float t, Vector2 p0, Vector2 p2, Vector2 peak)
-    {
-        // Calculate the control point p1 based on the desired peak
-        Vector2 p1 = 2 * peak - 0.5f * p0 - 0.5f * p2;
-
-        // Standard quadratic Bézier curve calculation
-        float u = 1 - t;
-        float tt = t * t;
-        float uu = u * u;
-
-        Vector2 p = uu * p0; // (1-t)^2 * p0
-        p += 2 * u * t * p1; // 2 * (1-t) * t * p1
-        p += tt * p2; // t^2 * p2
-
-        return p;
-    }
-    
     
     private void Shoot()
     {
-        print(swoopCount);
-        
         // If the shoot duration has passed, switch to the next swoop
         if (Time.time - _timeSinceShoot > shootDuration)
         {
@@ -177,7 +129,7 @@ public class SwoopAttackState : DraculaState
             else
             {
                 (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
-                SwoopStart();
+                _swoopState = SwoopState.Swooping;
             }
         }
         // Shoot a projectile at the player
