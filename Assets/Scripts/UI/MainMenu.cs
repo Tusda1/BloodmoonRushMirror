@@ -19,6 +19,9 @@ namespace UI {
         [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
 
         private VisualElement _rootElement;
+        private VisualElement _mainMenuElement;
+
+        private Label _pressAnyKeyLabel;
 
         private Button _startButton;
         private Button _settingsButton;
@@ -28,12 +31,15 @@ namespace UI {
 
         private VisualElement _mainMenu;
         private VisualElement _settings;
-        
+
         private Action _updateActions = delegate { };
         #endregion
 
         private void Awake() {
             _rootElement = uiDocument.rootVisualElement;
+
+            _mainMenuElement = _rootElement.Q<VisualElement>("MainMenu");
+            _pressAnyKeyLabel = _rootElement.Q<Label>("PressAnyKeyLabel");
 
             _startButton = _rootElement.Q<Button>("StartButton");
             _settingsButton = _rootElement.Q<Button>("SettingsButton");
@@ -56,14 +62,26 @@ namespace UI {
 
             _settings.enabledSelf = false;
 
-            _updateActions += AnyKeyPressed;
+            _updateActions += () => {
+                if (Input.anyKeyDown) _ = AnyKeyPressed();
+            };
         }
 
-        private void AnyKeyPressed() {
-            if (!Input.anyKeyDown) return;
-            _updateActions -= AnyKeyPressed;
-            
-            
+        private async Awaitable AnyKeyPressed() {
+            _updateActions = delegate { };
+
+            for (var i = 0; i < 10; i++) {
+                _pressAnyKeyLabel.style.color = new StyleColor(new Color(1, 1, 1, 0.5f));
+                await Awaitable.WaitForSecondsAsync(0.05f);
+                _pressAnyKeyLabel.style.color = new StyleColor(new Color(1, 1, 1, 1));
+                await Awaitable.WaitForSecondsAsync(0.05f);
+            }
+
+            _pressAnyKeyLabel.style.color = new StyleColor(new Color(0, 0, 0, 0));
+
+            _mainMenuElement.RemoveFromClassList("down");
+
+            _startButton.Focus();
         }
 
         private void Start() {
