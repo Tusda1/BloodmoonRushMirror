@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4752074436187100403}
   - component: {fileID: 367411730068349}
   - component: {fileID: 4709458564733395111}
+  - component: {fileID: 3539446349966311831}
   m_Layer: 0
   m_Name: MenuUI
   m_TagString: Untagged
@@ -70,6 +71,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiDocument: {fileID: 1723220102761852235}
   startSceneCollectionSO: {fileID: 11400000, guid: 9ba3e2cdc0b088c48b4e85ea13b1bb36, type: 2}
+  backgroundAnimator: {fileID: 0}
 --- !u!114 &5538277227840435238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,3 +128,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiDocument: {fileID: 1723220102761852235}
+--- !u!114 &3539446349966311831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3623942027125754274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c5d226bcb49a545aced4cd4bd8e888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelSettings: {fileID: 11400000, guid: e93a3f3523783734e98e7d898716c81f, type: 2}
+  uiDocument: {fileID: 1723220102761852235}
+  uiCamera: {fileID: 0}

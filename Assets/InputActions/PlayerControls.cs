@@ -577,12 +577,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""TabNavigation"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""1999f157-35e6-43dc-9dfe-1cb993f337d6"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Integer"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
