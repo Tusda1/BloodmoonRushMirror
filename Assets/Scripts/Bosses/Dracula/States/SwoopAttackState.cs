@@ -19,7 +19,6 @@ public class SwoopAttackState : DraculaState
     private SwoopState _swoopState;
     private float _shootTimer;
     private int _shootCount;
-    private GameObject _projectilePrefab;
 
     private Teleport _teleport;
     private Transform _player;
@@ -36,7 +35,6 @@ public class SwoopAttackState : DraculaState
     {
         _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
         _player = ServiceLocator.Get<PlayerScript>().transform;
-        _projectilePrefab = Resources.Load<GameObject>("Prefabs/DraculaBat");
     }
 
     private void OnEnable()
@@ -182,22 +180,21 @@ public class SwoopAttackState : DraculaState
             
             // Shoot a projectile at the random point
             var position = transform.position;
-            GameObject projectile = Instantiate(_projectilePrefab, position, Quaternion.identity);
-            projectile.GetComponent<Rigidbody2D>().linearVelocity = (randomPoint - (Vector2)position).normalized * 5;
+            var projectile = DraculaReference.pooler.GetPooledObject();
+            projectile.GetComponent<DraculaBatScript>().targetVector = (randomPoint - (Vector2)position).normalized;
             
             _shootCount++;
+
+            if (_shootCount < shootAmount) return;
             
-            if (_shootCount >= shootAmount)
+            if (swoopCount >= swoopAmount)
             {
-                if (swoopCount >= swoopAmount)
-                {
-                    _swoopState = SwoopState.Finished;
-                }
-                else
-                {
-                    (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
-                    _swoopState = SwoopState.Swooping;
-                }
+                _swoopState = SwoopState.Finished;
+            }
+            else
+            {
+                (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
+                _swoopState = SwoopState.Swooping;
             }
         }
     }

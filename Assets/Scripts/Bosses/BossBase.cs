@@ -37,7 +37,7 @@ public class BossBase : GravityObject
         CurrentHealth = maxHealth;
     }
     
-    protected new void Start()
+    protected override void Start()
     {
         base.Start();
         bossCollider = GetComponent<Collider2D>();
@@ -52,9 +52,8 @@ public class BossBase : GravityObject
         OnBattleStart?.Invoke();
     }
 
-    private new void Update()
+    protected override void ComputeVelocity()
     {
-        base.Update();
         targetVelocity.x = targetVelocityX;
         GravityModifier = gravity;
         bossGrounded = isGrounded;

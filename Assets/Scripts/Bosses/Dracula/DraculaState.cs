@@ -7,4 +7,6 @@ public class DraculaState : BossState
     public DraculaStateCategory Category => category;
     
     public bool StateFinished { get; protected set; }
+    
+    protected Dracula DraculaReference => (Dracula)Boss;
 }

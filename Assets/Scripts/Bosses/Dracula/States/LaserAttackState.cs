@@ -36,7 +36,16 @@ public class LaserAttackState : DraculaState
         _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
         _player = ServiceLocator.Get<PlayerScript>().transform;
         _trackerPrefab = Resources.Load<GameObject>("Prefabs/LineRenderer");
-        _laserPrefab = Resources.Load<GameObject>("Prefabs/Laser");
+        _laserPrefab = Resources.Load<GameObject>("Prefabs/BigLaser");
+        
+        if (_laserObject == null)
+        {
+            _laserObject = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            _laserObject.SetActive(false);
+            
+            //Set as child of boss
+            _laserObject.transform.parent = transform;
+        }
     }
 
     private void OnEnable()
@@ -124,10 +133,12 @@ public class LaserAttackState : DraculaState
     
     private void Fire()
     {
-        if (_laserObject == null)
-        {
-            _laserObject = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-        }
+        _laserObject.SetActive(true);
+        _laserObject.transform.position = transform.position;
+        
+        // Set the laser angle to point at the fire position
+        var angle = Mathf.Atan2(_firePosition.y - transform.position.y, _firePosition.x - transform.position.x) * Mathf.Rad2Deg;
+        _laserObject.transform.rotation = Quaternion.Euler(0, 0, angle);
         
         _firingTimer += Time.deltaTime;
         if (_firingTimer >= firingTime)

@@ -1,16 +1,19 @@
+using System;
+using Player;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BatAttackState : DraculaState
 {
     [SerializeField] private float attackLength = 0.5f;
     
-    private GameObject _batPrefab;
     private Collider2D _collider;
     private float _timeSinceAttackStart;
     private float _timeSinceLastBatSpawn;
     private Vector2 _teleportLocation;
-    private Pooler _pooler;
     private Teleport _teleport;
+    private Transform _player;
+    private Vector2 _attackDirection;
     
     private enum AttackPhase
     {
@@ -19,16 +22,16 @@ public class BatAttackState : DraculaState
     }
     
     private AttackPhase _attackPhase;
-    
+
+    private void Start()
+    {
+        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
+        _collider = GetComponent<Collider2D>();
+        _player = ServiceLocator.Get<PlayerScript>().transform;
+    }
+
     private void OnEnable()
     {
-        _batPrefab = Resources.Load<GameObject>("Prefabs/DraculaBat");
-        _pooler = new Pooler(_batPrefab, 10);
-        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
-        
-        _collider = GetComponent<Collider2D>();
-        _timeSinceAttackStart = Time.time;
-        
         // Send a ray down to find ground level
         var hit = Physics2D.Raycast(transform.position, Vector2.down, 100, LayerMask.GetMask("Ground"));
         if (hit.collider == null){Debug.LogError("Couldn't find ground"); return;}
@@ -70,6 +73,7 @@ public class BatAttackState : DraculaState
     {
         _attackPhase = AttackPhase.SpawningBats;
         _timeSinceAttackStart = Time.time;
+        _attackDirection = (_player.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
     }
 
     private void Bats()
@@ -81,14 +85,15 @@ public class BatAttackState : DraculaState
             return;
         }
         
-        // Spawn a bat every 0.5 seconds randomly on the left side of the collider
+        // Spawn a bat every 0.5 seconds randomly on the attack side of the collider
         if (Time.time - _timeSinceLastBatSpawn > 0.1f)
         {
             _timeSinceLastBatSpawn = Time.time;
-            var position = _collider.bounds.min;
+            var position = _attackDirection == Vector2.left ? _collider.bounds.min : _collider.bounds.max;
             position.y += Random.Range(0, _collider.bounds.size.y);
-            var bat = _pooler.GetPooledObject();
+            var bat = DraculaReference.pooler.GetPooledObject();
             bat.transform.position = position;
+            bat.GetComponent<DraculaBatScript>().targetVector = _attackDirection;
             bat.SetActive(true);
         }
     }
