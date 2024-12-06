@@ -3,12 +3,12 @@
     <engine:Template name="AudioSettingsMenuVisualTree" src="project://database/Assets/Utilities/UI/AudioSettingsMenu.uxml?fileID=9197481963319205126&amp;guid=99034c67e3340104ea3a2cb257b4ee9b&amp;type=3#AudioSettingsMenu" />
     <engine:Template name="ControlsSettingsMenu" src="project://database/Assets/Utilities/UI/ControlsSettingsMenu.uxml?fileID=9197481963319205126&amp;guid=924f5ce904734204294ed16cfc155b86&amp;type=3#ControlsSettingsMenu" />
     <Style src="project://database/Assets/UI%20Toolkit/Menu.uss?fileID=7433441132597879392&amp;guid=11ac15a71fcec9a46a277054ddd917f6&amp;type=3#Menu" />
-    <engine:VisualElement name="SettingsMenuRoot" style="flex-grow: 1;">
+    <engine:VisualElement name="SettingsMenuRoot" style="flex-grow: 1; height: 360px; max-height: 360px; min-height: 360px;">
         <engine:Label text="Settings" style="align-self: center; font-size: 64px; -unity-font-style: normal; -unity-text-align: upper-left; color: rgb(255, 255, 255); -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); margin-top: 8px; margin-bottom: 8px; margin-right: 8px; margin-left: 8px;" />
         <engine:TabView name="TabbedView" style="height: 75%; align-self: center; align-items: center; width: 75%; -unity-font-definition: url(&quot;project://database/Packages/com.erlend-eiken-oppedal.debuglogger/Editor/home-video-font/HomeVideo-BLG6G.ttf?fileID=12800000&amp;guid=5f2ba05984567144fba2558348923b14&amp;type=3#HomeVideo-BLG6G&quot;);">
             <engine:Tab label="Video" name="VideoTab" tabindex="1" focusable="false" class="tab">
                 <engine:ScrollView class="scrollView" style="height: 769px;">
-                    <engine:Instance template="SettingsMenuVisualTree" style="width: auto; height: 100%; align-self: center;" />
+                    <engine:Instance template="SettingsMenuVisualTree" style="align-self: center; height: 240px;" />
                 </engine:ScrollView>
             </engine:Tab>
             <engine:Tab label="Audio" name="AudioTab" tabindex="2" focusable="false" data-source-type="FmodManager, Assembly-CSharp" class="tab">

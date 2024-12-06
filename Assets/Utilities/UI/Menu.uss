@@ -55,7 +55,7 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    min-width: 369px;
+    min-width: 346px;
     height: 24px;
     -unity-text-align: middle-left;
 }
@@ -85,7 +85,7 @@
 }
 
 .sliderInt {
-    width: 487px;
+    width: 458px;
     height: 41px;
     -unity-font-definition: resource('Fonts/NPCUi');
     background-color: rgba(255, 255, 255, 0);
@@ -100,6 +100,7 @@
     margin-bottom: 14px;
     margin-left: 14px;
     opacity: 1;
+    max-width: 413px;
 }
 
 #SettingsDiv > #Elements > #FPSLimiterSlider > .unity-slider-int__input > #unity-text-field > #unity-text-input {
@@ -150,4 +151,17 @@
     padding-right: 5px;
     padding-bottom: 0;
     padding-left: 0;
+}
+
+#Elements > VisualElement > #FPSLimiterSlider > .unity-slider-int__input > #unity-text-field > #unity-text-input {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-text-align: middle-center;
+    white-space: normal;
 }

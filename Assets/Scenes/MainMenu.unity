@@ -164,7 +164,7 @@ MonoBehaviour:
   m_ScrollWheelAction: {fileID: 6240969308177333660, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
   m_TrackedDevicePositionAction: {fileID: 0}
   m_TrackedDeviceOrientationAction: {fileID: 0}
-  m_DeselectOnBackgroundClick: 1
+  m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
   m_ScrollDeltaPerTick: 6
@@ -398,7 +398,7 @@ Transform:
   m_GameObject: {fileID: 697021945}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -473,7 +473,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6313744830265500261, guid: bbf04c52693f8cd4aa90255d50e4f05b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 6313744830265500261, guid: bbf04c52693f8cd4aa90255d50e4f05b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -968,6 +968,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1728976595}
+  - component: {fileID: 1728976596}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -998,6 +999,33 @@ Transform:
   - {fileID: 1267261140}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1728976596
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728976594}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 07e013d0df22a4f4b9f344450a96495c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!20 &1773178541 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2116003406965450935, guid: e45c0f90e9abe7b4480e44f428e3953c, type: 3}
+  m_PrefabInstance: {fileID: 1821984057}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1821984057
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1006,6 +1034,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1167369021327575055, guid: e45c0f90e9abe7b4480e44f428e3953c, type: 3}
+      propertyPath: m_TagString
+      value: UICamera
+      objectReference: {fileID: 0}
     - target: {fileID: 2116003406965450935, guid: e45c0f90e9abe7b4480e44f428e3953c, type: 3}
       propertyPath: orthographic size
       value: 11.25
@@ -1083,7 +1115,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1992800537
 Transform:
   m_ObjectHideFlags: 0
@@ -1125,55 +1157,55 @@ MonoBehaviour:
     objectTransform: {fileID: 0}
     spriteRenderer: {fileID: 0}
     xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: 0.2
+    xAxisEffectMultiplier: -0.2
     infiniteScrollingXAxis: 0
     yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: 0.2
+    yAxisEffectMultiplier: -0.2
     infiniteScrollingYAxis: 0
   - gameObject: {fileID: 1546840295}
     objectTransform: {fileID: 0}
     spriteRenderer: {fileID: 0}
     xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: 0.4
+    xAxisEffectMultiplier: -0.4
     infiniteScrollingXAxis: 0
     yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: 0.4
+    yAxisEffectMultiplier: -0.4
     infiniteScrollingYAxis: 0
   - gameObject: {fileID: 1371654730}
     objectTransform: {fileID: 0}
     spriteRenderer: {fileID: 0}
     xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: 0.5
+    xAxisEffectMultiplier: -0.5
     infiniteScrollingXAxis: 0
     yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: 0.5
+    yAxisEffectMultiplier: -0.5
     infiniteScrollingYAxis: 0
   - gameObject: {fileID: 1181674707}
     objectTransform: {fileID: 0}
     spriteRenderer: {fileID: 0}
     xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: 0.6
+    xAxisEffectMultiplier: -0.6
     infiniteScrollingXAxis: 0
     yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: 0.6
+    yAxisEffectMultiplier: -0.6
     infiniteScrollingYAxis: 0
   - gameObject: {fileID: 304799172}
     objectTransform: {fileID: 0}
     spriteRenderer: {fileID: 0}
     xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: 0.8
+    xAxisEffectMultiplier: -0.8
     infiniteScrollingXAxis: 0
     yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: 0.8
+    yAxisEffectMultiplier: -0.8
     infiniteScrollingYAxis: 0
   - gameObject: {fileID: 1267261139}
     objectTransform: {fileID: 0}
     spriteRenderer: {fileID: 0}
     xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: 1
+    xAxisEffectMultiplier: -1
     infiniteScrollingXAxis: 0
     yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: 1
+    yAxisEffectMultiplier: -1
     infiniteScrollingYAxis: 0
 --- !u!4 &2030058165 stripped
 Transform:
@@ -1189,9 +1221,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 983109414922428253, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
-      propertyPath: eventSystem
+      propertyPath: backgroundAnimator
       value: 
-      objectReference: {fileID: 300045710}
+      objectReference: {fileID: 1728976596}
     - target: {fileID: 2864453458472516519, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1232,14 +1264,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3539446349966311831, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
+      propertyPath: uiCamera
+      value: 
+      objectReference: {fileID: 1773178541}
     - target: {fileID: 3623942027125754274, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
       propertyPath: m_Name
       value: MenuUI
       objectReference: {fileID: 0}
-    - target: {fileID: 3623942027125754274, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 5538277227840435238, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
+      propertyPath: tabNavigateAction
+      value: 
+      objectReference: {fileID: 7896978939624929561, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1260,7 +1296,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1027482607831339672, guid: a496887a062f70141a10e736fbdbedf5, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1027482607831339672, guid: a496887a062f70141a10e736fbdbedf5, type: 3}
       propertyPath: m_PlayOnAwake
@@ -1280,7 +1316,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2956215394542815659, guid: a496887a062f70141a10e736fbdbedf5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 3853156973407245567, guid: a496887a062f70141a10e736fbdbedf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1292,7 +1328,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3853156973407245567, guid: a496887a062f70141a10e736fbdbedf5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 4205926151463777829, guid: a496887a062f70141a10e736fbdbedf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1336,7 +1372,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4509438348955534516, guid: a496887a062f70141a10e736fbdbedf5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5698325296825627487, guid: a496887a062f70141a10e736fbdbedf5, type: 3}
       propertyPath: m_Name

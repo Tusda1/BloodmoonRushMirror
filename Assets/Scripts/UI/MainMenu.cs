@@ -17,6 +17,7 @@ namespace UI {
         private UIDocument uiDocument;
 
         [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
+        [SerializeField, Required] private Animator backgroundAnimator;
 
         private VisualElement _rootElement;
         private VisualElement _mainMenuElement;
@@ -63,12 +64,14 @@ namespace UI {
             _settings.enabledSelf = false;
 
             _updateActions += () => {
-                if (Input.anyKeyDown) _ = AnyKeyPressed();
+                if (Input.GetKey(KeyCode.K)) _ = AnyKeyPressed();
             };
         }
 
         private async Awaitable AnyKeyPressed() {
             _updateActions = delegate { };
+            
+            backgroundAnimator.Play("MenuZoom");
 
             for (var i = 0; i < 10; i++) {
                 _pressAnyKeyLabel.style.color = new StyleColor(new Color(1, 1, 1, 0.5f));
