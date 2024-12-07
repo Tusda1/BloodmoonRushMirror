@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WheelOfDeathScript : MonoBehaviour
+public class WheelOfDeathScript : MonoBehaviour, IDamageable
 {
     [SerializeField] private Transform centerPoint; // The center point around which the object will move
     [SerializeField] private float radius = 5f; // The radius of the circular path
@@ -39,6 +39,11 @@ public class WheelOfDeathScript : MonoBehaviour
         positionCount++;
         lineRenderer.positionCount = positionCount;
         lineRenderer.SetPosition(positionCount - 1, transform.position);
+    }
+    
+    public void TakeDamage(DamageInstance enemyDamageInstance)
+    {
+        // Do nothing
     }
 
     private void OnTriggerEnter2D(Collider2D other)
