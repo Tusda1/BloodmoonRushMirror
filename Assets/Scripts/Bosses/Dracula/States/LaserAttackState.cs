@@ -8,7 +8,6 @@ public class LaserAttackState : DraculaState
     [SerializeField] private float waitingTime;
     [SerializeField] private float firingTime;
     
-    private Teleport _teleport;
     private Vector2 _teleportDestination;
     private Vector2 _firePosition;
     private Transform _player;
@@ -22,6 +21,9 @@ public class LaserAttackState : DraculaState
     private GameObject _laserObject;
     
     private bool _hasStartedFiring;
+    
+    private Teleport _teleport;
+    private TeleportConditionalActivation _teleportConditionalActivation = new();
     
     private enum LaserAttackStage
     {
@@ -82,7 +84,7 @@ public class LaserAttackState : DraculaState
         switch (stage)
         {
             case LaserAttackStage.Teleporting:
-                if (!_teleport.IsTeleporting) _teleport.TeleportToLocation(_teleportDestination);
+                _teleportConditionalActivation.ActivateTeleport(transform.position, _teleportDestination, OnTeleportEnd, _teleport.TeleportToLocation);
                 break;
             case LaserAttackStage.Tracking:
                 Tracking();
@@ -139,11 +141,12 @@ public class LaserAttackState : DraculaState
         {
             _laserObject.SetActive(true);
             _laserObject.transform.position = transform.position;
-        
-            // Set the laser angle to point at the fire position
-            var angle = Mathf.Atan2(_firePosition.y - transform.position.y, _firePosition.x - transform.position.x) * Mathf.Rad2Deg;
+
+            // Calculate the angle to point the top of the laser object towards the fire position
+            var direction = (_firePosition - (Vector2)transform.position).normalized;
+            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f; // Subtract 90 degrees to point the top towards the fire position
             _laserObject.transform.rotation = Quaternion.Euler(0, 0, angle);
-            
+    
             _hasStartedFiring = true;
         }
         

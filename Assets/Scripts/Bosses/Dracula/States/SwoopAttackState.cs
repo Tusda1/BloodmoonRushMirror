@@ -19,6 +19,7 @@ public class SwoopAttackState : DraculaState
     private Vector2 _temporaryPosition;
 
     private Teleport _teleport;
+    private TeleportConditionalActivation _teleportConditionalActivation = new();
     [SerializeField] private Swoop swoop = new();
     private Transform _player;
     
@@ -91,7 +92,7 @@ public class SwoopAttackState : DraculaState
         switch (_swoopState)
         {
             case SwoopState.Teleporting:
-                if (!_teleport.IsTeleporting) _teleport.TeleportToLocation(_swoopOrigin);
+                _teleportConditionalActivation.ActivateTeleport(transform.position, _swoopOrigin, OnTeleportEnd, _teleport.TeleportToLocation);
                 break;
             case SwoopState.Swooping:
                 transform.position = swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom);
@@ -115,6 +116,7 @@ public class SwoopAttackState : DraculaState
         _swoopState = SwoopState.Shooting;
         swoopCount++;
         _timeSinceShoot = Time.time;
+        (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
     }
     
     private void Shoot()
@@ -128,7 +130,6 @@ public class SwoopAttackState : DraculaState
             }
             else
             {
-                (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
                 _swoopState = SwoopState.Swooping;
             }
         }

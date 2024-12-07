@@ -143,6 +143,7 @@ public class DashAndSwoopState : DraculaState
         if (Vector2.Distance(transform.position, _dashTarget) < 0.1f)
         {
             _currentStage = Stage.Brain;
+            Boss.DisableGravity();
         }
     }
     

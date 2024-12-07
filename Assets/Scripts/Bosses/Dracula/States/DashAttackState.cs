@@ -8,11 +8,13 @@ public class DashAttackState : DraculaState
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashCooldown = 1f;
     
-    private Teleport _teleport;
     private Vector2 _dashOrigin;
     private Vector2 _dashTarget;
     private int _dashCount;
     private float _cooldownStartTime;
+    
+    private Teleport _teleport;
+    private TeleportConditionalActivation _teleportConditionalActivation = new();
 
     private enum DashState
     {
@@ -65,6 +67,12 @@ public class DashAttackState : DraculaState
             _dashTarget = rightCorner;
         }
         
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        _dashCount = 0;
         _dashState = DashState.Teleporting;
     }
     
@@ -73,7 +81,7 @@ public class DashAttackState : DraculaState
         switch (_dashState)
         {
             case DashState.Teleporting:
-                if (!_teleport.IsTeleporting) _teleport.TeleportToLocation(_dashOrigin);
+                _teleportConditionalActivation.ActivateTeleport(transform.position, _dashOrigin, OnTeleportEnd, _teleport.TeleportToLocation);
                 break;
             case DashState.PreparingDash:
                 PrepareDash();

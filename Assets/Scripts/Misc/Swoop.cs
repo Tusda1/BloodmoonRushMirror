@@ -32,6 +32,7 @@ public class Swoop
         if (t > 1f)
         {
             _onSwoopEnd();
+            _swoopStarted = false;
             return swoopTarget;
         }
 
@@ -47,6 +48,7 @@ public class Swoop
 
         // Calculate the position using the eased t
         Vector2 position = CalculateBezierPoint(t, swoopOrigin, swoopTarget, swoopArcBottom);
+        
         return position;
     }
 
