@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Linq;
 using Attributes;
 using Consensus;
 using UI.Settings;
@@ -17,7 +16,7 @@ namespace UI {
         
         [SerializeField, Required] private SceneCollectionSO mainMenusSceneCollectionSO;
         [SerializeField, Required] private AllInFavourConsensusSO playerCanMove;
-        [SerializeField, Required] private EventSystem eventSystem;
+        
 
         #region ***---PrivateFields---***
         private VisualElement _root;
@@ -30,6 +29,8 @@ namespace UI {
         private Button _backButton;
 
         private bool _paused;
+        
+        private EventSystem _eventSystem;
 
         private readonly ScriptVotePair _currentVote = new();
         #endregion
@@ -49,10 +50,10 @@ namespace UI {
             _settingsButton.clicked += SettingsButtonPressed;
             _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenusSceneCollectionSO);
             _backButton.clicked += BackButtonPressed;
+
+            _eventSystem ??= GameObject.FindWithTag("EventSystem").GetComponent<EventSystem>();
             
-            eventSystem ??= FindObjectsByType<EventSystem>(FindObjectsSortMode.None).First();
-            
-            Assert.IsNotNull(eventSystem, "EventSystem reference is not set!");
+            Assert.IsNotNull(_eventSystem, "EventSystem reference is not set!");
 
             yield return null;
             yield return null;
@@ -94,7 +95,7 @@ namespace UI {
             _root.enabledSelf = true;
             playerCanMove.ChangeVote(_currentVote, false);
             
-            eventSystem.SetSelectedGameObject(gameObject);
+            _eventSystem.SetSelectedGameObject(gameObject);
             _resumeButton.Focus();
         }
 

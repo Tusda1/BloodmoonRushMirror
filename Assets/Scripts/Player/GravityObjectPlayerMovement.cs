@@ -75,7 +75,7 @@ namespace Player {
         private Vector2 _referenceSmoothVelocity;
         [HideInInspector] public Vector2 lastPlatformCheckpoint;
         [HideInInspector] public bool wasGroundedLastFrame;
-        private Ladder _ladder;
+        private ILadder _ladder;
         private bool _notClimbing;
         #endregion
 
@@ -90,6 +90,7 @@ namespace Player {
         private static readonly int AnimatorIsHoldingJumpBool = Animator.StringToHash("IsHoldingJump");
         private static readonly int AnimatorIsFallingBool = Animator.StringToHash("IsFalling");
         private static readonly int AnimatorClimbBool = Animator.StringToHash("IsClimbing");
+        private static readonly int AnimatorClimbTopExitTrigger = Animator.StringToHash("ClimbTopExit");
         private static readonly int AnimatorGunJumpTrigger = Animator.StringToHash("GunJump");
         #endregion
         #endregion
@@ -380,19 +381,22 @@ namespace Player {
             isHoldingDuck = inputValue.isPressed;
         }
 
-        private void OnTriggerStay2D(Collider2D other) {
+        private void OnTriggerEnter2D(Collider2D other) {
             if (!other.CompareTag("Ladder")) return;
 
-            _notClimbing = false;
-            _ladder = other.GetComponentInChildren<Ladder>();
+            var ladder = other.GetComponentInChildren<ILadder>();
+            _ladder = ladder switch {
+                LadderTop ladderTop => ladderTop,
+                LadderMiddle ladderMiddle when _ladder is not LadderTop => ladderMiddle,
+                _ => _ladder
+            };
         }
 
         private void OnTriggerExit2D(Collider2D other) {
-            if (!other.CompareTag("LadderShell")) return;
-
-            _notClimbing = true;
-            if (_ladder != null) {
-                _ladder.LadderIsUsed = false;
+            if (!other.CompareTag("Ladder")) return;
+            
+            var l = other.GetComponentInChildren<ILadder>();
+            if (l?.GetType() == _ladder?.GetType()) {
                 _ladder = null;
             }
         }
@@ -407,12 +411,13 @@ namespace Player {
         private void EnterDuck() {
             debugLogger.Log("entering duck");
 
-            if (TryGetLadder(out _ladder)) {
-                transform.position = _ladder.ladderStartPosition.position;
+            if (TryGetLadderTop(out _ladder)) {
+                _ladder.SetColliderTrigger(true);
+                // transform.position = _ladder.ladderStartPosition.position;
                 isClimbing = true;
                 isGrounded = false;
                 _notClimbing = false;
-                _ladder.LadderIsUsed = true;
+                // _ladder.LadderIsUsed = true;
                 debugLogger.Log("Enter ladder from top");
 
                 return;
@@ -473,43 +478,79 @@ namespace Player {
 #endif
 
         private bool LadderLogic() {
-            if (inputVector.y > 0 && _ladder != null && !isClimbing) {
-                isClimbing = true;
-                _ladder.LadderIsUsed = true;
-                isGrounded = false;
-                _notClimbing = false;
-                debugLogger.Log("Enter ladder from bottom");
-            }
-
-            if (isClimbing) {
-                targetVelocity = new Vector2(0, inputVector.y * climbSpeed);
-                if (_ladder != null) {
-                    var transformPosition = transform.position;
-                    transform.position = transformPosition.With(x: _ladder.triggerCollider.transform.position.x);
-                }
-
-                GravityModifier = 0;
-
-                if ((isGrounded && inputVector.y < 0) || isHoldingJump || isDashing || _notClimbing) {
-                    debugLogger.Log(
-                        $"Exit Ladder | {isGrounded && inputVector.y < 0} || {isHoldingJump} || {isDashing} || {_notClimbing}");
-
+            if (!(inputVector.y > 0) || _ladder == null) return false;
+            
+            switch (_ladder) {
+                case LadderTop ladderTop:
                     isClimbing = false;
-                    // isGrounded = true;
+                    isGrounded = true;
                     GravityModifier = gravityMultiplier;
-                    if (_ladder != null) {
-                        _ladder.LadderIsUsed = false;
-                        _ladder = null;
+                    ladderTop.PlayerClimbToTopOfLadder(player);
+                    _ladder = null;
+                    break;
+                case LadderMiddle ladderMiddle:
+                    if (!isClimbing) {
+                        isClimbing = true;
+                        isGrounded = false;
+                        _notClimbing = false;
+                            
+                        GravityModifier = 0;
+                        
+                        var transformPosition = transform.position;
+                        transform.position = transformPosition.With(x: ladderMiddle.transform.position.x + 0.5f);
                     }
+                        
+                    velocity = new Vector2(0, inputVector.y * climbSpeed);
+                        
+                    if ((isGrounded && inputVector.y < 0) || isHoldingJump || isDashing) {
+                        var str = string.Join('|', isGrounded && inputVector.y < 0, isHoldingJump, isDashing);
+                        debugLogger.Log("Exit Ladder | " + str);
 
-                    _notClimbing = false;
-                }
-                else {
-                    isGrounded = false;
-                    ForceExitDuck();
+                        isClimbing = false;
+                        GravityModifier = gravityMultiplier;
+
+                        _notClimbing = false;
+                    }
+                    else {
+                        isGrounded = true;
+                        ForceExitDuck();
+                        return true;
+                    }
+                    
                     return true;
-                }
+
+                    break;
             }
+
+            // if (isClimbing) {
+            //     targetVelocity = new Vector2(0, inputVector.y * climbSpeed);
+            //     if (_ladder != null) {
+            //         var transformPosition = transform.position;
+            //         // transform.position = transformPosition.With(x: _ladder.triggerCollider.transform.position.x);
+            //     }
+            //
+            //     GravityModifier = 0;
+            //
+            //     if ((isGrounded && inputVector.y < 0) || isHoldingJump || isDashing || _notClimbing) {
+            //         debugLogger.Log(
+            //             $"Exit Ladder | {isGrounded && inputVector.y < 0} || {isHoldingJump} || {isDashing} || {_notClimbing}");
+            //
+            //         isClimbing = false;
+            //         // isGrounded = true;
+            //         GravityModifier = gravityMultiplier;
+            //         if (_ladder != null) {
+            //             // _ladder.LadderIsUsed = false;
+            //             _ladder = null;
+            //         }
+            //
+            //         _notClimbing = false;
+            //     }
+            //     else {
+            //         isGrounded = false;
+            //         ForceExitDuck();
+            //         return true;
+            //     }
+            // }
 
             return false;
         }
@@ -526,32 +567,28 @@ namespace Player {
             }
         }
 
-        private bool TryGetLadder(out Ladder platform) {
+        private bool TryGetLadderTop(out ILadder platform) {
             debugLogger.Log("TryGetLadder");
-            var ladder = Physics2D.OverlapBox(transform.position.WithOffset(transform.localScale.y * 0.5f),
-                transform.localScale.Abs(), 0, whatIsLadder);
+            
+            var point = transform.position.WithOffset(transform.localScale.y * 0.5f);
+            var size = transform.localScale.Abs();
+            var ladder = Physics2D.OverlapBox(point, size, 0, whatIsLadder);
 
-            if (ladder == null || ladder.CompareTag("Ladder")) {
-                platform = null;
-                return false;
-            }
+            if (ladder != null) return ladder.TryGetComponent(out platform);
+            
+            platform = null;
+            return false;
 
-            platform = ladder.GetComponentInChildren<Ladder>();
-
-            if (ladder != null && platform == null) {
-                throw new Exception(
-                    $"{nameof(Ladder)} was detected but with no {nameof(Ladder)} component were found on it!");
-            }
-
-            if (ladder != null && platform != null) {
-                debugLogger.Log("Ladder found");
-            }
-
-            return ladder;
         }
 
         private void GroundCheck() {
             isGrounded = Physics2D.OverlapBox(transform.position, new Vector2(0.5f, 0.01f), 0, whatIsGround);
+        }
+
+        public void ClimbTopOfLadder(Vector3 ladderTopPosition) {
+            transform.position = ladderTopPosition;
+            player.animator.SetTrigger(AnimatorClimbTopExitTrigger);
+            player.healthComponent.TriggerInvulnerability(1);
         }
     }
 }
