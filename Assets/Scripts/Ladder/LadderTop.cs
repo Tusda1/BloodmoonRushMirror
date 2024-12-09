@@ -2,7 +2,6 @@ using Player;
 using UnityEngine;
 
 public class LadderTop : MonoBehaviour, ILadder {
-
     #region ---Fields---
     public Transform ladderTopPosition;
     public BoxCollider2D boxCollider2D;

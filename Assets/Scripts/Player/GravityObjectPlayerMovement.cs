@@ -1,4 +1,3 @@
-using System;
 using Attributes;
 using Consensus;
 using ExtensionMethods;
@@ -11,11 +10,14 @@ using UnityEngine.InputSystem;
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector] private PlayerScript player;
-        [GetOrAddComponent, SerializeField, HideInInspector] private BoxCollider2D boxCollider;
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private PlayerScript player;
 
-        [Header("Player Movement")] 
-        [SerializeField, ReadOnly] private Vector2 inputVector;
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private BoxCollider2D boxCollider;
+
+        [Header("Player Movement")] [SerializeField, ReadOnly]
+        private Vector2 inputVector;
 
         [ReadOnly] public bool isDucking;
         [ReadOnly] public bool isHoldingDuck;
@@ -28,14 +30,12 @@ namespace Player {
         [SerializeField] private LayerMask whatIsInvalidSpawnPoint;
         [SerializeField] private float climbSpeed;
 
-        [Header("Dash")] 
-        [ReadOnly] public bool isDashing;
+        [Header("Dash")] [ReadOnly] public bool isDashing;
         [ReadOnly] public bool canDash;
         [SerializeField] private float dashTime;
         [SerializeField] private float dashForce;
 
-        [Header("Jump / Fall")] 
-        [ReadOnly] public bool isJumping;
+        [Header("Jump / Fall")] [ReadOnly] public bool isJumping;
         [ReadOnly] public bool isHoldingJump;
         [ReadOnly] public bool doubleJumping;
         [SerializeField] private float jumpForce;
@@ -47,20 +47,19 @@ namespace Player {
         [SerializeField] private LayerMask whatIsGround;
         [SerializeField] private bool isActuallyGrounded;
 
-        [Header("Knockback")] 
-        [ReadOnly] public bool isTakingKnockback;
+        [Header("Knockback")] [ReadOnly] public bool isTakingKnockback;
         [SerializeField] private float knockBackTime;
         [SerializeField] private float spikeStunTime;
         public int killCharges;
         private Vector2 _knockbackVector;
 
-        [Header("Player Can Move")] 
-        [SerializeField, Required] private AllInFavourConsensusSO playerCanMove;
+        [Header("Player Can Move")] [SerializeField, Required]
+        private AllInFavourConsensusSO playerCanMove;
 
         private bool PlayerMovementEnabled => playerCanMove.consensus;
 
-        [Header("Debug Logger")] 
-        [SerializeField, Required] private DebugLoggerSO debugLogger;
+        [Header("Debug Logger")] [SerializeField, Required]
+        private DebugLoggerSO debugLogger;
 
         #region ***---PrivateFields---***
         private CountdownTimer _dashTimer;
@@ -76,7 +75,6 @@ namespace Player {
         [HideInInspector] public Vector2 lastPlatformCheckpoint;
         [HideInInspector] public bool wasGroundedLastFrame;
         private ILadder _ladder;
-        private bool _notClimbing;
         #endregion
 
         #region ***---AnimatorStringToHash---***
@@ -183,7 +181,10 @@ namespace Player {
 
         protected override void ComputeVelocity() {
             if (!PlayerMovementEnabled) return;
-
+            
+            GroundCheck();
+            isActuallyGrounded = isGrounded;
+            
             if (LadderLogic()) {
                 player.animator.SetBool(AnimatorClimbBool, true);
                 player.animator.SetFloat(AnimatorYMovementFloat, inputVector.y);
@@ -192,9 +193,6 @@ namespace Player {
 
             player.animator.SetBool(AnimatorClimbBool, false);
             player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
-
-            GroundCheck();
-            isActuallyGrounded = isGrounded;
 
             CoyoteTimeLogic();
 
@@ -210,14 +208,14 @@ namespace Player {
             }
 
             move.x = inputVector.x;
-            
+
             player.animator.SetBool(AnimatorIsFallingBool, false);
 
             // if (isGrounded && isJumping) {
             //     velocity.y = jumpForce;
             // } else
             if (doubleJumping && isJumping) {
-                MovingPLatformExit();
+                MovingPlatformExit();
                 ResetMovement(2);
                 isDashing = false;
                 velocity.y = jumpForce;
@@ -230,7 +228,7 @@ namespace Player {
                 player.animator.SetBool(AnimatorIsFallingBool, true);
             }
             else if (isJumping) {
-                MovingPLatformExit();
+                MovingPlatformExit();
                 velocity.y = jumpForce;
                 // targetVelocity.y = jumpForce;
             }
@@ -394,7 +392,7 @@ namespace Player {
 
         private void OnTriggerExit2D(Collider2D other) {
             if (!other.CompareTag("Ladder")) return;
-            
+
             var l = other.GetComponentInChildren<ILadder>();
             if (l?.GetType() == _ladder?.GetType()) {
                 _ladder = null;
@@ -416,7 +414,6 @@ namespace Player {
                 // transform.position = _ladder.ladderStartPosition.position;
                 isClimbing = true;
                 isGrounded = false;
-                _notClimbing = false;
                 // _ladder.LadderIsUsed = true;
                 debugLogger.Log("Enter ladder from top");
 
@@ -461,7 +458,7 @@ namespace Player {
             GravityModifier = 0f;
         }
 
-        public void MovingPLatformExit() {
+        public void MovingPlatformExit() {
             GravityModifier = gravityMultiplier;
         }
 
@@ -478,49 +475,51 @@ namespace Player {
 #endif
 
         private bool LadderLogic() {
-            if (!(inputVector.y > 0) || _ladder == null) return false;
-            
-            switch (_ladder) {
-                case LadderTop ladderTop:
-                    isClimbing = false;
-                    isGrounded = true;
-                    GravityModifier = gravityMultiplier;
-                    ladderTop.PlayerClimbToTopOfLadder(player);
-                    _ladder = null;
-                    break;
-                case LadderMiddle ladderMiddle:
-                    if (!isClimbing) {
-                        isClimbing = true;
-                        isGrounded = false;
-                        _notClimbing = false;
-                            
-                        GravityModifier = 0;
-                        
-                        var transformPosition = transform.position;
-                        transform.position = transformPosition.With(x: ladderMiddle.transform.position.x + 0.5f);
-                    }
-                        
-                    velocity = new Vector2(0, inputVector.y * climbSpeed);
-                        
-                    if ((isGrounded && inputVector.y < 0) || isHoldingJump || isDashing) {
-                        var str = string.Join('|', isGrounded && inputVector.y < 0, isHoldingJump, isDashing);
-                        debugLogger.Log("Exit Ladder | " + str);
+            if (_ladder == null && !isClimbing) return false;
 
+            if (inputVector.y > 0) {
+                switch (_ladder) {
+                    case LadderTop ladderTop:
                         isClimbing = false;
-                        GravityModifier = gravityMultiplier;
-
-                        _notClimbing = false;
-                    }
-                    else {
                         isGrounded = true;
-                        ForceExitDuck();
-                        return true;
-                    }
-                    
-                    return true;
+                        GravityModifier = gravityMultiplier;
+                        ladderTop.PlayerClimbToTopOfLadder(player);
+                        _ladder = null;
 
-                    break;
+                        break;
+                    case LadderMiddle ladderMiddle:
+                        if (!isClimbing) {
+                            isClimbing = true;
+                            isGrounded = false;
+
+                            GravityModifier = 0;
+                            
+                            // ladderMiddle.ladderTop.SetColliderTrigger(true);
+
+                            var transformPosition = transform.position;
+                            transform.position = transformPosition.With(x: ladderMiddle.transform.position.x + 0.5f);
+                        }
+
+                        if ((isGrounded && inputVector.y < 0) || isHoldingJump || isDashing) {
+                            isClimbing = false;
+                            GravityModifier = gravityMultiplier;
+                            _ladder = null;
+                        }
+                        else {
+                            isGrounded = true;
+                            ForceExitDuck();
+                        }
+
+                        break;
+                }
             }
+            else if (inputVector.y < 0) {
+                if (isGrounded) {
+                    
+                }
+            }
+            
+            velocity = new Vector2(0, inputVector.y * climbSpeed);
 
             // if (isClimbing) {
             //     targetVelocity = new Vector2(0, inputVector.y * climbSpeed);
@@ -552,7 +551,7 @@ namespace Player {
             //     }
             // }
 
-            return false;
+            return true;
         }
 
         private void CoyoteTimeLogic() {
@@ -569,16 +568,15 @@ namespace Player {
 
         private bool TryGetLadderTop(out ILadder platform) {
             debugLogger.Log("TryGetLadder");
-            
+
             var point = transform.position.WithOffset(transform.localScale.y * 0.5f);
             var size = transform.localScale.Abs();
             var ladder = Physics2D.OverlapBox(point, size, 0, whatIsLadder);
 
             if (ladder != null) return ladder.TryGetComponent(out platform);
-            
+
             platform = null;
             return false;
-
         }
 
         private void GroundCheck() {
