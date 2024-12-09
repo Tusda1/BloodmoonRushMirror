@@ -11,6 +11,7 @@ public class LaserAttackState : DraculaState
     private Vector2 _teleportDestination;
     private Vector2 _firePosition;
     private Transform _player;
+    private Collider2D _playerCollider;
     private float _trackingTimer;
     private GameObject _trackerPrefab;
     private GameObject _trackerObject;
@@ -39,6 +40,7 @@ public class LaserAttackState : DraculaState
     {
         _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
         _player = ServiceLocator.Get<PlayerScript>().transform;
+        _playerCollider = _player.GetComponent<Collider2D>();
         _trackerPrefab = Resources.Load<GameObject>("Prefabs/LineRenderer");
         _laserPrefab = Resources.Load<GameObject>("Prefabs/BigLaser");
         
@@ -108,7 +110,7 @@ public class LaserAttackState : DraculaState
         _trackingTimer += Time.deltaTime;
         if (_trackingTimer <= trackingTime)
         {
-            _firePosition = _player.position;
+            _firePosition = _playerCollider.bounds.center;
             
             if (_trackerObject == null)
             {
