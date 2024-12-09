@@ -85,7 +85,7 @@ public class MovingPlatformScript : GravityObject {
             if (other.transform.TryGetComponent<GravityObjectPlayerMovement>(out GravityObjectPlayerMovement playerMovement)) {
                 _playerIsOnPlatform = false;
                 playerMovement.affectingVelocity = Vector2.zero;
-                playerMovement.MovingPLatformExit();
+                playerMovement.MovingPlatformExit();
             }
     }
 }
