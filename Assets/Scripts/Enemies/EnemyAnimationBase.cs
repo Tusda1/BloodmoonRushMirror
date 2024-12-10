@@ -14,7 +14,7 @@ public class EnemyAnimationBase : MonoBehaviour
         animancerComponent = GetComponent<AnimancerComponent>();
     }
 
-    protected virtual void Start()
+    protected virtual void OnEnable()
     {
         PlayDefaultAnimation();
     }

@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 6943277093606158821}
   - component: {fileID: 43372894325555876}
   - component: {fileID: 6668389945314618494}
-  - component: {fileID: -3805083572476252884}
+  - component: {fileID: 8093919142195008724}
   - component: {fileID: 5382585622787063819}
   - component: {fileID: 1752739502921978978}
+  - component: {fileID: -6421711275125538588}
+  - component: {fileID: 5651854141422753267}
   m_Layer: 8
   m_Name: PatrolEnemy
   m_TagString: Enemy
@@ -81,7 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Sprite: {fileID: 8359242984285706046, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -128,7 +130,7 @@ MonoBehaviour:
   smoothDampScript:
     smoothTime: 0.25
   ledgeDistance: 1
---- !u!114 &-3805083572476252884
+--- !u!114 &8093919142195008724
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,11 +139,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6868923599602851666}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6323bfd0d68967643adf1ebbc5efd4bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f1637e13ef8c8546bead8e076ec1fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   deathAnimation: {fileID: 0}
-  hitAnimation: {fileID: 0}
+  hitAnimation: {fileID: -3117440549422228268, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
+  walk: {fileID: 3280591909972774192, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
+  windUp: {fileID: 7561208457582960813, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
+  attack: {fileID: 8542881084951527485, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
+  isAttacking: 0
 --- !u!61 &5382585622787063819
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -176,17 +182,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.21133333}
+  m_Offset: {x: 0.22499996, y: 0.4}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.38157895, y: 0}
+    oldSize: {x: 1.9, y: 0.8}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.9, y: 0.8}
   m_EdgeRadius: 0
 --- !u!50 &1752739502921978978
 Rigidbody2D:
@@ -215,6 +221,43 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-6421711275125538588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6868923599602851666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad50f81b1d25c441943c37a89ba23f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Animator: {fileID: 0}
+  _Transitions: {fileID: 0}
+  _ActionOnDisable: 0
+--- !u!95 &5651854141422753267
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6868923599602851666}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7485599901513593988
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,7 +324,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.21133333}
+  m_Offset: {x: 0.22499996, y: 0.4}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.28866667}
@@ -291,5 +334,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.9, y: 0.8}
   m_EdgeRadius: 0

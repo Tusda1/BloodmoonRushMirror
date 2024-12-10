@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Player;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -13,11 +14,13 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] private bool _takesSpikeDamage;
     private float _takeDamageTimer;
     protected Vector2 facingDirection;
+    protected Vector2 visualFacingDirection;
     protected Collider2D boxCollider;
     private GameObject _rubyPrefab;
     private Material _whiteMaterial;
     private Material _defaultMaterial;
     protected EnemyAnimationBase enemyAnimationBase;
+    protected PlayerScript player;
 
     [SerializeField] private bool faceLeftOnStart;
     [SerializeField] protected float moveSpeed;
@@ -32,13 +35,6 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] private ParticleSystem bloodSplatter;
     
     protected LayerMask EnemyAndGroundLayerMask;
-
-    protected new void Awake()
-    {
-        base.Awake();
-        
-        enemyAnimationBase = GetComponent<EnemyAnimationBase>();
-    }
     
     protected override void Start()
     {
@@ -46,10 +42,13 @@ public class EnemyBase :  GravityObject, IDamageable
         
         currentHealth = maxHealth;
         
+        enemyAnimationBase = GetComponent<EnemyAnimationBase>();
+        
         facingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
         
         EnemyAndGroundLayerMask = LayerMask.GetMask("Enemy", "Ground");
-        
+
+        player = ServiceLocator.Get<PlayerScript>();
         boxCollider = GetComponent<Collider2D>();
         _rubyPrefab = Resources.Load<GameObject>("Prefabs/Ruby");
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
@@ -65,8 +64,14 @@ public class EnemyBase :  GravityObject, IDamageable
     {
         base.Update();
         
+        SetVisualFacingDirection();
         // Set the localscale of the enemy to face the direction it is moving
-        transform.localScale = new Vector3(-facingDirection.x, 1, 1);
+        transform.localScale = new Vector3(-visualFacingDirection.x, 1, 1);
+    }
+    
+    protected virtual void SetVisualFacingDirection()
+    {
+        visualFacingDirection = facingDirection;
     }
 
     public void TakeDamage(DamageInstance damageInstance)
@@ -219,17 +224,27 @@ public class EnemyBase :  GravityObject, IDamageable
             return;
         }
         
+        if (player.healthComponent.HasInvincibilityFrames)
+        {
+            return;
+        }
+        
         if (other.CompareTag("Player"))
         {
-            IDamageable player = other.GetComponent<IDamageable>();
-            if (player != null)
-            {
-                Vector2 directionToPlayer = (other.transform.position - transform.position).normalized;
-                Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
+            Attack();
+        }
+    }
+
+    protected virtual void Attack()
+    {
+        var playerObject = player.gameObject;
+        if (player != null)
+        {
+            Vector2 directionToPlayer = (playerObject.transform.position - transform.position).normalized;
+            Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
                 
-                enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * enemyDamageInstance.knockbackStrength;
-                player.TakeDamage(enemyDamageInstance);
-            }
+            enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * enemyDamageInstance.knockbackStrength;
+            player.TakeDamage(enemyDamageInstance);
         }
     }
 
