@@ -11,11 +11,6 @@ public class SpitterAnimation : EnemyAnimationBase
 
     public bool isAttacking;
     
-    private void Start()
-    {
-        PlayDefaultAnimation();
-    }
-    
     public override void PlayDefaultAnimation()
     {
         animancerComponent.Play(idle);
