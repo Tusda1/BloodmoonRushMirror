@@ -1,0 +1,177 @@
+﻿using ExtensionMethods;
+using Player;
+using Unity.Cinemachine;
+using UnityEngine;
+using UnityEngine.Assertions;
+using static GravityObject;
+
+public class PlayerLadderLogic : IPlayerLadderLogic {
+    #region ---Fields---
+    private readonly PlayerScript _player;
+    private readonly GravityObjectPlayerMovement _playerMovement;
+
+    #region ---PlayerMovementShortcuts---
+    private LadderMiddle LadderMiddle {
+        get {
+            if (_playerMovement.ladderMiddle == null && LadderTop != null && InputVector.y < 0) {
+                return LadderTop.ladderMiddle;
+            }
+            
+            return _playerMovement.ladderMiddle;
+        }
+        set => _playerMovement.ladderMiddle = value;
+    }
+
+    private LadderTop LadderTop {
+        get => _playerMovement.ladderTop;
+        set => _playerMovement.ladderTop = value;
+    }
+
+    private bool IsClimbing {
+        get => _playerMovement.isClimbing;
+        set => _playerMovement.isClimbing = value;
+    }
+
+    private Vector2 InputVector => _playerMovement.inputVector;
+
+    private float ClimbSpeed => _playerMovement.climbSpeed;
+
+    private bool IsGrounded {
+        get => _playerMovement.isGrounded;
+        set => _playerMovement.isGrounded = value;
+    }
+
+    private float GravityModifier {
+        set => _playerMovement.GravityModifier = value;
+    }
+
+    private float GravityMultiplier => _playerMovement.gravityMultiplier;
+
+    private readonly Transform _transform;
+
+    private bool IsHoldingJump => _playerMovement.isHoldingJump;
+    private bool IsDashing => _playerMovement.isDashing;
+
+    private LayerMask WhatIsLadder => _playerMovement.whatIsLadder;
+    #endregion
+
+    #region ---AnimatorStringToHash---
+    private static readonly int AnimatorYMovementFloat = Animator.StringToHash("YMovement");
+    private static readonly int AnimatorClimbBool = Animator.StringToHash("IsClimbing");
+
+    private static readonly int AnimatorClimbTopExitTrigger = Animator.StringToHash("LadderExitAtTopTrigger");
+    private static readonly int AnimatorClimbEnterTopTrigger = Animator.StringToHash("LadderEnterTopTrigger");
+    #endregion
+    #endregion
+
+    public PlayerLadderLogic(PlayerScript player) {
+        _player = player;
+        _playerMovement = player.playerMovement;
+        _transform = player.GetComponent<Transform>();
+        Assert.IsNotNull(_transform);
+    }
+
+    public bool LadderLogic() {
+        if (!IsClimbing) {
+            if (InputVector.y != 0 && LadderMiddle != null && !(InputVector.y < 0 && IsGrounded) && !_playerMovement.isJumping) {
+                EnterLadder();
+            }
+            else {
+                return false;
+            }
+        }
+
+        _playerMovement.targetVelocity = new Vector2(0, InputVector.y * ClimbSpeed);
+
+        if (InputVector.y > 0) {
+            if (LadderTop) {
+                ClimbToTopOfLadder(LadderTop.ladderTopPosition.position);
+
+                ExitLadder();
+            }
+
+            if ((IsGrounded && InputVector.y < 0) || IsHoldingJump || IsDashing) {
+                IsClimbing = false;
+                GravityModifier = GravityMultiplier;
+                LadderMiddle = null;
+            }
+            else {
+                IsGrounded = true;
+                _playerMovement.ForceExitDuck();
+            }
+        }
+        else if (InputVector.y < 0) {
+            if (IsGrounded) {
+                ExitLadder();
+            }
+        }
+
+        _player.animator.SetFloat(AnimatorYMovementFloat, InputVector.y);
+
+        return true;
+    }
+
+    private void ClimbToTopOfLadder(Vector3 ladderTopPosition) {
+        _transform.position = ladderTopPosition;
+        _player.animator.SetTrigger(AnimatorClimbTopExitTrigger);
+        _player.healthComponent.TriggerInvulnerability(1);
+        ExitLadder();
+    }
+
+    public bool TryGetLadderTop(out LadderTop ladderTop) {
+        _player.debugLogger.Log("TryGetLadder");
+
+        var point = _transform.position.WithOffset(_transform.localScale.y * 0.5f);
+        var size = _transform.localScale.Abs();
+        var ladder = Physics2D.OverlapBox(point, size, 0, WhatIsLadder);
+
+        if (ladder != null) {
+            if (!ladder.TryGetComponent(out ladderTop)) return false;
+            EnterLadderFromTop();
+            _playerMovement.ladderMiddle = ladderTop.ladderMiddle;
+            return true;
+        }
+
+        ladderTop = null;
+        return false;
+    }
+
+    public void EnterLadder() {
+        _player.debugLogger.Log("EnterLadder");
+
+        GravityModifier = 0;
+
+        IsClimbing = true;
+        IsGrounded = false;
+        _playerMovement.lockToAxis = Axis.YAxis;
+
+        _transform.position = new Vector3(
+            x: LadderMiddle.transform.position.x + 0.5f, 
+            y: _transform.position.y,
+            z: _transform.position.z);
+
+        _player.animator.SetBool(AnimatorClimbBool, true);
+    }
+
+    public void ExitLadder() {
+        _player.debugLogger.Log("ExitLadder");
+
+        GravityModifier = GravityMultiplier;
+        IsClimbing = false;
+        IsGrounded = true;
+        // LadderTop = null;
+        // LadderMiddle = null;
+        _playerMovement.lockToAxis = Axis.None;
+
+        _player.animator.SetBool(AnimatorClimbBool, false);
+    }
+
+    private void EnterLadderFromTop() {
+        _player.debugLogger.Log("Enter ladder from top");
+
+        EnterLadder();
+
+        _transform.position = LadderTop.ladderTopBottom.position;
+        _player.animator.SetTrigger(AnimatorClimbEnterTopTrigger);
+    }
+}
