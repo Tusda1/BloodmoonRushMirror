@@ -44,7 +44,7 @@ namespace Player {
         [SerializeField] public float gravityMultiplier;
         [SerializeField] private float fallSpeed;
         [SerializeField] private LayerMask whatIsGround;
-        [SerializeField] private bool isActuallyGrounded;
+        public bool isActuallyGrounded;
 
         [Header("Knockback")] [ReadOnly] public bool isTakingKnockback;
         [SerializeField] private float knockBackTime;
