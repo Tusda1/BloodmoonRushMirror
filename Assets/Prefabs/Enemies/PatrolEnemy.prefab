@@ -106,9 +106,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9bf2474d7973d44baad222970c16f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb2d: {fileID: 1752739502921978978}
   isGrounded: 0
   lockToAxis: 0
-  rb2d: {fileID: 1752739502921978978}
+  targetVelocity: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
   GravityModifier: 5
   _takesSpikeDamage: 0
   faceLeftOnStart: 1
@@ -129,7 +131,7 @@ MonoBehaviour:
   bloodSplatter: {fileID: 0}
   smoothDampScript:
     smoothTime: 0.25
-  ledgeDistance: 1
+  ledgeDistance: 1.5
 --- !u!114 &8093919142195008724
 MonoBehaviour:
   m_ObjectHideFlags: 0
