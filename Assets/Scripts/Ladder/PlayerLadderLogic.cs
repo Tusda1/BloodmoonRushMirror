@@ -102,7 +102,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
             }
         }
         else if (InputVector.y < 0) {
-            if (IsGrounded) {
+            if (_playerMovement.isActuallyGrounded) {
                 ExitLadder();
             }
         }
@@ -148,7 +148,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         GravityModifier = 0;
 
         IsClimbing = true;
-        IsGrounded = false;
+        IsGrounded = true;
         _playerMovement.lockToAxis = Axis.YAxis;
 
         _transform.position = new Vector3(

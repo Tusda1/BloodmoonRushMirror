@@ -9,10 +9,11 @@ public class UITK_WorldSpaceInteractive : MonoBehaviour {
     #endregion
 
     private void Start() {
-        uiCamera ??= GameObject.FindWithTag("UICamera").GetComponent<Camera>();
-        
         panelSettings.SetScreenToPanelSpaceFunction(_ => {
             var invalidPosition = new Vector2(float.NaN, float.NaN);
+            
+            uiCamera ??= GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+            if (uiCamera == null) return invalidPosition;
 
             var cameraRay = uiCamera.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(cameraRay.origin, cameraRay.direction * 100f, Color.magenta);

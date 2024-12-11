@@ -9,9 +9,6 @@ public class SpikeScript : MonoBehaviour {
         
         switch (damageable) {
             case PlayerScript playerScript:
-#if UNITY_EDITOR
-                damageInstance.damage = 0;
-#endif
                 playerScript.TakeDamage(damageInstance);
                 playerScript.playerMovement.SpikeReset();
                 break;
