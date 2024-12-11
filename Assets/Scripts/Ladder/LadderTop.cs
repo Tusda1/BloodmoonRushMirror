@@ -1,24 +1,25 @@
 using Player;
 using UnityEngine;
 
-public class LadderTop : MonoBehaviour, ILadder {
+public class LadderTop : MonoBehaviour {
     #region ---Fields---
     public Transform ladderTopPosition;
-    public BoxCollider2D boxCollider2D;
+    public Transform ladderTopBottom;
     
-    private static readonly int ClimbToTop = Animator.StringToHash("LadderExitAtTopTrigger");
+    public LadderMiddle ladderMiddle;
     #endregion
 
-    public void SetColliderTrigger(bool value) {
-        boxCollider2D.isTrigger = value;
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (!other.transform.CompareTag("Player")) return;
+        
+        var player = other.gameObject.GetComponent<PlayerScript>();
+        player.playerMovement.ladderTop = this;
     }
-
-    public void PlayerClimbToTopOfLadder(PlayerScript player) {
-        player.transform.position = ladderTopPosition.position;
-        player.animator.SetTrigger(ClimbToTop);
+    
+    private void OnCollisionExit2D(Collision2D other) {
+        if (!other.transform.CompareTag("Player")) return;
         
-        player.healthComponent.TriggerInvulnerability(2);
-        
-        SetColliderTrigger(false);
+        var player = other.gameObject.GetComponent<PlayerScript>();
+        player.playerMovement.ladderTop = null;
     }
 }

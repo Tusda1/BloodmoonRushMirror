@@ -205,7 +205,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ladderTopPosition: {fileID: 8741644991542691978}
-  boxCollider2D: {fileID: 2482685023965401436}
+  ladderTopBottom: {fileID: 7752354658410452353}
+  ladderMiddle: {fileID: 8821464809661501836}
 --- !u!61 &2482685023965401436
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -492,7 +493,7 @@ Transform:
   m_GameObject: {fileID: 5785929480036124489}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 2.001, z: 0}
+  m_LocalPosition: {x: 0.5, y: 2.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -684,8 +685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11423c57e834bcc43a3b77ae0022e897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ladderCollider: {fileID: 8323904099643752369}
-  ladderTop: {fileID: 6738076120811535432}
 --- !u!19719996 &8275386166411958557
 TilemapCollider2D:
   m_ObjectHideFlags: 0
