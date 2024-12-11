@@ -102,7 +102,9 @@ namespace Player {
         }
 
         private void Start() {
-            Bind();
+            if (DataInGameData != null) {
+                Bind();
+            }
 
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
@@ -113,6 +115,7 @@ namespace Player {
             SetStateBehavioursReferences();
             
             Gamepad.current.SetMotorSpeeds(0.123f, 0.234f);
+            InputSystem.PauseHaptics();
 
             StartCoroutine(ResetPlayerInput());
         }
@@ -222,7 +225,7 @@ namespace Player {
 
         private static IEnumerator ControllerVibration() {
             InputSystem.ResumeHaptics();
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.2f);
             InputSystem.PauseHaptics();
         }
 
