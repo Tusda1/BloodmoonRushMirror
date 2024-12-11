@@ -38,7 +38,7 @@ public class SpitterEnemy : ReactiveBase
         // check if the cooldown has passed
         if (cooldownTimer <= 0)
         {
-            Attack();
+            StartAttack();
         }
         else
         {
@@ -46,7 +46,7 @@ public class SpitterEnemy : ReactiveBase
         }
     }
 
-    private void Attack()
+    private void StartAttack()
     {
         _spitterAnimation.Attack(ShootProjectile);
     }
