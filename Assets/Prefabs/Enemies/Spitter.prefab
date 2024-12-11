@@ -184,9 +184,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c2de957c8c6934ebf74a852e9ab3b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb2d: {fileID: 8960105064451551744}
   isGrounded: 0
   lockToAxis: 0
-  rb2d: {fileID: 8960105064451551744}
+  targetVelocity: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
   GravityModifier: 5
   _takesSpikeDamage: 0
   faceLeftOnStart: 1
@@ -204,7 +206,7 @@ MonoBehaviour:
   rubyDropAmount: 3
   knockbackSmoothDampScript:
     smoothTime: 0.1
-  bloodSplatter: {fileID: 0}
+  bloodSplatter: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
   detectionDistance: 20
   projectileSpeed: 9
   projectileCooldown: 1.2
