@@ -111,6 +111,8 @@ namespace Player {
             healthComponent.InvulnerabilityTimer.OnComplete += () => spriteRenderer.color = new Color(1, 1, 1, 1);
 
             SetStateBehavioursReferences();
+            
+            Gamepad.current.SetMotorSpeeds(0.123f, 0.234f);
 
             StartCoroutine(ResetPlayerInput());
         }
@@ -214,6 +216,14 @@ namespace Player {
             _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
 
             PlayBloodSplatter();
+
+            StartCoroutine(ControllerVibration());
+        }
+
+        private static IEnumerator ControllerVibration() {
+            InputSystem.ResumeHaptics();
+            yield return new WaitForSeconds(1f);
+            InputSystem.PauseHaptics();
         }
 
         public void PlayBloodSplatter() {

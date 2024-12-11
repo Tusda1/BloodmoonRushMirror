@@ -9,6 +9,8 @@ public class UITK_WorldSpaceInteractive : MonoBehaviour {
     #endregion
 
     private void Start() {
+        uiCamera ??= GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+        
         panelSettings.SetScreenToPanelSpaceFunction(_ => {
             var invalidPosition = new Vector2(float.NaN, float.NaN);
 

@@ -173,9 +173,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccff21e192f9e96428749b266d5fdbac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb2d: {fileID: 1222319225997515202}
   isGrounded: 0
   lockToAxis: 0
-  rb2d: {fileID: 1222319225997515202}
+  targetVelocity: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
   GravityModifier: 1
   player: {fileID: 3298925456892397176}
   boxCollider: {fileID: 6503705925884822905}
@@ -219,6 +221,8 @@ MonoBehaviour:
   debugLogger: {fileID: 11400000, guid: 75da1efa7b0197041a121d1e562d1a0b, type: 2}
   lastPlatformCheckpoint: {x: 0, y: 0}
   wasGroundedLastFrame: 0
+  ladderMiddle: {fileID: 0}
+  ladderTop: {fileID: 0}
 --- !u!114 &4237709658354518102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,6 +804,10 @@ PrefabInstance:
     - target: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
       propertyPath: ColorBySpeedModule.enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 0.41
       objectReference: {fileID: 0}
     - target: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
       propertyPath: VelocityModule.inWorldSpace
