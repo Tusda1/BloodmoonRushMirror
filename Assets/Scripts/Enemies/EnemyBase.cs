@@ -31,6 +31,7 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] private DamageInstance enemyDamageInstance;
     [SerializeField] protected float weight;
     [SerializeField] protected int rubyDropAmount = 3;
+    [SerializeField] private float rubySpawnHeight = 0.8f;
     [SerializeField] private SmoothDampScript knockbackSmoothDampScript = new();
     [SerializeField] private ParticleSystem bloodSplatter;
     
@@ -83,7 +84,6 @@ public class EnemyBase :  GravityObject, IDamageable
         }
         _takeDamageTimer = Time.time;
         
-        print("taking damage 1");
         enemyAnimationBase.PlayHitAnimation();
         StartCoroutine(FlashWhite());
 
@@ -98,7 +98,6 @@ public class EnemyBase :  GravityObject, IDamageable
             Debug.LogWarning($"blood splatter on {name} is null");
         }
         
-        print("taking damage 2");
         // Play hit animation
         // Play hit sound
         if (damageInstance.knockback.normalized == Vector2.up)
@@ -110,7 +109,6 @@ public class EnemyBase :  GravityObject, IDamageable
             StartCoroutine(Knockback(damageInstance.knockback));
         }
         
-        print("taking damage 3");
         currentHealth -= damageInstance.damage;
         
         if (currentHealth <= 0)
@@ -188,6 +186,8 @@ public class EnemyBase :  GravityObject, IDamageable
             Debug.LogError("Ruby prefab not found");
             return;
         }
+        
+        Vector3 positionBase = GetBottomPosition() + Vector2.up * rubySpawnHeight;
 
         //Drop as many rubies as the RubyDropAmount
         for (int i = 0; i < rubyDropAmount; i++)
@@ -200,7 +200,7 @@ public class EnemyBase :  GravityObject, IDamageable
                 // Generate a small random offset
                 Vector3 offset = new Vector3(Random.Range(1.5f, 0.5f), Random.Range(0.5f, 0.5f), 0);
                 // Add the offset to the enemy's position
-                spawnPosition = transform.position + offset;
+                spawnPosition = positionBase + offset;
                 // Check if the position is valid
                 Collider2D hit = Physics2D.OverlapCircle(spawnPosition, 0.2f, LayerMask.GetMask("Ground"));
 

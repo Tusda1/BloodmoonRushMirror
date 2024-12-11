@@ -23,6 +23,7 @@ public class CheckpointData : MonoBehaviour {
     }
 
     private void Respawn() {
+        print("Respawning player");
         FMODManager.RaiseMusicEvent("Player/SpawnPlayer");
         _playerScript.gameObject.transform.position = _playerRespawnPos;
     }
