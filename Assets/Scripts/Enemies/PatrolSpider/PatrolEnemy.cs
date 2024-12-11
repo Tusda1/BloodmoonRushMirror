@@ -7,11 +7,21 @@ public class PatrolEnemy : EnemyBase
     [SerializeField] private SmoothDampScript smoothDampScript = new();
     [SerializeField] private float ledgeDistance = 1f;
     
+    private PatrolAnimation _patrolAnimation;
+    private Vector2 _visualVelocity;
+
+    protected override void Start()
+    {
+        base.Start();
+        
+        _patrolAnimation = enemyAnimationBase as PatrolAnimation;
+    }
+    
     private new void Update()
     {
         base.Update();
-
-        if (isDead || isStunned || !isGrounded)
+        
+        if (isDead || isStunned || !isGrounded || _patrolAnimation.isAttacking)
         {
             smoothDampScript.SetStartVelocity(velocity);
             return;
@@ -24,6 +34,7 @@ public class PatrolEnemy : EnemyBase
     {
         // Smoothly move towards the target
         smoothDampScript.SmoothDampFloat(facingDirection, moveSpeed, ref targetVelocity);
+        _visualVelocity = targetVelocity;
         
         // Check if there is a wall in front of the enemy
         RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition(), facingDirection, 1f, EnemyAndGroundLayerMask);
@@ -40,5 +51,20 @@ public class PatrolEnemy : EnemyBase
             // Change direction
             facingDirection = -facingDirection;
         }
+    }
+
+    private void PatrolAttack()
+    {
+        base.Attack();
+    }
+
+    protected override void Attack()
+    {
+        _patrolAnimation.Attack(PatrolAttack);
+    }
+
+    protected override void SetVisualFacingDirection()
+    {
+        visualFacingDirection = _visualVelocity.x > 0 ? Vector2.right : Vector2.left;
     }
 }

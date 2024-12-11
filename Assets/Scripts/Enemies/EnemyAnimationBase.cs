@@ -6,14 +6,19 @@ public class EnemyAnimationBase : MonoBehaviour
 {
     [SerializeField] private AnimationClip deathAnimation;
     [SerializeField] private AnimationClip hitAnimation;
+
+    protected AnimancerComponent animancerComponent { get; private set; }
     
-    public AnimancerComponent animancerComponent { get; private set; }
-    
-    protected void Awake()
+    protected virtual void Awake()
     {
         animancerComponent = GetComponent<AnimancerComponent>();
     }
-    
+
+    protected virtual void OnEnable()
+    {
+        PlayDefaultAnimation();
+    }
+
     public virtual void PlayDefaultAnimation()
     {
         // Play the default animation

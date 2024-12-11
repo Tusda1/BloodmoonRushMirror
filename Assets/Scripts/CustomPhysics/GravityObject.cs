@@ -1,18 +1,25 @@
+using System;
 using System.Collections.Generic;
 using Attributes;
 using Gaskellgames;
 using UnityEngine;
 
 public abstract class GravityObject : MonoBehaviour {
-    [Header("Gravity Object")]
-    [SerializeField, ReadOnly] protected bool isGrounded;
-    [SerializeField] protected int lockToAxis; //0 for no, 1 for x, 2 for y :3
+    #region ---Fields---
+    [GetOrAddComponent, SerializeField, HideInInspector]
+    protected Rigidbody2D rb2d;
 
-    protected Vector2 targetVelocity;
-    protected Vector2 velocity;
-    [GetOrAddComponent, SerializeField, HideInInspector] protected Rigidbody2D rb2d;
+    [Header("Gravity Object")] [SerializeField, ReadOnly]
+    public bool isGrounded;
+
+    [SerializeField] public Axis lockToAxis;
+
+    public Vector2 targetVelocity;
+    public Vector2 velocity;
+
     [Tooltip("If Gravidimodifyer is 0, set: GroundNormal = new Vector2 (0f, 1f); in start function in inherited class")]
-    [SerializeField] protected float GravityModifier = 1f;
+    public float GravityModifier = 1f;
+
     protected Vector2 GroundNormal; //set this to Vector2.Right in child if you want to make projectiles
 
     private readonly RaycastHit2D[] _hitBuffer = new RaycastHit2D[16];
@@ -21,6 +28,7 @@ public abstract class GravityObject : MonoBehaviour {
     private const float ShellRadius = 0.01f;
     private ContactFilter2D _contactFilter;
     private const float MinGroundNormalY = 0.65f;
+    #endregion
 
     protected void Awake() {
         rb2d ??= GetComponent<Rigidbody2D>();
@@ -31,7 +39,7 @@ public abstract class GravityObject : MonoBehaviour {
         _contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
         //contactFilter.SetLayerMask(layerMask);
         _contactFilter.useLayerMask = true;
-        GroundNormal = new Vector2 (0f, 1f); 
+        GroundNormal = new Vector2(0f, 1f);
     }
 
     protected void Update() {
@@ -54,7 +62,7 @@ public abstract class GravityObject : MonoBehaviour {
         }
 
         velocity.x = targetVelocity.x;
-        
+
         isGrounded = false;
 
         var deltaPosition = velocity * Time.deltaTime;
@@ -100,19 +108,22 @@ public abstract class GravityObject : MonoBehaviour {
         }
 
         rb2d.position = lockToAxis switch {
-            0 => rb2d.position + move.normalized * distance,
-            1 => new Vector2(rb2d.position.x + move.normalized.x * distance, rb2d.position.y),
-            2 => new Vector2(rb2d.position.x, rb2d.position.y + move.normalized.y * distance),
+            Axis.None => rb2d.position + move.normalized * distance,
+            Axis.XAxis => new Vector2(rb2d.position.x + move.normalized.x * distance, rb2d.position.y),
+            Axis.YAxis => new Vector2(rb2d.position.x, rb2d.position.y + move.normalized.y * distance),
             _ => rb2d.position
         };
     }
 
-    public void ResetMovement(int whichAxis) {
-        velocity = whichAxis switch {
-            0 => Vector2.zero,
-            1 => new Vector2(0, velocity.y),
-            2 => new Vector2(velocity.x, 0),
+    public void ResetMovement(Axis axis) {
+        velocity = axis switch {
+            Axis.None => velocity,
+            Axis.XAxis | Axis.YAxis => Vector2.zero,
+            Axis.XAxis => new Vector2(0, velocity.y),
+            Axis.YAxis => new Vector2(velocity.x, 0),
             _ => velocity
         };
     }
+
+    [Flags] public enum Axis : byte { None = 0, XAxis = 1, YAxis = 2 }
 }

@@ -67,7 +67,7 @@ namespace Player {
         private readonly ScriptVotePair _isAliveVotePair = new();
 
         [Header("Debug Logger"), SerializeField, Attributes.Required]
-        private DebugLoggerSO debugLogger;
+        public DebugLoggerSO debugLogger;
 
         public event Action OnRespawn = delegate { };
 
@@ -154,6 +154,10 @@ namespace Player {
             if (!inputValue.isPressed) return;
             debugLogger.Log($"canAttack: {_canAttack} | canMove: {PlayerMovementEnabled}");
             if (!_canAttack || !PlayerMovementEnabled) return;
+
+            var u = playerMovement.inputVector.x >= 0 ? 1 : -1;
+            
+            transform.localScale = new Vector3(u, 1, 1);
 
             if (playerMovement.isDucking) {
                 DuckAttack();

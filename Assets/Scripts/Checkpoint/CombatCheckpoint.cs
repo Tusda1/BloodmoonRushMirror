@@ -12,7 +12,7 @@ public class CombatCheckpoint : MonoBehaviour
         if (other.CompareTag("Player") && !_isCheckpointReached)
         {
             CheckpointReached?.Invoke();
-            FMODManager.RaiseMusicEvent("Misc/Checkpoint_reached");
+            FMODManager.RaiseSFXEvent("Misc/Checkpoint_reached");
             _isCheckpointReached = true;
         }
     }

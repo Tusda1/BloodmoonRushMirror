@@ -3,7 +3,6 @@ using Consensus;
 using ExtensionMethods;
 using Gaskellgames;
 using PlayerLoopTimer;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,7 +16,7 @@ namespace Player {
         private BoxCollider2D boxCollider;
 
         [Header("Player Movement")] [SerializeField, ReadOnly]
-        private Vector2 inputVector;
+        public Vector2 inputVector;
 
         [ReadOnly] public bool isDucking;
         [ReadOnly] public bool isHoldingDuck;
@@ -26,9 +25,9 @@ namespace Player {
         public Vector2 affectingVelocity = Vector2.zero;
         [SerializeField] private float smoothTime;
         [SerializeField] private float maxSpeed;
-        [SerializeField] private LayerMask whatIsLadder;
+        [SerializeField] public LayerMask whatIsLadder;
         [SerializeField] private LayerMask whatIsInvalidSpawnPoint;
-        [SerializeField] private float climbSpeed;
+        [SerializeField] public float climbSpeed;
 
         [Header("Dash")] [ReadOnly] public bool isDashing;
         [ReadOnly] public bool canDash;
@@ -42,7 +41,7 @@ namespace Player {
         [SerializeField] private float minJumpTime;
         [SerializeField] private float coyoteTime;
         [SerializeField] private float jumpBufferTime;
-        [SerializeField] private float gravityMultiplier;
+        [SerializeField] public float gravityMultiplier;
         [SerializeField] private float fallSpeed;
         [SerializeField] private LayerMask whatIsGround;
         [SerializeField] private bool isActuallyGrounded;
@@ -74,7 +73,10 @@ namespace Player {
         private Vector2 _referenceSmoothVelocity;
         [HideInInspector] public Vector2 lastPlatformCheckpoint;
         [HideInInspector] public bool wasGroundedLastFrame;
-        private ILadder _ladder;
+        
+        private IPlayerLadderLogic _playerLadderLogic; 
+        [HideInInspector] public LadderMiddle ladderMiddle;
+        [HideInInspector] public LadderTop ladderTop;
         #endregion
 
         #region ***---AnimatorStringToHash---***
@@ -88,7 +90,6 @@ namespace Player {
         private static readonly int AnimatorIsHoldingJumpBool = Animator.StringToHash("IsHoldingJump");
         private static readonly int AnimatorIsFallingBool = Animator.StringToHash("IsFalling");
         private static readonly int AnimatorClimbBool = Animator.StringToHash("IsClimbing");
-        private static readonly int AnimatorClimbTopExitTrigger = Animator.StringToHash("ClimbTopExit");
         private static readonly int AnimatorGunJumpTrigger = Animator.StringToHash("GunJump");
         #endregion
         #endregion
@@ -99,6 +100,8 @@ namespace Player {
             GravityModifier = gravityMultiplier;
 
             lastPlatformCheckpoint = transform.position;
+
+            _playerLadderLogic = new PlayerLadderLogic(player);
 
             InitializeTimers();
         }
@@ -127,9 +130,9 @@ namespace Player {
                     player.healthComponent.TriggerInvulnerability(dashTime);
                 })
                 .WithOnStop(() => {
-                    lockToAxis = 0;
                     isDashing = false;
-                    ResetMovement(2);
+                    lockToAxis = Axis.None;
+                    ResetMovement(Axis.YAxis);
                     player.animator.SetBool(AnimatorDashBool, false);
                 })
                 .Finish();
@@ -185,13 +188,8 @@ namespace Player {
             GroundCheck();
             isActuallyGrounded = isGrounded;
             
-            if (LadderLogic()) {
-                player.animator.SetBool(AnimatorClimbBool, true);
-                player.animator.SetFloat(AnimatorYMovementFloat, inputVector.y);
-                return;
-            }
+            if (_playerLadderLogic.LadderLogic()) return;
 
-            player.animator.SetBool(AnimatorClimbBool, false);
             player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
 
             CoyoteTimeLogic();
@@ -216,7 +214,7 @@ namespace Player {
             // } else
             if (doubleJumping && isJumping) {
                 MovingPlatformExit();
-                ResetMovement(2);
+                ResetMovement(Axis.YAxis);
                 isDashing = false;
                 velocity.y = jumpForce;
                 // targetVelocity.y = jumpForce;
@@ -323,6 +321,7 @@ namespace Player {
             if (!isHoldingJump) return;
 
             ForceExitDuck();
+            _playerLadderLogic.ExitLadder();
             if (isGrounded || killCharges > 0) {
                 isJumping = true;
                 _minJumpTimer.StartTimer();
@@ -357,10 +356,11 @@ namespace Player {
                 }
             }
 
+            _playerLadderLogic.ExitLadder();
             ForceExitDuck();
             isDashing = true;
             canDash = false;
-            lockToAxis = 1;
+            lockToAxis = Axis.XAxis;
             _dashTimer.StartTimer();
 
             if (inputVector.x > 0.1f)
@@ -378,29 +378,9 @@ namespace Player {
         public void OnDuck(InputValue inputValue) {
             isHoldingDuck = inputValue.isPressed;
         }
-
-        private void OnTriggerEnter2D(Collider2D other) {
-            if (!other.CompareTag("Ladder")) return;
-
-            var ladder = other.GetComponentInChildren<ILadder>();
-            _ladder = ladder switch {
-                LadderTop ladderTop => ladderTop,
-                LadderMiddle ladderMiddle when _ladder is not LadderTop => ladderMiddle,
-                _ => _ladder
-            };
-        }
-
-        private void OnTriggerExit2D(Collider2D other) {
-            if (!other.CompareTag("Ladder")) return;
-
-            var l = other.GetComponentInChildren<ILadder>();
-            if (l?.GetType() == _ladder?.GetType()) {
-                _ladder = null;
-            }
-        }
         #endregion
 
-        private void ForceExitDuck() {
+        public void ForceExitDuck() {
             debugLogger.Log("exiting duck");
             isDucking = false;
             player.animator.SetBool(AnimatorCrouchBool, false);
@@ -409,17 +389,8 @@ namespace Player {
         private void EnterDuck() {
             debugLogger.Log("entering duck");
 
-            if (TryGetLadderTop(out _ladder)) {
-                _ladder.SetColliderTrigger(true);
-                // transform.position = _ladder.ladderStartPosition.position;
-                isClimbing = true;
-                isGrounded = false;
-                // _ladder.LadderIsUsed = true;
-                debugLogger.Log("Enter ladder from top");
-
-                return;
-            }
-
+            if (_playerLadderLogic.TryGetLadderTop(out ladderTop)) return;
+            
             isDucking = true;
             player.animator.SetBool(AnimatorCrouchBool, true);
             debugLogger.Log("Changed player scale down");
@@ -474,86 +445,6 @@ namespace Player {
         }
 #endif
 
-        private bool LadderLogic() {
-            if (_ladder == null && !isClimbing) return false;
-
-            if (inputVector.y > 0) {
-                switch (_ladder) {
-                    case LadderTop ladderTop:
-                        isClimbing = false;
-                        isGrounded = true;
-                        GravityModifier = gravityMultiplier;
-                        ladderTop.PlayerClimbToTopOfLadder(player);
-                        _ladder = null;
-
-                        break;
-                    case LadderMiddle ladderMiddle:
-                        if (!isClimbing) {
-                            isClimbing = true;
-                            isGrounded = false;
-
-                            GravityModifier = 0;
-                            
-                            // ladderMiddle.ladderTop.SetColliderTrigger(true);
-
-                            var transformPosition = transform.position;
-                            transform.position = transformPosition.With(x: ladderMiddle.transform.position.x + 0.5f);
-                        }
-
-                        if ((isGrounded && inputVector.y < 0) || isHoldingJump || isDashing) {
-                            isClimbing = false;
-                            GravityModifier = gravityMultiplier;
-                            _ladder = null;
-                        }
-                        else {
-                            isGrounded = true;
-                            ForceExitDuck();
-                        }
-
-                        break;
-                }
-            }
-            else if (inputVector.y < 0) {
-                if (isGrounded) {
-                    
-                }
-            }
-            
-            velocity = new Vector2(0, inputVector.y * climbSpeed);
-
-            // if (isClimbing) {
-            //     targetVelocity = new Vector2(0, inputVector.y * climbSpeed);
-            //     if (_ladder != null) {
-            //         var transformPosition = transform.position;
-            //         // transform.position = transformPosition.With(x: _ladder.triggerCollider.transform.position.x);
-            //     }
-            //
-            //     GravityModifier = 0;
-            //
-            //     if ((isGrounded && inputVector.y < 0) || isHoldingJump || isDashing || _notClimbing) {
-            //         debugLogger.Log(
-            //             $"Exit Ladder | {isGrounded && inputVector.y < 0} || {isHoldingJump} || {isDashing} || {_notClimbing}");
-            //
-            //         isClimbing = false;
-            //         // isGrounded = true;
-            //         GravityModifier = gravityMultiplier;
-            //         if (_ladder != null) {
-            //             // _ladder.LadderIsUsed = false;
-            //             _ladder = null;
-            //         }
-            //
-            //         _notClimbing = false;
-            //     }
-            //     else {
-            //         isGrounded = false;
-            //         ForceExitDuck();
-            //         return true;
-            //     }
-            // }
-
-            return true;
-        }
-
         private void CoyoteTimeLogic() {
             if (!isActuallyGrounded && wasGroundedLastFrame && !isJumping && !isDashing) {
                 debugLogger.Log("Start coyote timer");
@@ -566,27 +457,8 @@ namespace Player {
             }
         }
 
-        private bool TryGetLadderTop(out ILadder platform) {
-            debugLogger.Log("TryGetLadder");
-
-            var point = transform.position.WithOffset(transform.localScale.y * 0.5f);
-            var size = transform.localScale.Abs();
-            var ladder = Physics2D.OverlapBox(point, size, 0, whatIsLadder);
-
-            if (ladder != null) return ladder.TryGetComponent(out platform);
-
-            platform = null;
-            return false;
-        }
-
         private void GroundCheck() {
             isGrounded = Physics2D.OverlapBox(transform.position, new Vector2(0.5f, 0.01f), 0, whatIsGround);
-        }
-
-        public void ClimbTopOfLadder(Vector3 ladderTopPosition) {
-            transform.position = ladderTopPosition;
-            player.animator.SetTrigger(AnimatorClimbTopExitTrigger);
-            player.healthComponent.TriggerInvulnerability(1);
         }
     }
 }

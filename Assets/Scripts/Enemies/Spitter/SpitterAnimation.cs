@@ -9,12 +9,7 @@ public class SpitterAnimation : EnemyAnimationBase
     [SerializeField] private AnimationClip spit;
     [SerializeField] private AnimationClip idle;
 
-    public bool isAttacking;
-    
-    private void Start()
-    {
-        PlayDefaultAnimation();
-    }
+    [HideInInspector] public bool isAttacking;
     
     public override void PlayDefaultAnimation()
     {
