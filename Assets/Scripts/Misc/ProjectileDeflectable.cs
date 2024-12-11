@@ -21,17 +21,28 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        _velocityDirection = rb2d.linearVelocity.normalized;
-        
-        transform.localScale = _velocityDirection.x > 0 ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
         
         _animancerComponent = GetComponent<AnimancerComponent>();
         _animancerComponent.Play(baseAnimation);
         
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _colliderRadius = _circleCollider2D.radius;
-        
+    }
+
+    private void OnEnable()
+    {
         StartCoroutine(EnableCollider());
+        
+        _velocityDirection = rb2d.linearVelocity.normalized;
+        
+        transform.localScale = _velocityDirection.x > 0 ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        
+        _isDeflected = false;
     }
 
     private IEnumerator EnableCollider()
@@ -78,7 +89,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         if (damageable == null && other.gameObject.layer != LayerMask.NameToLayer("Ground")) return; 
         
         AnimancerState state = _animancerComponent.Play(hitAnimation);
-        state.Events(this).OnEnd = () => Destroy(gameObject);
+        state.Events(this).OnEnd = () => gameObject.SetActive(false);
         
         rb2d.linearVelocity = Vector2.zero;
     }

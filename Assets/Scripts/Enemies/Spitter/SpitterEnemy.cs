@@ -20,8 +20,19 @@ public class SpitterEnemy : ReactiveBase
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile");
         _spitterAnimation = enemyAnimationBase as SpitterAnimation;
         
+        var communitypooler = ServiceLocator.Get<CommunityPooler>();
+        foreach (var pooler in communitypooler.poolers)
+        {
+            if (pooler.ObjectToPool == _projectilePrefab)
+            {
+                projectilePooler = pooler;
+                break;
+            }
+        }
+        
         if (projectilePooler == null)
         {
+            Debug.LogWarning("No pooler found for projectile, creating new pooler");
             projectilePooler = new Pooler(_projectilePrefab, 5);
         }
     }

@@ -1,13 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CommunityPooler : MonoBehaviour 
 {
-    public Pooler pooler {get ; private set;}
+    public List<Pooler> poolers {get ; private set;}
     
-    [SerializeField] private GameObject prefab;
+    [SerializeField] private GameObject[] prefabs;
     
     private void Awake()
     {
-        pooler = new Pooler(prefab, 15, gameObject);
+        foreach (var projectile in prefabs)
+        {
+            poolers.Add(new Pooler(projectile, 10, gameObject));
+        }
+        
+        ServiceLocator.Register(this);
     }
 }
