@@ -90,6 +90,8 @@ public class EnemyBase :  GravityObject, IDamageable
         if (bloodSplatter != null) {
             var deg = Vector2.Angle(damageInstance.knockback.normalized, Vector2.right);
             bloodSplatter.transform.rotation = new Quaternion(0, 0, deg, 0);
+            bloodSplatter.transform.position = transform.position;
+            bloodSplatter.Clear();
             bloodSplatter.Play();
         }
         else {

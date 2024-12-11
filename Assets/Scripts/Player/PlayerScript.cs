@@ -123,6 +123,7 @@ namespace Player {
         private void OnDestroy() {
             ServiceLocator.Unregister<PlayerScript>();
             playerCanMove.Clear();
+            InputSystem.PauseHaptics();
         }
 
         #region ***---InputActions---***
@@ -144,8 +145,6 @@ namespace Player {
         public void OnInteract(InputValue inputValue) {
             if (!inputValue.isPressed || !PlayerMovementEnabled) return;
 
-            PlayBloodSplatter();
-
             var interactable = InteractCheck();
             if (interactable == null) return;
 
@@ -160,10 +159,11 @@ namespace Player {
             debugLogger.Log($"canAttack: {_canAttack} | canMove: {PlayerMovementEnabled}");
             if (!_canAttack || !PlayerMovementEnabled) return;
 
-            var u = playerMovement.inputVector.x >= 0 ? 1 : -1;
+            if (playerMovement.isClimbing) {
+                var u = playerMovement.inputVector.x >= 0 ? 1 : -1;
+                transform.localScale = new Vector3(u, 1, 1);
+            }
             
-            transform.localScale = new Vector3(u, 1, 1);
-
             if (playerMovement.isDucking) {
                 DuckAttack();
             }
@@ -205,14 +205,13 @@ namespace Player {
 
         public void TakeDamage(DamageInstance damageInstance) {
             if (_isDead) return;
-            if (healthComponent.HasInvincibilityFrames && !damageInstance.ignoreInvincibility) return;
 
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
 
             damageInstance.TriggerOnHitAction();
             playerMovement.Knockback(damageInstance.knockback);
             animator.SetTrigger(AnimatorTakeDamageTrigger);
-            healthComponent.TakeDamage(damageInstance.damage);
+            healthComponent.TakeDamage(damageInstance.damage, damageInstance.ignoreInvincibility);
             var cameraEffects = ServiceLocator.Get<CameraEffects>();
 
             _ = cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
