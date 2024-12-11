@@ -70,9 +70,9 @@ public class BetterRuby : GravityObject
     private void Hover()
     {
         if (initialY == 0) initialY = transform.position.y;
-        
+    
         Vector3 position = transform.position;
-        position.y = initialY + Mathf.Sin(Time.time * hoverSpeed) * hoverHeight;
+        position.y = initialY + Mathf.Sin(Time.time * hoverSpeed - Mathf.PI / 2) * hoverHeight;
         transform.position = position;
     }
     

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SpitterEnemy : ReactiveBase
 {
+    [SerializeField] private Pooler projectilePooler;
     [SerializeField] private float projectileSpeed = 10f;
     [SerializeField] private float projectileCooldown = 2f;
     
@@ -18,6 +19,11 @@ public class SpitterEnemy : ReactiveBase
         
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile");
         _spitterAnimation = enemyAnimationBase as SpitterAnimation;
+        
+        if (projectilePooler == null)
+        {
+            projectilePooler = new Pooler(_projectilePrefab, 5);
+        }
     }
     
     protected override void Action()
@@ -57,7 +63,8 @@ public class SpitterEnemy : ReactiveBase
         var spawnPosition = new Vector2(position.x, position.y + YOffset);
         
         // Shoot a projectile in the facingdirection. Spawn it so that it is outside of the collider of the spitter
-        GameObject projectile = Instantiate(_projectilePrefab, spawnPosition, Quaternion.identity);
+        GameObject projectile = projectilePooler.GetPooledObject();
+        projectile.transform.position = spawnPosition;
         projectile.GetComponent<Rigidbody2D>().linearVelocity = facingDirection * projectileSpeed;
         projectile.GetComponent<ProjectileDeflectable>().shooter = gameObject;
     }
