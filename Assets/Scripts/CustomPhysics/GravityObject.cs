@@ -125,5 +125,5 @@ public abstract class GravityObject : MonoBehaviour {
         };
     }
 
-    [Flags] public enum Axis : byte { None = 0, XAxis = 1, YAxis = 2 }
+    [Flags] public enum Axis { None = 0, XAxis = 1, YAxis = 2 }
 }

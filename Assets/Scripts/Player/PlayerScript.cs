@@ -102,7 +102,9 @@ namespace Player {
         }
 
         private void Start() {
-            Bind();
+            if (DataInGameData != null) {
+                Bind();
+            }
 
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
@@ -111,6 +113,9 @@ namespace Player {
             healthComponent.InvulnerabilityTimer.OnComplete += () => spriteRenderer.color = new Color(1, 1, 1, 1);
 
             SetStateBehavioursReferences();
+            
+            Gamepad.current.SetMotorSpeeds(0.123f, 0.234f);
+            InputSystem.PauseHaptics();
 
             StartCoroutine(ResetPlayerInput());
         }
@@ -214,6 +219,14 @@ namespace Player {
             _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
 
             PlayBloodSplatter();
+
+            StartCoroutine(ControllerVibration());
+        }
+
+        private static IEnumerator ControllerVibration() {
+            InputSystem.ResumeHaptics();
+            yield return new WaitForSeconds(0.2f);
+            InputSystem.PauseHaptics();
         }
 
         public void PlayBloodSplatter() {

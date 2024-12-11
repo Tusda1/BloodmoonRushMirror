@@ -22,10 +22,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         set => _playerMovement.ladderMiddle = value;
     }
 
-    private LadderTop LadderTop {
-        get => _playerMovement.ladderTop;
-        set => _playerMovement.ladderTop = value;
-    }
+    private LadderTop LadderTop => _playerMovement.ladderTop;
 
     private bool IsClimbing {
         get => _playerMovement.isClimbing;
@@ -71,6 +68,10 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         Assert.IsNotNull(_transform);
     }
 
+    /// <summary>
+    /// Called in update
+    /// </summary>
+    /// <returns>True stops default movement update from running</returns>
     public bool LadderLogic() {
         if (!IsClimbing) {
             if (InputVector.y != 0 && LadderMiddle != null && !(InputVector.y < 0 && IsGrounded) && !_playerMovement.isJumping) {
@@ -118,6 +119,11 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         ExitLadder();
     }
 
+    /// <summary>
+    /// Called when ducking
+    /// </summary>
+    /// <param name="ladderTop">The ladder we are standing on if we are</param>
+    /// <returns>True if standing on top of a ladder</returns>
     public bool TryGetLadderTop(out LadderTop ladderTop) {
         _player.debugLogger.Log("TryGetLadder");
 
@@ -158,7 +164,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
 
         GravityModifier = GravityMultiplier;
         IsClimbing = false;
-        IsGrounded = true;
+        // IsGrounded = true;
         // LadderTop = null;
         // LadderMiddle = null;
         _playerMovement.lockToAxis = Axis.None;
