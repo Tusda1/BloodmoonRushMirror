@@ -77,12 +77,13 @@ public class EnemyBase :  GravityObject, IDamageable
     public void TakeDamage(DamageInstance damageInstance)
     {
         print("taking damage");
-        if (Time.time - _takeDamageTimer < invulnerableTime)
+        if (Time.time - _takeDamageTimer < invulnerableTime && !damageInstance.ignoreInvincibility)
         {
             return;
         }
         _takeDamageTimer = Time.time;
         
+        print("taking damage 1");
         enemyAnimationBase.PlayHitAnimation();
         StartCoroutine(FlashWhite());
 
@@ -95,6 +96,7 @@ public class EnemyBase :  GravityObject, IDamageable
             Debug.LogWarning($"blood splatter on {name} is null");
         }
         
+        print("taking damage 2");
         // Play hit animation
         // Play hit sound
         if (damageInstance.knockback.normalized == Vector2.up)
@@ -106,6 +108,7 @@ public class EnemyBase :  GravityObject, IDamageable
             StartCoroutine(Knockback(damageInstance.knockback));
         }
         
+        print("taking damage 3");
         currentHealth -= damageInstance.damage;
         
         if (currentHealth <= 0)
