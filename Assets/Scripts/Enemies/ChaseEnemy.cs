@@ -79,7 +79,7 @@ public class ChaseEnemy : ReactiveBase
         // Check if enemy is close enough to attack
         if (Vector2.Distance(rb2d.position, targetObject.transform.position) < attackDistance && !_isAttacking)
         {
-            StartCoroutine(Attack());
+            StartCoroutine(AttackCoroutine());
         }
     }
 
@@ -109,7 +109,7 @@ public class ChaseEnemy : ReactiveBase
         }
     }
     
-    private IEnumerator Attack()
+    private IEnumerator AttackCoroutine()
     {
         _isAttacking = true;
         
