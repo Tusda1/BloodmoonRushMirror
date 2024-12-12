@@ -25,7 +25,7 @@ public abstract class GravityObject : MonoBehaviour {
     private readonly RaycastHit2D[] _hitBuffer = new RaycastHit2D[16];
     private readonly List<RaycastHit2D> _hitBufferList = new(16);
     private const float MinMoveDistance = 0.001f;
-    private const float ShellRadius = 0.01f; //0.01
+    [SerializeField] private float shellRadius = 0.01f; //0.01
     private ContactFilter2D _contactFilter;
     private const float MinGroundNormalY = 0.65f; //0.65f
     #endregion
@@ -80,7 +80,7 @@ public abstract class GravityObject : MonoBehaviour {
         var distance = move.magnitude;
 
         if (distance > MinMoveDistance) {
-            var count = rb2d.Cast(move, _contactFilter, _hitBuffer, distance + ShellRadius); //previous rb2d cast
+            var count = rb2d.Cast(move, _contactFilter, _hitBuffer, distance + shellRadius); //previous rb2d cast
             _hitBufferList.Clear();
 
             for (var i = 0; i < count; i++) {
@@ -102,7 +102,7 @@ public abstract class GravityObject : MonoBehaviour {
                     velocity -= projection * currentNormal;
                 }
 
-                var modifiedDistance = hit2D.distance - ShellRadius;
+                var modifiedDistance = hit2D.distance - shellRadius;
                 distance = modifiedDistance < distance ? modifiedDistance : distance;
             }
         }

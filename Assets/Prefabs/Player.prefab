@@ -174,12 +174,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb2d: {fileID: 1222319225997515202}
-  gravityCollider: {fileID: 6503705925884822905}
   isGrounded: 0
   lockToAxis: 0
   targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
   GravityModifier: 1
+  shellRadius: 0.1
   player: {fileID: 3298925456892397176}
   boxCollider: {fileID: 6503705925884822905}
   inputVector: {x: 0, y: 0}
@@ -443,7 +443,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.95}
+  m_Offset: {x: 0, y: 1.05}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5260869, y: 0}
