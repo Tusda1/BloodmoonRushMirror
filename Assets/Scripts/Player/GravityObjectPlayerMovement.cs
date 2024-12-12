@@ -61,7 +61,7 @@ namespace Player {
         private DebugLoggerSO debugLogger;
 
         #region ***---PrivateFields---***
-        private CountdownTimer _dashTimer;
+        public CountdownTimer _dashTimer;
         private CountdownTimer _minJumpTimer;
         private CountdownTimer _jumpBufferTimer;
         private CountdownTimer _knockbackTimer;
@@ -127,7 +127,7 @@ namespace Player {
             _dashTimer = CountdownTimerBuilder.Start(dashTime)
                 .WithOnBegin(() => {
                     player.animator.SetBool(AnimatorDashBool, true);
-                    player.healthComponent.TriggerInvulnerability(dashTime);
+                    player.healthComponent.TriggerInvulnerability(dashTime - 0.2f);
                 })
                 .WithOnStop(() => {
                     isDashing = false;
@@ -345,6 +345,7 @@ namespace Player {
 
         public void OnDash(InputValue inputValue) {
             if (!inputValue.isPressed) return;
+            if (player.isAttacking) return;
             if (isDashing || !canDash) {
                 _coyoteTimer.StopTimer();
 

@@ -9,9 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5471481447901216593}
-  - component: {fileID: 8654472328657529724}
+  - component: {fileID: 892186481959905384}
   - component: {fileID: 8907773847491202315}
-  - component: {fileID: 1067861080814233624}
   m_Layer: 0
   m_Name: TriggerConversationBox
   m_TagString: Untagged
@@ -34,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8654472328657529724
+--- !u!114 &892186481959905384
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,11 +42,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 4719493960834511567}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: feb0cb27a03a8614889980cc2891381d, type: 3}
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderTag: Player
-  agent: {fileID: 1067861080814233624}
+  m_Graph: {fileID: 7539907628655466435, guid: 207934166d4b78d4a9b993256ba66456, type: 2}
+  m_BlackboardVariableOverridesList:
+  - rid: 2814022173100605505
+  - rid: 2814022173100605506
+  references:
+    version: 2
+    RefIds:
+    - rid: 2814022173100605505
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 4719493960834511567}
+    - rid: 2814022173100605506
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 446764754209978895
+          m_Value1: 12850180978812070570
+        Name: PlayerAnimator
+        m_Value: {fileID: 0}
 --- !u!61 &8907773847491202315
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -82,7 +102,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.6626185, y: 1.6013288}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -92,31 +112,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.3252373, y: 6.2346888}
   m_EdgeRadius: 0
---- !u!114 &1067861080814233624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4719493960834511567}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Graph: {fileID: -7973833189144408391, guid: a7474ac9dcace624a8bdf8c3ed943b69, type: 2}
-  m_BlackboardVariableOverridesList:
-  - rid: 4541842205752164934
-  references:
-    version: 2
-    RefIds:
-    - rid: 4541842205752164934
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Self
-        m_Value: {fileID: 4719493960834511567}

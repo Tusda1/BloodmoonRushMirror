@@ -156,6 +156,7 @@ namespace Player {
 
         public void OnAttack(InputValue inputValue) {
             if (!inputValue.isPressed) return;
+            if (playerMovement.isDashing) return;
             debugLogger.Log($"canAttack: {_canAttack} | canMove: {PlayerMovementEnabled}");
             if (!_canAttack || !PlayerMovementEnabled) return;
 

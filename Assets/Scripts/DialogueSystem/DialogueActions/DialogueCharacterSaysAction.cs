@@ -21,8 +21,8 @@ namespace Unity.Behavior {
         [SerializeReference] public BlackboardVariable<FontAsset> dialogueFontOverride;
         [SerializeReference] public BlackboardVariable<float> textSizeOverride;
         [SerializeReference] public BlackboardVariable<Color> dialogueColorOverride;
-        [SerializeReference] public BlackboardVariable<float> textSpeedOverride;
-        [SerializeReference] public BlackboardVariable<bool> overwriteWhenIsSfxPlayed;
+        [SerializeReference] public BlackboardVariable<float> textSpeedOverride = new(0);
+        [SerializeReference] public BlackboardVariable<bool> overwriteWhenIsSfxPlayed = new(false);
         [SerializeReference] public BlackboardVariable<DialogueCharacterSO.WhenIsSfxPlayed> whenIsSfxPlayed;
 
         private int _currentCharIndex;
@@ -30,55 +30,39 @@ namespace Unity.Behavior {
         private bool _skipped;
         private bool _textDoneDisplaying;
         private float _timePerChar;
-        private string _displayText;
+        private string _displayText = "";
 
         private static DialogueUI DialogueUI => DialogueUI.Instance;
 
         private DialogueCharacterSO.WhenIsSfxPlayed _whenIsSfxPlayed;
+
+        private DialogueCharacterSO DialogueCharacter => dialogueCharacter.Value;
         #endregion
 
         protected override Status OnStart() {
-            #region ---FailureConditions---
-            if (dialogueCharacter == null) {
-                Debug.LogWarning("DialogueCharacter not set!");
-                return Status.Failure;
-            }
+            Debug.Log("DialogueCharacter Says started!");
 
-            if (DialogueUI == null) {
-                Debug.LogWarning("DialogueUI not set!");
-                return Status.Failure;
-            }
-            #endregion
+            if (FailureCondition()) return Status.Failure;
 
-            DialogueUI.OnSkipDialogue += Skip;
+            SetDialogueUIValues(DialogueUI);
 
-            DialogueUI.dialogueFont = dialogueFontOverride.Value == null
-                ? dialogueCharacter.Value.dialogueFont
-                : dialogueFontOverride.Value;
-
-            DialogueUI.imagePortrait = imagePortraitOverride.Value == null
-                ? dialogueCharacter.Value.dialogueImage
-                : imagePortraitOverride.Value;
-
-            DialogueUI.dialogueColor = dialogueColorOverride.Value == default
-                ? dialogueCharacter.Value.dialogueColor
-                : dialogueColorOverride.Value;
-
-            DialogueUI.textSize =
-                textSizeOverride.Value == 0 ? dialogueCharacter.Value.textSize : textSizeOverride.Value;
-
-            DialogueUI.dialogueText = "";
-
-            _timePerChar = 1f / (textSpeedOverride == 0 ? dialogueCharacter.Value.textSpeed : textSpeedOverride.Value);
+            Debug.Log(_timePerChar);
 
             _currentCharIndex = -1;
             _skipped = false;
             _displayText = dialogue.Value;
             _textDoneDisplaying = false;
 
-            _whenIsSfxPlayed = overwriteWhenIsSfxPlayed
-                ? whenIsSfxPlayed.Value
-                : dialogueCharacter.Value.whenIsSfxPlayed;
+            try {
+                _whenIsSfxPlayed = DialogueCharacter.whenIsSfxPlayed;
+
+                if (overwriteWhenIsSfxPlayed.Value) {
+                    _whenIsSfxPlayed = whenIsSfxPlayed.Value;
+                }
+            }
+            catch (Exception) {
+                // ignored
+            }
 
             if ((_whenIsSfxPlayed & DialogueCharacterSO.WhenIsSfxPlayed.InTheBeginning) !=
                 DialogueCharacterSO.WhenIsSfxPlayed.Nowhere ||
@@ -153,7 +137,49 @@ namespace Unity.Behavior {
         }
 
         private void PlayTextAudio() {
-            FMODManager.RaiseEvent(new PlaySoundEvent(dialogueCharacter.Value.textAudioSoundEventPath));
+            FMODManager.RaiseEvent(new PlaySoundEvent(DialogueCharacter.textAudioSoundEventPath));
+        }
+
+        private bool FailureCondition() {
+            if (dialogueCharacter == null) {
+                Debug.LogWarning("DialogueCharacter not set!");
+                return true;
+            }
+
+            if (DialogueUI == null) {
+                Debug.LogWarning("DialogueUI not set!");
+                return true;
+            }
+
+            return false;
+        }
+
+        private void SetDialogueUIValues(DialogueUI dialogueUI) {
+            dialogueUI.OnSkipDialogue += Skip;
+
+            dialogueUI.dialogueFont = dialogueFontOverride.Value != null
+                ? dialogueFontOverride.Value
+                : DialogueCharacter.dialogueFont;
+
+            dialogueUI.imagePortrait = imagePortraitOverride.Value != null
+                ? imagePortraitOverride.Value
+                : DialogueCharacter.dialogueImage;
+
+            dialogueUI.dialogueColor = dialogueColorOverride.Value != default
+                ? dialogueColorOverride.Value
+                : DialogueCharacter.dialogueColor;
+
+            dialogueUI.textSize = !Mathf.Approximately(textSizeOverride.Value, default)
+                ? textSizeOverride.Value
+                : DialogueCharacter.textSize;
+
+            _timePerChar = 1f / (textSpeedOverride.Value != 0
+                ? textSpeedOverride.Value
+                : DialogueCharacter.textSpeed);
+
+            dialogueUI.dialogueText = "";
+
+            dialogueUI.characterName = DialogueCharacter.characterName;
         }
     }
 }
