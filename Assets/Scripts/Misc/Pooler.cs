@@ -38,6 +38,7 @@ public class Pooler
         _pooledObjects.Add(pooledObject);
         if(_parent != null) pooledObject.transform.parent = _parent.transform;
         
+        Debug.Log("Pooled object created " + pooledObject.name);
         return pooledObject;
     }
 }

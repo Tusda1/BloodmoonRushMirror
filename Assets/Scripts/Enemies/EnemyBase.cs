@@ -11,7 +11,6 @@ public class EnemyBase :  GravityObject, IDamageable
     protected bool isDead;
     protected bool isVulnerable;
     protected bool isStunned;
-    [SerializeField] private bool _takesSpikeDamage;
     private float _takeDamageTimer;
     protected Vector2 facingDirection;
     protected Vector2 visualFacingDirection;
@@ -22,6 +21,7 @@ public class EnemyBase :  GravityObject, IDamageable
     protected EnemyAnimationBase enemyAnimationBase;
     protected PlayerScript player;
 
+    [SerializeField] private bool takesSpikeDamage;
     [SerializeField] private bool faceLeftOnStart;
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected float maxHealth;
@@ -195,9 +195,11 @@ public class EnemyBase :  GravityObject, IDamageable
         {
             bool acceptablePosition = false;
             Vector3 spawnPosition = Vector3.zero;
+            int attempts = 0;
             
             while (acceptablePosition == false)
             {
+                attempts++;
                 // Generate a small random offset
                 Vector3 offset = new Vector3(Random.Range(1.5f, 0.5f), Random.Range(0.5f, 0.5f), 0);
                 // Add the offset to the enemy's position
@@ -206,6 +208,11 @@ public class EnemyBase :  GravityObject, IDamageable
                 Collider2D hit = Physics2D.OverlapCircle(spawnPosition, 0.2f, LayerMask.GetMask("Ground"));
 
                 if (hit == null)
+                {
+                    acceptablePosition = true;
+                }
+
+                if (attempts > 10)
                 {
                     acceptablePosition = true;
                 }

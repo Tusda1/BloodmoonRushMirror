@@ -2,17 +2,20 @@ using System;
 using System.Collections;
 using Animancer;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ProjectileDeflectable : MonoBehaviour, IDamageable
 {
     [SerializeField] private DamageInstance damageInstance;
     [SerializeField] private AnimationClip baseAnimation;
     [SerializeField] private AnimationClip hitAnimation;
+    [SerializeField] private float speed;
+    
+    [HideInInspector] public GameObject shooter;
+    [HideInInspector] public Vector2 velocityDirection;
     
     private AnimancerComponent _animancerComponent;
     private Rigidbody2D rb2d;
-    public GameObject shooter;
-    private Vector2 _velocityDirection;
     private bool _isDeflected;
 
     private float _colliderRadius;
@@ -35,9 +38,9 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         
         StartCoroutine(EnableCollider());
         
-        _velocityDirection = rb2d.linearVelocity.normalized;
+        rb2d.linearVelocity = velocityDirection * speed;
         
-        transform.localScale = _velocityDirection.x > 0 ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+        transform.localScale = velocityDirection.x > 0 ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
     }
 
     private void OnDisable()
@@ -82,7 +85,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         if (other.gameObject.TryGetComponent<IDamageable>(out var damageable))
         {
             // set the knockback direction based on the velocity of the projectile
-            var knockbackDirection = _velocityDirection.x > 0 ? Vector2.right : Vector2.left;
+            var knockbackDirection = velocityDirection.x > 0 ? Vector2.right : Vector2.left;
             damageInstance.knockback = knockbackDirection * damageInstance.knockbackStrength;
             
             damageable.TakeDamage(damageInstance);
@@ -116,6 +119,6 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         }
         
         rb2d.linearVelocity = velocity * 3;
-        _velocityDirection = rb2d.linearVelocity.normalized;
+        velocityDirection = rb2d.linearVelocity.normalized;
     }
 }
