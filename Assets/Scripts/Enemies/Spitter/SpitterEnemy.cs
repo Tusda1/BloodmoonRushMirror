@@ -1,13 +1,14 @@
+using System.Linq;
 using UnityEngine;
 
 public class SpitterEnemy : ReactiveBase
 {
-    [SerializeField] private Pooler projectilePooler;
     [SerializeField] private float projectileSpeed = 10f;
     [SerializeField] private float projectileCooldown = 2f;
     
     private GameObject _projectilePrefab;
     private SpitterAnimation _spitterAnimation;
+    private Pooler _projectilePooler;
     private bool _attacking;
     private float _cooldownTimer;
     
@@ -20,21 +21,25 @@ public class SpitterEnemy : ReactiveBase
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile");
         _spitterAnimation = enemyAnimationBase as SpitterAnimation;
         
-        print("getting pooler");
-        var communitypooler = ServiceLocator.Get<CommunityPooler>();
-        foreach (var pooler in communitypooler.poolers)
+        try
         {
-            if (pooler.ObjectToPool == _projectilePrefab)
+            var communityPooler = ServiceLocator.Get<CommunityPooler>();
+            foreach (var pooler in communityPooler.poolers.Where(pooler => pooler.ObjectToPool == _projectilePrefab))
             {
-                projectilePooler = pooler;
+                _projectilePooler = pooler;
                 break;
             }
+
+            if (_projectilePooler == null)
+            {
+                Debug.LogWarning("No pooler found for projectile, creating new pooler");
+                _projectilePooler = new Pooler(_projectilePrefab, 5);
+            }
         }
-        
-        if (projectilePooler == null)
+        catch (System.Exception ex)
         {
-            Debug.LogWarning("No pooler found for projectile, creating new pooler");
-            projectilePooler = new Pooler(_projectilePrefab, 5);
+            Debug.LogError($"Failed to retrieve CommunityPooler: {ex.Message}");
+            _projectilePooler = new Pooler(_projectilePrefab, 5);
         }
     }
     
@@ -75,7 +80,7 @@ public class SpitterEnemy : ReactiveBase
         var spawnPosition = new Vector2(position.x, position.y + YOffset);
         
         // Shoot a projectile in the facingdirection. Spawn it so that it is outside of the collider of the spitter
-        GameObject projectile = projectilePooler.GetPooledObject();
+        GameObject projectile = _projectilePooler.GetPooledObject();
         projectile.transform.position = spawnPosition;
         projectile.GetComponent<Rigidbody2D>().linearVelocity = facingDirection * projectileSpeed;
         projectile.GetComponent<ProjectileDeflectable>().shooter = gameObject;

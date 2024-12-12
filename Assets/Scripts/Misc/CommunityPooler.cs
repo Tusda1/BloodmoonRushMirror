@@ -15,6 +15,5 @@ public class CommunityPooler : MonoBehaviour
         }
         
         ServiceLocator.Register(this);
-        print("Pooler registered");
     }
 }
