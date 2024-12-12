@@ -61,7 +61,7 @@ namespace Player {
         private DebugLoggerSO debugLogger;
 
         #region ***---PrivateFields---***
-        private CountdownTimer _dashTimer;
+        public CountdownTimer _dashTimer;
         private CountdownTimer _minJumpTimer;
         private CountdownTimer _jumpBufferTimer;
         private CountdownTimer _knockbackTimer;
