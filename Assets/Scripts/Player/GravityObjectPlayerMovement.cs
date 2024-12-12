@@ -127,7 +127,7 @@ namespace Player {
             _dashTimer = CountdownTimerBuilder.Start(dashTime)
                 .WithOnBegin(() => {
                     player.animator.SetBool(AnimatorDashBool, true);
-                    player.healthComponent.TriggerInvulnerability(dashTime);
+                    player.healthComponent.TriggerInvulnerability(dashTime - 0.2f);
                 })
                 .WithOnStop(() => {
                     isDashing = false;
