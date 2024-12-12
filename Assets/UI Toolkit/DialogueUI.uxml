@@ -6,17 +6,19 @@
                 <engine:DataBinding property="style.unityFontDefinition" data-source-path="dialogueFont" binding-mode="ToTarget" />
             </Bindings>
         </engine:Label>
-        <engine:Label text="Label" style="position: absolute; top: 6px; left: 141px; height: 60px; width: 652px; -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); -unity-text-align: upper-left; font-size: 16px;">
-            <Bindings>
-                <engine:DataBinding property="text" data-source-path="dialogueText" binding-mode="ToTarget" />
-                <engine:DataBinding property="style.unityFontDefinition" data-source-path="dialogueFont" binding-mode="ToTarget" />
-            </Bindings>
-        </engine:Label>
         <engine:VisualElement style="flex-grow: 1; position: absolute; height: 74px; top: -75px; width: 74px; background-image: url(&quot;project://database/Assets/Art/Icons/Drucilla/drusilla%20laugh%20potrait.png?fileID=-1587205731444698363&amp;guid=5620f4f64f5a9cc40be14fa5fdcc6b54&amp;type=3#drusilla laugh potrait_0&quot;); left: 33px;">
             <Bindings>
                 <engine:DataBinding property="style.backgroundImage" data-source-path="imagePortrait" binding-mode="ToTarget" />
             </Bindings>
         </engine:VisualElement>
+        <engine:Label text="Keep your eyes peeled! And don’t worry—I’ll check in from time to time. Think of this phone as your magical helpline. No fees, no long hold times—just pure wizardry, baby!" style="position: absolute; top: 4px; left: 137px; height: 63px; width: 661px; -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); -unity-text-align: upper-left; font-size: 16px; white-space: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255);">
+            <Bindings>
+                <engine:DataBinding property="text" data-source-path="dialogueText" binding-mode="ToTarget" />
+                <engine:DataBinding property="style.unityFontDefinition" data-source-path="dialogueFont" binding-mode="ToTarget" />
+                <engine:DataBinding property="style.fontSize" data-source-path="textSize" binding-mode="ToTarget" />
+                <engine:DataBinding property="style.color" data-source-path="dialogueColor" binding-mode="ToTarget" />
+            </Bindings>
+        </engine:Label>
         <Bindings>
             <engine:DataBinding property="style.display" data-source-path="uiDocumentVisible" binding-mode="ToTarget" source-to-ui-converters="Bool To DisplayStyle" />
         </Bindings>
