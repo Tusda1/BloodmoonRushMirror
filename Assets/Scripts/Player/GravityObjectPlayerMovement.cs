@@ -383,6 +383,8 @@ namespace Player {
         public void ForceExitDuck() {
             debugLogger.Log("exiting duck");
             isDucking = false;
+            boxCollider.size = new Vector2(0.9f, 1.9f);
+            boxCollider.offset = new Vector2(0f, 1f);
             player.animator.SetBool(AnimatorCrouchBool, false);
         }
 
@@ -393,6 +395,8 @@ namespace Player {
             
             isDucking = true;
             player.animator.SetBool(AnimatorCrouchBool, true);
+            boxCollider.size = new Vector2(0.9f, 0.9f);
+            boxCollider.offset = new Vector2(0f, 0.5f);
             debugLogger.Log("Changed player scale down");
         }
 
