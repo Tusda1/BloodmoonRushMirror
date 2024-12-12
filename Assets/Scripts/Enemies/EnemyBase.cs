@@ -98,6 +98,14 @@ public class EnemyBase :  GravityObject, IDamageable
             Debug.LogWarning($"blood splatter on {name} is null");
         }
         
+        currentHealth -= damageInstance.damage;
+        
+        if (currentHealth <= 0)
+        {
+            Die();
+            return;
+        }
+        
         // Play hit animation
         // Play hit sound
         if (damageInstance.knockback.normalized == Vector2.up)
@@ -107,13 +115,6 @@ public class EnemyBase :  GravityObject, IDamageable
         else
         {
             StartCoroutine(Knockback(damageInstance.knockback));
-        }
-        
-        currentHealth -= damageInstance.damage;
-        
-        if (currentHealth <= 0)
-        {
-            Die();
         }
     }
     

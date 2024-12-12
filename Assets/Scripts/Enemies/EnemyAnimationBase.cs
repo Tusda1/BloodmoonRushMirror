@@ -46,6 +46,7 @@ public class EnemyAnimationBase : MonoBehaviour
         deathState.Events(this).OnEnd = () =>
         {
             onDeathAnimationEnd?.Invoke();
+            deathState.Events(this).OnEnd = null;
         };
     }
     

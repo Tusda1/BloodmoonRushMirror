@@ -83,12 +83,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8359242984285706046, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
+  m_Sprite: {fileID: 8066045789543308008, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 0.75}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -126,6 +126,7 @@ MonoBehaviour:
     ignoreInvincibility: 0
   weight: 2
   rubyDropAmount: 3
+  rubySpawnHeight: 0.8
   knockbackSmoothDampScript:
     smoothTime: 0.1
   bloodSplatter: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
@@ -144,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f1637e13ef8c8546bead8e076ec1fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathAnimation: {fileID: 0}
+  deathAnimation: {fileID: 5723935964300731062, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
   hitAnimation: {fileID: -3117440549422228268, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
   walk: {fileID: 3280591909972774192, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
   windUp: {fileID: 7561208457582960813, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
@@ -184,17 +185,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.22499996, y: 0.4}
+  m_Offset: {x: -0.08150023, y: -0.06600037}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.38157895, y: 0}
-    oldSize: {x: 1.9, y: 0.8}
-    newSize: {x: 1, y: 1}
+    pivot: {x: 0.5440541, y: 0.5942857}
+    oldSize: {x: 1.85, y: 0.7}
+    newSize: {x: 2, y: 0.75}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.9, y: 0.8}
+  m_Size: {x: 1.85, y: 0.7}
   m_EdgeRadius: 0
 --- !u!50 &1752739502921978978
 Rigidbody2D:
@@ -326,7 +327,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.22499996, y: 0.4}
+  m_Offset: {x: -0.08150023, y: -0.06600037}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.28866667}
@@ -336,5 +337,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.9, y: 0.8}
+  m_Size: {x: 1.85, y: 0.7}
   m_EdgeRadius: 0
