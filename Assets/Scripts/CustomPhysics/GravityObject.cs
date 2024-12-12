@@ -6,9 +6,9 @@ using UnityEngine;
 
 public abstract class GravityObject : MonoBehaviour {
     #region ---Fields---
-    [GetOrAddComponent, SerializeField, HideInInspector]
+    [GetOrAddComponent, SerializeField]
     protected Rigidbody2D rb2d;
-
+    
     [Header("Gravity Object")] [SerializeField, ReadOnly]
     public bool isGrounded;
 
@@ -25,9 +25,9 @@ public abstract class GravityObject : MonoBehaviour {
     private readonly RaycastHit2D[] _hitBuffer = new RaycastHit2D[16];
     private readonly List<RaycastHit2D> _hitBufferList = new(16);
     private const float MinMoveDistance = 0.001f;
-    private const float ShellRadius = 0.01f;
+    private const float ShellRadius = 0.01f; //0.01
     private ContactFilter2D _contactFilter;
-    private const float MinGroundNormalY = 0.65f;
+    private const float MinGroundNormalY = 0.65f; //0.65f
     #endregion
 
     protected void Awake() {
@@ -80,7 +80,7 @@ public abstract class GravityObject : MonoBehaviour {
         var distance = move.magnitude;
 
         if (distance > MinMoveDistance) {
-            var count = rb2d.Cast(move, _contactFilter, _hitBuffer, distance + ShellRadius);
+            var count = rb2d.Cast(move, _contactFilter, _hitBuffer, distance + ShellRadius); //previous rb2d cast
             _hitBufferList.Clear();
 
             for (var i = 0; i < count; i++) {

@@ -163,6 +163,14 @@ namespace Player {
                 var u = playerMovement.inputVector.x >= 0 ? 1 : -1;
                 transform.localScale = new Vector3(u, 1, 1);
             }
+            else {
+                if (playerMovement.isFacingRight) {
+                    transform.localScale = new Vector3(1, 1, 1);
+                }
+                else {
+                    transform.localScale = new Vector3(-1, 1, 1);
+                }
+            }
             
             if (playerMovement.isDucking) {
                 DuckAttack();
