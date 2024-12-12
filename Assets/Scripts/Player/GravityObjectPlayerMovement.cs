@@ -414,11 +414,12 @@ namespace Player {
 
         private void SpikeStunStop() {
             //_player.spriteRenderer.color = new Color(1, 1, 1, 1);
+            gameObject.transform.position = lastPlatformCheckpoint;
             isTakingKnockback = false;
         }
 
         public void SpikeReset() {
-            gameObject.transform.position = lastPlatformCheckpoint;
+            //gameObject.transform.position = lastPlatformCheckpoint;
             ResetMovement(0);
             _spikeStunTimer.StartTimer();
             isDashing = false;
