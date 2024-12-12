@@ -345,6 +345,7 @@ namespace Player {
 
         public void OnDash(InputValue inputValue) {
             if (!inputValue.isPressed) return;
+            if (player.isAttacking) return;
             if (isDashing || !canDash) {
                 _coyoteTimer.StopTimer();
 
