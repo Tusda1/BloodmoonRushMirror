@@ -8,7 +8,7 @@ namespace Triggers {
         [SerializeField] private int musicStage;
         #endregion
 
-        public override void TriggeredAction() {
+        public override void TriggeredAction(Collider2D other) {
             FMODManager.RaiseMusicEvent(musicName, "levelMusicProgression", musicStage);
         }
     }

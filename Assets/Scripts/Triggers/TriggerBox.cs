@@ -13,10 +13,10 @@ namespace Triggers {
             if (_hasBeenTriggered) return;
             if (colliderTag != default && !other.CompareTag(colliderTag)) return;
 
-            TriggeredAction();
+            TriggeredAction(other);
             _hasBeenTriggered = true;
         }
 
-        public abstract void TriggeredAction();
+        public abstract void TriggeredAction(Collider2D other);
     }
 }

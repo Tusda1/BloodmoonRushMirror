@@ -74,7 +74,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     /// <returns>True stops default movement update from running</returns>
     public bool LadderLogic() {
         if (!IsClimbing) {
-            if (InputVector.y != 0 && LadderMiddle != null && !(InputVector.y < 0 && IsGrounded) && !_playerMovement.isJumping) {
+            if (InputVector.y != 0 && LadderMiddle != null && !(InputVector.y < 0 && _playerMovement.isActuallyGrounded) && !_playerMovement.isHoldingJump) {
                 EnterLadder();
             }
             else {
@@ -146,6 +146,10 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         _player.debugLogger.Log("EnterLadder");
 
         GravityModifier = 0;
+        
+        _playerMovement.ResetMovement(Axis.YAxis);
+        
+        _playerMovement._dashTimer.StopTimer();
 
         IsClimbing = true;
         IsGrounded = true;
@@ -163,10 +167,8 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         _player.debugLogger.Log("ExitLadder");
 
         GravityModifier = GravityMultiplier;
+        
         IsClimbing = false;
-        // IsGrounded = true;
-        // LadderTop = null;
-        // LadderMiddle = null;
         _playerMovement.lockToAxis = Axis.None;
 
         _player.animator.SetBool(AnimatorClimbBool, false);

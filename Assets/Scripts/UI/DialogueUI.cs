@@ -8,7 +8,8 @@ using UnityEngine.UIElements;
 namespace UI {
     public class DialogueUI : Singleton<DialogueUI> {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] 
+        private UIDocument uiDocument;
         
         [SerializeField] public AllInFavourConsensusSO playerCanMove;
         public event Action OnSkipDialogue = delegate { };

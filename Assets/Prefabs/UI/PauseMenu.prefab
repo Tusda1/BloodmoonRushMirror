@@ -72,7 +72,6 @@ MonoBehaviour:
   uiDocument: {fileID: 1344609031287201620}
   mainMenusSceneCollectionSO: {fileID: 11400000, guid: 1453e8e2604f419409d8394bf7fee1d7, type: 2}
   playerCanMove: {fileID: 11400000, guid: f2f25efabb8f0d74bbfdba92ceb38155, type: 2}
-  eventSystem: {fileID: 0}
 --- !u!114 &1638730626525253350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,6 +85,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiDocument: {fileID: 1344609031287201620}
+  tabNavigateAction: {fileID: 7896978939624929561, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
 --- !u!114 &5169826130637135154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,10 +136,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4875595237995187263}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8c5d226bcb49a545aced4cd4bd8e888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panelSettings: {fileID: 11400000, guid: e93a3f3523783734e98e7d898716c81f, type: 2}
-  uiDocument: {fileID: 0}
+  uiDocument: {fileID: 1344609031287201620}
+  uiCamera: {fileID: 0}
