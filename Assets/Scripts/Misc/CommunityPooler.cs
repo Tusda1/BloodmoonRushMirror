@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CommunityPooler : MonoBehaviour 
 {
-    public List<Pooler> poolers {get ; private set;}
+    public List<Pooler> poolers {get ;} = new();
     
     [SerializeField] private GameObject[] prefabs;
     
@@ -15,5 +15,6 @@ public class CommunityPooler : MonoBehaviour
         }
         
         ServiceLocator.Register(this);
+        print("Pooler registered");
     }
 }

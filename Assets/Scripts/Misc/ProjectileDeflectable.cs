@@ -18,7 +18,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     private float _colliderRadius;
     private CircleCollider2D _circleCollider2D;
 
-    private void Start()
+    private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
         
@@ -31,6 +31,8 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
+        _circleCollider2D.enabled = false;
+        
         StartCoroutine(EnableCollider());
         
         _velocityDirection = rb2d.linearVelocity.normalized;

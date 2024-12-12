@@ -9,17 +9,18 @@ public class SpitterEnemy : ReactiveBase
     private GameObject _projectilePrefab;
     private SpitterAnimation _spitterAnimation;
     private bool _attacking;
-    private float cooldownTimer;
+    private float _cooldownTimer;
     
     private const float YOffset = 0.45f;
 
-    protected new void Start()
+    protected override void Start()
     {
         base.Start();
         
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile");
         _spitterAnimation = enemyAnimationBase as SpitterAnimation;
         
+        print("getting pooler");
         var communitypooler = ServiceLocator.Get<CommunityPooler>();
         foreach (var pooler in communitypooler.poolers)
         {
@@ -48,18 +49,18 @@ public class SpitterEnemy : ReactiveBase
 
         if (_spitterAnimation.isAttacking)
         {
-            cooldownTimer = projectileCooldown;
+            _cooldownTimer = projectileCooldown;
             return;
         }
         
         // check if the cooldown has passed
-        if (cooldownTimer <= 0)
+        if (_cooldownTimer <= 0)
         {
             StartAttack();
         }
         else
         {
-            cooldownTimer -= Time.deltaTime;
+            _cooldownTimer -= Time.deltaTime;
         }
     }
 
