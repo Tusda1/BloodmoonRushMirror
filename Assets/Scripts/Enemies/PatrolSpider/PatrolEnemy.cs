@@ -37,7 +37,7 @@ public class PatrolEnemy : EnemyBase
         _visualVelocity = targetVelocity;
         
         // Check if there is a wall in front of the enemy
-        RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition(), facingDirection, 1f, EnemyAndGroundLayerMask);
+        RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition(), facingDirection, ledgeDistance, EnemyAndGroundLayerMask);
         if (hit.collider != null)
         {
             // Change direction
