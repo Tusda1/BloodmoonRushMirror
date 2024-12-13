@@ -5,6 +5,7 @@ using Gaskellgames;
 using PlayerLoopTimer;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
@@ -57,8 +58,9 @@ namespace Player {
 
         private bool PlayerMovementEnabled => playerCanMove.consensus;
 
-        [Header("Debug Logger")] [SerializeField, Required]
-        private DebugLoggerSO debugLogger;
+        [Header("Debug Loggers")] 
+        [SerializeField, Required] private DebugLoggerSO playerMovementDebugLogger;
+        [SerializeField, Required] private DebugLoggerSO ladderDebugLogger;
 
         #region ***---PrivateFields---***
         public CountdownTimer _dashTimer;
@@ -75,8 +77,8 @@ namespace Player {
         [HideInInspector] public bool wasGroundedLastFrame;
         
         private IPlayerLadderLogic _playerLadderLogic; 
-        [HideInInspector] public LadderMiddle ladderMiddle;
-        [HideInInspector] public LadderTop ladderTop;
+        public LadderMiddle ladderMiddle;
+        public LadderTop ladderTop;
         #endregion
 
         #region ***---AnimatorStringToHash---***
@@ -101,7 +103,7 @@ namespace Player {
 
             lastPlatformCheckpoint = transform.position;
 
-            _playerLadderLogic = new PlayerLadderLogic(player);
+            _playerLadderLogic = new PlayerLadderLogic(player, ladderDebugLogger);
 
             InitializeTimers();
         }
@@ -382,7 +384,7 @@ namespace Player {
         #endregion
 
         public void ForceExitDuck() {
-            debugLogger.Log("exiting duck");
+            playerMovementDebugLogger.Log("exiting duck");
             isDucking = false;
             boxCollider.size = new Vector2(0.9f, 1.9f);
             boxCollider.offset = new Vector2(0f, 1f);
@@ -390,7 +392,7 @@ namespace Player {
         }
 
         private void EnterDuck() {
-            debugLogger.Log("entering duck");
+            playerMovementDebugLogger.Log("entering duck");
 
             if (_playerLadderLogic.TryGetLadderTop(out ladderTop)) return;
             
@@ -398,7 +400,7 @@ namespace Player {
             player.animator.SetBool(AnimatorCrouchBool, true);
             boxCollider.size = new Vector2(0.9f, 0.9f);
             boxCollider.offset = new Vector2(0f, 0.5f);
-            debugLogger.Log("Changed player scale down");
+            playerMovementDebugLogger.Log("Changed player scale down");
         }
 
         public void Knockback(Vector2 argumentKnockback) {
@@ -453,12 +455,12 @@ namespace Player {
 
         private void CoyoteTimeLogic() {
             if (!isActuallyGrounded && wasGroundedLastFrame && !isJumping && !isDashing) {
-                debugLogger.Log("Start coyote timer");
+                playerMovementDebugLogger.Log("Start coyote timer");
                 _coyoteTimer.RestartTimer();
             }
 
             if (_coyoteTimer.IsRunning) {
-                debugLogger.Log("Timer running");
+                playerMovementDebugLogger.Log("Timer running");
                 isGrounded = true;
             }
         }
