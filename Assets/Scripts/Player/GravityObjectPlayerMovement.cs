@@ -229,6 +229,7 @@ namespace Player {
             else if (isJumping) {
                 MovingPlatformExit();
                 velocity.y = jumpForce;
+                player.animator.SetBool(AnimatorJumpBool, true);
                 // targetVelocity.y = jumpForce;
             }
 
