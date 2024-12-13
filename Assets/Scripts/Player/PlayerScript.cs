@@ -254,7 +254,7 @@ namespace Player {
             debugLogger.Log("Setting death trigger");
             animator.SetTrigger(AnimatorDeathTrigger);
 
-            yield return new WaitUntil(() => animator.GetCurrentAnimationClip().name == "Death");
+            yield return new WaitUntil(() => animator.GetCurrentAnimationClip().name == "[DVD]Death");
             yield return new WaitForSeconds(animator.GetCurrentAnimationClip().length + 2f);
 
             playerLives--;

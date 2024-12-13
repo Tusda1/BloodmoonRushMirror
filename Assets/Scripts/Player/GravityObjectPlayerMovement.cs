@@ -197,6 +197,7 @@ namespace Player {
             CoyoteTimeLogic();
 
             var move = Vector2.zero;
+            player.animator.SetBool(AnimatorIsFallingBool, isFalling);
 
             if (isTakingKnockback) {
                 velocity = _knockbackVector;
@@ -208,8 +209,6 @@ namespace Player {
             }
 
             move.x = inputVector.x;
-
-            player.animator.SetBool(AnimatorIsFallingBool, false);
 
             // if (isGrounded && isJumping) {
             //     velocity.y = jumpForce;
@@ -225,7 +224,7 @@ namespace Player {
             else if (!isHoldingJump && !isJumping) {
                 if (velocity.y > 0) velocity.y *= fallSpeed;
                 targetVelocity.y *= fallSpeed;
-                player.animator.SetBool(AnimatorIsFallingBool, true);
+                // player.animator.SetBool(AnimatorIsFallingBool, true);
             }
             else if (isJumping) {
                 MovingPlatformExit();
