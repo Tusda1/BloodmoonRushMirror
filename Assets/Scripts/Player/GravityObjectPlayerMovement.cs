@@ -187,7 +187,6 @@ namespace Player {
         protected override void ComputeVelocity() {
             if (!PlayerMovementEnabled) return;
             
-            
             GroundCheck();
             isActuallyGrounded = isGrounded;
             

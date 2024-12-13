@@ -122,7 +122,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     private void ClimbToTopOfLadder(Vector3 ladderTopPosition) {
         _transform.position = ladderTopPosition;
         _player.animator.SetTrigger(AnimatorClimbTopExitTrigger);
-        _player.healthComponent.TriggerInvulnerability(1);
+        // _player.healthComponent.TriggerInvulnerability(0.2f);
         ExitLadder();
     }
 
