@@ -207,11 +207,11 @@ public class EnemyBase :  GravityObject, IDamageable
             {
                 attempts++;
                 // Generate a small random offset
-                Vector3 offset = new Vector3(Random.Range(1.5f, 0.5f), Random.Range(0.5f, 0.5f), 0);
+                var offset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0.4f, 0.6f), 0);
                 // Add the offset to the enemy's position
                 spawnPosition = positionBase + offset;
                 // Check if the position is valid
-                Collider2D hit = Physics2D.OverlapCircle(spawnPosition, 0.2f, LayerMask.GetMask("Ground"));
+                var hit = Physics2D.OverlapCircle(spawnPosition, 0.4f, LayerMask.GetMask("Ground"));
 
                 if (hit == null)
                 {
