@@ -186,11 +186,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb2d: {fileID: 8960105064451551744}
   isGrounded: 0
+  isFalling: 0
   lockToAxis: 0
   targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
   GravityModifier: 5
-  _takesSpikeDamage: 0
+  takesSpikeDamage: 0
   faceLeftOnStart: 1
   moveSpeed: 0
   maxHealth: 2
@@ -209,7 +210,6 @@ MonoBehaviour:
     smoothTime: 0.1
   bloodSplatter: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
   detectionDistance: 20
-  projectileSpeed: 9
   projectileCooldown: 1.2
 --- !u!114 &-518531707119575430
 MonoBehaviour:
