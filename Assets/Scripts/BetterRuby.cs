@@ -78,11 +78,13 @@ public class BetterRuby : GravityObject
     
     private void Move()
     {
+        var playerPosition = _player.position + (Vector3)Vector2.up;
+        
         if (Time.time - _spawnTime < pickupableTime) return;
         
-        if (Vector3.Distance(transform.position, _player.position) > despawnDistance)
+        if (Vector3.Distance(transform.position, playerPosition) > despawnDistance)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _player.position, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, playerPosition, moveSpeed * Time.deltaTime);
             moveSpeed *= 1 + Time.deltaTime;
         }
         else
