@@ -136,7 +136,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         if (ladder != null) {
             if (!ladder.TryGetComponent(out ladderTop)) return false;
             EnterLadderFromTop();
-            // _playerMovement.ladderMiddle = ladderTop?.ladderMiddle;
+            _playerMovement.ladderMiddle = ladderTop.ladderMiddle;
             return true;
         }
 

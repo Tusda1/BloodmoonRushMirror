@@ -46,8 +46,6 @@ namespace Unity.Behavior {
 
             SetDialogueUIValues(DialogueUI);
 
-            Debug.Log(_timePerChar);
-
             _currentCharIndex = -1;
             _skipped = false;
             _displayText = dialogue.Value;
