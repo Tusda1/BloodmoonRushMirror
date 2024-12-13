@@ -9,6 +9,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     #region ---Fields---
     private readonly PlayerScript _player;
     private readonly GravityObjectPlayerMovement _playerMovement;
+    private readonly DebugLoggerSO _debugLogger;
 
     #region ---PlayerMovementShortcuts---
     private LadderMiddle LadderMiddle {
@@ -16,10 +17,9 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
             if (_playerMovement.ladderMiddle == null && LadderTop != null && InputVector.y < 0) {
                 return LadderTop.ladderMiddle;
             }
-            
+
             return _playerMovement.ladderMiddle;
         }
-        set => _playerMovement.ladderMiddle = value;
     }
 
     private LadderTop LadderTop => _playerMovement.ladderTop;
@@ -61,8 +61,9 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     #endregion
     #endregion
 
-    public PlayerLadderLogic(PlayerScript player) {
+    public PlayerLadderLogic(PlayerScript player, DebugLoggerSO debugLogger) {
         _player = player;
+        _debugLogger = debugLogger;
         _playerMovement = player.playerMovement;
         _transform = player.GetComponent<Transform>();
         Assert.IsNotNull(_transform);
@@ -74,12 +75,18 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     /// <returns>True stops default movement update from running</returns>
     public bool LadderLogic() {
         if (!IsClimbing) {
-            if (InputVector.y != 0 && LadderMiddle != null && !(InputVector.y < 0 && _playerMovement.isActuallyGrounded) && !_playerMovement.isHoldingJump) {
+            if (InputVector.y != 0 && LadderMiddle != null &&
+                !(InputVector.y < 0 && _playerMovement.isActuallyGrounded) && !_playerMovement.isHoldingJump) {
                 EnterLadder();
             }
             else {
                 return false;
             }
+        }
+
+        if (LadderMiddle == null) {
+            ExitLadder();
+            return false;
         }
 
         _playerMovement.targetVelocity = new Vector2(0, InputVector.y * ClimbSpeed);
@@ -94,7 +101,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
             if ((IsGrounded && InputVector.y < 0) || IsHoldingJump || IsDashing) {
                 IsClimbing = false;
                 GravityModifier = GravityMultiplier;
-                LadderMiddle = null;
+                // LadderMiddle = null;
             }
             else {
                 IsGrounded = true;
@@ -115,7 +122,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     private void ClimbToTopOfLadder(Vector3 ladderTopPosition) {
         _transform.position = ladderTopPosition;
         _player.animator.SetTrigger(AnimatorClimbTopExitTrigger);
-        _player.healthComponent.TriggerInvulnerability(1);
+        // _player.healthComponent.TriggerInvulnerability(0.2f);
         ExitLadder();
     }
 
@@ -125,7 +132,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     /// <param name="ladderTop">The ladder we are standing on if we are</param>
     /// <returns>True if standing on top of a ladder</returns>
     public bool TryGetLadderTop(out LadderTop ladderTop) {
-        _player.debugLogger.Log("TryGetLadder");
+        _debugLogger.Log("TryGetLadder");
 
         var point = _transform.position.WithOffset(_transform.localScale.y * 0.5f);
         var size = _transform.localScale.Abs();
@@ -134,7 +141,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         if (ladder != null) {
             if (!ladder.TryGetComponent(out ladderTop)) return false;
             EnterLadderFromTop();
-            _playerMovement.ladderMiddle = ladderTop.ladderMiddle;
+            // _playerMovement.ladderMiddle = ladderTop?.ladderMiddle;
             return true;
         }
 
@@ -143,12 +150,12 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     }
 
     public void EnterLadder() {
-        _player.debugLogger.Log("EnterLadder");
+        _debugLogger.Log("EnterLadder");
 
         GravityModifier = 0;
-        
+
         _playerMovement.ResetMovement(Axis.YAxis);
-        
+
         _playerMovement._dashTimer.StopTimer();
 
         IsClimbing = true;
@@ -156,7 +163,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         _playerMovement.lockToAxis = Axis.YAxis;
 
         _transform.position = new Vector3(
-            x: LadderMiddle.transform.position.x + 0.5f, 
+            x: LadderMiddle.transform.position.x + 0.5f,
             y: _transform.position.y,
             z: _transform.position.z);
 
@@ -164,10 +171,10 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     }
 
     public void ExitLadder() {
-        _player.debugLogger.Log("ExitLadder");
+        _debugLogger.Log("ExitLadder");
 
         GravityModifier = GravityMultiplier;
-        
+
         IsClimbing = false;
         _playerMovement.lockToAxis = Axis.None;
 
@@ -175,7 +182,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     }
 
     private void EnterLadderFromTop() {
-        _player.debugLogger.Log("Enter ladder from top");
+        _debugLogger.Log("Enter ladder from top");
 
         EnterLadder();
 

@@ -114,7 +114,7 @@ namespace Player {
 
             SetStateBehavioursReferences();
             
-            Gamepad.current.SetMotorSpeeds(0.123f, 0.234f);
+            Gamepad.current?.SetMotorSpeeds(0.123f, 0.234f);
             InputSystem.PauseHaptics();
 
             StartCoroutine(ResetPlayerInput());
