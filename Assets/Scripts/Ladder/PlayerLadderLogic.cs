@@ -84,11 +84,6 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
             }
         }
 
-        if (LadderMiddle == null) {
-            ExitLadder();
-            return false;
-        }
-
         _playerMovement.targetVelocity = new Vector2(0, InputVector.y * ClimbSpeed);
 
         if (InputVector.y > 0) {
