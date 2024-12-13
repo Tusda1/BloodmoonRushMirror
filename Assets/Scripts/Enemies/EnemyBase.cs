@@ -108,6 +108,7 @@ public class EnemyBase :  GravityObject, IDamageable
         
         // Play hit animation
         // Play hit sound
+        print(damageInstance.knockback.normalized);
         if (damageInstance.knockback.normalized == Vector2.up)
         {
             StartCoroutine(KnockUp(damageInstance.knockback));
@@ -135,6 +136,7 @@ public class EnemyBase :  GravityObject, IDamageable
         velocity.y = force/weight;
         yield return new WaitUntil((() => velocity.y <= 0));
         yield return new WaitUntil((() => isGrounded));
+        if (isDead) yield break;
         isStunned = false;
         isVulnerable = false;
         enemyAnimationBase.PlayDefaultAnimation();
@@ -164,6 +166,7 @@ public class EnemyBase :  GravityObject, IDamageable
             targetVelocity = smoothedVelocity;
             yield return null;
         }
+        if (isDead) yield break;
 
         isStunned = false;
         enemyAnimationBase.PlayDefaultAnimation();

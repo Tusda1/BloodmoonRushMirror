@@ -26,6 +26,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         rb2d = GetComponent<Rigidbody2D>();
         
         _animancerComponent = GetComponent<AnimancerComponent>();
+        OptionalWarning.EventPlayMismatch.Disable();
         
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _colliderRadius = _circleCollider2D.radius;
