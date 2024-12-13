@@ -216,10 +216,11 @@ MonoBehaviour:
   isActuallyGrounded: 0
   isTakingKnockback: 0
   knockBackTime: 0.15
-  spikeStunTime: 0.8
+  spikeStunTime: 0.15
   killCharges: 0
   playerCanMove: {fileID: 11400000, guid: f2f25efabb8f0d74bbfdba92ceb38155, type: 2}
-  debugLogger: {fileID: 11400000, guid: 75da1efa7b0197041a121d1e562d1a0b, type: 2}
+  playerMovementDebugLogger: {fileID: 11400000, guid: 75da1efa7b0197041a121d1e562d1a0b, type: 2}
+  ladderDebugLogger: {fileID: 11400000, guid: 2cfe38e4882f01a44b6b31e3b57115a0, type: 2}
   lastPlatformCheckpoint: {x: 0, y: 0}
   wasGroundedLastFrame: 0
   ladderMiddle: {fileID: 0}
@@ -443,7 +444,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.95}
+  m_Offset: {x: 0, y: 1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5260869, y: 0}
