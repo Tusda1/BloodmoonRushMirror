@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyActivation : MonoBehaviour {
     private GameObject[] _rooms;
     private string _enemiesLocation;
-    private readonly List<GameObject> _enemies = new();
+    private readonly List<EnemyBase> _enemies = new();
     private VirtualCameraSwitch _checkpointRoom;
 
     public void Initialize(GameObject[] roomArray, string enemiesLocation) 
@@ -28,7 +28,7 @@ public class EnemyActivation : MonoBehaviour {
             foreach (Transform child in areaGameObject) {
                 // Check if child is on enemy layer
                 if (child.gameObject.layer == enemyLayer) {
-                    _enemies.Add(child.gameObject);
+                    _enemies.Add(child.gameObject.GetComponent<EnemyBase>());
                 }
             }
         }
@@ -36,6 +36,11 @@ public class EnemyActivation : MonoBehaviour {
 
     private void OnRespawn() 
     {
+        foreach (var enemy in _enemies)
+        {
+            enemy.Respawn();
+        }
+        
         foreach (var room in _rooms) 
         {
             room.GetComponent<VirtualCameraSwitch>().EnemyDeactivation();

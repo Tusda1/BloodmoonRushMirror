@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 public class EnemyBase :  GravityObject, IDamageable
 {
+    private Vector2 _startPosition;
     protected bool isDead;
     protected bool isVulnerable;
     protected bool isStunned;
@@ -40,6 +41,8 @@ public class EnemyBase :  GravityObject, IDamageable
     protected override void Start()
     {
         base.Start();
+        
+        _startPosition = transform.position;
         
         currentHealth = maxHealth;
         
@@ -226,6 +229,16 @@ public class EnemyBase :  GravityObject, IDamageable
         }
 
         rubyDropAmount = 0;
+    }
+    
+    public void Respawn()
+    {
+        isDead = false;
+        isVulnerable = false;
+        isStunned = false;
+        gameObject.SetActive(true);
+        currentHealth = maxHealth;
+        transform.position = _startPosition;
     }
 
     private void OnTriggerStay2D(Collider2D other)
