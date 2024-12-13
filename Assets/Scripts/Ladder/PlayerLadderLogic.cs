@@ -104,7 +104,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
             }
         }
         else if (InputVector.y < 0) {
-            if (_playerMovement.isActuallyGrounded) {
+            if (_playerMovement.isActuallyGrounded || LadderMiddle == null) {
                 ExitLadder();
             }
         }
