@@ -185,8 +185,9 @@ namespace Player {
         protected override void ComputeVelocity() {
             if (!PlayerMovementEnabled) return;
             
-            isActuallyGrounded = isGrounded;
+            
             GroundCheck();
+            isActuallyGrounded = isGrounded;
             
             if (_playerLadderLogic.LadderLogic()) return;
 
@@ -464,7 +465,7 @@ namespace Player {
         }
 
         private void GroundCheck() {
-            isGrounded = Physics2D.OverlapBox(transform.position, new Vector2(1f, 0.01f), 0, whatIsGround);
+            isGrounded = Physics2D.OverlapBox(transform.position, new Vector2(0.8f, 0.01f), 0, whatIsGround);
         }
     }
 }
