@@ -1,10 +1,12 @@
 using System;
+using Attributes;
 using UnityEngine;
 
 namespace Player {
     [RequireComponent(typeof(BoxCollider2D))]
     public class PlayerHitbox : MonoBehaviour {
         [SerializeField] private PlayerScript playerScript;
+        [SerializeField, Required] private ParticleSystem coolParticles;
 
         public DamageInstance damageInstance;
 
@@ -19,8 +21,10 @@ namespace Player {
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Player") || !other.TryGetComponent<IDamageable>(out var damageable)) return;
 
-            if (other.CompareTag("Enemy") && !playerScript.playerMovement.wasGroundedLastFrame)
+            if (other.CompareTag("Enemy") && !playerScript.playerMovement.wasGroundedLastFrame) {
                 playerScript.playerMovement.killCharges++;
+                coolParticles.Play();
+            }
             
             if (playerScript.transform.localScale.x > 0) {
                 damageInstance.knockback.x = Mathf.Abs(damageInstance.knockback.x);
