@@ -214,6 +214,8 @@ namespace Player {
 
             _ = cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
             _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
+            
+            playerMovement.lameParticles.Play();
 
             PlayBloodSplatter();
 
