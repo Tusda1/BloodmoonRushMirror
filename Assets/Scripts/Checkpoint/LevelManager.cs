@@ -19,11 +19,7 @@ public class LevelManager : MonoBehaviour
         // Iterate through all children of cameraStacks toi find rooms
         foreach (Transform child in cameraStacks.transform)
         {
-            // Check if child is on room layer
-            if (child.gameObject.layer == LayerMask.NameToLayer("Room"))
-            {
-                areas.Add(child.gameObject);
-            }
+            areas.Add(child.gameObject);
         }
         
         // Iterate through all children of areas to find rooms
