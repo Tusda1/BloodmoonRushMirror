@@ -259,17 +259,18 @@ namespace Player {
 
         private void Respawn() {
             debugLogger.Log("Respawning");
-
-            playerCanMove.ChangeVote(_isAliveVotePair, true);
-            
-            animator.SetBool(AnimatorIsDeadBool, false);
-            healthComponent.Health = healthComponent.maxHealth;
-
-            LoseGems();
             
             OnRespawn.Invoke();
+            
+            playerCanMove.ChangeVote(_isAliveVotePair, true);
 
             _isDead = false;
+            
+            animator.SetBool(AnimatorIsDeadBool, false);
+            
+            healthComponent.Health = healthComponent.maxHealth;
+            
+            LoseGems();
             
             animator.ResetTrigger(AnimatorDeathTrigger);
             animator.SetTrigger(AnimatorRespawnTrigger);
