@@ -324,7 +324,7 @@ namespace Player {
         public void OnJump(InputValue inputValue) {
             isHoldingJump = inputValue.isPressed;
             if (!isHoldingJump) return;
-
+            
             ForceExitDuck();
             _playerLadderLogic.ExitLadder();
             if (isGrounded || killCharges > 0) {
@@ -335,6 +335,7 @@ namespace Player {
 
                 if (killCharges > 0) {
                     doubleJumping = true;
+                    isDashing = false;
                     killCharges--;
                     player.animator.SetTrigger(AnimatorGunJumpTrigger);
                 }
