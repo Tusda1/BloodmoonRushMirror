@@ -151,7 +151,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
 
         _playerMovement.ResetMovement(Axis.YAxis);
 
-        _playerMovement._dashTimer.StopTimer();
+        _playerMovement.DashTimer.StopTimer();
 
         IsClimbing = true;
         IsGrounded = true;
