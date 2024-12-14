@@ -1,4 +1,5 @@
 using System;
+using Player;
 using UnityEngine;
 
 public class BetterRuby : GravityObject
@@ -13,7 +14,7 @@ public class BetterRuby : GravityObject
     
     private float initialY;
     private float _spawnTime;
-    private Transform _player;
+    private PlayerScript _player;
     
     private enum RubyState
     {
@@ -78,7 +79,7 @@ public class BetterRuby : GravityObject
     
     private void Move()
     {
-        var playerPosition = _player.position + (Vector3)Vector2.up;
+        var playerPosition = _player.transform.position + (Vector3)Vector2.up;
         
         if (Time.time - _spawnTime < pickupableTime) return;
         
@@ -90,7 +91,7 @@ public class BetterRuby : GravityObject
         else
         {
             // TODO: Add a sound effect for when the Ruby is picked up
-            // TODO: Add to the gem counter in player
+            _player.gems++;
             Destroy(gameObject);
         }
     }
@@ -99,7 +100,7 @@ public class BetterRuby : GravityObject
     {
         if (other.CompareTag("Player"))
         {
-            _player = other.transform;
+            _player = other.GetComponent<PlayerScript>();
             _state = RubyState.Moving;
         }
     }
