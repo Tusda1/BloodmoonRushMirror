@@ -1,6 +1,7 @@
 using System;
 using Attributes;
 using FMODScripts;
+using SceneCollections;
 using UI.Settings;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -34,6 +35,7 @@ namespace UI {
         private VisualElement _settings;
 
         private Action _updateActions = delegate { };
+        private CameraEffects _cameraEffects;
         #endregion
 
         private void Awake() {
@@ -90,10 +92,15 @@ namespace UI {
         private void Start() {
             FMODManager.RaiseSetParameterEvent("levelMusicProgression", 0);
             FMODManager.RaiseMusicEvent("Music_level1");
+
+            _cameraEffects = ServiceLocator.Get<CameraEffects>();
         }
 
         private void StartButtonClicked() {
-            _ = SceneCollectionManager.LoadSceneCollectionAsync(startSceneCollectionSO);
+            _cameraEffects.CircleFadeOut(1, 
+                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(startSceneCollectionSO, 
+                    () => _cameraEffects.CircleFadeIn(1)));
+            
         }
 
         private void Update() {

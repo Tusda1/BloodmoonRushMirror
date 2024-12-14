@@ -5,7 +5,6 @@ using Gaskellgames;
 using PlayerLoopTimer;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {
@@ -63,7 +62,7 @@ namespace Player {
         [SerializeField, Required] private DebugLoggerSO ladderDebugLogger;
 
         #region ***---PrivateFields---***
-        public CountdownTimer _dashTimer;
+        public CountdownTimer DashTimer;
         private CountdownTimer _minJumpTimer;
         private CountdownTimer _jumpBufferTimer;
         private CountdownTimer _knockbackTimer;
@@ -86,12 +85,10 @@ namespace Player {
         private static readonly int AnimatorCrouchBool = Animator.StringToHash("IsCrouching");
 
         private static readonly int AnimatorMovementFloat = Animator.StringToHash("XMovement");
-        private static readonly int AnimatorYMovementFloat = Animator.StringToHash("YMovement");
 
         private static readonly int AnimatorJumpBool = Animator.StringToHash("IsJumping");
         private static readonly int AnimatorIsHoldingJumpBool = Animator.StringToHash("IsHoldingJump");
         private static readonly int AnimatorIsFallingBool = Animator.StringToHash("IsFalling");
-        private static readonly int AnimatorClimbBool = Animator.StringToHash("IsClimbing");
         private static readonly int AnimatorGunJumpTrigger = Animator.StringToHash("GunJump");
         #endregion
         #endregion
@@ -126,7 +123,7 @@ namespace Player {
         }
 
         private void InitializeDashTimer() {
-            _dashTimer = CountdownTimerBuilder.Start(dashTime)
+            DashTimer = CountdownTimerBuilder.Start(dashTime)
                 .WithOnBegin(() => {
                     player.animator.SetBool(AnimatorDashBool, true);
                     player.healthComponent.TriggerInvulnerability(dashTime - 0.2f);
@@ -229,6 +226,7 @@ namespace Player {
             else if (isJumping) {
                 MovingPlatformExit();
                 velocity.y = jumpForce;
+                player.animator.SetBool(AnimatorJumpBool, true);
                 // targetVelocity.y = jumpForce;
             }
 
@@ -363,7 +361,7 @@ namespace Player {
             isDashing = true;
             canDash = false;
             lockToAxis = Axis.XAxis;
-            _dashTimer.StartTimer();
+            DashTimer.StartTimer();
 
             if (inputVector.x > 0.1f)
                 dashForce = Mathf.Abs(dashForce);
@@ -444,7 +442,7 @@ namespace Player {
 #if UNITY_EDITOR
         private void OnValidate() {
             if (_jumpBufferTimer != null) _jumpBufferTimer.Duration = jumpBufferTime;
-            if (_dashTimer != null) _dashTimer.Duration = dashTime;
+            if (DashTimer != null) DashTimer.Duration = dashTime;
             if (_minJumpTimer != null) _minJumpTimer.Duration = minJumpTime;
             if (_knockbackTimer != null) _knockbackTimer.Duration = knockBackTime;
             if (_coyoteTimer != null) _coyoteTimer.Duration = coyoteTime;

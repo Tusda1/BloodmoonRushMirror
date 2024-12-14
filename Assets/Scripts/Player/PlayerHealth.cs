@@ -26,8 +26,8 @@ namespace Player {
         }
 #endif
 
-        public void TakeDamage(int amount, bool ignoreInvincibilityFrames) {
-            if (HasInvincibilityFrames) return;
+        public override void TakeDamage(int amount, bool ignoreInvincibilityFrames) {
+            if (HasInvincibilityFrames && !ignoreInvincibilityFrames) return;
 
             var tempHealthIfSubtracted = TempHealth - amount;
 
@@ -40,7 +40,7 @@ namespace Player {
                 amount = 0;
             }
 
-            base.TakeDamage(amount);
+            base.TakeDamage(amount, ignoreInvincibilityFrames);
         }
 
         public static implicit operator int(PlayerHealth playerHealth) {

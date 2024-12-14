@@ -1,12 +1,34 @@
+using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CameraEffects : MonoBehaviour {
     #region ---Fields---
     [SerializeField] private AnimationCurve timeSlowCurve;
+    
+    [Header("CircleFade")]
+    [SerializeField] private Material circleFadeMaterial;
+    [SerializeField] private AnimationCurve circleFadeInCurve;
+    [SerializeField] private AnimationCurve circleFadeOutCurve;
+
+    private const float FadeCircleDefaultSize = 2.5f;
+
+    #region ---ShaderPropertyID---
+    private static readonly int Size = Shader.PropertyToID("_Size");
+    #endregion
     #endregion
 
     private void Awake() {
         ServiceLocator.Register(this);
+    }
+
+    private void OnEnable() {
+        circleFadeMaterial.SetFloat(Size, FadeCircleDefaultSize);
+    }
+
+    private void OnDisable() {
+        circleFadeMaterial.SetFloat(Size, FadeCircleDefaultSize);
     }
 
     public async Awaitable ShakeCamera(float intensity, float duration) {
@@ -34,7 +56,7 @@ public class CameraEffects : MonoBehaviour {
 
         while (currentProgress < duration) {
             currentProgress += Time.unscaledDeltaTime;
-
+            
             Time.timeScale = Mathf.Clamp01(timeSlowCurve.Evaluate(currentProgress));
 
             await Awaitable.NextFrameAsync();
@@ -42,4 +64,43 @@ public class CameraEffects : MonoBehaviour {
 
         Time.timeScale = 1;
     }
+
+    public async Awaitable CircleFade(float duration, AnimationCurve curve, [Optional] Action callback) {
+        float currentProgress = 0;
+
+        while (currentProgress < duration) {
+            currentProgress += Time.unscaledDeltaTime;
+            
+            var progressValue = curve.Evaluate(currentProgress / duration) * FadeCircleDefaultSize;
+            circleFadeMaterial.SetFloat(Size, progressValue);
+
+            Debug.Log(progressValue);
+
+            await Awaitable.NextFrameAsync();
+        }
+        
+        callback?.Invoke();
+    }
+
+    [ContextMenu(nameof(CircleFadeIn))]
+    public void CircleFadeIn(float duration, [Optional] Action callback) {
+        _ = CircleFade(duration, circleFadeInCurve, callback);
+    }
+
+    [ContextMenu(nameof(CircleFadeOut))]
+    public void CircleFadeOut(float duration, [Optional] Action callback) {
+        _ = CircleFade(duration, circleFadeOutCurve, callback);
+    }
+
+#if UNITY_EDITOR
+    [ContextMenu(nameof(TestShakeCamera))]
+    private void TestShakeCamera() {
+        _ = ShakeCamera(0.2f, 0.2f);
+    }
+
+    [ContextMenu(nameof(TestTimeSlow))]
+    private void TestTimeSlow() {
+        _ = TimeSlow(0.5f);
+    }
+#endif
 }

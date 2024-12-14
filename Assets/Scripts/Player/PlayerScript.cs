@@ -24,8 +24,6 @@ namespace Player {
         
         [SerializeField] public MultipleAnimatorControllers animator;
 
-        public event Action<int> TabNavigation = delegate { };
-
         [Header("Player")] public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
@@ -127,10 +125,6 @@ namespace Player {
         }
 
         #region ***---InputActions---***
-        public void OnTabNavigation(InputValue inputValue) {
-            TabNavigation.Invoke((int)inputValue.Get<float>());
-        }
-
         public void OnPause(InputValue inputValue) {
             if (!inputValue.isPressed) return;
 
@@ -165,12 +159,7 @@ namespace Player {
                 transform.localScale = new Vector3(u, 1, 1);
             }
             else {
-                if (playerMovement.isFacingRight) {
-                    transform.localScale = new Vector3(1, 1, 1);
-                }
-                else {
-                    transform.localScale = new Vector3(-1, 1, 1);
-                }
+                transform.localScale = playerMovement.isFacingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
             }
             
             if (playerMovement.isDucking) {
@@ -237,7 +226,7 @@ namespace Player {
             InputSystem.PauseHaptics();
         }
 
-        public void PlayBloodSplatter() {
+        private void PlayBloodSplatter() {
             bloodSplatter.transform.localScale = transform.localScale;
             bloodSplatter.Play();
         }
