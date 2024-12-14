@@ -235,6 +235,8 @@ namespace Player {
 
         #region ***---Death---***
         private IEnumerator Die() {
+            var cameraEffects = ServiceLocator.Get<CameraEffects>();
+            
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
@@ -244,9 +246,13 @@ namespace Player {
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");
             animator.SetTrigger(AnimatorDeathTrigger);
+            
+            cameraEffects.CircleFadeOut(2);
 
             yield return new WaitUntil(() => animator.GetCurrentAnimationClip().name == "[DVD]Death");
             yield return new WaitForSeconds(animator.GetCurrentAnimationClip().length + 2f);
+            
+            cameraEffects.CircleFadeIn(0.5f);
 
             playerLives--;
 
