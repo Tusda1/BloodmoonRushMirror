@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
+  m_Sprite: {fileID: 4181028983646377614, guid: 840c6115f04297444bc4fdcd18f5e8a5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -104,16 +104,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb2d: {fileID: 431150157885778079}
   isGrounded: 0
+  isFalling: 0
   lockToAxis: 0
   targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
   GravityModifier: 1
   groundDistance: 1
-  hoverSpeed: 1.5
+  hoverSpeed: 2
   hoverHeight: 0.3
   despawnDistance: 0.1
   moveSpeed: 10
-  pickupableTime: 0.2
+  pickupableTime: 0.4
   fall: 1
 --- !u!50 &431150157885778079
 Rigidbody2D:

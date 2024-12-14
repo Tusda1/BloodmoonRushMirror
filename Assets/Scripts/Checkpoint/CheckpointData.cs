@@ -5,7 +5,7 @@ using UnityEngine;
 public class CheckpointData : MonoBehaviour {
     private PlayerScript _playerScript;
     private Vector2 _playerRespawnPos;
-    [HideInInspector] public CombatCheckpoint[] combatCheckpoints;
+    [HideInInspector] public LevelCheckpoint[] combatCheckpoints;
 
     public void Initialize() {
         _playerScript = ServiceLocator.Get<PlayerScript>();

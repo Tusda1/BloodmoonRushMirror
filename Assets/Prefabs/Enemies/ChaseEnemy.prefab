@@ -132,11 +132,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6934725d758d84a84fc0166d029cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrounded: 0
-  lockToAxis: 0
   rb2d: {fileID: 4262033073353352129}
+  isGrounded: 0
+  isFalling: 0
+  lockToAxis: 0
+  targetVelocity: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
   GravityModifier: 1
-  _takesSpikeDamage: 0
+  takesSpikeDamage: 0
   faceLeftOnStart: 0
   moveSpeed: 1
   maxHealth: 0
@@ -150,9 +153,12 @@ MonoBehaviour:
     ignoreInvincibility: 0
   weight: 1
   rubyDropAmount: 3
+  rubySpawnHeight: 0.8
+  rubySpawnDelay: 0.2
   knockbackSmoothDampScript:
     smoothTime: 0.1
-  agroDistance: 2
+  bloodSplatter: {fileID: 0}
+  detectionDistance: 20
   nextWaypointDistance: 1
   repeatRate: 0.5
   radius: 0.5
