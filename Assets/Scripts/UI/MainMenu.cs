@@ -66,7 +66,7 @@ namespace UI {
             _settings.enabledSelf = false;
 
             _updateActions += () => {
-                if (Input.GetKey(KeyCode.K)) _ = AnyKeyPressed();
+                if (Input.anyKeyDown) _ = AnyKeyPressed();
             };
         }
 
