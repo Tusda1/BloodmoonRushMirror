@@ -7,7 +7,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private CheckpointData checkpointData;
     [SerializeField] private EnemyActivation enemyActivation;
     [SerializeField] private GameObject cameraStacks;
-    [SerializeField] private CombatCheckpoint[] combatCheckpoints;
+    [SerializeField] private LevelCheckpoint[] combatCheckpoints;
     [SerializeField] private GameObject enemyLocation;
     
     private void Start()
