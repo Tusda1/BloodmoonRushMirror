@@ -34,7 +34,7 @@ public class EnemyAnimationBase : MonoBehaviour
         animancerComponent.Play(hitAnimation);
     }
     
-    public void PlayDeathAnimation(Action onDeathAnimationEnd)
+    public void PlayDeathAnimation(float delay, Action dropRubies, Action onDeathAnimationEnd)
     {
         if (deathAnimation == null)
         {
@@ -43,11 +43,15 @@ public class EnemyAnimationBase : MonoBehaviour
         }
         
         var deathState = animancerComponent.Play(deathAnimation);
+        if (deathState.Events(this, out var events))
+        {
+            events.Add(delay, dropRubies);
+        }
+        
         deathState.Events(this).OnEnd = () =>
         {
             onDeathAnimationEnd?.Invoke();
             deathState.Events(this).OnEnd = null;
         };
     }
-    
 }

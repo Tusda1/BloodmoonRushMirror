@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Animancer;
 using Player;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,6 +13,7 @@ public class EnemyBase :  GravityObject, IDamageable
     protected bool isDead;
     protected bool isVulnerable;
     protected bool isStunned;
+    protected float currentHealth;
     private float _takeDamageTimer;
     protected Vector2 facingDirection;
     protected Vector2 visualFacingDirection;
@@ -26,13 +28,13 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] private bool faceLeftOnStart;
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected float maxHealth;
-    protected float currentHealth;
     [SerializeField] private float invulnerableTime = 0.5f;
     [SerializeField] private float knockbackDuration = 0.1f;
     [SerializeField] private DamageInstance enemyDamageInstance;
     [SerializeField] protected float weight;
     [SerializeField] protected int rubyDropAmount = 3;
     [SerializeField] private float rubySpawnHeight = 0.8f;
+    [SerializeField] private float rubySpawnDelay = 0.2f;
     [SerializeField] private SmoothDampScript knockbackSmoothDampScript = new();
     [SerializeField] private ParticleSystem bloodSplatter;
     
@@ -179,9 +181,8 @@ public class EnemyBase :  GravityObject, IDamageable
     {
         isDead = true;
         
-        enemyAnimationBase.PlayDeathAnimation(() =>
+        enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, () =>
         {
-            DropRubies();
             gameObject.SetActive(false);
         });
     }
