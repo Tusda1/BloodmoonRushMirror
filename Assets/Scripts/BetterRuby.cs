@@ -40,9 +40,9 @@ public class BetterRuby : GravityObject
         }
     }
 
-    private new void Update()
+    private new void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
         
         switch (_state)
         {
