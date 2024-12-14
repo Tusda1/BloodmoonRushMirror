@@ -12,22 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: OswaldBlackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 638695326552183296
+  VersionTimestamp: 638697752122395554
   AssetID:
     m_Value0: 1465934021941519809
     m_Value1: 10228809807368344090
   m_Blackboard:
     m_Variables:
-    - rid: 2814022152951169968
-    - rid: 2814022152951169969
-    - rid: 2814022152951169970
-    - rid: 2814022152951169971
-    - rid: 2814022152951169972
+    - rid: 2814022218085564986
+    - rid: 2814022218085564987
+    - rid: 2814022218085564988
+    - rid: 2814022218085564989
+    - rid: 2814022218085564990
+    - rid: 2814022218085564991
+    - rid: 2814022218085564992
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
     RefIds:
-    - rid: 2814022152951169968
+    - rid: 2814022218085564986
       type: {class: 'BlackboardVariable`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -35,7 +37,7 @@ MonoBehaviour:
           m_Value1: 13801873091532337908
         Name: OswaldCall
         m_Value: {fileID: -6601854684063276967, guid: 54ac675515541ab4eb4585509194276d, type: 2}
-    - rid: 2814022152951169969
+    - rid: 2814022218085564987
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -43,7 +45,7 @@ MonoBehaviour:
           m_Value1: 6640665219687666383
         Name: PhoneRingingSoundEventPath
         m_Value: event:/Sfx/Misc/Phone_ringing
-    - rid: 2814022152951169970
+    - rid: 2814022218085564988
       type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -51,7 +53,7 @@ MonoBehaviour:
           m_Value1: 16153468599997760587
         Name: PlayerAnimator
         m_Value: {fileID: 0}
-    - rid: 2814022152951169971
+    - rid: 2814022218085564989
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -59,7 +61,7 @@ MonoBehaviour:
           m_Value1: 13281932717457269531
         Name: PlayerCallAnimationTrigger
         m_Value: CallPickUp
-    - rid: 2814022152951169972
+    - rid: 2814022218085564990
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -67,6 +69,22 @@ MonoBehaviour:
           m_Value1: 3396716631637883174
         Name: PlayerEndCallTrigger
         m_Value: EndCall
+    - rid: 2814022218085564991
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 5354091860242962307
+          m_Value1: 2832812162107957177
+        Name: DefaultPortrait
+        m_Value: {fileID: 690025863, guid: 2c554f9faf4726c46a90b1004eaf3476, type: 3}
+    - rid: 2814022218085564992
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 16759407968589353454
+          m_Value1: 4576738841707081772
+        Name: DroolPortrait
+        m_Value: {fileID: -887197242, guid: fdbfa856cfa3b2f46be17788d2e47bc4, type: 3}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,7 +106,9 @@ MonoBehaviour:
   - rid: 2814022148084990676
   - rid: 2814022152011120787
   - rid: 2814022152734376517
-  m_VersionTimestamp: 638695326552183296
+  - rid: 2814022216904606525
+  - rid: 2814022218085564518
+  m_VersionTimestamp: 638697752122395554
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: -6830447404565283916}
@@ -135,6 +155,26 @@ MonoBehaviour:
         IsExposed: 1
         m_IsShared: 0
         m_Value: EndCall
+    - rid: 2814022216904606525
+      type: {class: 'TypedVariableModel`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 5354091860242962307
+          m_Value1: 2832812162107957177
+        Name: DefaultPortrait
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 690025863, guid: 2c554f9faf4726c46a90b1004eaf3476, type: 3}
+    - rid: 2814022218085564518
+      type: {class: 'TypedVariableModel`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 16759407968589353454
+          m_Value1: 4576738841707081772
+        Name: DroolPortrait
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: -887197242, guid: fdbfa856cfa3b2f46be17788d2e47bc4, type: 3}
     - rid: 4541842411050500576
       type: {class: 'TypedVariableModel`1[[System.String, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:

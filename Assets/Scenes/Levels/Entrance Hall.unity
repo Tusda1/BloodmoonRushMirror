@@ -115099,10 +115099,7 @@ PrefabInstance:
     - {fileID: 892186481959905384, guid: 9e37bd44b5ac1774691d073704d877bf, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4719493960834511567, guid: 9e37bd44b5ac1774691d073704d877bf, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1937039899}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e37bd44b5ac1774691d073704d877bf, type: 3}
 --- !u!1001 &1628297106
 PrefabInstance:
@@ -127242,41 +127239,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5471481447901216593, guid: 9e37bd44b5ac1774691d073704d877bf, type: 3}
   m_PrefabInstance: {fileID: 1623678422}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1937039899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 885014451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Graph: {fileID: -4225688549260276096, guid: 207934166d4b78d4a9b993256ba66456, type: 2}
-  m_BlackboardVariableOverridesList:
-  - rid: 2814022175509185101
-  - rid: 2814022175509185102
-  references:
-    version: 2
-    RefIds:
-    - rid: 2814022175509185101
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Self
-        m_Value: {fileID: 885014451}
-    - rid: 2814022175509185102
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 446764754209978895
-          m_Value1: 12850180978812070570
-        Name: PlayerAnimator
-        m_Value: {fileID: 38061771}
 --- !u!4 &1940409467 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5245557192519107077, guid: 34d4109ea306efb4abc2db23fff83cf9, type: 3}
