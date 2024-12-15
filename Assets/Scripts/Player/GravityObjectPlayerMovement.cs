@@ -288,7 +288,6 @@ namespace Player {
                 
                 if (killCharges != 0) {
                     killCharges = 0;
-                    lameParticles.Play();
                 }
 
                 if (!isJumping) {
