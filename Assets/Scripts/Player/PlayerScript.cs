@@ -210,6 +210,7 @@ namespace Player {
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
 
             damageInstance.TriggerOnHitAction();
+            playerMovement.DashTimer.StopTimer();
             playerMovement.Knockback(damageInstance.knockback);
             animator.SetTrigger(AnimatorTakeDamageTrigger);
             healthComponent.TakeDamage(damageInstance.damage, damageInstance.ignoreInvincibility);

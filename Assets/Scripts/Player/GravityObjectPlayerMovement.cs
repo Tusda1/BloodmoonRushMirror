@@ -186,20 +186,6 @@ namespace Player {
         #endregion
 
         protected override void ComputeVelocity() {
-            if (!PlayerMovementEnabled) return;
-            
-            GroundCheck();
-            isActuallyGrounded = isGrounded;
-            
-            if (_playerLadderLogic.LadderLogic()) return;
-
-            player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
-
-            CoyoteTimeLogic();
-
-            var move = Vector2.zero;
-            player.animator.SetBool(AnimatorIsFallingBool, isFalling);
-
             if (isTakingKnockback) {
                 velocity = _knockbackVector;
                 targetVelocity = _knockbackVector; //changed here
@@ -208,6 +194,20 @@ namespace Player {
 
                 return;
             }
+            
+            GroundCheck();
+            isActuallyGrounded = isGrounded;
+
+            player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
+            player.animator.SetBool(AnimatorIsFallingBool, isFalling);
+            
+            if (!PlayerMovementEnabled) return;
+            
+            if (_playerLadderLogic.LadderLogic()) return;
+
+            CoyoteTimeLogic();
+
+            var move = Vector2.zero;
 
             move.x = inputVector.x;
 
@@ -412,9 +412,9 @@ namespace Player {
         public void Knockback(Vector2 argumentKnockback) {
             isTakingKnockback = true;
 
-            _knockbackTimer.StartTimer();
-
             _knockbackVector = argumentKnockback;
+            
+            _knockbackTimer.StartTimer();
         }
 
         private void SpikeStunStart() {
