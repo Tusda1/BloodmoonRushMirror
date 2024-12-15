@@ -68,6 +68,9 @@ namespace UI {
             _updateActions += () => {
                 if (Input.anyKeyDown) _ = AnyKeyPressed();
             };
+            
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private async Awaitable AnyKeyPressed() {

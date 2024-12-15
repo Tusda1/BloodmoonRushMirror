@@ -114,6 +114,9 @@ namespace Player {
             
             Gamepad.current?.SetMotorSpeeds(0.123f, 0.234f);
             InputSystem.PauseHaptics();
+            
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
 
             StartCoroutine(ResetPlayerInput());
         }

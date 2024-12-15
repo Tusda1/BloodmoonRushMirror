@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pixelation
+  m_Name: SceenPixelization
   m_Shader: {fileID: -6465566751694194690, guid: bc36d305a651b5e41b1781724948155e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -37,7 +37,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _PixelsPerUnit: 186.59
+    - _CameraSize: 0.06
+    - _PixelsInYAxis: 800
+    - _PixelsPerUnit: 20
+    - _PixelsSize: 800
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
