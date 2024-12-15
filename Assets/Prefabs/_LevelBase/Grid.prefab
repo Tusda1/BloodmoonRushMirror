@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 8537769060280737385}
   - component: {fileID: 4528930858736828277}
   - component: {fileID: 8126276936056386678}
+  - component: {fileID: 6520686322279178234}
   - component: {fileID: 8740087080841258287}
   - component: {fileID: 6713886088586967172}
   - component: {fileID: 5581349529404638223}
-  - component: {fileID: 6520686322279178234}
   m_Layer: 10
   m_Name: Hazards
   m_TagString: Hazard
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4302385255691695670}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -251,6 +251,24 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
+--- !u!114 &6520686322279178234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302385255691695670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65acadfdc25e0b41bbf17714cb4e7de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageInstance:
+    damage: 1
+    knockback: {x: 0, y: 0}
+    knockbackStrength: 0
+    staggerStrength: 0
+    ignoreInvincibility: 1
 --- !u!19719996 &8740087080841258287
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -363,24 +381,6 @@ CompositeCollider2D:
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 4302385255691695670}
---- !u!114 &6520686322279178234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302385255691695670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f65acadfdc25e0b41bbf17714cb4e7de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spikeCollider: {fileID: 5581349529404638223}
-  spikeDamageInstance:
-    damage: 0
-    knockback: {x: 0, y: 0}
-    knockbackStrength: 0
-    staggerStrength: 0
 --- !u!1 &5204003712214734476
 GameObject:
   m_ObjectHideFlags: 0

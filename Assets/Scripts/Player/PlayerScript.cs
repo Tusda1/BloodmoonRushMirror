@@ -114,6 +114,9 @@ namespace Player {
             
             Gamepad.current?.SetMotorSpeeds(0.123f, 0.234f);
             InputSystem.PauseHaptics();
+            
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
 
             StartCoroutine(ResetPlayerInput());
         }
@@ -214,6 +217,8 @@ namespace Player {
 
             _ = cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
             _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
+            
+            playerMovement.lameParticles.Play();
 
             PlayBloodSplatter();
 
@@ -233,6 +238,8 @@ namespace Player {
 
         #region ***---Death---***
         private IEnumerator Die() {
+            var cameraEffects = ServiceLocator.Get<CameraEffects>();
+            
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
@@ -242,6 +249,8 @@ namespace Player {
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");
             animator.SetTrigger(AnimatorDeathTrigger);
+            
+            cameraEffects.CircleFadeOut(2);
 
             yield return new WaitUntil(() => animator.GetCurrentAnimationClip().name == "[DVD]Death");
             yield return new WaitForSeconds(animator.GetCurrentAnimationClip().length + 2f);
@@ -255,6 +264,9 @@ namespace Player {
             else {
                 Respawn();
             }
+            
+            yield return new WaitForSeconds(0.5f);
+            cameraEffects.CircleFadeIn(0.5f);
         }
 
         private void Respawn() {

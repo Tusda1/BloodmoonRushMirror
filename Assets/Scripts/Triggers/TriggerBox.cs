@@ -11,12 +11,12 @@ namespace Triggers {
 
         private void OnTriggerEnter2D(Collider2D other) {
             if (_hasBeenTriggered) return;
-            if (colliderTag != default && !other.CompareTag(colliderTag)) return;
+            if (colliderTag != null && !other.CompareTag(colliderTag)) return;
 
             TriggeredAction(other);
             _hasBeenTriggered = true;
         }
 
-        public abstract void TriggeredAction(Collider2D other);
+        protected abstract void TriggeredAction(Collider2D other);
     }
 }

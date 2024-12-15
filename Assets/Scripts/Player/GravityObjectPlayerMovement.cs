@@ -52,7 +52,9 @@ namespace Player {
         public int killCharges;
         private Vector2 _knockbackVector;
         
-        [Header("Particles")] [SerializeField, Required] private ParticleSystem lameParticles;
+        [Header("Particles")] 
+        [Required] public ParticleSystem lameParticles;
+        [Required] public ParticleSystem coolParticles;
         
         [Header("Player Can Move")] [SerializeField, Required]
         private AllInFavourConsensusSO playerCanMove;
@@ -286,7 +288,6 @@ namespace Player {
                 
                 if (killCharges != 0) {
                     killCharges = 0;
-                    lameParticles.Play();
                 }
 
                 if (!isJumping) {
@@ -338,6 +339,7 @@ namespace Player {
                     isDashing = false;
                     killCharges--;
                     player.animator.SetTrigger(AnimatorGunJumpTrigger);
+                    coolParticles.Play();
                 }
             }
             else {
