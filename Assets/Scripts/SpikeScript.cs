@@ -15,6 +15,7 @@ public class SpikeScript : MonoBehaviour {
             case EnemyBase enemyBase:
                 damageInstance.damage = 99;
                 enemyBase.TakeDamage(damageInstance);
+                damageInstance.damage = 1;
                 break;
         }
     }

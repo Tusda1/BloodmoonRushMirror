@@ -254,8 +254,6 @@ namespace Player {
 
             yield return new WaitUntil(() => animator.GetCurrentAnimationClip().name == "[DVD]Death");
             yield return new WaitForSeconds(animator.GetCurrentAnimationClip().length + 2f);
-            
-            cameraEffects.CircleFadeIn(0.5f);
 
             playerLives--;
 
@@ -266,6 +264,9 @@ namespace Player {
             else {
                 Respawn();
             }
+            
+            yield return new WaitForSeconds(0.5f);
+            cameraEffects.CircleFadeIn(0.5f);
         }
 
         private void Respawn() {
