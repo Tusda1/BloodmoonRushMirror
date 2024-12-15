@@ -20,26 +20,7 @@ public class SpitterEnemy : ReactiveBase
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile");
         _spitterAnimation = enemyAnimationBase as SpitterAnimation;
         
-        try
-        {
-            var communityPooler = ServiceLocator.Get<CommunityPooler>();
-            foreach (var pooler in communityPooler.poolers.Where(pooler => pooler.ObjectToPool == _projectilePrefab))
-            {
-                _projectilePooler = pooler;
-                break;
-            }
-
-            if (_projectilePooler == null)
-            {
-                Debug.LogWarning("No pooler found for projectile, creating new pooler");
-                _projectilePooler = new Pooler(_projectilePrefab, 5);
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError($"Failed to retrieve CommunityPooler: {ex.Message}");
-            _projectilePooler = new Pooler(_projectilePrefab, 5);
-        }
+        _projectilePooler = TryGetCommunityPooler.TryGetPooler(_projectilePrefab);
     }
     
     protected override void Action()
@@ -75,7 +56,6 @@ public class SpitterEnemy : ReactiveBase
     
     private void ShootProjectile()
     {
-        print("shooting projectile");
         var position = transform.position;
         var spawnPosition = new Vector2(position.x, position.y + YOffset);
         

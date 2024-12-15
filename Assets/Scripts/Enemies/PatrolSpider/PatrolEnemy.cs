@@ -6,6 +6,7 @@ public class PatrolEnemy : EnemyBase
 {
     [SerializeField] private SmoothDampScript smoothDampScript = new();
     [SerializeField] private float ledgeDistance = 1f;
+    [SerializeField] private float attackRange = 2f;
     
     private PatrolAnimation _patrolAnimation;
     private Vector2 _visualVelocity;
@@ -55,6 +56,8 @@ public class PatrolEnemy : EnemyBase
 
     private void PatrolAttack()
     {
+        if (Vector2.Distance(player.transform.position, transform.position) > attackRange) return;
+        
         base.Attack();
     }
 

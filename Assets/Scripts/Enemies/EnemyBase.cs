@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
-using Animancer;
 using Player;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 
 public class EnemyBase :  GravityObject, IDamageable
@@ -23,6 +21,7 @@ public class EnemyBase :  GravityObject, IDamageable
     private Material _defaultMaterial;
     protected EnemyAnimationBase enemyAnimationBase;
     protected PlayerScript player;
+    private Pooler _rubyPooler;
 
     [SerializeField] private bool takesSpikeDamage;
     [SerializeField] private bool faceLeftOnStart;
@@ -59,6 +58,8 @@ public class EnemyBase :  GravityObject, IDamageable
         _rubyPrefab = Resources.Load<GameObject>("Prefabs/Ruby");
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
+        
+        _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab);
     }
 
     private void OnDisable()
@@ -225,8 +226,12 @@ public class EnemyBase :  GravityObject, IDamageable
                 }
             }
             
-            GameObject ruby = Instantiate(_rubyPrefab, spawnPosition, Quaternion.identity);
-            ruby.GetComponent<BetterRuby>().fall = true;
+            var rubyObject = _rubyPooler.GetPooledObject();
+            rubyObject.transform.position = spawnPosition;
+            rubyObject.SetActive(true);
+            var betterRuby = rubyObject.GetComponent<BetterRuby>();
+            betterRuby.fall = true;
+            betterRuby.enabled = true;
         }
 
         rubyDropAmount = 0;

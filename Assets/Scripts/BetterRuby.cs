@@ -9,12 +9,16 @@ public class BetterRuby : GravityObject
     [SerializeField] private float hoverHeight = 0.5f; // Height of the hover motion
     [SerializeField] private float despawnDistance = 0.1f; // Distance from the player at which the Ruby despawns
     [SerializeField] private float moveSpeed = 5f; // Speed at which the Ruby moves towards the player
+    [SerializeField] private float accelerationFactor = 2f; // Factor by which the move speed increases over time
     [SerializeField] private float pickupableTime = 0.2f; // Time after which the Ruby can be picked up
     public bool fall; // Whether the Ruby should fall to the ground or hover in place
     
     private float initialY;
     private float _spawnTime;
+    private bool _startedMoving;
     private PlayerScript _player;
+    private ParticleSystem _particleSystem;
+    private GameObject _spriteGameObject;
     
     private enum RubyState
     {
@@ -25,8 +29,18 @@ public class BetterRuby : GravityObject
     
     private RubyState _state;
 
+    protected new void Awake()
+    {
+        base.Start();
+        
+        _particleSystem = GetComponentInParent<ParticleSystem>();
+        _spriteGameObject = transform.GetChild(0).gameObject;
+    }
+
     private void OnEnable()
     {
+        _spriteGameObject.SetActive(true);
+        
         _spawnTime = Time.time;
         
         if (!fall)
@@ -38,6 +52,14 @@ public class BetterRuby : GravityObject
         {
             _state = RubyState.Falling;
         }
+    }
+
+    private void OnDisable()
+    {
+        _spriteGameObject.SetActive(false);
+        initialY = 0;
+        _startedMoving = false;
+        _particleSystem.Stop();
     }
 
     private new void FixedUpdate()
@@ -83,16 +105,22 @@ public class BetterRuby : GravityObject
         
         if (Time.time - _spawnTime < pickupableTime) return;
         
+        if (!_startedMoving)
+        {
+            _startedMoving = true;
+            _particleSystem.Play();
+        }
+        
         if (Vector3.Distance(transform.position, playerPosition) > despawnDistance)
         {
             transform.position = Vector3.MoveTowards(transform.position, playerPosition, moveSpeed * Time.deltaTime);
-            moveSpeed *= 1 + Time.deltaTime;
+            moveSpeed *= 1 + Time.deltaTime * accelerationFactor;
         }
         else
         {
             // TODO: Add a sound effect for when the Ruby is picked up
             _player.gems++;
-            Destroy(gameObject);
+            enabled = false;
         }
     }
     
