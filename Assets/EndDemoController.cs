@@ -26,7 +26,8 @@ public class EndDemoController : MonoBehaviour {
         var backToMainMenuButton = _root.Q<Button>("BackToMainMenuButton");
         backToMainMenuButton.clicked += () => {
             _cameraEffects.CircleFadeOut(1,
-                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenu));
+                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenu,
+                    () => _cameraEffects.CircleFadeIn(1)));
         };
         
         backToMainMenuButton.Focus();

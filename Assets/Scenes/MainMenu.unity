@@ -231,6 +231,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 983109414922428253, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
+      propertyPath: playerCanMove
+      value: 
+      objectReference: {fileID: 11400000, guid: f2f25efabb8f0d74bbfdba92ceb38155, type: 2}
+    - target: {fileID: 983109414922428253, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
       propertyPath: backgroundAnimator
       value: 
       objectReference: {fileID: 1728976596}
@@ -291,6 +295,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 192215742564484047, guid: 85b6263c4928e234e8710623f57f0e9c, type: 3}
+      propertyPath: mainCameraTransform
+      value: 
+      objectReference: {fileID: 8879785282521375187}
     - target: {fileID: 2140780791884936997, guid: 85b6263c4928e234e8710623f57f0e9c, type: 3}
       propertyPath: m_Name
       value: MainMenu_Background
@@ -397,6 +405,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a496887a062f70141a10e736fbdbedf5, type: 3}
+--- !u!4 &8879785282521375187 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4343815388615641319, guid: a496887a062f70141a10e736fbdbedf5, type: 3}
+  m_PrefabInstance: {fileID: 8879785282521375186}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -12,9 +12,32 @@ namespace FMODScripts {
         [Header("DebugLogger")] [SerializeField, Required]
         private DebugLoggerSO debugLogger;
 
-        public static float MasterVolume => PlayerPrefs.GetFloat("MasterVolume");
-        public static float MusicVolume => PlayerPrefs.GetFloat("SFXVolume");
-        public static float SfxVolume => PlayerPrefs.GetFloat("MusicVolume");
+        public static float MasterVolume {
+            get {
+                if (!PlayerPrefs.HasKey("MasterVolume")) return PlayerPrefs.GetFloat("MasterVolume");
+                
+                PlayerPrefs.SetFloat("MasterVolume", 1);
+                return 1;
+            }
+        }
+
+        public static float MusicVolume {
+            get {
+                if (!PlayerPrefs.HasKey("SFXVolume")) return PlayerPrefs.GetFloat("SFXVolume");
+                
+                PlayerPrefs.SetFloat("SFXVolume", 1);
+                return 1;
+            }
+        }
+
+        public static float SfxVolume {
+            get {
+                if (!PlayerPrefs.HasKey("MusicVolume")) return PlayerPrefs.GetFloat("MusicVolume");
+                
+                PlayerPrefs.SetFloat("MusicVolume", 1);
+                return 1;
+            }
+        }
 
         private EventInstance _currentMusic;
         private Bus _musicBus;

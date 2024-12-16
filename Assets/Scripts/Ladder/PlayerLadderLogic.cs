@@ -14,7 +14,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     #region ---PlayerMovementShortcuts---
     private LadderMiddle LadderMiddle {
         get {
-            if (_playerMovement.ladderMiddle == null && LadderTop != null && InputVector.y > 0) {
+            if (_playerMovement.ladderMiddle == null && LadderTop != null && InputVector.y < 0) {
                 return LadderTop.ladderMiddle;
             }
 

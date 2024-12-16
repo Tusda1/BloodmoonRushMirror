@@ -6,10 +6,12 @@ using Consensus;
 using FMODScripts;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
+using SceneCollections;
 using TetraCreations.Attributes;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using Utilities.DataBinding;
 
 namespace Player {
@@ -23,6 +25,7 @@ namespace Player {
         #endregion
         
         [SerializeField] public MultipleAnimatorControllers animator;
+        [SerializeField] private SceneCollectionSO gameOverScene;
 
         [Header("Player")] public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
@@ -260,14 +263,15 @@ namespace Player {
 
             if (playerLives <= 0) {
                 debugLogger.Log("Ran out of lives");
-                // TODO
+                _ = SceneCollectionManager.LoadSceneCollectionAsync(gameOverScene, 
+                    () => cameraEffects.CircleFadeIn(0.5f));
             }
             else {
                 Respawn();
-            }
             
-            yield return new WaitForSeconds(0.5f);
-            cameraEffects.CircleFadeIn(0.5f);
+                yield return new WaitForSeconds(0.5f);
+                cameraEffects.CircleFadeIn(0.5f);
+            }
         }
 
         private void Respawn() {

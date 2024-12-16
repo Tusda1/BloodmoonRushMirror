@@ -1,5 +1,6 @@
 using System;
 using Attributes;
+using Consensus;
 using FMODScripts;
 using SceneCollections;
 using UI.Settings;
@@ -19,6 +20,7 @@ namespace UI {
 
         [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
         [SerializeField, Required] private Animator backgroundAnimator;
+        [SerializeField] private AllInFavourConsensusSO playerCanMove;
 
         private VisualElement _rootElement;
         private VisualElement _mainMenuElement;
@@ -60,8 +62,11 @@ namespace UI {
 
             _menuButton.clicked += SettingsButtonClicked;
 
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            // Cursor.visible = true;
+            // Cursor.lockState = CursorLockMode.None;
+            
+            Time.timeScale = 1;
+            playerCanMove.Clear();
 
             _settings.enabledSelf = false;
 
