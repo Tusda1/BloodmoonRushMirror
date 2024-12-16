@@ -28,5 +28,7 @@ public class EndDemoController : MonoBehaviour {
             _cameraEffects.CircleFadeOut(1,
                 () => _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenu));
         };
+        
+        backToMainMenuButton.Focus();
     }
 }
