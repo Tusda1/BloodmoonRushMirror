@@ -11,7 +11,6 @@ using TetraCreations.Attributes;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using Utilities.DataBinding;
 
 namespace Player {
@@ -261,7 +260,7 @@ namespace Player {
 
             playerLives--;
 
-            if (playerLives <= 0) {
+            if (playerLives < 0) {
                 debugLogger.Log("Ran out of lives");
                 _ = SceneCollectionManager.LoadSceneCollectionAsync(gameOverScene, 
                     () => cameraEffects.CircleFadeIn(0.5f));
@@ -352,6 +351,19 @@ namespace Player {
             playerInput.enabled = false;
             yield return null;
             playerInput.enabled = true;
+        }
+
+        public void CheckpointHealing() {
+            if (healthComponent.Health == healthComponent.maxTempHealth) {
+                healthComponent.TempHealth++;
+            }
+            else {
+                healthComponent.Heal(2);
+            }
+
+            if (playerLives == 1) {
+                playerLives++;
+            }
         }
 
         #region ---DataBindingMethods---

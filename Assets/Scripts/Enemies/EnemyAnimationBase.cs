@@ -43,14 +43,15 @@ public class EnemyAnimationBase : MonoBehaviour
         }
         
         var deathState = animancerComponent.Play(deathAnimation);
-        if (deathState.Events(this, out var events))
-        {
-            events.Add(delay, dropRubies);
-        }
+        // if (deathState.Events(this, out var events))
+        // {
+        //     events.Add(delay, dropRubies);
+        // }
         
         deathState.Events(this).OnEnd = () =>
         {
             onDeathAnimationEnd?.Invoke();
+            dropRubies?.Invoke();
             deathState.Events(this).OnEnd = null;
         };
     }

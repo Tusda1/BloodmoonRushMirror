@@ -3,6 +3,7 @@ using FMODScripts;
 using Triggers;
 using UnityEngine;
 using Animancer;
+using Player;
 
 public class LevelCheckpoint : TriggerBox {
     #region ---Fields---
@@ -24,8 +25,9 @@ public class LevelCheckpoint : TriggerBox {
         FMODManager.RaiseEvent(new PlaySoundEvent(raiseSoundEventPath));
         CheckpointReached.Invoke();
 
-        // Play animation
         var state = _animancerComponent.Play(activeStart);
         state.Events(this).OnEnd = () => _animancerComponent.Play(activeIdle);
+        
+        other.GetComponent<PlayerScript>().CheckpointHealing();
     }
 }

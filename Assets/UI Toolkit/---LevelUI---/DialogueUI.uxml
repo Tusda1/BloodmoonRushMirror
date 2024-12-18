@@ -1,0 +1,26 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement data-source-type="UI.DialogueUI, Assembly-CSharp" style="flex-grow: 1; position: absolute; width: 800px; height: 70px; bottom: 0; background-color: rgba(0, 0, 0, 0); background-image: url(&quot;project://database/Assets/Art/UI%20Art/Ui_1.png?fileID=8556403123840757892&amp;guid=840c6115f04297444bc4fdcd18f5e8a5&amp;type=3#Ui_1_25&quot;);">
+        <engine:Label text="Drucilla" style="position: absolute; top: 1px; left: 16px; height: 15px; width: 100px; -unity-font-definition: url(&quot;project://database/Assets/DialogueSystem/Fonts/Alkhemikal.asset?fileID=11400000&amp;guid=0950f05bbf5c5944abfa8398b16fc4ad&amp;type=2#Alkhemikal&quot;); -unity-text-align: middle-center; font-size: 16px;">
+            <Bindings>
+                <engine:DataBinding property="text" data-source-path="characterName" binding-mode="ToTarget" />
+                <engine:DataBinding property="style.unityFontDefinition" data-source-path="dialogueFont" binding-mode="ToTarget" />
+            </Bindings>
+        </engine:Label>
+        <engine:VisualElement style="width: 162px; -unity-background-scale-mode: scale-to-fit; background-image: url(&quot;project://database/Assets/Art/Portraits/David/David%20Portrait%20NUT.png?fileID=-431085107&amp;guid=a1873a41348d9734fa2d25bce4263306&amp;type=3#David Portrait NUT_0&quot;); max-height: 274px; background-position-y: bottom 0; background-position-x: center 0; height: 190px; top: -190px; left: 1px; position: absolute; -unity-background-image-tint-color: rgb(255, 238, 246);">
+            <Bindings>
+                <engine:DataBinding property="style.backgroundImage" data-source-path="imagePortrait" binding-mode="ToTarget" />
+            </Bindings>
+        </engine:VisualElement>
+        <engine:Label text="Keep your eyes peeled! And don’t worry—I’ll check in from time to time. Think of this phone as your magical helpline. No fees, no long hold times—just pure wizardry, baby!" style="position: absolute; top: 3px; left: 140px; height: 63px; width: 661px; -unity-font-definition: url(&quot;project://database/Assets/DialogueSystem/Fonts/Alkhemikal.asset?fileID=11400000&amp;guid=0950f05bbf5c5944abfa8398b16fc4ad&amp;type=2#Alkhemikal&quot;); -unity-text-align: upper-left; font-size: 16px; white-space: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold; letter-spacing: 2px; word-spacing: 2px;">
+            <Bindings>
+                <engine:DataBinding property="text" data-source-path="dialogueText" binding-mode="ToTarget" />
+                <engine:DataBinding property="style.unityFontDefinition" data-source-path="dialogueFont" binding-mode="ToTarget" />
+                <engine:DataBinding property="style.fontSize" data-source-path="textSize" binding-mode="ToTarget" />
+                <engine:DataBinding property="style.color" data-source-path="dialogueColor" binding-mode="ToTarget" />
+            </Bindings>
+        </engine:Label>
+        <Bindings>
+            <engine:DataBinding property="style.display" data-source-path="uiDocumentVisible" binding-mode="ToTarget" source-to-ui-converters="Bool To DisplayStyle" />
+        </Bindings>
+    </engine:VisualElement>
+</engine:UXML>
