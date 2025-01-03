@@ -121,8 +121,8 @@ MonoBehaviour:
     animators:
     - {fileID: 4896941881637286329}
     - {fileID: 4915913186544905062}
-  gameOverScene: {fileID: 0}
-  playerLives: 5
+  gameOverScene: {fileID: 11400000, guid: f049946a2b8e33e4c89218cc64a675cc, type: 2}
+  playerLives: 3
   whatIsInteractable:
     serializedVersion: 2
     m_Bits: 0
@@ -921,6 +921,10 @@ PrefabInstance:
     - target: {fileID: 6154475736684791527, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime0
+      value: 39707
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
