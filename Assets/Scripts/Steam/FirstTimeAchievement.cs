@@ -1,7 +1,7 @@
 using Steamworks;
 using UnityEngine;
 
-public class AchievementTest : MonoBehaviour {
+public class FirstTimeAchievement : MonoBehaviour {
     #region ---Fields---
     private const string TestAchievementName = "First";
     #endregion
@@ -9,7 +9,7 @@ public class AchievementTest : MonoBehaviour {
     private void Start() {
         if (!SteamManager.Initialized) return;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || DEBUG
         SteamUserStats.ResetAllStats(true);
         
         Debug.Log("Resetting stats for: " + SteamFriends.GetPersonaName());
