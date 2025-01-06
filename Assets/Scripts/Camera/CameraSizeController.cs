@@ -1,3 +1,4 @@
+using System;
 using Attributes;
 using UnityEngine;
 
@@ -23,6 +24,10 @@ public class CameraSizeController : MonoBehaviour {
 
     private void Start() {
         renderTextureCamera.rect = new Rect(0.0f, 0.0f, 1, 1);
+    }
+
+    private void OnDestroy() {
+        renderTextureCamera.orthographicSize = 11.25f;
     }
 
     private static Vector2Int GetAspectRatio(Vector2Int resolution) {
