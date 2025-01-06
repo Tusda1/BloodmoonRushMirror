@@ -1,4 +1,6 @@
+#if STEAM_BUILD
 using Steamworks;
+#endif
 using UnityEngine;
 
 public class FirstTimeAchievement : MonoBehaviour {
@@ -7,9 +9,10 @@ public class FirstTimeAchievement : MonoBehaviour {
     #endregion
 
     private void Start() {
+#if STEAM_BUILD
         if (!SteamManager.Initialized) return;
 
-#if UNITY_EDITOR || DEBUG
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         SteamUserStats.ResetAllStats(true);
         
         Debug.Log("Resetting stats for: " + SteamFriends.GetPersonaName());
@@ -21,5 +24,6 @@ public class FirstTimeAchievement : MonoBehaviour {
             SteamUserStats.SetAchievement(TestAchievementName);
             SteamUserStats.StoreStats();
         }
+#endif
     }
 }

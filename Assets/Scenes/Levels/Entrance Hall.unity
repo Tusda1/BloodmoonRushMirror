@@ -119,73 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &38061765
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1016095211261194371, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 7.94
-      objectReference: {fileID: 0}
-    - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.58
-      objectReference: {fileID: 0}
-    - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 21b4133c71a311248ba67b9579271143, type: 3}
---- !u!4 &38061766 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-  m_PrefabInstance: {fileID: 38061765}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &38061769 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1016095211261194371, guid: 21b4133c71a311248ba67b9579271143, type: 3}
-  m_PrefabInstance: {fileID: 38061765}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &163272271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -197,7 +130,7 @@ PrefabInstance:
     - target: {fileID: -7288593912309801597, guid: bbf04c52693f8cd4aa90255d50e4f05b, type: 3}
       propertyPath: attenuationObject
       value: 
-      objectReference: {fileID: 38061769}
+      objectReference: {fileID: 0}
     - target: {fileID: 2031317797253237212, guid: bbf04c52693f8cd4aa90255d50e4f05b, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -282,15 +215,35 @@ PrefabInstance:
     - target: {fileID: 17220102405700779, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
-      objectReference: {fileID: 38061766}
+      objectReference: {fileID: 0}
+    - target: {fileID: 140644693615241578, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: a8ab5c3f-428c-4121-ae70-5903b392d3f0
+      objectReference: {fileID: 0}
+    - target: {fileID: 229186552792247337, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 13968add-e969-43bc-b945-6478bfa15dcb
+      objectReference: {fileID: 0}
     - target: {fileID: 361157929149315736, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 618659293807285000, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: a3f93429-4a9c-4143-a2d4-c88597a4b6f7
+      objectReference: {fileID: 0}
     - target: {fileID: 705240062141626212, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 736305710706652274, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: m_Name
+      value: LevelDataManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 736305710706652274, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: m_TagString
+      value: LevelDataManager
+      objectReference: {fileID: 0}
     - target: {fileID: 811386870320336112, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
@@ -299,6 +252,10 @@ PrefabInstance:
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 1306140663918423507, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: e4b34612-7240-450e-84f9-73f391009463
+      objectReference: {fileID: 0}
     - target: {fileID: 1702983826157421406, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
@@ -315,6 +272,10 @@ PrefabInstance:
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 2333246836189551851, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 87e56913-9961-4f46-a61e-43f6090e4b99
+      objectReference: {fileID: 0}
     - target: {fileID: 2614574975255572979, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
@@ -323,6 +284,22 @@ PrefabInstance:
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 2988504005665670845, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: f8496cfc-9c5c-4897-8b90-4dbe4038b0d4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3100814352174006338, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: de2fb068-2bc1-4b68-afa1-504a4ddb22c9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3208536968625026296, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: eea1f91d-8fbd-4875-b9c0-ef63f49ab941
+      objectReference: {fileID: 0}
+    - target: {fileID: 3284048408036679208, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: b1ee35e1-2c20-41cb-91ba-146364396719
+      objectReference: {fileID: 0}
     - target: {fileID: 3406359448697298559, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
@@ -331,6 +308,22 @@ PrefabInstance:
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 3601645338638709434, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 3e31f224-98c3-4c13-8017-c78d09254cbc
+      objectReference: {fileID: 0}
+    - target: {fileID: 3845896155809575087, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 0c810c0a-6ba5-4279-a428-20005c0e09c6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4009680367520772063, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 2a4b104e-c18f-4b3d-908c-5584eea17a35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4027546105680081395, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: b367570e-4a1b-432b-b615-315edeb320e9
+      objectReference: {fileID: 0}
     - target: {fileID: 4069005456181245095, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
@@ -339,6 +332,22 @@ PrefabInstance:
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 4205607100130233664, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: fd5a1a86-6972-4ac9-9a6f-7bbf9c9191fe
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421764388260613272, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: a843ede7-df60-4457-b4f7-f5efd271ffca
+      objectReference: {fileID: 0}
+    - target: {fileID: 4508453722534719118, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 6dbac606-62e0-4fdd-b04e-6bb8b0ab7cc3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4739659343428875984, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 65df6efd-dc08-4653-87ad-d174185b88e5
+      objectReference: {fileID: 0}
     - target: {fileID: 4810851789955494843, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -379,10 +388,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4872969345107276006, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: bb965b96-65e0-46b1-9d3f-a40c5e1f84e0
+      objectReference: {fileID: 0}
     - target: {fileID: 5072562130072888753, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 5123226164967547105, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 755c7a67-ac2a-4d2b-9996-91338c10df14
+      objectReference: {fileID: 0}
     - target: {fileID: 5199083386524611019, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
@@ -395,6 +412,10 @@ PrefabInstance:
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 5854433978242115281, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: adc73423-3030-4686-be33-c51c4bdcbc00
+      objectReference: {fileID: 0}
     - target: {fileID: 5945784218199397616, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: mainCameraTransform
       value: 
@@ -407,14 +428,46 @@ PrefabInstance:
       propertyPath: mainCameraTransform
       value: 
       objectReference: {fileID: 163272272}
+    - target: {fileID: 6023622680052732158, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 65c32c1c-a357-45f8-bd6c-f368adcda427
+      objectReference: {fileID: 0}
     - target: {fileID: 6487272687778485996, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 6653962971924979981, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: a8db8f82-a15c-45f4-a408-fe761177b417
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998333778749177998, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 3f4c7e98-b9ac-473d-b875-e9399ca71c84
+      objectReference: {fileID: 0}
+    - target: {fileID: 7276702997336510590, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 422a7960-115c-4896-9e39-c2ef582b8440
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495415914995892898, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 74e5db16-1121-4684-b27c-3f36507cc6f5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7562787016005127180, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 885ddf33-b6d4-4bbc-9219-856684d789ae
+      objectReference: {fileID: 0}
+    - target: {fileID: 7717353995515393590, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 93771b0c-2913-4214-aced-3ef24d561635
+      objectReference: {fileID: 0}
     - target: {fileID: 7764569803762229651, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: mainCameraTransform
       value: 
       objectReference: {fileID: 163272272}
+    - target: {fileID: 7830978271774139172, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: fc70f71e-a90f-499e-a915-4973838329f3
+      objectReference: {fileID: 0}
     - target: {fileID: 7839925732275350896, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: 'combatCheckpoints.Array.data[0]'
       value: 
@@ -427,6 +480,10 @@ PrefabInstance:
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 8301201944692921815, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: d352a2b5-f8f3-408b-a3e5-1d4c00cc8eca
+      objectReference: {fileID: 0}
     - target: {fileID: 8407870148607837801, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
@@ -439,6 +496,22 @@ PrefabInstance:
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 8736208818533705062, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<ID>k__BackingField
+      value: Level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736208818533705062, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<SceneCollection>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 9ba3e2cdc0b088c48b4e85ea13b1bb36, type: 2}
+    - target: {fileID: 8736208818533705062, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<LevelStartPoint>k__BackingField.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736208818533705062, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<LevelStartPoint>k__BackingField.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8817886485437881106, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: cinemachineBrain
       value: 
@@ -447,13 +520,81 @@ PrefabInstance:
       propertyPath: cinemachineBrain
       value: 
       objectReference: {fileID: 163272273}
+    - target: {fileID: 8852193880842396913, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 88e76631-46bf-473b-817e-1fbd283a89dd
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 890cf4b5-ee74-4962-a458-405268650efa
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.name
+      value: PatrolEnemy (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.health
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.isAlive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.position.x
+      value: 720.17993
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.position.y
+      value: -37.139996
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.position.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.gemsContaining
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<ID>k__BackingField
+      value: 890cf4b5-ee74-4962-a458-405268650efa
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.enemyDamageInstance.damage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.enemyDamageInstance.knockback.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.enemyDamageInstance.knockback.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899712843402985368, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.enemyDamageInstance.knockbackStrength
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8959470006041034504, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: mainCameraTransform
       value: 
       objectReference: {fileID: 163272272}
+    - target: {fileID: 8961824554638549312, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 6afe0731-c14d-4fd7-a831-53c71d57c858
+      objectReference: {fileID: 0}
     - target: {fileID: 9023304363974972195, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: m_Name
       value: ---Level1---
+      objectReference: {fileID: 0}
+    - target: {fileID: 9111511721058081716, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: Priority.Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9144027523662747156, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: d2db0f68-c035-4dc1-8811-c15124b2eaf8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -604,4 +745,3 @@ SceneRoots:
   - {fileID: 681090242}
   - {fileID: 1192148446244158807}
   - {fileID: 7700216484890652259}
-  - {fileID: 38061765}

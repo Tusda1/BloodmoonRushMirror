@@ -13,16 +13,16 @@ namespace Enemies {
 
         #region ***---GameManagers---***
         private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
+        private static LevelDataManager LevelDataManager => LevelDataManager.Instance;
         #endregion
 
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
-        [field: SerializeField]
-        public string ID { get; set; }
+        [field: SerializeField] public string ID { get; set; }
 
         [field: SerializeField] public EnemyData SaveSystemData { get; set; }
 
-        public EnemyData DataInGameData => SaveLoadSystemManager.gameData.enemyDatas.GetOrAddByIdInList(ID,
+        public EnemyData DataInGameData => LevelDataManager.SaveSystemData.enemyDatas.GetOrAddByIdInList(ID,
             new EnemyData {
                 ID = ID,
                 health = health,

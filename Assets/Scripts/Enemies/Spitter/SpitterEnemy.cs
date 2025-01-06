@@ -18,7 +18,7 @@ public class SpitterEnemy : ReactiveBase
         base.Start();
         
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile");
-        _spitterAnimation = enemyAnimationBase as SpitterAnimation;
+        _spitterAnimation = EnemyAnimationBase as SpitterAnimation;
         
         _projectilePooler = TryGetCommunityPooler.TryGetPooler(_projectilePrefab);
     }
@@ -64,7 +64,7 @@ public class SpitterEnemy : ReactiveBase
         projectile.transform.position = spawnPosition;
         var projectileScript = projectile.GetComponent<ProjectileDeflectable>();
         projectileScript.shooter = gameObject;
-        projectileScript.velocityDirection = facingDirection;
+        projectileScript.velocityDirection = FacingDirection;
         projectile.SetActive(true);
     }
 }

@@ -1,32 +1,19 @@
+using System;
 using System.Collections;
 using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using System.Linq;
+using SaveLoadSystem;
+using SaveLoadSystem.Data;
+using Utilities.DataBinding;
 
-
-public class EnemyBase :  GravityObject, IDamageable
-{
-    private Vector2 _startPosition;
-    protected bool isDead;
-    protected bool isVulnerable;
-    protected bool isStunned;
-    protected float currentHealth;
-    private float _takeDamageTimer;
-    protected Vector2 facingDirection;
-    protected Vector2 visualFacingDirection;
-    protected Collider2D boxCollider;
-    private GameObject _rubyPrefab;
-    private Material _whiteMaterial;
-    private Material _defaultMaterial;
-    protected EnemyAnimationBase enemyAnimationBase;
-    protected PlayerScript player;
-    private Pooler _rubyPooler;
-
+public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
+    #region ---Fields---
+    #region ***---SerializedFields---***
     [SerializeField] private bool takesSpikeDamage;
     [SerializeField] private bool faceLeftOnStart;
     [SerializeField] protected float moveSpeed;
-    [SerializeField] protected float maxHealth;
+    [SerializeField] protected int maxHealth;
     [SerializeField] private float invulnerableTime = 0.5f;
     [SerializeField] private float knockbackDuration = 0.1f;
     [SerializeField] private DamageInstance enemyDamageInstance;
@@ -36,61 +23,112 @@ public class EnemyBase :  GravityObject, IDamageable
     [SerializeField] private float rubySpawnDelay = 0.2f;
     [SerializeField] private SmoothDampScript knockbackSmoothDampScript = new();
     [SerializeField] private ParticleSystem bloodSplatter;
+    #endregion
+
+    #region ***---PrivateFields---***
+    protected Vector2 StartPosition;
+    protected Vector2 FacingDirection;
+    protected Vector2 VisualFacingDirection;
     
+    protected bool IsDead;
+    protected bool IsStunned;
+    protected bool IsVulnerable;
+    protected int CurrentHealth = 2;
+    protected float TakeDamageTimer;
     protected LayerMask EnemyAndGroundLayerMask;
     
-    protected override void Start()
-    {
+    protected EnemyAnimationBase EnemyAnimationBase;
+    protected PlayerScript Player;
+    
+    private GameObject _rubyPrefab;
+    private Material _whiteMaterial;
+    private Material _defaultMaterial;
+    private Collider2D _boxCollider;
+    private Pooler _rubyPooler;
+    #endregion
+    
+    #region ***---GameManagers---***
+    private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
+    private static LevelDataManager LevelDataManager {
+        get {
+            if (LevelDataManager.HasInstance) {
+                return LevelDataManager.Instance;
+            }
+
+            var tag = GameObject.FindWithTag("LevelDataManager").GetComponent<LevelDataManager>();
+            if (tag != null) {
+                return tag;
+            }
+            
+            throw new NullReferenceException();
+        }
+    }
+    #endregion
+
+    #region ***---DataBindingVariables---***
+    [field: Header("Data Binding")]
+    [field: SerializeField] public string ID { get; set; }
+    [field: SerializeField] public EnemyData SaveSystemData { get; set; }
+    public EnemyData DataInGameData => LevelDataManager.SaveSystemData.enemyDatas.GetOrAddByIdInList(ID,
+        new EnemyData {
+            ID = ID,
+            health = CurrentHealth,
+            gemsContaining = rubyDropAmount,
+            isAlive = !IsDead,
+            enemyDamageInstance = enemyDamageInstance,
+            position = StartPosition
+        });
+    #endregion
+    #endregion
+
+
+    protected override void Start() {
         base.Start();
-        
-        _startPosition = transform.position;
-        
-        currentHealth = maxHealth;
-        
-        enemyAnimationBase = GetComponent<EnemyAnimationBase>();
-        
-        facingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
-        
+
+        StartPosition = transform.position;
+
+        CurrentHealth = maxHealth;
+
+        EnemyAnimationBase = GetComponent<EnemyAnimationBase>();
+
+        FacingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
+
         EnemyAndGroundLayerMask = LayerMask.GetMask("Enemy", "Ground");
 
-        player = ServiceLocator.Get<PlayerScript>();
-        boxCollider = GetComponent<Collider2D>();
+        Player = ServiceLocator.Get<PlayerScript>();
+        _boxCollider = GetComponent<Collider2D>();
         _rubyPrefab = Resources.Load<GameObject>("Prefabs/Ruby");
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
-        
+
         _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab);
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() {
         StopAllCoroutines();
     }
 
-    protected new void Update()
-    {
+    protected new void Update() {
         base.Update();
-        
+
         SetVisualFacingDirection();
         // Set the localscale of the enemy to face the direction it is moving
-        transform.localScale = new Vector3(-visualFacingDirection.x, 1, 1);
-    }
-    
-    protected virtual void SetVisualFacingDirection()
-    {
-        visualFacingDirection = facingDirection;
+        transform.localScale = new Vector3(-VisualFacingDirection.x, 1, 1);
     }
 
-    public void TakeDamage(DamageInstance damageInstance)
-    {
+    protected virtual void SetVisualFacingDirection() {
+        VisualFacingDirection = FacingDirection;
+    }
+
+    public void TakeDamage(DamageInstance damageInstance) {
         print("taking damage");
-        if (Time.time - _takeDamageTimer < invulnerableTime && !damageInstance.ignoreInvincibility)
-        {
+        if (Time.time - TakeDamageTimer < invulnerableTime && !damageInstance.ignoreInvincibility) {
             return;
         }
-        _takeDamageTimer = Time.time;
-        
-        enemyAnimationBase.PlayHitAnimation();
+
+        TakeDamageTimer = Time.time;
+
+        EnemyAnimationBase.PlayHitAnimation();
         StartCoroutine(FlashWhite());
 
         if (bloodSplatter != null) {
@@ -103,61 +141,54 @@ public class EnemyBase :  GravityObject, IDamageable
         else {
             Debug.LogWarning($"blood splatter on {name} is null");
         }
-        
-        currentHealth -= damageInstance.damage;
-        
-        if (currentHealth <= 0)
-        {
+
+        CurrentHealth -= damageInstance.damage;
+
+        if (CurrentHealth <= 0) {
             Die();
             return;
         }
-        
+
         // Play hit animation
         // Play hit sound
         print(damageInstance.knockback.normalized);
-        if (damageInstance.knockback.normalized == Vector2.up)
-        {
+        if (damageInstance.knockback.normalized == Vector2.up) {
             StartCoroutine(KnockUp(damageInstance.knockback));
         }
-        else
-        {
+        else {
             StartCoroutine(Knockback(damageInstance.knockback));
         }
     }
-    
-    private IEnumerator FlashWhite()
-    {
+
+    private IEnumerator FlashWhite() {
         // Flash white
         GetComponent<SpriteRenderer>().material = _whiteMaterial;
         yield return new WaitForSeconds(0.1f);
         // Return to normal
         GetComponent<SpriteRenderer>().material = _defaultMaterial;
     }
-    
-    private IEnumerator KnockUp(Vector2 knockbackStrength)
-    {
-        isStunned = true;
-        isVulnerable = true;
+
+    private IEnumerator KnockUp(Vector2 knockbackStrength) {
+        IsStunned = true;
+        IsVulnerable = true;
         float force = knockbackStrength.magnitude;
-        velocity.y = force/weight;
+        velocity.y = force / weight;
         yield return new WaitUntil((() => velocity.y <= 0));
         yield return new WaitUntil((() => isGrounded));
-        if (isDead) yield break;
-        isStunned = false;
-        isVulnerable = false;
-        enemyAnimationBase.PlayDefaultAnimation();
+        if (IsDead) yield break;
+        IsStunned = false;
+        IsVulnerable = false;
+        EnemyAnimationBase.PlayDefaultAnimation();
     }
-    
-    private IEnumerator Knockback(Vector2 knockbackStrength)
-    {
-        isStunned = true;
+
+    private IEnumerator Knockback(Vector2 knockbackStrength) {
+        IsStunned = true;
         Vector2 knockbackVelocity = knockbackStrength.magnitude * knockbackStrength.normalized / weight;
         Vector2 smoothedVelocity = knockbackVelocity;
         smoothedVelocity.y = 0;
         float timer = 0f;
 
-        while (timer < knockbackDuration)
-        {
+        while (timer < knockbackDuration) {
             targetVelocity = knockbackVelocity;
             velocity.y = knockbackVelocity.y;
             timer += Time.deltaTime;
@@ -165,48 +196,40 @@ public class EnemyBase :  GravityObject, IDamageable
         }
 
         knockbackSmoothDampScript.SetStartVelocity(smoothedVelocity);
-        while (!isGrounded)
-        {
+        while (!isGrounded) {
             // Smoothly come to a stop from knockback
             knockbackSmoothDampScript.SmoothDampFloat(knockbackVelocity.normalized, 0f, ref smoothedVelocity);
             targetVelocity = smoothedVelocity;
             yield return null;
         }
-        if (isDead) yield break;
 
-        isStunned = false;
-        enemyAnimationBase.PlayDefaultAnimation();
+        if (IsDead) yield break;
+
+        IsStunned = false;
+        EnemyAnimationBase.PlayDefaultAnimation();
     }
 
-    private void Die()
-    {
-        isDead = true;
-        
-        enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, () =>
-        {
-            gameObject.SetActive(false);
-        });
+    private void Die() {
+        IsDead = true;
+
+        EnemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, () => { gameObject.SetActive(false); });
     }
-    
-    private void DropRubies()
-    {
-        if (_rubyPrefab == null)
-        {
+
+    private void DropRubies() {
+        if (_rubyPrefab == null) {
             Debug.LogError("Ruby prefab not found");
             return;
         }
-        
+
         Vector3 positionBase = GetBottomPosition() + Vector2.up * rubySpawnHeight;
 
         //Drop as many rubies as the RubyDropAmount
-        for (int i = 0; i < rubyDropAmount; i++)
-        {
+        for (int i = 0; i < rubyDropAmount; i++) {
             bool acceptablePosition = false;
             Vector3 spawnPosition = Vector3.zero;
             int attempts = 0;
-            
-            while (acceptablePosition == false)
-            {
+
+            while (acceptablePosition == false) {
                 attempts++;
                 // Generate a small random offset
                 var offset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0.4f, 0.6f), 0);
@@ -215,17 +238,15 @@ public class EnemyBase :  GravityObject, IDamageable
                 // Check if the position is valid
                 var hit = Physics2D.OverlapCircle(spawnPosition, 0.4f, LayerMask.GetMask("Ground"));
 
-                if (hit == null)
-                {
+                if (hit == null) {
                     acceptablePosition = true;
                 }
 
-                if (attempts > 10)
-                {
+                if (attempts > 10) {
                     acceptablePosition = true;
                 }
             }
-            
+
             var rubyObject = _rubyPooler.GetPooledObject();
             rubyObject.transform.position = spawnPosition;
             rubyObject.SetActive(true);
@@ -236,55 +257,82 @@ public class EnemyBase :  GravityObject, IDamageable
 
         rubyDropAmount = 0;
     }
-    
-    public void Respawn()
-    {
-        isDead = false;
-        isVulnerable = false;
-        isStunned = false;
+
+    public void Respawn() {
+        IsDead = false;
+        IsVulnerable = false;
+        IsStunned = false;
         gameObject.SetActive(true);
-        currentHealth = maxHealth;
-        transform.position = _startPosition;
+        CurrentHealth = maxHealth;
+        transform.position = StartPosition;
     }
 
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (isDead)
-        {
+    private void OnTriggerStay2D(Collider2D other) {
+        if (IsDead) {
             return;
         }
 
-        if (isStunned)
-        {
+        if (IsStunned) {
             return;
         }
-        
-        if (player.healthComponent.HasInvincibilityFrames)
-        {
+
+        if (Player.healthComponent.HasInvincibilityFrames) {
             return;
         }
-        
-        if (other.CompareTag("Player"))
-        {
+
+        if (other.CompareTag("Player")) {
             Attack();
         }
     }
 
-    protected virtual void Attack()
-    {
-        var playerObject = player.gameObject;
-        if (player != null)
-        {
+    protected virtual void Attack() {
+        var playerObject = Player.gameObject;
+        if (Player != null) {
             Vector2 directionToPlayer = (playerObject.transform.position - transform.position).normalized;
             Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
-                
-            enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * enemyDamageInstance.knockbackStrength;
-            player.TakeDamage(enemyDamageInstance);
+
+            enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized *
+                                            enemyDamageInstance.knockbackStrength;
+            Player.TakeDamage(enemyDamageInstance);
         }
     }
 
-    protected Vector2 GetBottomPosition()
-    {
-        return new Vector2(boxCollider.bounds.center.x, boxCollider.bounds.min.y + 0.05f);
+    protected Vector2 GetBottomPosition() {
+        return new Vector2(_boxCollider.bounds.center.x, _boxCollider.bounds.min.y + 0.05f);
     }
+
+#if UNITY_EDITOR
+    private void OnValidate() {
+        if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
+            ID = Guid.NewGuid().ToString();
+            Debug.Log($"Setting new guid for {name}");
+        }
+
+        CurrentHealth = maxHealth;
+    }
+#endif
+
+    #region ---DataBindingMethods---
+    public virtual void Bind() {
+        SaveLoadSystemManager?.Bind(this, DataInGameData);
+    }
+    
+    public virtual void LoadBindData() {
+        name = SaveSystemData.name;
+        CurrentHealth = SaveSystemData.health;
+        rubyDropAmount = SaveSystemData.gemsContaining;
+        IsDead = !SaveSystemData.isAlive;
+        enemyDamageInstance = SaveSystemData.enemyDamageInstance;
+        transform.position = SaveSystemData.position;
+    }
+
+    public virtual void SaveBindData() {
+        SaveSystemData.name = name;
+        SaveSystemData.health = CurrentHealth;
+        SaveSystemData.gemsContaining = rubyDropAmount;
+        SaveSystemData.isAlive = !IsDead;
+        SaveSystemData.enemyDamageInstance = enemyDamageInstance;
+        SaveSystemData.position = transform.position;
+    }
+    #endregion
 }

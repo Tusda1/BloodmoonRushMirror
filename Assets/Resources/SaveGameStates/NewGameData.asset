@@ -13,139 +13,23 @@ MonoBehaviour:
   m_Name: NewGameData
   m_EditorClassIdentifier: 
   gameData:
-    <name>k__BackingField: 
+    <Name>k__BackingField: 
     playerData:
-      <id>k__BackingField: 
+      <ID>k__BackingField: 
       health: 7
-      lives: 5
+      lives: 3
       gems: 0
-    levelData:
-    - rid: 74644289010532455
-    enemies:
-    - rid: 74644289010532456
-    - rid: 74644289010532457
-    - rid: 74644289010532458
-    - rid: 74644289010532459
-    - rid: 74644289010532460
-    - rid: 74644289010532461
-    - rid: 74644289010532462
-    - rid: 74644289010532463
-    - rid: 74644289010532464
-    - rid: 74644289010532465
-    - rid: 74644289010532466
-    - rid: 74644289010532467
+    levelDatas:
+    - rid: 7815731217397711440
   references:
     version: 2
     RefIds:
-    - rid: 74644289010532455
+    - rid: 7815731217397711440
       type: {class: LevelData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
-        <id>k__BackingField: 9d5256e6-13e3-4cbf-bbce-41b5df10bcd3
-    - rid: 74644289010532456
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy
-        <id>k__BackingField: 1402d6d1b1cedc55-b1cb47f27fb17027
-        isAlive: 1
-        health: 3
-        gemsContaining: 5
-        position: {x: -5.4, y: -0.51, z: -0.03352179}
-    - rid: 74644289010532457
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy
-        <id>k__BackingField: 1619b85e11322493-36b40393b1ed0a63
-        isAlive: 1
-        health: 3
-        gemsContaining: 5
-        position: {x: -11.8, y: 0, z: 0}
-    - rid: 74644289010532458
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy (6)
-        <id>k__BackingField: cddf1617da77d342-058db6d570bc18ef
-        isAlive: 1
-        health: 2
-        gemsContaining: 5
-        position: {x: 0, y: 0, z: 0}
-    - rid: 74644289010532459
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy (2)
-        <id>k__BackingField: db4baa667434b083-a8083d176cbbed1c
-        isAlive: 1
-        health: 3
-        gemsContaining: 5
-        position: {x: 0, y: 0, z: 0}
-    - rid: 74644289010532460
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy0
-        <id>k__BackingField: 8fd39b4fdd7d9c79-ff39fda2a92db23f
-        isAlive: 1
-        health: 3
-        gemsContaining: 5
-        position: {x: 7.59, y: 7.17, z: 0}
-    - rid: 74644289010532461
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy (10)
-        <id>k__BackingField: 2e1db91bff2bc5e5-a0865fc6c5495bc1
-        isAlive: 1
-        health: 3
-        gemsContaining: 5
-        position: {x: -5.4, y: -0.51, z: -0.03352179}
-    - rid: 74644289010532462
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy (7)
-        <id>k__BackingField: 8ff04dd771105df7-fd9be06a39308459
-        isAlive: 1
-        health: 3
-        gemsContaining: 5
-        position: {x: 0, y: 0, z: 0}
-    - rid: 74644289010532463
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy (8)
-        <id>k__BackingField: 0621d282f0f6d3f0-abf00d3b4ddddacb
-        isAlive: 1
-        health: 3
-        gemsContaining: 5
-        position: {x: -5.4, y: -0.51, z: -0.03352179}
-    - rid: 74644289010532464
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy (4)
-        <id>k__BackingField: 4798c4c8f1263df4-a1b61518380c9b9d
-        isAlive: 1
-        health: 3
-        gemsContaining: 5
-        position: {x: 0, y: 0, z: 0}
-    - rid: 74644289010532465
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy (3)
-        <id>k__BackingField: a5eee20c59608792-e7ab0c31abfeae1a
-        isAlive: 1
-        health: 3
-        gemsContaining: 5
-        position: {x: 0, y: 0, z: 0}
-    - rid: 74644289010532466
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy (5)
-        <id>k__BackingField: c1665f04dc11f494-f38010f5269c71ca
-        isAlive: 0
-        health: 3
-        gemsContaining: 0
-        position: {x: 0, y: 0, z: 0}
-    - rid: 74644289010532467
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: TestSaveableEnemy (1)
-        <id>k__BackingField: ce81d3252976e8f2-f0be57e4c769a3de
-        isAlive: 1
-        health: 3
-        gemsContaining: 5
-        position: {x: 0, y: 0, z: 0}
+        <ID>k__BackingField: Level1
+        <SceneCollection>k__BackingField: {fileID: 11400000, guid: 9ba3e2cdc0b088c48b4e85ea13b1bb36, type: 2}
+        <Checkpoint>k__BackingField:
+          <ID>k__BackingField: 
+        <LevelStartPoint>k__BackingField: {x: 8, y: 1, z: 0}
+        enemyDatas: []

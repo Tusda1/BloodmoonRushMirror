@@ -10,5 +10,6 @@ namespace SaveLoadSystem.Data {
         public int health;
         public int gemsContaining;
         public Vector3 position;
+        public DamageInstance enemyDamageInstance;
     }
 }

@@ -18,8 +18,6 @@ public class CameraSizeController : MonoBehaviour {
             { x: 8, y: 5 } => 12.5f,
             _ => renderTextureCamera.orthographicSize
         };
-
-        Debug.Log(renderTextureCamera.orthographicSize);
     }
 
     private void Start() {

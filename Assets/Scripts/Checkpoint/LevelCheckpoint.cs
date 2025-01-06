@@ -22,7 +22,10 @@ public class LevelCheckpoint : TriggerBox {
     }
 
     protected override void TriggeredAction(Collider2D other) {
-        FMODManager.RaiseEvent(new PlaySoundEvent(raiseSoundEventPath));
+        if (raiseSoundEventPath != string.Empty) {
+            FMODManager.RaiseEvent(new PlaySoundEvent(raiseSoundEventPath));
+        }
+        
         CheckpointReached.Invoke();
 
         var state = _animancerComponent.Play(activeStart);
