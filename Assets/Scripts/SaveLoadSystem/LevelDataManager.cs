@@ -131,6 +131,11 @@ namespace SaveLoadSystem {
         public void SaveBindData() {
             SaveSystemData.enemyDatas = enemyDatas;
             SaveLoadSystemManager.gameData.CurrentLevel = SaveLoadSystemManager.gameData.levelDatas.FindIndex(x => x.ID == ID);
+#if UNITY_EDITOR
+            if (!Application.isPlaying) {
+                SavePlayerLevelStartPoint();
+            }
+#endif
         }
         #endregion
     }

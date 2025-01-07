@@ -23,6 +23,11 @@ namespace SaveLoadSystem {
 
         [ContextMenu("Runtime/" + nameof(SaveToFile))]
         public void SaveToFile() {
+#if UNITY_EDITOR
+            if (!Application.isPlaying) {
+                DataService ??= new FileDataService<SaveGameData>();
+            }
+#endif
             SaveGame();
         }
 
