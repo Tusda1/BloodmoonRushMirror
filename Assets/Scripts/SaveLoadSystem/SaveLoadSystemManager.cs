@@ -56,11 +56,12 @@ namespace SaveLoadSystem {
             LoadAllDataBinds();
         }
 
+#if UNITY_EDITOR
         [ContextMenu(nameof(WriteToNewGameDataSO))]
         public void WriteToNewGameDataSO() {
             WriteToNewGameData();
         }
-
+#endif
         [ContextMenu(nameof(LoadFromNewGameDataSO))]
         public void LoadFromNewGameDataSO() {
             gameData = (SaveGameData)newGameData.gameData.Clone();

@@ -368,17 +368,13 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            SaveLoadSystemManager?.Bind(this, DataInGameData);
-        }
-
-#if UNITY_EDITOR
-        private void OnValidate() {
-            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
-                ID = Guid.NewGuid().ToString();
-                debugLogger.Log($"Setting new guid for {nameof(PlayerScript)}");
+            if (SaveLoadSystemManager != null) {
+                SaveLoadSystemManager.Bind(this, DataInGameData);
+            }
+            else {
+                Debug.LogWarning("No SaveLoadSystemManager found");
             }
         }
-#endif
 
         [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {

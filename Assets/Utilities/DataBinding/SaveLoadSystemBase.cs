@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ExtensionMethods;
+using UnityEditor;
 using UnityEngine;
 
 namespace Utilities.DataBinding {
@@ -86,11 +88,14 @@ namespace Utilities.DataBinding {
             debugLogger.Log($"Deleting  {typeof(TGameData)} with name '{saveName}'");
         }
 
-        public void WriteToNewGameData() {
+#if UNITY_EDITOR
+        protected void WriteToNewGameData() {
             debugLogger.Log($"Writing default {typeof(TGameData)} to {newGameData.name}");
             
-            newGameData.gameData = (TGameData)gameData.Clone();
+            newGameData.gameData = gameData.DeepClone();
+            EditorUtility.SetDirty(newGameData);
         }
+#endif
 
         /// <summary>
         /// Binds "TBind" to the "TData". Finds the first object of the "TBind" type.

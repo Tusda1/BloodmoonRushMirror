@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using ExtensionMethods;
 using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -51,18 +52,31 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
     private static LevelDataManager LevelDataManager {
         get {
+            if (_levelDataManager != null) {
+                Debug.Log("LevelDataManager found from cache");
+                return _levelDataManager;
+            }
+            
             if (LevelDataManager.HasInstance) {
-                return LevelDataManager.Instance;
+                Debug.Log("LevelDataManager found from singleton instance");
+                _levelDataManager = LevelDataManager.Instance;
+                _levelDataManager.Bind();
+                return _levelDataManager;
             }
 
             var tag = GameObject.FindWithTag("LevelDataManager").GetComponent<LevelDataManager>();
             if (tag != null) {
-                return tag;
+                Debug.Log("LevelDataManager found by tag");
+                _levelDataManager = tag;
+                _levelDataManager.Bind();
+                return _levelDataManager;
             }
             
             throw new NullReferenceException();
         }
     }
+    
+    private static LevelDataManager _levelDataManager;
     #endregion
 
     #region ***---DataBindingVariables---***
@@ -71,12 +85,12 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     [field: SerializeField] public EnemyData SaveSystemData { get; set; }
     public EnemyData DataInGameData => LevelDataManager.SaveSystemData.enemyDatas.GetOrAddByIdInList(ID,
         new EnemyData {
+            name = name,
             ID = ID,
             health = CurrentHealth,
             gemsContaining = rubyDropAmount,
             isAlive = !IsDead,
-            enemyDamageInstance = enemyDamageInstance,
-            position = StartPosition
+            position = transform.position
         });
     #endregion
     #endregion
@@ -314,7 +328,12 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
     #region ---DataBindingMethods---
     public virtual void Bind() {
-        SaveLoadSystemManager?.Bind(this, DataInGameData);
+        if (SaveLoadSystemManager != null) {
+            SaveLoadSystemManager.Bind(this, DataInGameData);
+        }
+        else {
+            Debug.LogWarning("No SaveLoadSystemManager found");
+        }
     }
     
     public virtual void LoadBindData() {
@@ -322,7 +341,6 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         CurrentHealth = SaveSystemData.health;
         rubyDropAmount = SaveSystemData.gemsContaining;
         IsDead = !SaveSystemData.isAlive;
-        enemyDamageInstance = SaveSystemData.enemyDamageInstance;
         transform.position = SaveSystemData.position;
     }
 
@@ -331,7 +349,6 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         SaveSystemData.health = CurrentHealth;
         SaveSystemData.gemsContaining = rubyDropAmount;
         SaveSystemData.isAlive = !IsDead;
-        SaveSystemData.enemyDamageInstance = enemyDamageInstance;
         SaveSystemData.position = transform.position;
     }
     #endregion
