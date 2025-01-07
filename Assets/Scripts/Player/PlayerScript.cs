@@ -22,28 +22,43 @@ namespace Player {
         [GetOrAddComponent, HideInInspector] public GravityObjectPlayerMovement playerMovement;
         [GetOrAddComponent, HideInInspector] public PlayerInput playerInput;
         #endregion
-        
+
+        #region ***---SerializedFields---***
         [SerializeField] public MultipleAnimatorControllers animator;
         [SerializeField] private SceneCollectionSO gameOverScene;
 
-        [Header("Player")] public int playerLives = 5;
+        [Header("Player")] 
+        public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         [SerializeField] private PlayerHitbox hitbox;
         [SerializeField] private ParticleSystem bloodSplatter;
 
-        [Header("Taking Damage")] [SerializeField]
-        private float alphaWhenTakingDamage = 0.2f;
+        [Header("Taking Damage")] 
+        [SerializeField] private float alphaWhenTakingDamage = 0.2f;
 
         [SerializeField] private float takeDamageScreenShakeIntensity = 0.2f;
         [SerializeField] private float takeDamageScreenShakeDuration = 0.2f;
         [SerializeField] private float takeDamageTimeSlowDuration = 0.5f;
 
-        [Header("Keys")] public int keyAmount;
+        [Header("Keys")] 
+        public int keyAmount;
         public List<GameObject> keyObjects = new();
+
+        [Header("Player Can Move")] 
+        [SerializeField, Attributes.Required] private AllInFavourConsensusSO playerCanMove;
+
+        [Header("Debug Logger")] 
+        [SerializeField, Attributes.Required] public DebugLoggerSO debugLogger;
+        #endregion
 
         private bool _isDead;
         private bool _canAttack = true;
+
+        private bool PlayerMovementEnabled => playerCanMove.consensus;
+        private readonly ScriptVotePair _isAliveVotePair = new();
+
+        public event Action OnRespawn = delegate { };
 
         #region ***---Gems---***
         [Header("Gems")] public int gems;
@@ -59,17 +74,6 @@ namespace Player {
 
         [Serializable] private enum GemLostMethod { Subtraction, Multiplication }
         #endregion
-
-        [Header("Player Can Move")] [SerializeField, Attributes.Required]
-        private AllInFavourConsensusSO playerCanMove;
-
-        private bool PlayerMovementEnabled => playerCanMove.consensus;
-        private readonly ScriptVotePair _isAliveVotePair = new();
-
-        [Header("Debug Logger"), SerializeField, Attributes.Required]
-        public DebugLoggerSO debugLogger;
-
-        public event Action OnRespawn = delegate { };
 
         #region ***---AnimatorStringToHash---***
         private static readonly int AnimatorIsAttackingBool = Animator.StringToHash("IsAttacking");
@@ -385,6 +389,7 @@ namespace Player {
 
         [ContextMenu(nameof(SaveBindData))]
         public void SaveBindData() {
+            SaveSystemData.ID = ID;
             SaveSystemData.health = healthComponent.Health;
             SaveSystemData.lives = playerLives;
             SaveSystemData.gems = gems;

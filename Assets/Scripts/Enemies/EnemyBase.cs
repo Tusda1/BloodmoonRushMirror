@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using ExtensionMethods;
 using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -50,33 +49,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     
     #region ***---GameManagers---***
     private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
-    private static LevelDataManager LevelDataManager {
-        get {
-            if (_levelDataManager != null) {
-                Debug.Log("LevelDataManager found from cache");
-                return _levelDataManager;
-            }
-            
-            if (LevelDataManager.HasInstance) {
-                Debug.Log("LevelDataManager found from singleton instance");
-                _levelDataManager = LevelDataManager.Instance;
-                _levelDataManager.Bind();
-                return _levelDataManager;
-            }
-
-            var tag = GameObject.FindWithTag("LevelDataManager").GetComponent<LevelDataManager>();
-            if (tag != null) {
-                Debug.Log("LevelDataManager found by tag");
-                _levelDataManager = tag;
-                _levelDataManager.Bind();
-                return _levelDataManager;
-            }
-            
-            throw new NullReferenceException();
-        }
-    }
-    
-    private static LevelDataManager _levelDataManager;
+    private static LevelDataManager LevelDataManager => LevelDataManager.LevelDataManagerCache;
     #endregion
 
     #region ***---DataBindingVariables---***
@@ -95,7 +68,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     #endregion
     #endregion
 
-
+    #region ---Methods---
     protected override void Start() {
         base.Start();
 
@@ -116,6 +89,10 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
 
         _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab);
+
+        if (SaveLoadSystemManager.HasInstance) {
+            Bind();
+        }
     }
 
     private void OnDisable() {
@@ -314,6 +291,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected Vector2 GetBottomPosition() {
         return new Vector2(_boxCollider.bounds.center.x, _boxCollider.bounds.min.y + 0.05f);
     }
+    #endregion
 
 #if UNITY_EDITOR
     private void OnValidate() {
@@ -336,6 +314,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         }
     }
     
+    [ContextMenu(nameof(LoadBindData))]
     public virtual void LoadBindData() {
         name = SaveSystemData.name;
         CurrentHealth = SaveSystemData.health;
@@ -344,6 +323,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         transform.position = SaveSystemData.position;
     }
 
+    [ContextMenu(nameof(SaveBindData))]
     public virtual void SaveBindData() {
         SaveSystemData.name = name;
         SaveSystemData.health = CurrentHealth;

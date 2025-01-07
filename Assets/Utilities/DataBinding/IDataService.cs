@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Serializers;
 
 namespace Utilities.DataBinding {
     public interface IDataService<TGameData> where TGameData : IGameData {
+        public ISerializer Serializer { get;}
+        public string DataPath { get;}
+        public string FileExtension { get;}
+        
         void Save(TGameData gameData);
         TGameData LoadByName(string name);
         TGameData LoadByPath(string path);

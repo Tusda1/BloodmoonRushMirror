@@ -41,7 +41,9 @@ namespace SaveLoadSystem {
         [ContextMenu(nameof(SaveBindings))]
         public void SaveBindings() {
 #if UNITY_EDITOR
-            SetDataBindsInEditor();
+            if (!Application.isPlaying) {
+                SetDataBindsInEditor();
+            }
 #endif
 
             SaveAllDataBinds();
@@ -50,7 +52,9 @@ namespace SaveLoadSystem {
         [ContextMenu(nameof(LoadDataBinds))]
         public void LoadDataBinds() {
 #if UNITY_EDITOR
-            SetDataBindsInEditor();
+            if (!Application.isPlaying) {
+                SetDataBindsInEditor();
+            }
 #endif
 
             LoadAllDataBinds();
@@ -97,6 +101,12 @@ namespace SaveLoadSystem {
                 dataBind.Bind();
                 yield return dataBind;
             }
+        }
+
+        [ContextMenu(nameof(OpenFileLocation))]
+        private void OpenFileLocation() {
+            DataService ??= new FileDataService<SaveGameData>();
+            System.Diagnostics.Process.Start(DataService.DataPath);
         }
 #endif
     }

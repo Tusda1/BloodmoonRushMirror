@@ -6,15 +6,15 @@ namespace Triggers {
         #region ---Fields---
         [SerializeField] private string colliderTag = "Player";
 
-        private bool _hasBeenTriggered;
+        protected bool HasBeenTriggered;
         #endregion
 
         private void OnTriggerEnter2D(Collider2D other) {
-            if (_hasBeenTriggered) return;
+            if (HasBeenTriggered) return;
             if (colliderTag != null && !other.CompareTag(colliderTag)) return;
 
             TriggeredAction(other);
-            _hasBeenTriggered = true;
+            HasBeenTriggered = true;
         }
 
         protected abstract void TriggeredAction(Collider2D other);

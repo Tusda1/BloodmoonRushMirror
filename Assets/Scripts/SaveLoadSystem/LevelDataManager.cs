@@ -15,9 +15,11 @@ namespace SaveLoadSystem {
 
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
-        [field: SerializeField] public string ID { get; set; } = Guid.NewGuid().ToString();
+        [field: SerializeField] public string ID { get; set; }
         [field: SerializeField] public SceneCollectionSO SceneCollection { get; set; }
-        [field: SerializeField] public CurrentCheckpointData Checkpoint { get; set; }
+        
+        [field: SerializeField] public CheckpointData CurrentCheckpointData { get; set; }
+        [SerializeReference] public List<CheckpointData> checkpointDatas = new();
         
         [field: SerializeField] public List<EnemyData> enemyDatas = new();
 
@@ -27,28 +29,30 @@ namespace SaveLoadSystem {
             new LevelData {
                 ID = ID,
                 SceneCollection = SceneCollection,
-                enemyDatas = enemyDatas
+                enemyDatas = enemyDatas,
+                checkpointDatas = checkpointDatas,
+                CurrentCheckpointData = CurrentCheckpointData
             });
         #endregion
 
-        private PlayerScript PlayerScript {
+        private PlayerScript PlayerScriptCache {
             get {
                 if (_playerScript != null) {
                     Debug.Log("PlayerScript found in cache");
                     return _playerScript;
                 }
                 
-                var locator = ServiceLocator.Get<PlayerScript>();
-                if (locator != null) {
+                var playerScriptLocator = ServiceLocator.Get<PlayerScript>();
+                if (playerScriptLocator != null) {
                     Debug.Log("PlayerScript found with ServiceLocator");
-                    _playerScript = locator; 
+                    _playerScript = playerScriptLocator; 
                     return _playerScript;
                 }
                 
-                var tag = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
-                if (tag != null) {
+                var playerScriptTag = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
+                if (playerScriptTag != null) {
                     Debug.Log("PlayerScript found by tag");
-                    _playerScript = tag;
+                    _playerScript = playerScriptTag;
                     return _playerScript;
                 }
                 
@@ -56,6 +60,37 @@ namespace SaveLoadSystem {
             }
         }
         private PlayerScript _playerScript;
+        
+        public static LevelDataManager LevelDataManagerCache {
+            get {
+                if (_levelDataManager != null) {
+                    Debug.Log("LevelDataManager found from cache");
+                    return _levelDataManager;
+                }
+
+                if (HasInstance) {
+                    Debug.Log("LevelDataManager found from singleton instance");
+                    _levelDataManager = Instance;
+                    if (!Application.isPlaying) {
+                        _levelDataManager.Bind();
+                    }
+                    return _levelDataManager;
+                }
+
+                var tag = GameObject.FindWithTag("LevelDataManager").GetComponent<LevelDataManager>();
+                if (tag != null) {
+                    Debug.Log("LevelDataManager found by tag");
+                    _levelDataManager = tag;
+                    if (!Application.isPlaying) {
+                        _levelDataManager.Bind();
+                    }
+                    return _levelDataManager;
+                }
+
+                throw new NullReferenceException();
+            }
+        }
+        private static LevelDataManager _levelDataManager;
         #endregion
 
         private void Start() {
@@ -78,17 +113,17 @@ namespace SaveLoadSystem {
         
         [ContextMenu(nameof(SavePlayerLevelStartPoint))]
         public void SavePlayerLevelStartPoint() {
-            SaveSystemData.LevelStartPoint = PlayerScript.transform.position;
+            SaveSystemData.LevelStartPoint = PlayerScriptCache.transform.position;
         }
 #endif
 
         [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
-            if (SaveSystemData.Checkpoint.ID == string.Empty) {
-                PlayerScript.transform.position = SaveSystemData.LevelStartPoint;
+            if (SaveSystemData.CurrentCheckpointData.ID == string.Empty) {
+                PlayerScriptCache.transform.position = SaveSystemData.LevelStartPoint;
             }
             else {
-                PlayerScript.transform.position = SaveSystemData.Checkpoint.Position;
+                PlayerScriptCache.transform.position = SaveSystemData.CurrentCheckpointData.Position;
             }
         }
 
