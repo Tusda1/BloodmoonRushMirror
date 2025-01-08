@@ -204,6 +204,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &320823094 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2544212780809747682, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+  m_PrefabInstance: {fileID: 1192148446244158807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &671248685 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5819112232089968819, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+  m_PrefabInstance: {fileID: 1192148446244158807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &681090242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -970,10 +980,21 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2094168778442339727, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
   m_PrefabInstance: {fileID: 1192148446244158807}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 320823094}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df0ac1e462ddec64692e9e450b6abe7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1142911687 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1093155443968544912, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+  m_PrefabInstance: {fileID: 1192148446244158807}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320823094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1461658939 stripped
@@ -981,10 +1002,21 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7962510229104683486, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
   m_PrefabInstance: {fileID: 1192148446244158807}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 671248685}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df0ac1e462ddec64692e9e450b6abe7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1461658946 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8981537342807444673, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+  m_PrefabInstance: {fileID: 1192148446244158807}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671248685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1192148446244158807
@@ -995,9 +1027,86 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1189000357210674, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: behaviorGraphAgent
+      value: 
+      objectReference: {fileID: 1461658946}
+    - target: {fileID: 1189000357210674, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 97fd5f610e207137-d11884499096782e
+      objectReference: {fileID: 0}
+    - target: {fileID: 1093155443968544912, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: m_Graph
+      value: 
+      objectReference: {fileID: 7539907628655466435, guid: 93f1f0b9faa8f3545875ebae97aa5576, type: 2}
+    - target: {fileID: 1093155443968544912, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: 'managedReferences[7815731262821761396]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[UnityEngine.GameObject,
+        UnityEngine.CoreModule]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1093155443968544912, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: managedReferences[7815731262821761396].Name
+      value: Self
+      objectReference: {fileID: 0}
+    - target: {fileID: 1093155443968544912, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1093155443968544912, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: managedReferences[7815731262821761396].m_Value
+      value: 
+      objectReference: {fileID: 320823094}
+    - target: {fileID: 1093155443968544912, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[0]'
+      value: 7815731262821761396
+      objectReference: {fileID: 0}
+    - target: {fileID: 1093155443968544912, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: managedReferences[7815731262821761396].GUID.m_Value0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1093155443968544912, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: managedReferences[7815731262821761396].GUID.m_Value1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094168778442339727, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: hasBeenTriggered
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094168778442339727, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: behaviorGraphAgent
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094168778442339727, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 93ce9c78-4dfc-42b4-afe6-f56b2408f193
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094168778442339727, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.name
+      value: LevelCheckpoint1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094168778442339727, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<ID>k__BackingField
+      value: 93ce9c78-4dfc-42b4-afe6-f56b2408f193
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094168778442339727, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<Position>k__BackingField.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094168778442339727, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<Position>k__BackingField.y
+      value: -63
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094168778442339727, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<HasBeenTriggered>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3912509699345995005, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
       propertyPath: m_Name
       value: ---TriggersLevel1---
+      objectReference: {fileID: 0}
+    - target: {fileID: 5326541186140475041, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: m_Name
+      value: MusicTriggerBox
       objectReference: {fileID: 0}
     - target: {fileID: 5964682626622423405, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1038,6 +1147,107 @@ PrefabInstance:
     - target: {fileID: 5964682626622423405, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7540159916992880783, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: ec911d08-8a68-47e9-a2e3-8a06e89767ba
+      objectReference: {fileID: 0}
+    - target: {fileID: 7540159916992880783, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.name
+      value: MusicTriggerBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 7540159916992880783, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<ID>k__BackingField
+      value: ec911d08-8a68-47e9-a2e3-8a06e89767ba
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962510229104683486, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: hasBeenTriggered
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962510229104683486, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: behaviorGraphAgent
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962510229104683486, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 0db70c99-7d2a-4d7b-acd6-9dfb8fd6e720
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962510229104683486, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.name
+      value: LevelCheckpoint2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962510229104683486, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<ID>k__BackingField
+      value: 0db70c99-7d2a-4d7b-acd6-9dfb8fd6e720
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962510229104683486, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<Position>k__BackingField.x
+      value: 543
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962510229104683486, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<Position>k__BackingField.y
+      value: -44
+      objectReference: {fileID: 0}
+    - target: {fileID: 7962510229104683486, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<HasBeenTriggered>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8325826223529522787, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: behaviorGraphAgent
+      value: 
+      objectReference: {fileID: 1142911687}
+    - target: {fileID: 8325826223529522787, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 4d3c40656fae0460-d2bcffb06c53d37a
+      objectReference: {fileID: 0}
+    - target: {fileID: 8966356581523054733, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <ID>k__BackingField
+      value: 8fe7928429388357-2998b714d7bf0215
+      objectReference: {fileID: 0}
+    - target: {fileID: 8966356581523054733, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.name
+      value: TriggerConversationBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 8966356581523054733, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: <SaveSystemData>k__BackingField.<ID>k__BackingField
+      value: 8fe7928429388357-2998b714d7bf0215
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981537342807444673, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: m_Graph
+      value: 
+      objectReference: {fileID: 7539907628655466435, guid: 5dae223d0e51dd640a5e2c4580432000, type: 2}
+    - target: {fileID: 8981537342807444673, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: 'managedReferences[7815731262821761397]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[UnityEngine.GameObject,
+        UnityEngine.CoreModule]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981537342807444673, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: managedReferences[7815731262821761397].Name
+      value: Self
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981537342807444673, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981537342807444673, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: managedReferences[7815731262821761397].m_Value
+      value: 
+      objectReference: {fileID: 671248685}
+    - target: {fileID: 8981537342807444673, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[0]'
+      value: 7815731262821761397
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981537342807444673, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: managedReferences[7815731262821761397].GUID.m_Value0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981537342807444673, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: managedReferences[7815731262821761397].GUID.m_Value1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178660481556236389, guid: 3e1b5daea3d85bf45969acf7caf0038a, type: 3}
+      propertyPath: m_Name
+      value: ConversationTriggerBox
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

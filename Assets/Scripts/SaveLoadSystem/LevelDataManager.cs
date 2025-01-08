@@ -119,12 +119,9 @@ namespace SaveLoadSystem {
 
         [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
-            if (SaveSystemData.CurrentCheckpointData.ID == string.Empty) {
-                PlayerScriptCache.transform.position = SaveSystemData.LevelStartPoint;
-            }
-            else {
-                PlayerScriptCache.transform.position = SaveSystemData.CurrentCheckpointData.Position;
-            }
+            PlayerScriptCache.transform.position = SaveSystemData.CurrentCheckpointData.ID == string.Empty 
+                ? SaveSystemData.LevelStartPoint 
+                : SaveSystemData.CurrentCheckpointData.Position;
         }
 
         [ContextMenu(nameof(SaveBindData))]

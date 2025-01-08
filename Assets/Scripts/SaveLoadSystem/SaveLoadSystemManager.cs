@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SaveLoadSystem.Data;
@@ -14,12 +13,12 @@ namespace SaveLoadSystem {
             DataService = new FileDataService<SaveGameData>();
         }
 
-        private IEnumerator Start() {
-            yield return null;
-            
-            SaveAllDataBinds();
-            LoadAllDataBinds();
-        }
+        // private IEnumerator Start() {
+        //     yield return null;
+        //     
+        //     // SaveAllDataBinds();
+        //     LoadAllDataBinds();
+        // }
 
         [ContextMenu("Runtime/" + nameof(SaveToFile))]
         public void SaveToFile() {

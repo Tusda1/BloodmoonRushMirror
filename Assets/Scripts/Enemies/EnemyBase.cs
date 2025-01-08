@@ -89,10 +89,8 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
 
         _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab);
-
-        if (SaveLoadSystemManager.HasInstance) {
-            Bind();
-        }
+        
+        Bind();
     }
 
     private void OnDisable() {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NewGameData
   m_EditorClassIdentifier: 
   gameData:
-    <Name>k__BackingField: Test
+    <Name>k__BackingField: Default
     playerData:
       <ID>k__BackingField: Player
       health: 7
@@ -21,11 +21,11 @@ MonoBehaviour:
       gems: 0
     <CurrentLevel>k__BackingField: 0
     levelDatas:
-    - rid: 7815731247175434616
+    - rid: 7815731262821761478
   references:
     version: 2
     RefIds:
-    - rid: 7815731247175434616
+    - rid: 7815731262821761478
       type: {class: LevelData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         <ID>k__BackingField: Level1
@@ -37,143 +37,86 @@ MonoBehaviour:
           <HasBeenTriggered>k__BackingField: 0
           <Position>k__BackingField: {x: 0, y: 0, z: 0}
         checkpointDatas:
-        - rid: 7815731247175434617
-        - rid: 7815731247175434618
-        - rid: 7815731247175434619
-        - rid: 7815731247175434620
-        - rid: 7815731247175434621
-        - rid: 7815731247175434622
+        - rid: 7815731262821761479
+        - rid: 7815731262821761480
+        triggerDatas:
+        - rid: 7815731262821761481
+        - rid: 7815731262821761482
+        - rid: 7815731262821761483
+        - rid: 7815731262821761484
         enemyDatas:
-        - rid: 7815731247175434623
-        - rid: 7815731247175434624
-        - rid: 7815731247175434625
-        - rid: 7815731247175434626
-        - rid: 7815731247175434627
-        - rid: 7815731247175434628
-        - rid: 7815731247175434629
-        - rid: 7815731247175434630
-        - rid: 7815731247175434631
-        - rid: 7815731247175434632
-        - rid: 7815731247175434633
-        - rid: 7815731247175434634
-        - rid: 7815731247175434635
-        - rid: 7815731247175434636
-        - rid: 7815731247175434637
-        - rid: 7815731247175434638
-        - rid: 7815731247175434639
-        - rid: 7815731247175434640
-        - rid: 7815731247175434641
-        - rid: 7815731247175434642
-        - rid: 7815731247175434643
-        - rid: 7815731247175434644
-        - rid: 7815731247175434645
-        - rid: 7815731247175434646
-        - rid: 7815731247175434647
-        - rid: 7815731247175434648
-        - rid: 7815731247175434649
-        - rid: 7815731247175434650
-        - rid: 7815731247175434651
-        - rid: 7815731247175434652
-        - rid: 7815731247175434653
-        - rid: 7815731247175434654
-        - rid: 7815731247175434655
-    - rid: 7815731247175434617
+        - rid: 7815731262821761485
+        - rid: 7815731262821761486
+        - rid: 7815731262821761487
+        - rid: 7815731262821761488
+        - rid: 7815731262821761489
+        - rid: 7815731262821761490
+        - rid: 7815731262821761491
+        - rid: 7815731262821761492
+        - rid: 7815731262821761493
+        - rid: 7815731262821761494
+        - rid: 7815731262821761495
+        - rid: 7815731262821761496
+        - rid: 7815731262821761497
+        - rid: 7815731262821761498
+        - rid: 7815731262821761499
+        - rid: 7815731262821761500
+        - rid: 7815731262821761501
+        - rid: 7815731262821761502
+        - rid: 7815731262821761503
+        - rid: 7815731262821761504
+        - rid: 7815731262821761505
+        - rid: 7815731262821761506
+        - rid: 7815731262821761507
+        - rid: 7815731262821761508
+        - rid: 7815731262821761509
+        - rid: 7815731262821761510
+        - rid: 7815731262821761511
+        - rid: 7815731262821761512
+        - rid: 7815731262821761513
+        - rid: 7815731262821761514
+        - rid: 7815731262821761515
+        - rid: 7815731262821761516
+        - rid: 7815731262821761517
+    - rid: 7815731262821761479
       type: {class: CheckpointData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         name: LevelCheckpoint1
         <ID>k__BackingField: 93ce9c78-4dfc-42b4-afe6-f56b2408f193
         <HasBeenTriggered>k__BackingField: 0
         <Position>k__BackingField: {x: 300, y: -63, z: 0}
-    - rid: 7815731247175434618
+    - rid: 7815731262821761480
       type: {class: CheckpointData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         name: LevelCheckpoint2
         <ID>k__BackingField: 0db70c99-7d2a-4d7b-acd6-9dfb8fd6e720
         <HasBeenTriggered>k__BackingField: 0
         <Position>k__BackingField: {x: 543, y: -44, z: 0}
-    - rid: 7815731247175434619
-      type: {class: CheckpointData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: LevelCheckpoint2
-        <ID>k__BackingField: a4e9de19-33d0-4053-8dfc-70ccbb02c700
-        <HasBeenTriggered>k__BackingField: 0
-        <Position>k__BackingField: {x: 543, y: -44, z: 0}
-    - rid: 7815731247175434620
-      type: {class: CheckpointData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+    - rid: 7815731262821761481
+      type: {class: TriggerData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         name: LevelCheckpoint1
-        <ID>k__BackingField: 13a8d017-b139-449b-a260-669bf2bb5b3f
-        <HasBeenTriggered>k__BackingField: 0
-        <Position>k__BackingField: {x: 300, y: -63, z: 0}
-    - rid: 7815731247175434621
-      type: {class: CheckpointData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+        <ID>k__BackingField: 4d3c40656fae0460-d2bcffb06c53d37a
+        hasBeenTriggered: 0
+    - rid: 7815731262821761482
+      type: {class: TriggerData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         name: LevelCheckpoint2
-        <ID>k__BackingField: 9a67831d-98a9-4f11-b719-7c76047ec351
-        <HasBeenTriggered>k__BackingField: 0
-        <Position>k__BackingField: {x: 543, y: -44, z: 0}
-    - rid: 7815731247175434622
-      type: {class: CheckpointData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+        <ID>k__BackingField: 97fd5f610e207137-d11884499096782e
+        hasBeenTriggered: 0
+    - rid: 7815731262821761483
+      type: {class: TriggerData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
-        name: LevelCheckpoint1
-        <ID>k__BackingField: 232dbd83-40a8-4e38-acb9-7608b3dbedc0
-        <HasBeenTriggered>k__BackingField: 0
-        <Position>k__BackingField: {x: 300, y: -63, z: 0}
-    - rid: 7815731247175434623
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+        name: MusicTriggerBox
+        <ID>k__BackingField: ec911d08-8a68-47e9-a2e3-8a06e89767ba
+        hasBeenTriggered: 0
+    - rid: 7815731262821761484
+      type: {class: TriggerData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
-        name: PatrolEnemy (4)
-        <ID>k__BackingField: 87e56913-9961-4f46-a61e-43f6090e4b99
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 348.75, y: -106.98, z: 10}
-    - rid: 7815731247175434624
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (5)
-        <ID>k__BackingField: a8db8f82-a15c-45f4-a408-fe761177b417
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 331.21005, y: -107.189995, z: 10}
-    - rid: 7815731247175434625
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter (1)
-        <ID>k__BackingField: a8ab5c3f-428c-4121-ae70-5903b392d3f0
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 393.4, y: -106.92999, z: 10}
-    - rid: 7815731247175434626
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (7)
-        <ID>k__BackingField: d352a2b5-f8f3-408b-a3e5-1d4c00cc8eca
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 695.22, y: -34.4, z: 10}
-    - rid: 7815731247175434627
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter (1)
-        <ID>k__BackingField: b1ee35e1-2c20-41cb-91ba-146364396719
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 486.77002, y: -87.56, z: 10}
-    - rid: 7815731247175434628
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (4)
-        <ID>k__BackingField: de2fb068-2bc1-4b68-afa1-504a4ddb22c9
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 490.18, y: -76.38, z: 10}
-    - rid: 7815731247175434629
+        name: ConversationTriggerBox
+        <ID>k__BackingField: 8fe7928429388357-2998b714d7bf0215
+        hasBeenTriggered: 0
+    - rid: 7815731262821761485
       type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         name: Spitter
@@ -182,187 +125,7 @@ MonoBehaviour:
         health: 2
         gemsContaining: 3
         position: {x: 862.8932, y: -40.405468, z: 10}
-    - rid: 7815731247175434630
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter
-        <ID>k__BackingField: fd5a1a86-6972-4ac9-9a6f-7bbf9c9191fe
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 802.23, y: -41.67, z: 10}
-    - rid: 7815731247175434631
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (3)
-        <ID>k__BackingField: a3f93429-4a9c-4143-a2d4-c88597a4b6f7
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 495.27005, y: -94.56, z: 10}
-    - rid: 7815731247175434632
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter
-        <ID>k__BackingField: 13968add-e969-43bc-b945-6478bfa15dcb
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 379, y: -106.89, z: 10}
-    - rid: 7815731247175434633
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (1)
-        <ID>k__BackingField: 93771b0c-2913-4214-aced-3ef24d561635
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 287.3, y: -111.16, z: 10}
-    - rid: 7815731247175434634
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter
-        <ID>k__BackingField: d2db0f68-c035-4dc1-8811-c15124b2eaf8
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 505.83, y: -109.84, z: 10}
-    - rid: 7815731247175434635
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter (2)
-        <ID>k__BackingField: 65df6efd-dc08-4653-87ad-d174185b88e5
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 425.98, y: -106.8, z: 10}
-    - rid: 7815731247175434636
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (2)
-        <ID>k__BackingField: adc73423-3030-4686-be33-c51c4bdcbc00
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 300.55, y: -108.03, z: 10}
-    - rid: 7815731247175434637
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter (4)
-        <ID>k__BackingField: 2a4b104e-c18f-4b3d-908c-5584eea17a35
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 507.77002, y: -78.56, z: 10}
-    - rid: 7815731247175434638
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter
-        <ID>k__BackingField: 88e76631-46bf-473b-817e-1fbd283a89dd
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 796.38, y: -36.73, z: 10}
-    - rid: 7815731247175434639
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter (2)
-        <ID>k__BackingField: bb965b96-65e0-46b1-9d3f-a40c5e1f84e0
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 473.12, y: -111.83, z: 10}
-    - rid: 7815731247175434640
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (8)
-        <ID>k__BackingField: 890cf4b5-ee74-4962-a458-405268650efa
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 720.17993, y: -37.139996, z: 10}
-    - rid: 7815731247175434641
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (5)
-        <ID>k__BackingField: 3e31f224-98c3-4c13-8017-c78d09254cbc
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 500.27005, y: -66.56, z: 10}
-    - rid: 7815731247175434642
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter
-        <ID>k__BackingField: fc70f71e-a90f-499e-a915-4973838329f3
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 444.82, y: -100.82, z: 10}
-    - rid: 7815731247175434643
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (1)
-        <ID>k__BackingField: 755c7a67-ac2a-4d2b-9996-91338c10df14
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 516.37, y: -105.329994, z: 10}
-    - rid: 7815731247175434644
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter (3)
-        <ID>k__BackingField: e4b34612-7240-450e-84f9-73f391009463
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 437.37, y: -100.91, z: 10}
-    - rid: 7815731247175434645
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (6)
-        <ID>k__BackingField: 885ddf33-b6d4-4bbc-9219-856684d789ae
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 486.3, y: -63.44, z: 10}
-    - rid: 7815731247175434646
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter (3)
-        <ID>k__BackingField: 422a7960-115c-4896-9e39-c2ef582b8440
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 486.77002, y: -83.56, z: 10}
-    - rid: 7815731247175434647
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter (7)
-        <ID>k__BackingField: a843ede7-df60-4457-b4f7-f5efd271ffca
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 483.77005, y: -40.559998, z: 10}
-    - rid: 7815731247175434648
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy (2)
-        <ID>k__BackingField: 0c810c0a-6ba5-4279-a428-20005c0e09c6
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 509.27005, y: -94.56, z: 10}
-    - rid: 7815731247175434649
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: PatrolEnemy
-        <ID>k__BackingField: f8496cfc-9c5c-4897-8b90-4dbe4038b0d4
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 858.6832, y: -40.975468, z: 10}
-    - rid: 7815731247175434650
+    - rid: 7815731262821761486
       type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         name: Spitter (6)
@@ -371,7 +134,7 @@ MonoBehaviour:
         health: 2
         gemsContaining: 3
         position: {x: 513.77, y: -74.56, z: 10}
-    - rid: 7815731247175434651
+    - rid: 7815731262821761487
       type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         name: Spitter (8)
@@ -380,25 +143,16 @@ MonoBehaviour:
         health: 2
         gemsContaining: 3
         position: {x: 511.77005, y: -29.559998, z: 10}
-    - rid: 7815731247175434652
+    - rid: 7815731262821761488
       type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         name: PatrolEnemy
-        <ID>k__BackingField: 6afe0731-c14d-4fd7-a831-53c71d57c858
+        <ID>k__BackingField: f8496cfc-9c5c-4897-8b90-4dbe4038b0d4
         isAlive: 1
         health: 2
         gemsContaining: 3
-        position: {x: 293.24, y: -82.33, z: 0}
-    - rid: 7815731247175434653
-      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
-      data:
-        name: Spitter (1)
-        <ID>k__BackingField: 65c32c1c-a357-45f8-bd6c-f368adcda427
-        isAlive: 1
-        health: 2
-        gemsContaining: 3
-        position: {x: 478.15, y: -105.929, z: 10}
-    - rid: 7815731247175434654
+        position: {x: 858.6832, y: -40.975468, z: 10}
+    - rid: 7815731262821761489
       type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         name: PatrolEnemy (3)
@@ -407,7 +161,52 @@ MonoBehaviour:
         health: 2
         gemsContaining: 3
         position: {x: 313.14, y: -111.29, z: 10}
-    - rid: 7815731247175434655
+    - rid: 7815731262821761490
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (4)
+        <ID>k__BackingField: de2fb068-2bc1-4b68-afa1-504a4ddb22c9
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 490.18, y: -76.38, z: 10}
+    - rid: 7815731262821761491
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (2)
+        <ID>k__BackingField: adc73423-3030-4686-be33-c51c4bdcbc00
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 300.55, y: -108.03, z: 10}
+    - rid: 7815731262821761492
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter
+        <ID>k__BackingField: 88e76631-46bf-473b-817e-1fbd283a89dd
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 796.38, y: -36.73, z: 10}
+    - rid: 7815731262821761493
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (6)
+        <ID>k__BackingField: 885ddf33-b6d4-4bbc-9219-856684d789ae
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 486.3, y: -63.44, z: 10}
+    - rid: 7815731262821761494
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter (1)
+        <ID>k__BackingField: 65c32c1c-a357-45f8-bd6c-f368adcda427
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 478.15, y: -105.929, z: 10}
+    - rid: 7815731262821761495
       type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
       data:
         name: PatrolEnemy
@@ -416,3 +215,201 @@ MonoBehaviour:
         health: 2
         gemsContaining: 3
         position: {x: 496.27005, y: -111.39, z: 10}
+    - rid: 7815731262821761496
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter (3)
+        <ID>k__BackingField: e4b34612-7240-450e-84f9-73f391009463
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 437.37, y: -100.91, z: 10}
+    - rid: 7815731262821761497
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (2)
+        <ID>k__BackingField: 0c810c0a-6ba5-4279-a428-20005c0e09c6
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 509.27005, y: -94.56, z: 10}
+    - rid: 7815731262821761498
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (4)
+        <ID>k__BackingField: 87e56913-9961-4f46-a61e-43f6090e4b99
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 348.75, y: -106.98, z: 10}
+    - rid: 7815731262821761499
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (1)
+        <ID>k__BackingField: 755c7a67-ac2a-4d2b-9996-91338c10df14
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 516.37, y: -105.329994, z: 10}
+    - rid: 7815731262821761500
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter (4)
+        <ID>k__BackingField: 2a4b104e-c18f-4b3d-908c-5584eea17a35
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 507.77002, y: -78.56, z: 10}
+    - rid: 7815731262821761501
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter (2)
+        <ID>k__BackingField: bb965b96-65e0-46b1-9d3f-a40c5e1f84e0
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 473.12, y: -111.83, z: 10}
+    - rid: 7815731262821761502
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter (3)
+        <ID>k__BackingField: 422a7960-115c-4896-9e39-c2ef582b8440
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 486.77002, y: -83.56, z: 10}
+    - rid: 7815731262821761503
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (5)
+        <ID>k__BackingField: a8db8f82-a15c-45f4-a408-fe761177b417
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 331.21005, y: -107.189995, z: 10}
+    - rid: 7815731262821761504
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter
+        <ID>k__BackingField: fd5a1a86-6972-4ac9-9a6f-7bbf9c9191fe
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 802.23, y: -41.67, z: 10}
+    - rid: 7815731262821761505
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy
+        <ID>k__BackingField: 6afe0731-c14d-4fd7-a831-53c71d57c858
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 293.24, y: -82.33, z: 0}
+    - rid: 7815731262821761506
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (1)
+        <ID>k__BackingField: 93771b0c-2913-4214-aced-3ef24d561635
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 287.3, y: -111.16, z: 10}
+    - rid: 7815731262821761507
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter (2)
+        <ID>k__BackingField: 65df6efd-dc08-4653-87ad-d174185b88e5
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 425.98, y: -106.8, z: 10}
+    - rid: 7815731262821761508
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (8)
+        <ID>k__BackingField: 890cf4b5-ee74-4962-a458-405268650efa
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 720.17993, y: -37.139996, z: 10}
+    - rid: 7815731262821761509
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter (1)
+        <ID>k__BackingField: a8ab5c3f-428c-4121-ae70-5903b392d3f0
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 393.4, y: -106.92999, z: 10}
+    - rid: 7815731262821761510
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (3)
+        <ID>k__BackingField: a3f93429-4a9c-4143-a2d4-c88597a4b6f7
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 495.27005, y: -94.56, z: 10}
+    - rid: 7815731262821761511
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter
+        <ID>k__BackingField: 13968add-e969-43bc-b945-6478bfa15dcb
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 379, y: -106.89, z: 10}
+    - rid: 7815731262821761512
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (5)
+        <ID>k__BackingField: 3e31f224-98c3-4c13-8017-c78d09254cbc
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 500.27005, y: -66.56, z: 10}
+    - rid: 7815731262821761513
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter
+        <ID>k__BackingField: d2db0f68-c035-4dc1-8811-c15124b2eaf8
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 505.83, y: -109.84, z: 10}
+    - rid: 7815731262821761514
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter
+        <ID>k__BackingField: fc70f71e-a90f-499e-a915-4973838329f3
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 444.82, y: -100.82, z: 10}
+    - rid: 7815731262821761515
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: PatrolEnemy (7)
+        <ID>k__BackingField: d352a2b5-f8f3-408b-a3e5-1d4c00cc8eca
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 695.22, y: -34.4, z: 10}
+    - rid: 7815731262821761516
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter (1)
+        <ID>k__BackingField: b1ee35e1-2c20-41cb-91ba-146364396719
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 486.77002, y: -87.56, z: 10}
+    - rid: 7815731262821761517
+      type: {class: EnemyData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: Spitter (7)
+        <ID>k__BackingField: a843ede7-df60-4457-b4f7-f5efd271ffca
+        isAlive: 1
+        health: 2
+        gemsContaining: 3
+        position: {x: 483.77005, y: -40.559998, z: 10}

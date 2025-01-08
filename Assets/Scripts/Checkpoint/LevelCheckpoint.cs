@@ -1,16 +1,22 @@
-using System;
-using System.Collections.Generic;
-using FMODScripts;
-using Triggers;
-using UnityEngine;
 using Animancer;
+using Attributes;
+using FMODScripts;
 using Player;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
+using Triggers;
+using Unity.Behavior;
+using UnityEngine;
 using Utilities.DataBinding;
+using Action = System.Action;
+#if UNITY_EDITOR
+using System;
+using UnityEditor;
+#endif
 
 public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     #region ---Fields---
+    
     [SerializeField] private string raiseSoundEventPath = "event:/Sfx/Misc/Checkpoint_reached";
     [SerializeField] private AnimationClip inactiveIdle;
     [SerializeField] private AnimationClip activeIdle;
@@ -33,15 +39,17 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
         new CheckpointData {
             name = name,
             ID = ID,
-            HasBeenTriggered = HasBeenTriggered,
+            HasBeenTriggered = hasBeenTriggered,
             Position = transform.position
         });
     #endregion
     #endregion
 
     private void Start() {
+        Bind();
+        
         _animancerComponent = GetComponent<AnimancerComponent>();
-        _animancerComponent.Play(inactiveIdle);
+        _animancerComponent.Play(hasBeenTriggered ? activeIdle : inactiveIdle);
     }
 
     protected override void TriggeredAction(Collider2D other) {
@@ -83,14 +91,19 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     [ContextMenu(nameof(LoadBindData))]
     public void LoadBindData() {
         name = DataInGameData.name;
-        HasBeenTriggered = DataInGameData.HasBeenTriggered;
+        hasBeenTriggered = DataInGameData.HasBeenTriggered;
         transform.position = DataInGameData.Position;
+#if UNITY_EDITOR
+        if (!Application.isPlaying) {
+            EditorUtility.SetDirty(this);
+        }
+#endif
     }
 
     [ContextMenu(nameof(SaveBindData))]
     public void SaveBindData() {
         DataInGameData.name = name;
-        DataInGameData.HasBeenTriggered = HasBeenTriggered;
+        DataInGameData.HasBeenTriggered = hasBeenTriggered;
         DataInGameData.Position = transform.position;
     }
     #endregion
