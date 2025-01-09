@@ -13,11 +13,9 @@ public class BigLaserScript : MonoBehaviour
 
     private IEnumerator Fire()
     {
-        float targetScaleY = 0f;
-        
         // Send a raycast in direction to determine distance
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 100f, LayerMask.GetMask("Ground"));
-        targetScaleY = hit.distance;
+        var targetScaleY = hit.distance + 5;
         
         Vector3 initialScale = transform.localScale;
         Vector3 targetScale = new Vector3(initialScale.x, targetScaleY, initialScale.z);

@@ -7,17 +7,11 @@ public class TeleportConditionalActivation
     
     public void ActivateTeleport(Vector2 draculaPosition, Vector2 targetPosition, Action onTeleportEnd, Action<Vector2> teleportMethod)
     {
-        if (!_teleportActivated)
+        if (Vector2.Distance(draculaPosition, targetPosition) < 0.1f)
         {
-            if (Vector2.Distance(draculaPosition, targetPosition) < 0.1f)
-            {
-                onTeleportEnd.Invoke();
-                _teleportActivated = false;
-            }
-            
-            _teleportActivated = true;
+            onTeleportEnd.Invoke();
         }
-        
-        if (!_teleportActivated) teleportMethod.Invoke(targetPosition);
+            
+        teleportMethod.Invoke(targetPosition);
     }
 }

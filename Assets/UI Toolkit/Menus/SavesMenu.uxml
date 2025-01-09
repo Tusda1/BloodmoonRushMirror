@@ -1,0 +1,26 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Menus/Menu.uss?fileID=7433441132597879392&amp;guid=8efd6ee9dc2ccf147b85dff9f56810bf&amp;type=3#Menu" />
+    <engine:VisualElement name="SavesMenu" template="AudioSettingsMenuVisualTree" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgb(108, 108, 108); border-right-color: rgb(108, 108, 108); border-top-color: rgb(108, 108, 108); border-bottom-color: rgb(108, 108, 108); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; justify-content: space-evenly; align-items: center;">
+        <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-970801493&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_5" name="SavesHeader" class="MenuHeader" />
+        <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-268682328&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_50" name="SavesContainer" class="Container">
+            <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-561352724&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_51" name="SaveSlot1" style="max-height: 83px; min-height: 83px; max-width: 632px; min-width: 632px;">
+                <engine:Label text="SaveSlot1" style="position: absolute; top: 12px; left: 145px;" />
+                <engine:Label text="Label" style="position: absolute; top: 11px; left: 438px;" />
+                <engine:Label text="Label" style="position: absolute; top: 42px; left: 147px;" />
+                <engine:Label text="Label" style="position: absolute; top: 43px; left: 439px;" />
+            </UI_Toolkit.SpriteElement>
+            <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=890976055&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_52" name="SaveSlot2" style="max-width: 632px; min-height: 83px; max-height: 83px; min-width: 632px;">
+                <engine:Label text="SaveSlot2" style="position: absolute; top: 12px; left: 145px;" />
+                <engine:Label text="Label" style="position: absolute; top: 11px; left: 438px;" />
+                <engine:Label text="Label" style="position: absolute; top: 42px; left: 147px;" />
+                <engine:Label text="Label" style="position: absolute; top: 43px; left: 439px;" />
+            </UI_Toolkit.SpriteElement>
+            <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=1388609945&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_53" name="SaveSlot3" style="min-width: 632px; max-width: 632px; max-height: 83px; min-height: 83px;">
+                <engine:Label text="SaveSlot3" style="position: absolute; top: 12px; left: 145px;" />
+                <engine:Label text="Label" style="position: absolute; top: 11px; left: 438px;" />
+                <engine:Label text="Label" style="position: absolute; top: 42px; left: 147px;" />
+                <engine:Label text="Label" style="position: absolute; top: 43px; left: 439px;" />
+            </UI_Toolkit.SpriteElement>
+        </UI_Toolkit.SpriteElement>
+    </engine:VisualElement>
+</engine:UXML>

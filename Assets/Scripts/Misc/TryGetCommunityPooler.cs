@@ -14,7 +14,9 @@ public class TryGetCommunityPooler
             }
 
             Debug.LogWarning("No pooler found for projectile, creating new pooler");
-            return new Pooler(prefabToFind, 5);
+            var newPooler = new Pooler(prefabToFind, 5);
+            communityPooler.poolers.Add(newPooler); // Register the new pooler
+            return newPooler;
         }
         catch (System.Exception ex)
         {

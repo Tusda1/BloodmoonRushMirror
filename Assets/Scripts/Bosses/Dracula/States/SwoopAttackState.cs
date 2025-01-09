@@ -92,7 +92,7 @@ public class SwoopAttackState : DraculaState
         switch (_swoopState)
         {
             case SwoopState.Teleporting:
-                _teleportConditionalActivation.ActivateTeleport(transform.position, _swoopOrigin, OnTeleportEnd, _teleport.TeleportToLocation);
+                if (!_teleport.IsTeleporting) _teleportConditionalActivation.ActivateTeleport(transform.position, _swoopOrigin, OnTeleportEnd, _teleport.TeleportToLocation);
                 break;
             case SwoopState.Swooping:
                 transform.position = swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom);
