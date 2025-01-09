@@ -24,16 +24,6 @@
     align-self: center;
 }
 
-.right {
-    translate: 100% 0;
-    transition-duration: 1s;
-}
-
-.left {
-    transition-duration: 1s;
-    translate: -100% 0;
-}
-
 .page {
     transition-duration: 1s;
 }
@@ -60,7 +50,7 @@ Button {
     border-right-color: rgb(0, 0, 0);
     border-top-color: rgb(0, 0, 0);
     border-bottom-color: rgb(0, 0, 0);
-    -unity-font-definition: url("project://database/Assets/DialogueSystem/Fonts/NPCUi.asset?fileID=11400000&guid=3dec3d4e03028b44fad9f882eaa2ea45&type=2#NPCUi");
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts/NPCUi.asset?fileID=11400000&guid=3dec3d4e03028b44fad9f882eaa2ea45&type=2#NPCUi");
     font-size: 24px;
     height: 48px;
     background-color: rgb(36, 27, 27);
@@ -94,18 +84,14 @@ Button {
 }
 
 .settingsText {
-    -unity-font-definition: url("project://database/Assets/DialogueSystem/Fonts/NPCUi.asset?fileID=11400000&guid=3dec3d4e03028b44fad9f882eaa2ea45&type=2#NPCUi");
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts/NPCUi.asset?fileID=11400000&guid=3dec3d4e03028b44fad9f882eaa2ea45&type=2#NPCUi");
     font-size: 16px;
 }
 
 Label {
-    -unity-font-definition: url("project://database/Assets/DialogueSystem/Fonts/NPCUi.asset?fileID=11400000&guid=3dec3d4e03028b44fad9f882eaa2ea45&type=2#NPCUi");
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts/NPCUi.asset?fileID=11400000&guid=3dec3d4e03028b44fad9f882eaa2ea45&type=2#NPCUi");
 }
 
 #TabbedView > #unity-tab-view__header-container {
     height: 95px;
-}
-
-.down {
-    translate: 0 100%;
 }

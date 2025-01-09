@@ -15,8 +15,8 @@ namespace UI {
     [RequireComponent(typeof(SettingsMenu))]
     public class MainMenu : MonoBehaviour {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector]
-        private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private SettingsMenu settingsMenu;
 
         [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
         [SerializeField, Required] private Animator backgroundAnimator;
@@ -55,15 +55,8 @@ namespace UI {
             _mainMenu = _rootElement.Q<VisualElement>("MainMenuRoot");
             _settings = _rootElement.Q<VisualElement>("SettingsMenuRoot");
 
-
-            _startButton.clicked += StartButtonClicked;
-            _settingsButton.clicked += SettingsButtonClicked;
-            _quitButton.clicked += QuitButtonClicked;
-
-            _menuButton.clicked += SettingsButtonClicked;
-
-            // Cursor.visible = true;
-            // Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             
             Time.timeScale = 1;
             playerCanMove.Clear();
@@ -73,9 +66,6 @@ namespace UI {
             _updateActions += () => {
                 if (Input.anyKeyDown) _ = AnyKeyPressed();
             };
-            
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private async Awaitable AnyKeyPressed() {
@@ -102,37 +92,49 @@ namespace UI {
             FMODManager.RaiseMusicEvent("Music_level1");
 
             _cameraEffects = ServiceLocator.Get<CameraEffects>();
-        }
-
-        private void StartButtonClicked() {
-            _cameraEffects.CircleFadeOut(1, 
-                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(startSceneCollectionSO, 
-                    () => _cameraEffects.CircleFadeIn(1)));
             
+            _startButton.clicked += StartButtonClicked;
+            _settingsButton.clicked += SettingsButtonClicked;
+            _quitButton.clicked += QuitButtonClicked;
         }
 
         private void Update() {
             _updateActions.Invoke();
         }
 
+        private void StartButtonClicked() {
+            Debug.Log("StartButtonClicked");
+            
+            _cameraEffects.CircleFadeOut(1, 
+                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(startSceneCollectionSO, 
+                    () => _cameraEffects.CircleFadeIn(1)));
+        }
+        
         private void SettingsButtonClicked() {
-            if (_mainMenu.ClassListContains("left")) {
-                _mainMenu.RemoveFromClassList("left");
-                _settings.AddToClassList("right");
-
-                _mainMenu.enabledSelf = true;
-                _settings.enabledSelf = false;
-            }
-            else {
-                _mainMenu.AddToClassList("left");
-                _settings.RemoveFromClassList("right");
-
-                _mainMenu.enabledSelf = false;
-                _settings.enabledSelf = true;
-            }
+            Debug.Log("SettingsButtonClicked");
+            
+            settingsMenu.ActivateSettingsMenu();
+            _mainMenuElement.AddToClassList("down");
+            
+             // if (_mainMenu.ClassListContains("left")) {
+             //     _mainMenu.RemoveFromClassList("left");
+             //     _settings.AddToClassList("right");
+             //
+             //     _mainMenu.enabledSelf = true;
+             //     _settings.enabledSelf = false;
+             // }
+             // else {
+             //     _mainMenu.AddToClassList("left");
+             //     _settings.RemoveFromClassList("right");
+             //
+             //     _mainMenu.enabledSelf = false;
+             //     _settings.enabledSelf = true;
+             // }
         }
 
         private static void QuitButtonClicked() {
+            Debug.Log("QuitButtonClicked");
+            
             Application.Quit();
 #if UNITY_EDITOR
             EditorApplication.isPlaying = false;
