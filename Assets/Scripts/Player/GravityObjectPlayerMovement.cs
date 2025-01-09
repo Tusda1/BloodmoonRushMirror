@@ -427,7 +427,7 @@ namespace Player {
 
         private void SpikeStunStop() {
             //_player.spriteRenderer.color = new Color(1, 1, 1, 1);
-            gameObject.transform.position = lastPlatformCheckpoint;
+            if (player.healthComponent.TotalHealth > 0) gameObject.transform.position = lastPlatformCheckpoint;
             isTakingKnockback = false;
         }
 
