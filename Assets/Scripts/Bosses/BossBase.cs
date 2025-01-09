@@ -30,7 +30,6 @@ public class BossBase : GravityObject
     protected new void Awake()
     {
         base.Awake();
-        print("!!");
         _stateMachine.InitializeAfterDeserialize();
         
         CurrentHealth = maxHealth;
@@ -46,8 +45,9 @@ public class BossBase : GravityObject
 
     private IEnumerator LateActivation()
     {
-        yield return new WaitForSeconds(1);
-        OnBattleStart?.Invoke();
+        yield return new WaitForSeconds(1f);
+        
+        StartBattle();
     }
 
     protected override void ComputeVelocity()
