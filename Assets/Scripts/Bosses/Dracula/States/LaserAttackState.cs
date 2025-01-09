@@ -51,6 +51,7 @@ public class LaserAttackState : DraculaState
             
             //Set as child of boss
             _laserObject.transform.parent = transform;
+            _laserObject.transform.localScale = new Vector3(1, 0, 1);
         }
     }
 
@@ -141,11 +142,14 @@ public class LaserAttackState : DraculaState
     {
         if (!_hasStartedFiring)
         {
+            var position = transform.position;
+            _laserObject.GetComponent<BigLaserScript>().direction = (_firePosition - (Vector2)position).normalized;
+            _laserObject.transform.position = position;
             _laserObject.SetActive(true);
-            _laserObject.transform.position = transform.position;
+            
 
             // Calculate the angle to point the top of the laser object towards the fire position
-            var direction = (_firePosition - (Vector2)transform.position).normalized;
+            var direction = (_firePosition - (Vector2)position).normalized;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f; // Subtract 90 degrees to point the top towards the fire position
             _laserObject.transform.rotation = Quaternion.Euler(0, 0, angle);
     

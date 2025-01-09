@@ -18,7 +18,7 @@ public class SpitterEnemy : ReactiveBase
         base.Start();
         
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/Projectile");
-        _spitterAnimation = EnemyAnimationBase as SpitterAnimation;
+        _spitterAnimation = enemyAnimationBase as SpitterAnimation;
         
         _projectilePooler = TryGetCommunityPooler.TryGetPooler(_projectilePrefab);
     }

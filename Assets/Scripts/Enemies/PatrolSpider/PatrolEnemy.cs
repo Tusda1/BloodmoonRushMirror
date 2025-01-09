@@ -15,7 +15,7 @@ public class PatrolEnemy : EnemyBase
     {
         base.Start();
         
-        _patrolAnimation = EnemyAnimationBase as PatrolAnimation;
+        _patrolAnimation = enemyAnimationBase as PatrolAnimation;
     }
     
     private new void Update()

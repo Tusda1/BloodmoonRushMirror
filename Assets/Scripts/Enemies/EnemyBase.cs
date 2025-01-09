@@ -37,7 +37,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected float TakeDamageTimer;
     protected LayerMask EnemyAndGroundLayerMask;
     
-    protected EnemyAnimationBase EnemyAnimationBase;
+    protected EnemyAnimationBase enemyAnimationBase;
     protected PlayerScript Player;
     
     private GameObject _rubyPrefab;
@@ -76,7 +76,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         CurrentHealth = maxHealth;
 
-        EnemyAnimationBase = GetComponent<EnemyAnimationBase>();
+        enemyAnimationBase = GetComponent<EnemyAnimationBase>();
 
         FacingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
 
@@ -87,7 +87,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         _rubyPrefab = Resources.Load<GameObject>("Prefabs/Ruby");
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
-
+        
         _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab);
         
         Bind();
@@ -117,7 +117,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         TakeDamageTimer = Time.time;
 
-        EnemyAnimationBase.PlayHitAnimation();
+        enemyAnimationBase.PlayHitAnimation();
         StartCoroutine(FlashWhite());
 
         if (bloodSplatter != null) {
@@ -167,7 +167,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         if (IsDead) yield break;
         IsStunned = false;
         IsVulnerable = false;
-        EnemyAnimationBase.PlayDefaultAnimation();
+        enemyAnimationBase.PlayDefaultAnimation();
     }
 
     private IEnumerator Knockback(Vector2 knockbackStrength) {
@@ -195,13 +195,13 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         if (IsDead) yield break;
 
         IsStunned = false;
-        EnemyAnimationBase.PlayDefaultAnimation();
+        enemyAnimationBase.PlayDefaultAnimation();
     }
 
     private void Die() {
         IsDead = true;
 
-        EnemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, () => { gameObject.SetActive(false); });
+        enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, () => { gameObject.SetActive(false); });
     }
 
     private void DropRubies() {
