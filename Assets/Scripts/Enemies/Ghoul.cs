@@ -14,7 +14,7 @@ public class Ghoul : ReactiveBase
         if (hitClose != null)
         {
             // Return the direction to the player
-            facingDirection = (hitClose.transform.position.x > transform.position.x) ? Vector2.right : Vector2.left;
+            FacingDirection = (hitClose.transform.position.x > transform.position.x) ? Vector2.right : Vector2.left;
             currentState = EnemyState.Action;
             return;
         }
@@ -24,7 +24,7 @@ public class Ghoul : ReactiveBase
         if (hitRight.collider != null)
         {
             // Return the direction to the player
-            facingDirection = Vector2.right;
+            FacingDirection = Vector2.right;
             currentState = EnemyState.Action;
             return;
         }
@@ -34,17 +34,17 @@ public class Ghoul : ReactiveBase
         if (hitLeft.collider != null)
         {
             // Return the direction to the player
-            facingDirection = Vector2.left;
+            FacingDirection = Vector2.left;
             currentState = EnemyState.Action;
         }
     }
 
     protected override void Action()
     {
-        targetVelocity = facingDirection * moveSpeed;
+        targetVelocity = FacingDirection * moveSpeed;
         
         // Detect if the Ghoul charges into a wall
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, 1.5f, EnemyAndGroundLayerMask);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, FacingDirection, 1.5f, EnemyAndGroundLayerMask);
         if (hit.collider != null)
         {
             // If the Ghoul charges into a wall, stop charging and start scanning
@@ -55,7 +55,7 @@ public class Ghoul : ReactiveBase
             
         if (!_isJumping)
         {
-            hit = Physics2D.Raycast(GetBottomPosition() + facingDirection, Vector2.down, 1f, LayerMask.GetMask("Ground"));
+            hit = Physics2D.Raycast(GetBottomPosition() + FacingDirection, Vector2.down, 1f, LayerMask.GetMask("Ground"));
             if (hit.collider == null)
             {
                 // If the ghoul is about to fall off a ledge, jump off the ledge

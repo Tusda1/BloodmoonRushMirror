@@ -1,0 +1,21 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/Menu.uss?fileID=7433441132597879392&amp;guid=11ac15a71fcec9a46a277054ddd917f6&amp;type=3#Menu" />
+    <Style src="project://database/Assets/Utilities/SettingsUI/Menu.uss?fileID=7433441132597879392&amp;guid=bc63dda482835634c85a0ec7bd3c1ee0&amp;type=3#Menu" />
+    <engine:VisualElement name="AudioSettingsMenuVisualTree" template="AudioSettingsMenuVisualTree" style="background-color: rgb(255, 255, 255); border-left-color: rgb(108, 108, 108); border-right-color: rgb(108, 108, 108); border-top-color: rgb(108, 108, 108); border-bottom-color: rgb(108, 108, 108); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+        <engine:Slider label="Master Volume:" value="0" high-value="1" name="MasterVolumeSlider" class="settingsText">
+            <Bindings>
+                <engine:DataBinding property="value" data-source-path="masterVolume" binding-mode="TwoWay" />
+            </Bindings>
+        </engine:Slider>
+        <engine:Slider label="SFX Volume:" value="0" high-value="1" name="SFXVolumeSlider" class="settingsText">
+            <Bindings>
+                <engine:DataBinding property="value" data-source-path="sfxVolume" binding-mode="TwoWay" />
+            </Bindings>
+        </engine:Slider>
+        <engine:Slider label="Music Volume:" value="0" high-value="1" name="MusicVolumeSlider" class="settingsText">
+            <Bindings>
+                <engine:DataBinding property="value" data-source-path="musicVolume" binding-mode="TwoWay" />
+            </Bindings>
+        </engine:Slider>
+    </engine:VisualElement>
+</engine:UXML>

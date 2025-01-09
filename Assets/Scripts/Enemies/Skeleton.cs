@@ -9,7 +9,7 @@ public class Skeleton : ReactiveBase
     protected override void Scan()
     {
         //Send a ray to the right
-        RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition() + Vector2.up, facingDirection, detectionDistance, LayerMask.GetMask("Player"));
+        RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition() + Vector2.up, FacingDirection, detectionDistance, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
             currentState = EnemyState.Action;
@@ -17,7 +17,7 @@ public class Skeleton : ReactiveBase
         }
         
         //Send a ray to the left
-        hit = Physics2D.Raycast(GetBottomPosition() + Vector2.up, -facingDirection, detectionDistance, LayerMask.GetMask("Player"));
+        hit = Physics2D.Raycast(GetBottomPosition() + Vector2.up, -FacingDirection, detectionDistance, LayerMask.GetMask("Player"));
         if (hit.collider != null)
         {
             currentState = EnemyState.Action;
@@ -35,9 +35,9 @@ public class Skeleton : ReactiveBase
         }
         
         // Check if the target is to the left or right
-        facingDirection = (targetObject.position.x > transform.position.x) ? Vector2.right : Vector2.left;
+        FacingDirection = (targetObject.position.x > transform.position.x) ? Vector2.right : Vector2.left;
         
         // Smoothly move towards the target
-        smoothDampScript.SmoothDampFloat(facingDirection, moveSpeed, ref targetVelocity);
+        smoothDampScript.SmoothDampFloat(FacingDirection, moveSpeed, ref targetVelocity);
     }
 }

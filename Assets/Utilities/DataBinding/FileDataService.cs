@@ -11,34 +11,33 @@ namespace Utilities.DataBinding {
     /// If serializer is not specified FileDataService will use a JsonSerializer
     /// </summary>
     public class FileDataService<TGameData> : IDataService<TGameData> where TGameData : IGameData {
-        private readonly ISerializer _serializer;
-        private readonly string _dataPath;
-        private readonly string _fileExtension;
+        public ISerializer Serializer { get; }
+        public string DataPath { get; }
+        public string FileExtension { get; }
 
         public FileDataService(ISerializer serializer = null, bool encrypted = false) {
-            _serializer = encrypted ? new EncryptedSerializer(serializer) : serializer ?? new JSONSerializer();
+            Serializer = encrypted ? new EncryptedSerializer(serializer) : serializer ?? new JSONSerializer();
 
-            _dataPath = Path.Combine(Application.persistentDataPath, typeof(TGameData).Name);
-            if (!Directory.Exists(_dataPath)) Directory.CreateDirectory(_dataPath);
+            DataPath = Path.Combine(Application.persistentDataPath, typeof(TGameData).Name);
+            if (!Directory.Exists(DataPath)) Directory.CreateDirectory(DataPath);
 
-            _fileExtension = _serializer.FileExtension;
+            FileExtension = Serializer.FileExtension;
         }
 
         private string GetPathToSaveFile(string fileName) {
-            return Path.Combine(_dataPath, fileName);
+            return Path.Combine(DataPath, fileName);
         }
 
         public void Save(TGameData gameData) {
-            var filePath = GetPathToSaveFile(gameData.Name) + _fileExtension;
+            var filePath = GetPathToSaveFile(gameData.Name) + FileExtension;
 
-            File.WriteAllText(filePath, _serializer.Serialize(gameData));
+            File.WriteAllText(filePath, Serializer.Serialize(gameData));
         }
 
         #region ---Loading---
-
         public TGameData LoadByName(string name) {
             var filePath = GetPathToSaveFile(name);
-            
+
             return LoadByPath(filePath);
         }
 
@@ -47,13 +46,11 @@ namespace Utilities.DataBinding {
                 throw new ArgumentException($"No save file with the path: '{path}'.");
             }
 
-            return _serializer.Deserialize<TGameData>(File.ReadAllText(path));
+            return Serializer.Deserialize<TGameData>(File.ReadAllText(path));
         }
-
         #endregion
 
         #region ---Deletion---
-
         public void DeleteByName(string name) {
             var filePath = GetPathToSaveFile(name);
 
@@ -71,13 +68,11 @@ namespace Utilities.DataBinding {
                 File.Delete(saveFile);
             }
         }
-
         #endregion
 
         #region ---ReadFiles---
-
         public IEnumerable<string> ListSavesPath() {
-            return Directory.GetFiles(_dataPath).Where(file => file.EndsWith(_fileExtension));
+            return Directory.GetFiles(DataPath).Where(file => file.EndsWith(FileExtension));
         }
 
         public FileInfo ReadFileMetadata(string path) {
@@ -99,7 +94,6 @@ namespace Utilities.DataBinding {
         public int GetSaveCount() {
             return ListSavesPath().Count();
         }
-
         #endregion
     }
 }

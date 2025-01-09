@@ -18,9 +18,9 @@ public class ReactiveBase : EnemyBase
     {
         base.Update();
 
-        if (isDead) { return; }
+        if (IsDead) { return; }
 
-        if (isStunned) { return; }
+        if (IsStunned) { return; }
 
         switch (currentState)
         {

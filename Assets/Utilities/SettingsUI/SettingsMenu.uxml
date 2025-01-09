@@ -1,0 +1,16 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Utilities/SettingsUI/Menu.uss?fileID=7433441132597879392&amp;guid=bc63dda482835634c85a0ec7bd3c1ee0&amp;type=3#Menu" />
+    <engine:VisualElement name="Elements" class="elements" style="flex-grow: 1; padding-bottom: 0; -unity-background-image-tint-color: rgba(255, 255, 255, 0); width: auto; height: auto;">
+        <engine:DropdownField label="Screen Mode" name="ScreenModeSelectDropdown" choices="Display1,Display2" class="dropdown" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+        <engine:DropdownField label="Displays" name="DisplaySelectDropdown" choices="Display1,Display2" class="dropdown" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+        <engine:DropdownField label="Aspect Ratio" name="AspectRatioSelectDropdown" class="dropdown" />
+        <engine:DropdownField label="Resolution" name="ResolutionSelectDropdown" class="dropdown" />
+        <engine:Toggle label="Vsync" name="VsyncToggle" style="background-color: rgba(255, 255, 255, 0); background-image: url(&quot;project://database/Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Textures/White1px.png?fileID=2800000&amp;guid=127279d577f25ac4ea17dae3782e5074&amp;type=3#White1px&quot;); -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); font-size: 20px; margin-top: 11px; margin-right: 11px; margin-bottom: 11px; margin-left: 11px; padding-top: 4px; padding-right: 6px; padding-bottom: 4px; padding-left: 6px;" />
+        <engine:SliderInt label="FPS Limiter" value="65" high-value="240" name="FPSLimiterSlider" fill="true" direction="Horizontal" data-source="project://database/Assets/Resources/FPSLimit.asset?fileID=11400000&amp;guid=7f95dd7efff121545830a6736eb1cb25&amp;type=2#FPSLimit" show-input-field="true" low-value="30" enabled="false" class="sliderInt" />
+        <engine:Label text="Restart to apply all changes" name="RestartReminderText" enabled="true" data-source="project://database/Assets/Utilities/UI/HasMadeChangeThatRequiresRestart.asset?fileID=11400000&amp;guid=51e27eb5fb06ffd43a76bae184c20b6b&amp;type=2#HasMadeChangeThatRequiresRestart" style="color: rgb(255, 255, 255); -unity-font-definition: resource(&apos;Fonts/NPCUi&apos;); font-size: 33px; opacity: 1; display: flex; visibility: visible; width: 20%; overflow: visible; white-space: normal; -unity-text-align: upper-center; align-self: center; min-width: 367px;">
+            <Bindings>
+                <engine:DataBinding property="style.display" data-source-path="consensus" data-source="project://database/Assets/Resources/ScrubGlobalData/HasMadeChangeThatRequiresRestartConsensus.asset?fileID=11400000&amp;guid=cf7c2452e8ce6934382be65c8c82557c&amp;type=2#HasMadeChangeThatRequiresRestartConsensus" binding-mode="TwoWay" source-to-ui-converters="Bool To DisplayStyle" ui-to-source-converters="DisplayStyle To Bool" />
+            </Bindings>
+        </engine:Label>
+    </engine:VisualElement>
+</engine:UXML>

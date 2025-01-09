@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SaveLoadSystem.Data;
@@ -14,15 +13,20 @@ namespace SaveLoadSystem {
             DataService = new FileDataService<SaveGameData>();
         }
 
-        private IEnumerator Start() {
-            yield return null;
-            
-            SaveAllDataBinds();
-            LoadAllDataBinds();
-        }
+        // private IEnumerator Start() {
+        //     yield return null;
+        //     
+        //     // SaveAllDataBinds();
+        //     LoadAllDataBinds();
+        // }
 
         [ContextMenu("Runtime/" + nameof(SaveToFile))]
         public void SaveToFile() {
+#if UNITY_EDITOR
+            if (!Application.isPlaying) {
+                DataService ??= new FileDataService<SaveGameData>();
+            }
+#endif
             SaveGame();
         }
 
@@ -41,7 +45,9 @@ namespace SaveLoadSystem {
         [ContextMenu(nameof(SaveBindings))]
         public void SaveBindings() {
 #if UNITY_EDITOR
-            SetDataBindsInEditor();
+            if (!Application.isPlaying) {
+                SetDataBindsInEditor();
+            }
 #endif
 
             SaveAllDataBinds();
@@ -50,17 +56,20 @@ namespace SaveLoadSystem {
         [ContextMenu(nameof(LoadDataBinds))]
         public void LoadDataBinds() {
 #if UNITY_EDITOR
-            SetDataBindsInEditor();
+            if (!Application.isPlaying) {
+                SetDataBindsInEditor();
+            }
 #endif
 
             LoadAllDataBinds();
         }
 
+#if UNITY_EDITOR
         [ContextMenu(nameof(WriteToNewGameDataSO))]
         public void WriteToNewGameDataSO() {
             WriteToNewGameData();
         }
-
+#endif
         [ContextMenu(nameof(LoadFromNewGameDataSO))]
         public void LoadFromNewGameDataSO() {
             gameData = (SaveGameData)newGameData.gameData.Clone();
@@ -96,6 +105,12 @@ namespace SaveLoadSystem {
                 dataBind.Bind();
                 yield return dataBind;
             }
+        }
+
+        [ContextMenu(nameof(OpenFileLocation))]
+        private void OpenFileLocation() {
+            DataService ??= new FileDataService<SaveGameData>();
+            System.Diagnostics.Process.Start(DataService.DataPath);
         }
 #endif
     }

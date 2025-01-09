@@ -29,8 +29,8 @@ public class SpitterAnimation : EnemyAnimationBase
             attackState = animancerComponent.Play(spit);
             attackState.Events(this).OnEnd = () =>
             {
-                attackState.Events(this).OnEnd = null;
                 PlayDefaultAnimation();
+                attackState.Events(this).OnEnd = null;
             };
         };
     }

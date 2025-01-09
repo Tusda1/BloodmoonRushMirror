@@ -6,6 +6,7 @@ using Consensus;
 using FMODScripts;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
+using SceneCollections;
 using TetraCreations.Attributes;
 using UI;
 using UnityEngine;
@@ -21,27 +22,43 @@ namespace Player {
         [GetOrAddComponent, HideInInspector] public GravityObjectPlayerMovement playerMovement;
         [GetOrAddComponent, HideInInspector] public PlayerInput playerInput;
         #endregion
-        
-        [SerializeField] public MultipleAnimatorControllers animator;
 
-        [Header("Player")] public int playerLives = 5;
+        #region ***---SerializedFields---***
+        [SerializeField] public MultipleAnimatorControllers animator;
+        [SerializeField] private SceneCollectionSO gameOverScene;
+
+        [Header("Player")] 
+        public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         [SerializeField] private PlayerHitbox hitbox;
         [SerializeField] private ParticleSystem bloodSplatter;
 
-        [Header("Taking Damage")] [SerializeField]
-        private float alphaWhenTakingDamage = 0.2f;
+        [Header("Taking Damage")] 
+        [SerializeField] private float alphaWhenTakingDamage = 0.2f;
 
         [SerializeField] private float takeDamageScreenShakeIntensity = 0.2f;
         [SerializeField] private float takeDamageScreenShakeDuration = 0.2f;
         [SerializeField] private float takeDamageTimeSlowDuration = 0.5f;
 
-        [Header("Keys")] public int keyAmount;
+        [Header("Keys")] 
+        public int keyAmount;
         public List<GameObject> keyObjects = new();
+
+        [Header("Player Can Move")] 
+        [SerializeField, Attributes.Required] private AllInFavourConsensusSO playerCanMove;
+
+        [Header("Debug Logger")] 
+        [SerializeField, Attributes.Required] public DebugLoggerSO debugLogger;
+        #endregion
 
         private bool _isDead;
         private bool _canAttack = true;
+
+        private bool PlayerMovementEnabled => playerCanMove.consensus;
+        private readonly ScriptVotePair _isAliveVotePair = new();
+
+        public event Action OnRespawn = delegate { };
 
         #region ***---Gems---***
         [Header("Gems")] public int gems;
@@ -57,17 +74,6 @@ namespace Player {
 
         [Serializable] private enum GemLostMethod { Subtraction, Multiplication }
         #endregion
-
-        [Header("Player Can Move")] [SerializeField, Attributes.Required]
-        private AllInFavourConsensusSO playerCanMove;
-
-        private bool PlayerMovementEnabled => playerCanMove.consensus;
-        private readonly ScriptVotePair _isAliveVotePair = new();
-
-        [Header("Debug Logger"), SerializeField, Attributes.Required]
-        public DebugLoggerSO debugLogger;
-
-        public event Action OnRespawn = delegate { };
 
         #region ***---AnimatorStringToHash---***
         private static readonly int AnimatorIsAttackingBool = Animator.StringToHash("IsAttacking");
@@ -210,6 +216,7 @@ namespace Player {
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
 
             damageInstance.TriggerOnHitAction();
+            playerMovement.DashTimer.StopTimer();
             playerMovement.Knockback(damageInstance.knockback);
             animator.SetTrigger(AnimatorTakeDamageTrigger);
             healthComponent.TakeDamage(damageInstance.damage, damageInstance.ignoreInvincibility);
@@ -257,16 +264,17 @@ namespace Player {
 
             playerLives--;
 
-            if (playerLives <= 0) {
+            if (playerLives < 0) {
                 debugLogger.Log("Ran out of lives");
-                // TODO
+                _ = SceneCollectionManager.LoadSceneCollectionAsync(gameOverScene, 
+                    () => cameraEffects.CircleFadeIn(0.5f));
             }
             else {
                 Respawn();
-            }
             
-            yield return new WaitForSeconds(0.5f);
-            cameraEffects.CircleFadeIn(0.5f);
+                yield return new WaitForSeconds(0.5f);
+                cameraEffects.CircleFadeIn(0.5f);
+            }
         }
 
         private void Respawn() {
@@ -349,19 +357,28 @@ namespace Player {
             playerInput.enabled = true;
         }
 
-        #region ---DataBindingMethods---
-        public void Bind() {
-            SaveLoadSystemManager?.Bind(this, DataInGameData);
-        }
+        public void CheckpointHealing() {
+            if (healthComponent.Health == healthComponent.maxTempHealth) {
+                healthComponent.TempHealth++;
+            }
+            else {
+                healthComponent.Heal(2);
+            }
 
-#if UNITY_EDITOR
-        private void OnValidate() {
-            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
-                ID = Guid.NewGuid().ToString();
-                debugLogger.Log($"Setting new guid for {nameof(PlayerScript)}");
+            if (playerLives == 1) {
+                playerLives++;
             }
         }
-#endif
+
+        #region ---DataBindingMethods---
+        public void Bind() {
+            if (SaveLoadSystemManager != null) {
+                SaveLoadSystemManager.Bind(this, DataInGameData);
+            }
+            else {
+                Debug.LogWarning("No SaveLoadSystemManager found");
+            }
+        }
 
         [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
@@ -372,6 +389,7 @@ namespace Player {
 
         [ContextMenu(nameof(SaveBindData))]
         public void SaveBindData() {
+            SaveSystemData.ID = ID;
             SaveSystemData.health = healthComponent.Health;
             SaveSystemData.lives = playerLives;
             SaveSystemData.gems = gems;
