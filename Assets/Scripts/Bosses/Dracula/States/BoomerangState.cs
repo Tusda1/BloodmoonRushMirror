@@ -4,8 +4,10 @@ using Random = UnityEngine.Random;
 
 public class BoomerangState : DraculaState
 {
-    private Vector2 _teleportPosition;
+    [SerializeField] private GameObject boomerangPrefab;
     
+    private Vector2 _teleportPosition;
+    private GameObject _boomerang;
     
     private Teleport _teleport;
     private TeleportConditionalActivation _teleportConditionalActivation = new();
@@ -17,7 +19,13 @@ public class BoomerangState : DraculaState
     }
     
     private BoomerangStage _boomerangStage;
-    
+
+    private void Start()
+    {
+        _boomerang = Instantiate(boomerangPrefab, transform.position, Quaternion.identity);
+        _boomerang.SetActive(false);
+    }
+
     private void OnEnable()
     {
         // Find bottom right and left corner by sending a ray straight down and then right
@@ -82,6 +90,7 @@ public class BoomerangState : DraculaState
     
     private void Boomerang()
     {
-        var boomerang = Instantiate()
+        _boomerang.GetComponent<Boomerang>().direction = Vector2.right;
+        _boomerang.SetActive(true);
     }
 }
