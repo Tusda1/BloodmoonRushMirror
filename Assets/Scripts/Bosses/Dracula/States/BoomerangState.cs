@@ -7,7 +7,7 @@ public class BoomerangState : DraculaState
     [SerializeField] private GameObject boomerangPrefab;
     
     private Vector2 _teleportPosition;
-    private GameObject _boomerang;
+    private Boomerang _boomerang;
     
     private Teleport _teleport;
     private TeleportConditionalActivation _teleportConditionalActivation = new();
@@ -15,15 +15,16 @@ public class BoomerangState : DraculaState
     private enum BoomerangStage
     {
         Teleport,
-        Boomerang
+        Boomerang,
+        Wait
     }
     
     private BoomerangStage _boomerangStage;
 
     private void Start()
     {
-        _boomerang = Instantiate(boomerangPrefab, transform.position, Quaternion.identity);
-        _boomerang.SetActive(false);
+        _boomerang = Instantiate(boomerangPrefab, transform.position, Quaternion.identity).GetComponent<Boomerang>();
+        _boomerang.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -85,12 +86,23 @@ public class BoomerangState : DraculaState
             case BoomerangStage.Boomerang:
                 Boomerang();
                 break;
+            case BoomerangStage.Wait:
+                Wait();
+                break;
         }
     }
     
     private void Boomerang()
     {
-        _boomerang.GetComponent<Boomerang>().direction = Vector2.right;
-        _boomerang.SetActive(true);
+        _boomerang.direction = Vector2.right;
+        _boomerang.gameObject.SetActive(true);
+    }
+    
+    private void Wait()
+    {
+        if (_boomerang.returned)
+        {
+            EndState();
+        }
     }
 }

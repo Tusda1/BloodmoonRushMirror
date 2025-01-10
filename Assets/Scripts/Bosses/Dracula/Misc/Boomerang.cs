@@ -6,6 +6,7 @@ public class Boomerang : GravityObject
     [SerializeField] private float speed;
     
     [HideInInspector] public Vector2 direction;
+    [HideInInspector] public bool returned;
     
     private Vector2 _initialPosition;
     private Vector2 _turnPosition;
@@ -24,6 +25,8 @@ public class Boomerang : GravityObject
 
     private void OnEnable()
     {
+        returned = false;
+        
         _moveDirection = direction;
         targetVelocity = _moveDirection * speed;
         
@@ -41,7 +44,11 @@ public class Boomerang : GravityObject
             _moveDirection = -direction;
             _smoothDampScript.SmoothDampVector2(_moveDirection * speed, ref targetVelocity);
         }
-        
-        
+
+        if (Vector2.Distance(_turnPosition, transform.position) > Vector2.Distance(_turnPosition, _initialPosition))
+        {
+            returned = true;
+            gameObject.SetActive(false);
+        }
     }
 }
