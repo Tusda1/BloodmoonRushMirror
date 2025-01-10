@@ -2,6 +2,7 @@ using System.Collections;
 using Attributes;
 using Consensus;
 using SceneCollections;
+using UI_Toolkit;
 using UI.Settings;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -12,8 +13,8 @@ namespace UI {
     [RequireComponent(typeof(SettingsMenu), typeof(UITK_WorldSpaceInteractive))]
     public class PauseMenu : Singleton<PauseMenu> {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector]
-        private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private SettingsMenu settingsMenu;
         
         [SerializeField, Required] private SceneCollectionSO mainMenusSceneCollectionSO;
         [SerializeField, Required] private AllInFavourConsensusSO playerCanMove;
@@ -42,15 +43,23 @@ namespace UI {
             _pauseMenuRoot = _root.Q<VisualElement>("PauseMenuRoot");
             _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
 
-            _resumeButton = _root.Q<Button>("ResumeButton");
-            _settingsButton = _root.Q<Button>("SettingsButton");
-            _mainMenuButton = _root.Q<Button>("MainMenuButton");
-            _backButton = _root.Q<Button>("BackButton");
+            _resumeButton = _root.Q<SpriteButton>("ResumeButton");
+            _settingsButton = _root.Q<SpriteButton>("SettingsButton");
+            _mainMenuButton = _root.Q<SpriteButton>("MainMenuButton");
 
             _resumeButton.clicked += ResumeGame;
-            _settingsButton.clicked += SettingsButtonPressed;
+            _settingsButton.clicked += settingsMenu.Activate;
             _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenusSceneCollectionSO);
-            _backButton.clicked += BackButtonPressed;
+
+            settingsMenu.SetOnActivated(() => {
+                _pauseMenuRoot.AddToClassList("left");
+                _pauseMenuRoot.enabledSelf = false;
+            });
+
+            settingsMenu.SetOnDeactivated(() => {
+                _pauseMenuRoot.RemoveFromClassList("left");
+                _pauseMenuRoot.enabledSelf = true;
+            });
 
             _eventSystem ??= GameObject.FindWithTag("EventSystem").GetComponent<EventSystem>();
             
@@ -73,19 +82,6 @@ namespace UI {
         }
 
         #region ---Private Methods---
-        private void SettingsButtonPressed() {
-            _pauseMenuRoot.AddToClassList("left");
-            _pauseMenuRoot.enabledSelf = false;
-            _settingsMenuRoot.enabledSelf = true;
-            _settingsMenuRoot.RemoveFromClassList("right");
-        }
-
-        private void BackButtonPressed() {
-            _pauseMenuRoot.enabledSelf = true;
-            _pauseMenuRoot.RemoveFromClassList("left");
-            _settingsMenuRoot.AddToClassList("right");
-            _settingsMenuRoot.enabledSelf = false;
-        }
 
         [ContextMenu(nameof(PauseGame))]
         private void PauseGame() {
@@ -108,8 +104,6 @@ namespace UI {
             _root.style.display = DisplayStyle.None;
             _root.enabledSelf = false;
             playerCanMove.ChangeVote(_currentVote, true);
-
-            BackButtonPressed();
         }
         #endregion
     }

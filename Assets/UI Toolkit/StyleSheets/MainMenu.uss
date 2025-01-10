@@ -1,39 +1,3 @@
-.button {
-    width: 362px;
-    margin-top: 16px;
-    margin-right: 16px;
-    margin-bottom: 16px;
-    margin-left: 16px;
-    transition-duration: 0s;
-    height: 80px;
-    opacity: 1;
-}
-
-:focus {
-    -unity-background-image-tint-color: rgba(255, 255, 255, 0.5);
-    background-color: rgb(255, 255, 255);
-    color: rgb(0, 0, 0);
-    border-left-color: rgb(174, 174, 174);
-    border-right-color: rgb(174, 174, 174);
-    border-top-color: rgb(174, 174, 174);
-    border-bottom-color: rgb(174, 174, 174);
-}
-
-.scrollView {
-    width: 100%;
-    align-self: center;
-}
-
-.page {
-    transition-duration: 1s;
-}
-
-.tab {
-    width: 300%;
-    height: 100%;
-    align-self: center;
-}
-
 .heartBar {
     flex-direction: row;
 }
@@ -42,28 +6,6 @@
     -unity-font-definition: url('project://database/Assets/Fonts/David.ttf?fileID=12800000&guid=3a1bf8d7abe93284390d857df10dc795&type=3#David');
     font-size: 8px;
     position: absolute;
-    color: rgb(255, 255, 255);
-}
-
-Button {
-    border-left-color: rgb(0, 0, 0);
-    border-right-color: rgb(0, 0, 0);
-    border-top-color: rgb(0, 0, 0);
-    border-bottom-color: rgb(0, 0, 0);
-    -unity-font-definition: url("project://database/Assets/Resources/Fonts/NPCUi.asset?fileID=11400000&guid=3dec3d4e03028b44fad9f882eaa2ea45&type=2#NPCUi");
-    font-size: 24px;
-    height: 48px;
-    background-color: rgb(36, 27, 27);
-    width: 226px;
-    align-self: center;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
     color: rgb(255, 255, 255);
 }
 
@@ -92,6 +34,22 @@ Label {
     -unity-font-definition: url("project://database/Assets/Resources/Fonts/NPCUi.asset?fileID=11400000&guid=3dec3d4e03028b44fad9f882eaa2ea45&type=2#NPCUi");
 }
 
-#TabbedView > #unity-tab-view__header-container {
-    height: 95px;
+Button {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
 }

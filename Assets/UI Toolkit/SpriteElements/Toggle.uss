@@ -1,0 +1,62 @@
+Toggle {
+}
+
+#VsyncToggle .unity-toggle__label {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=672297077&guid=90730bc22eee8c54b8f64bb5acb0c2a2&type=3#UI_Asset_Sheet 1_25");
+    width: 140px;
+    max-width: 140px;
+    min-width: 140px;
+    height: 34px;
+    max-height: 34px;
+    min-height: 34px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.unity-toggle__input {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=-1880461967&guid=90730bc22eee8c54b8f64bb5acb0c2a2&type=3#UI_Asset_Sheet 1_27");
+    width: 33px;
+    max-width: 33px;
+    min-width: 33px;
+    height: 34px;
+    max-height: 34px;
+    min-height: 34px;
+}
+
+.unity-toggle__checkmark {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=-284508715&guid=90730bc22eee8c54b8f64bb5acb0c2a2&type=3#UI_Asset_Sheet 1_26");
+    width: 33px;
+    height: 34px;
+    max-width: 33px;
+    min-width: 33px;
+    max-height: 34px;
+    min-height: 34px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+Toggle :checked #unity-checkmark {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=-1880461967&guid=90730bc22eee8c54b8f64bb5acb0c2a2&type=3#UI_Asset_Sheet 1_27");
+    background-color: rgb(255, 255, 255);
+}

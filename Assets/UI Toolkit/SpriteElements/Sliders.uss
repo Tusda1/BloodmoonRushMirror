@@ -1,4 +1,4 @@
-Slider {
+.unity-slider {
     background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-1157797732&guid=fc3565351fa61854ebeb34f6159db6f4&type=3#UI_Asset_Sheet_21");
     width: 586px;
     height: 28px;
@@ -121,4 +121,62 @@ Slider {
 #unity-dragger-border {
     background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-1166969415&guid=fc3565351fa61854ebeb34f6159db6f4&type=3#UI_Asset_Sheet_12");
     background-color: rgb(255, 255, 255);
+}
+
+#unity-dragger:hover {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-1166969415&guid=fc3565351fa61854ebeb34f6159db6f4&type=3#UI_Asset_Sheet_12");
+    background-color: rgba(0, 0, 0, 0);
+    cursor: url('center') 10 11;
+    width: 14px;
+    height: 40px;
+    max-width: 14px;
+    min-width: 14px;
+    max-height: 40px;
+    min-height: 40px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    top: -6px;
+}
+
+.unity-slider:focus #unity-dragger {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-1166969415&guid=fc3565351fa61854ebeb34f6159db6f4&type=3#UI_Asset_Sheet_12");
+    background-color: rgba(0, 0, 0, 0);
+    cursor: url('center') 10 11;
+    width: 14px;
+    height: 40px;
+    max-width: 14px;
+    min-width: 14px;
+    max-height: 40px;
+    min-height: 40px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    top: -6px;
 }
