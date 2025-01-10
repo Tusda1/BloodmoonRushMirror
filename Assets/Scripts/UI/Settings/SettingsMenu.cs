@@ -1,3 +1,4 @@
+using System;
 using Attributes;
 using UI_Toolkit;
 using UnityEngine;
@@ -14,6 +15,9 @@ namespace UI.Settings {
 
         [SerializeField] private InputActionReference tabNavigateAction;
         [SerializeField] private InputActionReference backAction;
+        
+        private event Action OnMenuActivated = delegate { };
+        private event Action OnMenuDeactivated = delegate { };
 
         #region ---PrivateFields---
         private VisualElement _root;
@@ -35,17 +39,15 @@ namespace UI.Settings {
 
             var menus = _settingsMenuRoot.Query(className: "menu").OfType<VisualElement>().ToList();
             _menus = new IndexedArray<VisualElement>(menus.ToArray());
+            
+            _leftBat.SetOnClickAction(_menus.DecreaseIndex);
+            _rightBat.SetOnClickAction(_menus.IncreaseIndex);
+            
             _menus.OnIndexChanged += SetActiveMenu;
             _menus.OnMinIndex += _leftBat.Disable;
-            _menus.NotOnMinIndex += () => _leftBat.Enable(() => {
-                Debug.Log("Left Bat pressed");
-                _menus.DecreaseIndex();
-            });
+            _menus.NotOnMinIndex += () => _leftBat.Enable();
             _menus.OnMaxIndex += _rightBat.Disable;
-            _menus.NotOnMaxIndex += () => _rightBat.Enable(() => {
-                Debug.Log("Right Bat pressed");
-                _menus.IncreaseIndex();
-            });
+            _menus.NotOnMaxIndex += () => _rightBat.Enable();
             _menus.SetIndex(0);
             
             _settingsMenuRoot.AddToClassList("down");
@@ -53,13 +55,23 @@ namespace UI.Settings {
         }
         #endregion
 
-        public void ActivateSettingsMenu() {
+        public void SetOnActivated(Action action) {
+            OnMenuActivated = action;
+        }
+        
+        public void SetOnDeactivated(Action action) {
+            OnMenuDeactivated = action;
+        }
+
+        public void Activate() {
             _settingsMenuRoot.SetEnabled(true);
             _settingsMenuRoot.RemoveFromClassList("down");
             tabNavigateAction.action.performed += TabNavigation;
             backAction.action.performed += DeactivateSettingsMenu;
             
             Debug.Log("SettingsMenu Activated");
+            
+            OnMenuActivated.Invoke();
         }
 
         public void DeactivateSettingsMenu() {
@@ -67,6 +79,10 @@ namespace UI.Settings {
             tabNavigateAction.action.performed -= TabNavigation;
             backAction.action.performed -= DeactivateSettingsMenu;
             _settingsMenuRoot.SetEnabled(false);
+            
+            Debug.Log("SettingsMenu Deactivated");
+            
+            OnMenuDeactivated.Invoke();
         }
 
         private void DeactivateSettingsMenu(InputAction.CallbackContext obj) {

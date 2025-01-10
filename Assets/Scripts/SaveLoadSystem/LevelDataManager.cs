@@ -38,7 +38,7 @@ namespace SaveLoadSystem {
         private PlayerScript PlayerScriptCache {
             get {
                 if (_playerScript != null) {
-                    Debug.Log("PlayerScript found in cache");
+                    // Debug.Log("PlayerScript found in cache");
                     return _playerScript;
                 }
                 
@@ -64,7 +64,7 @@ namespace SaveLoadSystem {
         public static LevelDataManager LevelDataManagerCache {
             get {
                 if (_levelDataManager != null) {
-                    Debug.Log("LevelDataManager found from cache");
+                    // Debug.Log("LevelDataManager found from cache");
                     return _levelDataManager;
                 }
 

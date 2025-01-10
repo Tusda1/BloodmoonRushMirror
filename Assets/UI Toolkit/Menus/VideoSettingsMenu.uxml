@@ -1,14 +1,20 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/SpriteElements/Dropdown.uss?fileID=7433441132597879392&amp;guid=b90c61b70f3208345ad4226241545b4c&amp;type=3#Dropdown" />
     <Style src="project://database/Assets/UI%20Toolkit/Menus/Menu.uss?fileID=7433441132597879392&amp;guid=8efd6ee9dc2ccf147b85dff9f56810bf&amp;type=3#Menu" />
+    <Style src="project://database/Assets/UI%20Toolkit/SpriteElements/Toggle.uss?fileID=7433441132597879392&amp;guid=9b9f3b0577452fb4f98abd337479fe52&amp;type=3#Toggle" />
     <engine:VisualElement name="VideoSettingsMenu" template="AudioSettingsMenuVisualTree" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgb(108, 108, 108); border-right-color: rgb(108, 108, 108); border-top-color: rgb(108, 108, 108); border-bottom-color: rgb(108, 108, 108); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; justify-content: space-evenly; align-items: center;">
         <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=1947887941&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_23" name="VideoSettingsHeader" class="MenuHeader" />
         <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-268682328&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_50" name="VideoSettingsContainer" class="Container">
-            <engine:DropdownField label="Dropdown" name="ScreenModeSelectDropdown" />
-            <engine:DropdownField label="Dropdown" name="DisplaySelectDropdown" />
-            <engine:DropdownField label="Dropdown" name="AspectRatioSelectDropdown" />
-            <engine:DropdownField label="Dropdown" name="ResolutionSelectDropdown" />
-            <engine:Toggle label="Toggle" name="VsyncToggle" />
-            <engine:Label text="Restart to apply all changes" name="RestartReminderText" />
+            <engine:DropdownField label="Screen Mode" name="ScreenModeSelectDropdown" />
+            <engine:DropdownField label="Display" name="DisplaySelectDropdown" />
+            <engine:DropdownField label="Aspect Ratio" name="AspectRatioSelectDropdown" />
+            <engine:DropdownField label="Resolution" name="ResolutionSelectDropdown" />
+            <engine:Toggle label=" " name="VsyncToggle" />
+            <engine:Label text="Restart to apply all changes" name="RestartReminderText" data-source="project://database/Assets/Resources/HasMadeChangeThatRequiresRestart.asset?fileID=11400000&amp;guid=51e27eb5fb06ffd43a76bae184c20b6b&amp;type=2#HasMadeChangeThatRequiresRestart">
+                <Bindings>
+                    <engine:DataBinding property="style.display" data-source-path="consensus" binding-mode="ToTarget" source-to-ui-converters="Bool To DisplayStyle" />
+                </Bindings>
+            </engine:Label>
         </UI_Toolkit.SpriteElement>
     </engine:VisualElement>
 </engine:UXML>

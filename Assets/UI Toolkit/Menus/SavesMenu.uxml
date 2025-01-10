@@ -1,26 +1,75 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/Menus/Menu.uss?fileID=7433441132597879392&amp;guid=8efd6ee9dc2ccf147b85dff9f56810bf&amp;type=3#Menu" />
-    <engine:VisualElement name="SavesMenu" template="AudioSettingsMenuVisualTree" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgb(108, 108, 108); border-right-color: rgb(108, 108, 108); border-top-color: rgb(108, 108, 108); border-bottom-color: rgb(108, 108, 108); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; justify-content: space-evenly; align-items: center;">
+    <Style src="project://database/Assets/UI%20Toolkit/Menus/SavesMenu.uss?fileID=7433441132597879392&amp;guid=bc7a78247c5e8f2499e590dfee3eda0f&amp;type=3#SavesMenu" />
+    <engine:VisualElement name="SavesMenuRoot" template="AudioSettingsMenuVisualTree" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgb(108, 108, 108); border-right-color: rgb(108, 108, 108); border-top-color: rgb(108, 108, 108); border-bottom-color: rgb(108, 108, 108); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; justify-content: space-evenly; align-items: center;">
         <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-970801493&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_5" name="SavesHeader" class="MenuHeader" />
         <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-268682328&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_50" name="SavesContainer" class="Container">
-            <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-561352724&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_51" name="SaveSlot1" style="max-height: 83px; min-height: 83px; max-width: 632px; min-width: 632px;">
-                <engine:Label text="SaveSlot1" style="position: absolute; top: 12px; left: 145px;" />
-                <engine:Label text="Label" style="position: absolute; top: 11px; left: 438px;" />
-                <engine:Label text="Label" style="position: absolute; top: 42px; left: 147px;" />
-                <engine:Label text="Label" style="position: absolute; top: 43px; left: 439px;" />
-            </UI_Toolkit.SpriteElement>
-            <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=890976055&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_52" name="SaveSlot2" style="max-width: 632px; min-height: 83px; max-height: 83px; min-width: 632px;">
-                <engine:Label text="SaveSlot2" style="position: absolute; top: 12px; left: 145px;" />
-                <engine:Label text="Label" style="position: absolute; top: 11px; left: 438px;" />
-                <engine:Label text="Label" style="position: absolute; top: 42px; left: 147px;" />
-                <engine:Label text="Label" style="position: absolute; top: 43px; left: 439px;" />
-            </UI_Toolkit.SpriteElement>
-            <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=1388609945&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_53" name="SaveSlot3" style="min-width: 632px; max-width: 632px; max-height: 83px; min-height: 83px;">
-                <engine:Label text="SaveSlot3" style="position: absolute; top: 12px; left: 145px;" />
-                <engine:Label text="Label" style="position: absolute; top: 11px; left: 438px;" />
-                <engine:Label text="Label" style="position: absolute; top: 42px; left: 147px;" />
-                <engine:Label text="Label" style="position: absolute; top: 43px; left: 439px;" />
-            </UI_Toolkit.SpriteElement>
+            <UI_Toolkit.SpriteButton sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=32538459&amp;guid=90730bc22eee8c54b8f64bb5acb0c2a2&amp;type=3#UI_Asset_Sheet 1_65" name="SaveSlot1" data-source="project://database/Assets/Resources/SaveSlotData/SaveSlot1Data.asset?fileID=11400000&amp;guid=badd82c5180cada40a1dcbe0d0bca9eb&amp;type=2#SaveSlot1Data" style="max-height: 83px; min-height: 83px; max-width: 632px; min-width: 632px;">
+                <engine:Label text="SaveSlot1" style="position: absolute; top: 12px; left: 145px;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="saveSlotName" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+                <engine:Label text="Label" style="position: absolute; -unity-text-align: upper-right; width: 208px; right: 140px; top: 12px;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="lastTimePlayed" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+                <engine:Label text="Label" style="position: absolute; top: 42px; left: 145px; width: 243px; -unity-text-align: middle-left;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="currentLevel" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+                <engine:Label text="Label" style="position: absolute; -unity-text-align: upper-right; width: 180px; right: 140px; top: 37px;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="currentProgress" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+            </UI_Toolkit.SpriteButton>
+            <UI_Toolkit.SpriteButton sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=-648919&amp;guid=90730bc22eee8c54b8f64bb5acb0c2a2&amp;type=3#UI_Asset_Sheet 1_66" name="SaveSlot2" data-source="project://database/Assets/Resources/SaveSlotData/SaveSlot2Data.asset?fileID=11400000&amp;guid=e560488653c7c4f45b0259121e596aad&amp;type=2#SaveSlot2Data" style="max-height: 83px; min-height: 83px; max-width: 632px; min-width: 632px;">
+                <engine:Label text="SaveSlot1" style="position: absolute; top: 12px; left: 145px;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="saveSlotName" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+                <engine:Label text="Label" style="position: absolute; -unity-text-align: upper-right; width: 208px; right: 140px; top: 12px;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="lastTimePlayed" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+                <engine:Label text="Label" style="position: absolute; top: 42px; left: 145px; width: 243px; -unity-text-align: middle-left;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="currentLevel" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+                <engine:Label text="Label" style="position: absolute; -unity-text-align: upper-right; width: 180px; right: 140px; top: 37px;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="currentProgress" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+            </UI_Toolkit.SpriteButton>
+            <UI_Toolkit.SpriteButton sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=-223822351&amp;guid=90730bc22eee8c54b8f64bb5acb0c2a2&amp;type=3#UI_Asset_Sheet 1_67" name="SaveSlot3" data-source="project://database/Assets/Resources/SaveSlotData/SaveSlot3Data.asset?fileID=11400000&amp;guid=0d4c642fd77d33d4fbba6142a392f235&amp;type=2#SaveSlot3Data" style="max-height: 83px; min-height: 83px; max-width: 632px; min-width: 632px;">
+                <engine:Label text="SaveSlot1" style="position: absolute; top: 12px; left: 145px;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="saveSlotName" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+                <engine:Label text="Label" style="position: absolute; -unity-text-align: upper-right; width: 208px; right: 140px; top: 12px;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="lastTimePlayed" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+                <engine:Label text="Label" style="position: absolute; top: 42px; left: 145px; width: 243px; -unity-text-align: middle-left;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="currentLevel" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+                <engine:Label text="Label" style="position: absolute; -unity-text-align: upper-right; width: 180px; right: 140px; top: 37px;">
+                    <Bindings>
+                        <engine:DataBinding property="text" data-source-path="currentProgress" binding-mode="ToTarget" />
+                    </Bindings>
+                </engine:Label>
+            </UI_Toolkit.SpriteButton>
         </UI_Toolkit.SpriteElement>
     </engine:VisualElement>
 </engine:UXML>

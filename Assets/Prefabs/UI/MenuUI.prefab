@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1723220102761852235}
   - component: {fileID: 983109414922428253}
   - component: {fileID: 5538277227840435238}
+  - component: {fileID: 70565424184537130}
   - component: {fileID: 4752074436187100403}
   - component: {fileID: 367411730068349}
   - component: {fileID: 4709458564733395111}
@@ -50,10 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: e93a3f3523783734e98e7d898716c81f, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: 9ba5dfb764433604d9fbd8063195984e, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 8a9c53c3b3c68224a97ffed2a6170566, type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
@@ -70,6 +71,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiDocument: {fileID: 1723220102761852235}
+  settingsMenu: {fileID: 5538277227840435238}
+  savesMenu: {fileID: 70565424184537130}
   startSceneCollectionSO: {fileID: 11400000, guid: 9ba3e2cdc0b088c48b4e85ea13b1bb36, type: 2}
   backgroundAnimator: {fileID: 0}
   playerCanMove: {fileID: 11400000, guid: f2f25efabb8f0d74bbfdba92ceb38155, type: 2}
@@ -87,6 +90,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiDocument: {fileID: 1723220102761852235}
   tabNavigateAction: {fileID: 7896978939624929561, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
+  backAction: {fileID: 7727032971491509709, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
+--- !u!114 &70565424184537130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3623942027125754274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c32f977297c05a49a94982918d61290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiDocument: {fileID: 1723220102761852235}
+  saveSlot1Data: {fileID: 11400000, guid: badd82c5180cada40a1dcbe0d0bca9eb, type: 2}
+  saveSlot2Data: {fileID: 11400000, guid: e560488653c7c4f45b0259121e596aad, type: 2}
+  saveSlot3Data: {fileID: 11400000, guid: 0d4c642fd77d33d4fbba6142a392f235, type: 2}
 --- !u!114 &4752074436187100403
 MonoBehaviour:
   m_ObjectHideFlags: 0

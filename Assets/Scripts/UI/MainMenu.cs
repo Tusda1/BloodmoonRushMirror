@@ -12,16 +12,18 @@ using UnityEditor;
 #endif
 
 namespace UI {
-    [RequireComponent(typeof(SettingsMenu))]
+    [RequireComponent(typeof(UIDocument), typeof(SettingsMenu), typeof(SavesMenu))]
     public class MainMenu : MonoBehaviour {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
         [GetOrAddComponent, SerializeField, HideInInspector] private SettingsMenu settingsMenu;
+        [GetOrAddComponent, SerializeField, HideInInspector] private SavesMenu savesMenu;
 
         [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
         [SerializeField, Required] private Animator backgroundAnimator;
         [SerializeField] private AllInFavourConsensusSO playerCanMove;
 
+        #region ---PrivateFields---
         private VisualElement _rootElement;
         private VisualElement _mainMenuElement;
 
@@ -31,13 +33,13 @@ namespace UI {
         private Button _settingsButton;
         private Button _quitButton;
 
-        private Button _menuButton;
-
         private VisualElement _mainMenu;
         private VisualElement _settings;
 
-        private Action _updateActions = delegate { };
         private CameraEffects _cameraEffects;
+        
+        private Action _updateActions = delegate { };
+        #endregion
         #endregion
 
         private void Awake() {
@@ -50,10 +52,7 @@ namespace UI {
             _settingsButton = _rootElement.Q<Button>("SettingsButton");
             _quitButton = _rootElement.Q<Button>("QuitButton");
 
-            _menuButton = _rootElement.Q<Button>("MenuButton");
-
             _mainMenu = _rootElement.Q<VisualElement>("MainMenuRoot");
-            _settings = _rootElement.Q<VisualElement>("SettingsMenuRoot");
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -61,11 +60,49 @@ namespace UI {
             Time.timeScale = 1;
             playerCanMove.Clear();
 
-            _settings.enabledSelf = false;
-
             _updateActions += () => {
                 if (Input.anyKeyDown) _ = AnyKeyPressed();
             };
+        }
+
+        private void Start() {
+            FMODManager.RaiseSetParameterEvent("levelMusicProgression", 0);
+            FMODManager.RaiseMusicEvent("Music_level1");
+
+            _cameraEffects = ServiceLocator.Get<CameraEffects>();
+            
+            _startButton.clicked += savesMenu.Activate;
+            savesMenu.SetOnActivated(HideMenu);
+            savesMenu.SetOnDeactivated(ShowMenu);
+            
+            _settingsButton.clicked += settingsMenu.Activate;
+            settingsMenu.SetOnActivated(HideMenu);
+            settingsMenu.SetOnDeactivated(ShowMenu);
+            
+            _quitButton.clicked += QuitButtonClicked;
+        }
+
+        private void Update() {
+            _updateActions.Invoke();
+        }
+
+        private void HideMenu() {
+            _mainMenuElement.AddToClassList("down");
+            _mainMenuElement.enabledSelf = false;
+        }
+        
+        private void ShowMenu() {
+            _mainMenu.RemoveFromClassList("down");
+            _mainMenu.enabledSelf = true;
+        }
+
+        private static void QuitButtonClicked() {
+            Debug.Log("QuitButtonClicked");
+            
+            Application.Quit();
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#endif
         }
 
         private async Awaitable AnyKeyPressed() {
@@ -85,60 +122,6 @@ namespace UI {
             _mainMenuElement.RemoveFromClassList("down");
 
             _startButton.Focus();
-        }
-
-        private void Start() {
-            FMODManager.RaiseSetParameterEvent("levelMusicProgression", 0);
-            FMODManager.RaiseMusicEvent("Music_level1");
-
-            _cameraEffects = ServiceLocator.Get<CameraEffects>();
-            
-            _startButton.clicked += StartButtonClicked;
-            _settingsButton.clicked += SettingsButtonClicked;
-            _quitButton.clicked += QuitButtonClicked;
-        }
-
-        private void Update() {
-            _updateActions.Invoke();
-        }
-
-        private void StartButtonClicked() {
-            Debug.Log("StartButtonClicked");
-            
-            _cameraEffects.CircleFadeOut(1, 
-                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(startSceneCollectionSO, 
-                    () => _cameraEffects.CircleFadeIn(1)));
-        }
-        
-        private void SettingsButtonClicked() {
-            Debug.Log("SettingsButtonClicked");
-            
-            settingsMenu.ActivateSettingsMenu();
-            _mainMenuElement.AddToClassList("down");
-            
-             // if (_mainMenu.ClassListContains("left")) {
-             //     _mainMenu.RemoveFromClassList("left");
-             //     _settings.AddToClassList("right");
-             //
-             //     _mainMenu.enabledSelf = true;
-             //     _settings.enabledSelf = false;
-             // }
-             // else {
-             //     _mainMenu.AddToClassList("left");
-             //     _settings.RemoveFromClassList("right");
-             //
-             //     _mainMenu.enabledSelf = false;
-             //     _settings.enabledSelf = true;
-             // }
-        }
-
-        private static void QuitButtonClicked() {
-            Debug.Log("QuitButtonClicked");
-            
-            Application.Quit();
-#if UNITY_EDITOR
-            EditorApplication.isPlaying = false;
-#endif
         }
     }
 }
