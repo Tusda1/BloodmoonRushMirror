@@ -119,6 +119,8 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         {
             velocity.x = -Mathf.Abs(velocity.x);
         }
+
+        velocity.y = 0;
         
         rb2d.linearVelocity = velocity * 3;
         velocityDirection = rb2d.linearVelocity.normalized;
