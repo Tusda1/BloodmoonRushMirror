@@ -9,8 +9,10 @@ public class UITKWorldSpaceInteractive : MonoBehaviour {
     #endregion
 
     private void Start() {
-        uiCamera = ServiceLocator.Get<CameraEffects>().transform.GetComponent<Camera>();
+        var camObj = GameObject.FindWithTag("UICamera");
+        Assert.IsNotNull(camObj);
         
+        uiCamera = camObj.GetComponent<Camera>();
         Assert.IsNotNull(uiCamera);
         
         uiDocument.panelSettings.SetScreenToPanelSpaceFunction(_ => {
