@@ -1,17 +1,19 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
-public class UITK_WorldSpaceInteractive : MonoBehaviour {
+public class UITKWorldSpaceInteractive : MonoBehaviour {
     #region ---Fields---
-    [SerializeField] private PanelSettings panelSettings;
     [SerializeField] private UIDocument uiDocument;
     [SerializeField] private Camera uiCamera;
     #endregion
 
     private void Start() {
-        uiCamera ??= GameObject.FindWithTag("UICamera").GetComponent<Camera>();
+        uiCamera = ServiceLocator.Get<CameraEffects>().transform.GetComponent<Camera>();
         
-        panelSettings.SetScreenToPanelSpaceFunction(_ => {
+        Assert.IsNotNull(uiCamera);
+        
+        uiDocument.panelSettings.SetScreenToPanelSpaceFunction(_ => {
             var invalidPosition = new Vector2(float.NaN, float.NaN);
             if (uiCamera == null) return invalidPosition;
 
@@ -26,8 +28,8 @@ public class UITK_WorldSpaceInteractive : MonoBehaviour {
             var pixelUV = hit.textureCoord;
 
             pixelUV.y = 1 - pixelUV.y;
-            pixelUV.x *= panelSettings.targetTexture.width;
-            pixelUV.y *= panelSettings.targetTexture.height;
+            pixelUV.x *= uiDocument.panelSettings.targetTexture.width;
+            pixelUV.y *= uiDocument.panelSettings.targetTexture.height;
 
             return pixelUV;
         });

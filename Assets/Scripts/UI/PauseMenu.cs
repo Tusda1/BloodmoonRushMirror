@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 namespace UI {
-    [RequireComponent(typeof(SettingsMenu), typeof(UITK_WorldSpaceInteractive))]
+    [RequireComponent(typeof(SettingsMenu), typeof(UITKWorldSpaceInteractive))]
     public class PauseMenu : Singleton<PauseMenu> {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;

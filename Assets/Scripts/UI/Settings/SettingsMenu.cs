@@ -8,7 +8,7 @@ using Utilities;
 
 namespace UI.Settings {
     [RequireComponent(typeof(VideoSettingsMenu), typeof(AudioSettingsMenu), typeof(ControlsSettingsMenu))]
-    [RequireComponent(typeof(UITK_WorldSpaceInteractive))]
+    [RequireComponent(typeof(UITKWorldSpaceInteractive))]
     public class SettingsMenu : MonoBehaviour {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
@@ -67,17 +67,17 @@ namespace UI.Settings {
             _settingsMenuRoot.SetEnabled(true);
             _settingsMenuRoot.RemoveFromClassList("down");
             tabNavigateAction.action.performed += TabNavigation;
-            backAction.action.performed += DeactivateSettingsMenu;
+            backAction.action.performed += Deactivate;
             
             Debug.Log("SettingsMenu Activated");
             
             OnMenuActivated.Invoke();
         }
 
-        public void DeactivateSettingsMenu() {
+        public void Deactivate() {
             _settingsMenuRoot.AddToClassList("down");
             tabNavigateAction.action.performed -= TabNavigation;
-            backAction.action.performed -= DeactivateSettingsMenu;
+            backAction.action.performed -= Deactivate;
             _settingsMenuRoot.SetEnabled(false);
             
             Debug.Log("SettingsMenu Deactivated");
@@ -85,8 +85,8 @@ namespace UI.Settings {
             OnMenuDeactivated.Invoke();
         }
 
-        private void DeactivateSettingsMenu(InputAction.CallbackContext obj) {
-            DeactivateSettingsMenu();
+        private void Deactivate(InputAction.CallbackContext obj) {
+            Deactivate();
         }
 
         private void TabNavigation(InputAction.CallbackContext obj) {

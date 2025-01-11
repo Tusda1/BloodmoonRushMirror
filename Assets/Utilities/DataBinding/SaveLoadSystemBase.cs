@@ -41,6 +41,14 @@ namespace Utilities.DataBinding {
 
             debugLogger.Log($"Creating new game data with name '{gameData.Name}' with values from '{newGameData.gameData.Name}'");
         }
+        
+        public virtual void NewGame(SaveSlotData saveSlotData) {
+            gameData = (TGameData)newGameData.gameData.Clone();
+
+            gameData.Name = saveSlotData.saveSlotName;
+
+            debugLogger.Log($"Creating new game data with name '{gameData.Name}' with values from '{newGameData.gameData.Name}'");
+        }
 
         /// <summary>
         /// Updates all dataBinds for the IGameData type of this SaveLoadSystem.

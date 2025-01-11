@@ -8,6 +8,7 @@ namespace Utilities.DataBinding {
         public string DataPath { get;}
         public string FileExtension { get;}
         
+        string GetPathToSaveFile(string filename);
         void Save(TGameData gameData);
         TGameData LoadByName(string name);
         TGameData LoadByPath(string path);
