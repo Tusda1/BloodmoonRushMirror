@@ -620,9 +620,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3918147f4fa7718449e281878d1e4228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrounded: 0
-  lockToAxis: 0
   rb2d: {fileID: 9213825567472531080}
+  isGrounded: 0
+  isFalling: 0
+  lockToAxis: 0
+  targetVelocity: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
   GravityModifier: 0
   upSpeed: 2
   downSpeed: 10
