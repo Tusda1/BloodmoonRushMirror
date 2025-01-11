@@ -211,6 +211,7 @@ namespace Player {
         }
 
         public void TakeDamage(DamageInstance damageInstance) {
+            if (healthComponent.HasInvincibilityFrames && !damageInstance.ignoreInvincibility) return;
             if (_isDead) return;
 
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");

@@ -10,21 +10,28 @@ public class BookScript : MonoBehaviour {
     [SerializeField] private BoxCollider2D boxCollider;
     [SerializeField] DamageInstance damageInstance;
     [SerializeField] private Animator animator;
+    private float _carryColliderSize;
     private bool _isClosing = false;
     #endregion
 
     private void Start() {
         boxCollider.enabled = false;
+        _carryColliderSize = triggerCollider.size.y;
     }
 
     public void OpenThisBook() {
         animator.SetTrigger(Open);
         boxCollider.enabled = true;
+        triggerCollider.enabled = false;
+        gameObject.tag = "Ground";
+        gameObject.layer = LayerMask.NameToLayer("Ground");
     }
 
     public void CloseThisBook() {
-        animator.SetTrigger(Close);
+        triggerCollider.enabled = true; animator.SetTrigger(Close);
         boxCollider.enabled = false;
+        gameObject.tag = "Untagged";
+        gameObject.layer = LayerMask.NameToLayer("Default");
     }
 
     public void ActivateHitbox() {
