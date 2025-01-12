@@ -32,6 +32,7 @@ namespace UI {
         private Button _startButton;
         private Button _settingsButton;
         private Button _quitButton;
+        private Button _creditsButton;
         
         private Action _updateActions = delegate { };
         #endregion
@@ -40,12 +41,13 @@ namespace UI {
         private void Awake() {
             _rootElement = uiDocument.rootVisualElement;
 
-            _mainMenuRoot = _rootElement.Q<VisualElement>("MainMenu");
+            _mainMenuRoot = _rootElement.Q<VisualElement>("MainMenuRoot");
             _pressAnyKeyLabel = _rootElement.Q<Label>("PressAnyKeyLabel");
 
             _startButton = _rootElement.Q<Button>("StartButton");
             _settingsButton = _rootElement.Q<Button>("SettingsButton");
             _quitButton = _rootElement.Q<Button>("QuitButton");
+            _creditsButton = _rootElement.Q<Button>("CreditsButton");
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -71,6 +73,26 @@ namespace UI {
             settingsMenu.SetOnDeactivated(ShowMenu);
             
             _quitButton.clicked += QuitButtonClicked;
+            
+            _startButton.RegisterCallback<NavigationMoveEvent>(TriggerFocusCreditsButton);
+            _settingsButton.RegisterCallback<NavigationMoveEvent>(TriggerFocusCreditsButton);
+            _quitButton.RegisterCallback<NavigationMoveEvent>(TriggerFocusCreditsButton);
+            
+            _creditsButton.RegisterCallback<NavigationMoveEvent>(evt => {
+                if (evt.direction == NavigationMoveEvent.Direction.Down) {
+                    _startButton.focusController.IgnoreEvent(evt);
+                    evt.StopPropagation();
+                    _startButton.Focus();
+                }
+            });
+        }
+
+        private void TriggerFocusCreditsButton(NavigationMoveEvent evt) {
+            if (evt.direction == NavigationMoveEvent.Direction.Up) {
+                _startButton.focusController.IgnoreEvent(evt);
+                evt.StopPropagation();
+                _creditsButton.Focus();
+            }
         }
 
         private void Update() {

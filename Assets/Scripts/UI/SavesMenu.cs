@@ -29,9 +29,9 @@ namespace UI {
         private VisualElement _savesMenuRoot;
 
         private CameraEffects _cameraEffects;
-        private SpriteButton _saveSlot1;
-        private SpriteButton _saveSlot2;
-        private SpriteButton _saveSlot3;
+        private Button _saveSlot1;
+        private Button _saveSlot2;
+        private Button _saveSlot3;
         #endregion
         #endregion
 
@@ -43,9 +43,9 @@ namespace UI {
         private void Start() {
             _cameraEffects = ServiceLocator.Get<CameraEffects>();
             
-            _saveSlot1 = _savesMenuRoot.Q<SpriteButton>("SaveSlot1");
-            _saveSlot2 = _savesMenuRoot.Q<SpriteButton>("SaveSlot2");
-            _saveSlot3 = _savesMenuRoot.Q<SpriteButton>("SaveSlot3");
+            _saveSlot1 = _savesMenuRoot.Q<Button>("SaveSlot1");
+            _saveSlot2 = _savesMenuRoot.Q<Button>("SaveSlot2");
+            _saveSlot3 = _savesMenuRoot.Q<Button>("SaveSlot3");
 
             _saveSlot1.clicked += () => LoadSave(saveSlot1Data);
             _saveSlot2.clicked += () => LoadSave(saveSlot2Data);
