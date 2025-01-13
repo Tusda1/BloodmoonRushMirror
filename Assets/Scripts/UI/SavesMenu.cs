@@ -2,14 +2,14 @@ using System;
 using Attributes;
 using SaveLoadSystem;
 using SceneCollections;
-using UI_Toolkit;
+using UI.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 namespace UI {
     [RequireComponent(typeof(UITKWorldSpaceInteractive))]
-    public class SavesMenu : MonoBehaviour {
+    public class SavesMenu : MonoBehaviour, IMenu {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
         
@@ -21,8 +21,8 @@ namespace UI {
         
         [SerializeField, Required] private InputActionReference backAction;
         
-        private event Action OnMenuActivated = delegate { };
-        private event Action OnMenuDeactivated = delegate { };
+        public event Action OnMenuActivated = delegate { };
+        public event Action OnMenuDeactivated = delegate { };
         
         #region ---PrivateFields---
         private VisualElement _root;
@@ -64,14 +64,6 @@ namespace UI {
                 () => _ = SceneCollectionManager.LoadSceneCollectionAsync(saveSlotData.currentSceneCollection,
                     () => _cameraEffects.CircleFadeIn(1)));
         }
-        
-        public void SetOnActivated(Action action) {
-            OnMenuActivated = action;
-        }
-        
-        public void SetOnDeactivated(Action action) {
-            OnMenuDeactivated = action;
-        }
 
         public void Activate() {
             _saveSlot1.Focus();
@@ -84,7 +76,7 @@ namespace UI {
             OnMenuActivated.Invoke();
         }
 
-        public void Deactivate() {
+        public void Deactivate(string addToClassList = null) {
             _savesMenuRoot.AddToClassList("left");
             backAction.action.performed -= Deactivate;
             _savesMenuRoot.SetEnabled(false);

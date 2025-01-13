@@ -9,7 +9,7 @@ namespace Utilities {
         public T CurrentItem => _items[CurrentIndex];
         public T PreviousItem => _items[PreviousIndex];
 
-        public event Action<T> OnIndexChanged = delegate { };
+        public event Action<T, T, bool> OnIndexChanged = delegate { };
         public event Action OnMinIndex = delegate { };
         public event Action NotOnMinIndex = delegate { };
         public event Action OnMaxIndex = delegate { };
@@ -32,7 +32,7 @@ namespace Utilities {
             PreviousIndex = CurrentIndex;
             CurrentIndex = index;
 
-            OnIndexChanged.Invoke(_items[CurrentIndex]);
+            OnIndexChanged.Invoke(_items[CurrentIndex], _items[PreviousIndex], PreviousIndex < CurrentIndex);
 
             if (index == 0) {
                 OnMinIndex.Invoke();

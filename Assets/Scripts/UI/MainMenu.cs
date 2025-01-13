@@ -65,12 +65,12 @@ namespace UI {
             FMODManager.RaiseMusicEvent("Music_level1");
             
             _startButton.clicked += savesMenu.Activate;
-            savesMenu.SetOnActivated(HideMenu);
-            savesMenu.SetOnDeactivated(ShowMenu);
+            savesMenu.OnMenuActivated += HideMenu;
+            savesMenu.OnMenuDeactivated += ShowMenu;
             
             _settingsButton.clicked += settingsMenu.Activate;
-            settingsMenu.SetOnActivated(HideMenu);
-            settingsMenu.SetOnDeactivated(ShowMenu);
+            settingsMenu.OnMenuActivated += HideMenu;
+            settingsMenu.OnMenuDeactivated += ShowMenu;
             
             _quitButton.clicked += QuitButtonClicked;
             
@@ -99,11 +99,13 @@ namespace UI {
             _updateActions.Invoke();
         }
 
+        [ContextMenu(nameof(HideMenu))]
         private void HideMenu() {
             _mainMenuRoot.AddToClassList("down");
             _mainMenuRoot.SetEnabled(false);
         }
         
+        [ContextMenu(nameof(ShowMenu))]
         private void ShowMenu() {
             _mainMenuRoot.SetEnabled(true);
             _mainMenuRoot.RemoveFromClassList("down");
