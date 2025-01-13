@@ -23,7 +23,6 @@ namespace UI {
         #region ***---PrivateFields---***
         private VisualElement _root;
         private VisualElement _pauseMenuRoot;
-        private VisualElement _settingsMenuRoot;
 
         private Button _resumeButton;
         private Button _settingsButton;
@@ -41,7 +40,6 @@ namespace UI {
         private IEnumerator Start() {
             _root = uiDocument.rootVisualElement;
             _pauseMenuRoot = _root.Q<VisualElement>("PauseMenuRoot");
-            _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
 
             _resumeButton = _root.Q<SpriteButton>("ResumeButton");
             _settingsButton = _root.Q<SpriteButton>("SettingsButton");
@@ -51,15 +49,8 @@ namespace UI {
             _settingsButton.clicked += settingsMenu.Activate;
             _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenusSceneCollectionSO);
 
-            settingsMenu.SetOnActivated(() => {
-                _pauseMenuRoot.AddToClassList("left");
-                _pauseMenuRoot.enabledSelf = false;
-            });
-
-            settingsMenu.SetOnDeactivated(() => {
-                _pauseMenuRoot.RemoveFromClassList("left");
-                _pauseMenuRoot.enabledSelf = true;
-            });
+            settingsMenu.OnMenuActivated += HideMenu;
+            settingsMenu.OnMenuDeactivated += ShowMenu;
 
             _eventSystem ??= GameObject.FindWithTag("EventSystem").GetComponent<EventSystem>();
             
@@ -82,7 +73,6 @@ namespace UI {
         }
 
         #region ---Private Methods---
-
         [ContextMenu(nameof(PauseGame))]
         private void PauseGame() {
             Time.timeScale = 0;
@@ -104,6 +94,18 @@ namespace UI {
             _root.style.display = DisplayStyle.None;
             _root.enabledSelf = false;
             playerCanMove.ChangeVote(_currentVote, true);
+        }
+
+        [ContextMenu(nameof(HideMenu))]
+        private void HideMenu() {
+            _pauseMenuRoot.AddToClassList("left");
+            _pauseMenuRoot.enabledSelf = false;
+        }
+
+        [ContextMenu(nameof(ShowMenu))]
+        private void ShowMenu() {
+            _pauseMenuRoot.RemoveFromClassList("left");
+            _pauseMenuRoot.enabledSelf = true;
         }
         #endregion
     }

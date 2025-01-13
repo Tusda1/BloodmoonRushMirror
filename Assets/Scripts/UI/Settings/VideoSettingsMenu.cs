@@ -1,3 +1,4 @@
+using System;
 using Attributes;
 using Consensus;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.UIElements;
 using Utilities.UI.DisplaySettings;
 
 namespace UI.Settings {
-    public class VideoSettingsMenu : MonoBehaviour {
+    public class VideoSettingsMenu : MonoBehaviour, IMenu {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
@@ -19,6 +20,10 @@ namespace UI.Settings {
         [Header("Debug Logger")] 
         [SerializeField, Required] private DebugLoggerSO debugLogger;
 
+        #region ***---PrivateFields---***
+        private VisualElement _root;
+        private VisualElement _videoSettingsMenu;
+
         private DropdownField _screenModeDropdownMenu;
         private DropdownField _displayDropdownMenu;
         private DropdownField _aspectRatioDropdownMenu;
@@ -29,20 +34,25 @@ namespace UI.Settings {
         private readonly ScriptVotePair _displaySettingChanged = new();
 
         private int _currentDisplay;
+
+        public event Action OnMenuActivated = delegate { };
+        public event Action OnMenuDeactivated = delegate { };
+        #endregion
         #endregion
 
         #region ---EventFunctions---
         private void Awake() {
             debugLogger.messageOrigin = this;
 
-            var settingsRoot = uiDocument.rootVisualElement;
+            _root = uiDocument.rootVisualElement;
+            _videoSettingsMenu = _root.Q<VisualElement>("VideoSettingsMenu");
 
-            _screenModeDropdownMenu = settingsRoot.Q<DropdownField>("ScreenModeSelectDropdown");
-            _displayDropdownMenu = settingsRoot.Q<DropdownField>("DisplaySelectDropdown");
-            _aspectRatioDropdownMenu = settingsRoot.Q<DropdownField>("AspectRatioSelectDropdown");
-            _resolutionDropdownMenu = settingsRoot.Q<DropdownField>("ResolutionSelectDropdown");
-            _vsyncToggle = settingsRoot.Q<Toggle>("VsyncToggle");
-            _fpsLimitSlider = settingsRoot.Q<SliderInt>("FPSLimiterSlider");
+            _screenModeDropdownMenu = _videoSettingsMenu.Q<DropdownField>("ScreenModeSelectDropdown");
+            _displayDropdownMenu = _videoSettingsMenu.Q<DropdownField>("DisplaySelectDropdown");
+            _aspectRatioDropdownMenu = _videoSettingsMenu.Q<DropdownField>("AspectRatioSelectDropdown");
+            _resolutionDropdownMenu = _videoSettingsMenu.Q<DropdownField>("ResolutionSelectDropdown");
+            _vsyncToggle = _videoSettingsMenu.Q<Toggle>("VsyncToggle");
+            _fpsLimitSlider = _videoSettingsMenu.Q<SliderInt>("FPSLimiterSlider");
 
             if (_screenModeDropdownMenu != null) {
                 _screenModeDropdownMenu.choices.Clear();
@@ -191,5 +201,24 @@ namespace UI.Settings {
             debugLogger.Log("***FPS Limit changed to " + changeEvent.newValue);
         }
         #endregion
+
+        public void Activate() {
+            _videoSettingsMenu.SetEnabled(true);
+            _videoSettingsMenu.RemoveFromClassList("left");
+            _videoSettingsMenu.RemoveFromClassList("right");
+            _screenModeDropdownMenu.Focus();
+            
+            OnMenuActivated.Invoke();
+        }
+
+        public void Deactivate(string addToClassList) {
+            _videoSettingsMenu.SetEnabled(false);
+
+            if (addToClassList != null) {
+                _videoSettingsMenu.AddToClassList(addToClassList);
+            }
+            
+            OnMenuDeactivated.Invoke();
+        }
     }
 }

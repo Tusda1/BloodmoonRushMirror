@@ -9,22 +9,34 @@ using Utilities;
 namespace UI.Settings {
     [RequireComponent(typeof(VideoSettingsMenu), typeof(AudioSettingsMenu), typeof(ControlsSettingsMenu))]
     [RequireComponent(typeof(UITKWorldSpaceInteractive))]
-    public class SettingsMenu : MonoBehaviour {
+    public class SettingsMenu : MonoBehaviour, IMenu {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        #region ***---GetOrAddComponents---***
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private UIDocument uiDocument;
+
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private AudioSettingsMenu audioSettingsMenu;
+
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private VideoSettingsMenu videoSettingsMenu;
+
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private ControlsSettingsMenu controlsSettingsMenu;
+        #endregion
 
         [SerializeField] private InputActionReference tabNavigateAction;
         [SerializeField] private InputActionReference backAction;
-        
-        private event Action OnMenuActivated = delegate { };
-        private event Action OnMenuDeactivated = delegate { };
+
+        public event Action OnMenuActivated = delegate { };
+        public event Action OnMenuDeactivated = delegate { };
 
         #region ---PrivateFields---
         private VisualElement _root;
         private VisualElement _settingsMenuRoot;
 
-        private IndexedArray<VisualElement> _menus;
-        
+        private IndexedArray<IMenu> _menus;
+
         private BatArrow _leftBat;
         private BatArrow _rightBat;
         #endregion
@@ -37,51 +49,43 @@ namespace UI.Settings {
             _leftBat = _settingsMenuRoot.Q<BatArrow>("LeftBat");
             _rightBat = _settingsMenuRoot.Q<BatArrow>("RightBat");
 
-            var menus = _settingsMenuRoot.Query(className: "menu").OfType<VisualElement>().ToList();
-            _menus = new IndexedArray<VisualElement>(menus.ToArray());
-            
+            var menus = new IMenu[] { audioSettingsMenu, videoSettingsMenu, controlsSettingsMenu };
+            _menus = new IndexedArray<IMenu>(menus);
+
             _leftBat.SetOnClickAction(_menus.DecreaseIndex);
             _rightBat.SetOnClickAction(_menus.IncreaseIndex);
-            
+
             _menus.OnIndexChanged += SetActiveMenu;
             _menus.OnMinIndex += _leftBat.Disable;
             _menus.NotOnMinIndex += () => _leftBat.Enable();
             _menus.OnMaxIndex += _rightBat.Disable;
             _menus.NotOnMaxIndex += () => _rightBat.Enable();
-            _menus.SetIndex(0);
-            
+
             _settingsMenuRoot.AddToClassList("down");
             _settingsMenuRoot.SetEnabled(false);
         }
         #endregion
-
-        public void SetOnActivated(Action action) {
-            OnMenuActivated = action;
-        }
-        
-        public void SetOnDeactivated(Action action) {
-            OnMenuDeactivated = action;
-        }
 
         public void Activate() {
             _settingsMenuRoot.SetEnabled(true);
             _settingsMenuRoot.RemoveFromClassList("down");
             tabNavigateAction.action.performed += TabNavigation;
             backAction.action.performed += Deactivate;
-            
+            _menus.SetIndex(_menus.CurrentIndex);
+
             Debug.Log("SettingsMenu Activated");
-            
+
             OnMenuActivated.Invoke();
         }
 
-        public void Deactivate() {
+        public void Deactivate(string addToClassList = null) {
             _settingsMenuRoot.AddToClassList("down");
             tabNavigateAction.action.performed -= TabNavigation;
             backAction.action.performed -= Deactivate;
             _settingsMenuRoot.SetEnabled(false);
-            
+
             Debug.Log("SettingsMenu Deactivated");
-            
+
             OnMenuDeactivated.Invoke();
         }
 
@@ -92,7 +96,7 @@ namespace UI.Settings {
         private void TabNavigation(InputAction.CallbackContext obj) {
             var value = (int)obj.ReadValue<float>();
             Debug.Log("TabNavigation: " + value);
-            
+
             switch (value) {
                 case -1:
                     _leftBat.TriggerOnClick();
@@ -103,16 +107,9 @@ namespace UI.Settings {
             }
         }
 
-        private void SetActiveMenu(VisualElement currentMenu) {
-            var pos = _menus.PreviousIndex < _menus.CurrentIndex;
-            _menus.PreviousItem.AddToClassList(pos ? "left" : "right");
-            _menus.PreviousItem.SetEnabled(false);
-
-            Debug.Log(currentMenu.name);
-            
-            currentMenu.RemoveFromClassList("left");
-            currentMenu.RemoveFromClassList("right");
-            currentMenu.SetEnabled(true);
+        private static void SetActiveMenu(IMenu currentMenu, IMenu previousMenu, bool indexIncreased) {
+            previousMenu.Deactivate(indexIncreased ? "left" : "right");
+            currentMenu.Activate();
         }
     }
 }
