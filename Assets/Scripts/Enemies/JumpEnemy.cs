@@ -6,6 +6,7 @@ public class JumpEnemy : ReactiveBase
 {
     [SerializeField] private float keepAgroDistance = 5f;
     [SerializeField] private float yPositionTolerance = 0.05f;
+    [SerializeField] private float jumpModifier = 1f;
     
     private Rigidbody2D _playerRb2D;
     private Vector2 _lastFramePosition;
@@ -45,7 +46,7 @@ public class JumpEnemy : ReactiveBase
             yDifference = targetObject.position.y - _lastFramePosition.y;
             
             var position = transform.position;
-            transform.position = new Vector2(position.x, position.y + yDifference);
+            transform.position = new Vector2(position.x, position.y + yDifference * jumpModifier);
             yield return new WaitForFixedUpdate();
         }
         
