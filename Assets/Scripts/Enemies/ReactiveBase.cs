@@ -38,7 +38,7 @@ public class ReactiveBase : EnemyBase
     protected virtual void Scan()
     {
         Collider2D player = Physics2D.OverlapCircle(transform.position, detectionDistance, LayerMask.GetMask("Player"));
-        if (player != null)
+        if (player != null && player.CompareTag("Player"))
         {
             currentState = EnemyState.Action;
             targetObject = player.transform;
