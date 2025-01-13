@@ -26,7 +26,7 @@ public class JumpEnemy : ReactiveBase
             return;
         }
 
-        if (targetObject.position.y - _lastFramePosition.y > yPositionTolerance && !_playerMovement.isClimbing)
+        if (targetObject.position.y - _lastFramePosition.y > yPositionTolerance && _playerMovement.isJumping)
         {
             _readyToJump = true;
         }
