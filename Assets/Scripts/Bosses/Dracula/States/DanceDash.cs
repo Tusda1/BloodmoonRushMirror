@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 
 public class DanceDash : DraculaState
 {
+    [SerializeField] private int minDashAmount = 1;
     [SerializeField] private int maxDashAmount = 3;
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashCooldown = 1f;
@@ -33,6 +34,9 @@ public class DanceDash : DraculaState
 
     private void OnEnable()
     {
+        // Randomize the amount of dashes
+        _dashAmount = Random.Range(minDashAmount, maxDashAmount + 1);
+        
         // Find bottom right and left corner by sending a ray straight down and then right
         var hit = Physics2D.Raycast(transform.position, Vector2.down, 100, LayerMask.GetMask("Ground"));
         if (hit.collider == null)

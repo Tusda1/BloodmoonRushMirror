@@ -115,7 +115,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             return;
         }
         
-        if (!CanBeDamaged()) {
+        if (!CanBeDamaged(damageInstance)) {
             return;
         }
 
@@ -153,7 +153,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         }
     }
     
-    protected virtual bool CanBeDamaged()
+    protected virtual bool CanBeDamaged(DamageInstance damageInstance)
     {
         return true;
     }
