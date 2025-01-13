@@ -12,6 +12,12 @@ public class CameraEffects : MonoBehaviour {
     [SerializeField] private AnimationCurve circleFadeInCurve;
     [SerializeField] private AnimationCurve circleFadeOutCurve;
 
+    [Header("Render Textures")] 
+    [SerializeField] private RenderTexture cameraPixelated;
+    [SerializeField] private RenderTexture cameraNonPixelated;
+    [SerializeField] private RenderTexture uiPixelated;
+    [SerializeField] private RenderTexture uiNonPixelated;
+
     private const float FadeCircleDefaultSize = 2.5f;
 
     #region ---ShaderPropertyID---
@@ -21,6 +27,8 @@ public class CameraEffects : MonoBehaviour {
 
     private void Awake() {
         ServiceLocator.Register(this);
+        
+        
     }
 
     private void OnEnable() {
@@ -29,6 +37,13 @@ public class CameraEffects : MonoBehaviour {
 
     private void OnDisable() {
         circleFadeMaterial.SetFloat(Size, FadeCircleDefaultSize);
+    }
+
+    public void ClearAllRenderTextures() {
+        cameraPixelated.Release();
+        cameraNonPixelated.Release();
+        uiPixelated.Release();
+        uiNonPixelated.Release();
     }
 
     public async Awaitable ShakeCamera(float intensity, float duration) {
@@ -79,6 +94,7 @@ public class CameraEffects : MonoBehaviour {
             await Awaitable.NextFrameAsync();
         }
         
+        ClearAllRenderTextures();
         callback?.Invoke();
     }
 

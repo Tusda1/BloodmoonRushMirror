@@ -34,14 +34,17 @@ namespace UI.Settings {
         }
 
         private void SetControllerScheme() {
+            // TODO
             throw new NotImplementedException();
         }
 
         private void SetKeyboardMouseScheme() {
+            // TODO
             throw new NotImplementedException();
         }
 
         private void SetKeyboardScheme() {
+            // TODO
             throw new NotImplementedException();
         }
 

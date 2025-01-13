@@ -11,7 +11,7 @@ namespace Utilities.DataBinding {
     /// <summary>
     /// Abstract base class for managing save and load operations.
     /// </summary>
-    public abstract class SaveLoadSystemBase<TComponent, TGameData> : SingletonLazyLoad<TComponent>
+    public abstract class SaveLoadSystemBase<TComponent, TGameData> : Singleton<TComponent>
         where TGameData : class, IGameData where TComponent : Component {
         public TGameData gameData;
 
@@ -42,7 +42,7 @@ namespace Utilities.DataBinding {
             debugLogger.Log($"Creating new game data with name '{gameData.Name}' with values from '{newGameData.gameData.Name}'");
         }
         
-        public virtual void NewGame(SaveSlotData saveSlotData) {
+        public virtual void NewGame(SaveSlotDataSO saveSlotData) {
             gameData = (TGameData)newGameData.gameData.Clone();
 
             gameData.Name = saveSlotData.saveSlotName;

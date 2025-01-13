@@ -9,9 +9,9 @@ using Utilities.DataBinding;
 
 namespace SaveLoadSystem {
     public class SaveLoadSystemManager : SaveLoadSystemBase<SaveLoadSystemManager, SaveGameData> {
-        [SerializeField, Required] private SaveSlotData saveSlot1Data;
-        [SerializeField, Required] private SaveSlotData saveSlot2Data;
-        [SerializeField, Required] private SaveSlotData saveSlot3Data;
+        [SerializeField, Required] private SaveSlotDataSO saveSlot1Data;
+        [SerializeField, Required] private SaveSlotDataSO saveSlot2Data;
+        [SerializeField, Required] private SaveSlotDataSO saveSlot3Data;
         
         protected override void Awake() {
             base.Awake();
@@ -34,7 +34,7 @@ namespace SaveLoadSystem {
             LoadSaveSlotData(saveSlot3Data);
         }
 
-        private void LoadSaveSlotData(SaveSlotData saveSlotData) {
+        private void LoadSaveSlotData(SaveSlotDataSO saveSlotData) {
             var pathToSaveFile = DataService.GetPathToSaveFile(saveSlotData.saveSlotName);
             if (!File.Exists(pathToSaveFile)) {
                 Debug.Log(pathToSaveFile + " does not exist!");

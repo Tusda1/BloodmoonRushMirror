@@ -312,7 +312,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
     #region ---DataBindingMethods---
     public virtual void Bind() {
-        if (SaveLoadSystemManager != null) {
+        if (SaveLoadSystemManager.HasInstance) {
             SaveLoadSystemManager.Bind(this, DataInGameData);
         }
         else {

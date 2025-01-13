@@ -2,9 +2,9 @@ using SceneCollections;
 using UnityEngine;
 
 [CreateAssetMenu(
-    fileName = nameof(SaveSlotData), 
-    menuName = "SaveLoadSystem/UITK Create " + nameof(SaveSlotData))]
-public class SaveSlotData : ScriptableObject {    
+    fileName = nameof(SaveSlotDataSO), 
+    menuName = "SaveLoadSystem/UITK Create " + nameof(SaveSlotDataSO))]
+public class SaveSlotDataSO : ScriptableObject {    
     public string saveSlotName;
     public string lastTimePlayed;
     public string currentLevel;
