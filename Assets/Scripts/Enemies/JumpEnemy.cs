@@ -12,7 +12,7 @@ public class JumpEnemy : ReactiveBase
     private GravityObjectPlayerMovement _playerMovement;
     private Vector2 _lastFramePosition;
     private bool _readyToJump;
-    private float initialGravityModifier;
+    private float _initialGravityModifier;
     
     protected override void Action()
     {
@@ -40,7 +40,7 @@ public class JumpEnemy : ReactiveBase
     private IEnumerator Jump()
     {
         _readyToJump = false;
-        initialGravityModifier = GravityModifier;
+        _initialGravityModifier = GravityModifier;
         GravityModifier = 0;
         float yDifference = targetObject.position.y - _lastFramePosition.y;
 
@@ -53,6 +53,6 @@ public class JumpEnemy : ReactiveBase
             yield return new WaitForFixedUpdate();
         }
         
-        GravityModifier = initialGravityModifier;
+        GravityModifier = _initialGravityModifier;
     }
 }
