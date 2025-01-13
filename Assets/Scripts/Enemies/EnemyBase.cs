@@ -121,7 +121,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         TakeDamageTimer = Time.time;
 
-        enemyAnimationBase.PlayHitAnimation();
+        if (enemyAnimationBase != null) enemyAnimationBase.PlayHitAnimation();
         StartCoroutine(FlashWhite());
 
         if (bloodSplatter != null) {
