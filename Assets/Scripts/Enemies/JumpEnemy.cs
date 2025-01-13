@@ -21,12 +21,12 @@ public class JumpEnemy : ReactiveBase
             return;
         }
 
-        if (Math.Abs(_lastFramePosition.y - targetObject.position.y) < yPositionTolerance)
+        if (targetObject.position.y - _lastFramePosition.y > yPositionTolerance)
         {
             _readyToJump = true;
         }
         
-        if (Math.Abs(_lastFramePosition.y - targetObject.position.y) > yPositionTolerance && _readyToJump && isGrounded)
+        if (_readyToJump && isGrounded)
         {
             StartCoroutine(Jump());
         }
@@ -46,7 +46,7 @@ public class JumpEnemy : ReactiveBase
             
             var position = transform.position;
             transform.position = new Vector2(position.x, position.y + yDifference);
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
         
         GravityModifier = 1;
