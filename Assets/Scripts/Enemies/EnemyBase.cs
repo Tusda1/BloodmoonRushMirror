@@ -17,7 +17,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     [SerializeField] private float invulnerableTime = 0.5f;
     [SerializeField] private float knockbackDuration = 0.1f;
     [SerializeField] private DamageInstance enemyDamageInstance;
-    [SerializeField] protected float weight;
+    [SerializeField] protected float weight = 1;
     [SerializeField] protected int rubyDropAmount = 3;
     [SerializeField] private float rubySpawnHeight = 0.8f;
     [SerializeField] private float rubySpawnDelay = 0.2f;
