@@ -15,7 +15,7 @@ public class DanceDash : DraculaState
     private float _waitStartTime;
     
     private Teleport _teleport;
-    private TeleportConditionalActivation _teleportConditionalActivation = new();
+    private readonly TeleportConditionalActivation _teleportConditionalActivation = new();
     
     private enum DanceDashStage
     {

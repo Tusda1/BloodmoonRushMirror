@@ -20,6 +20,7 @@ public class Boomerang : GravityObject
     {
         base.Awake();
         
+        GravityModifier = 0f;
         _rb2d = GetComponent<Rigidbody2D>();
     }
 
