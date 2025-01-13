@@ -13,6 +13,7 @@ public class JumpEnemy : ReactiveBase
     private Vector2 _lastFramePosition = new Vector2(-100, -100);
     private bool _readyToJump;
     private float _initialGravityModifier;
+    private bool _isJumping;
     
     protected override void Action()
     {
@@ -44,9 +45,10 @@ public class JumpEnemy : ReactiveBase
         _readyToJump = false;
         _initialGravityModifier = GravityModifier;
         GravityModifier = 0;
+        _isJumping = true;
         float yDifference = targetObject.position.y - _lastFramePosition.y;
 
-        while (yDifference > 0)
+        while (yDifference > 0 || !_isJumping)
         {
             yDifference = targetObject.position.y - _lastFramePosition.y;
             
@@ -55,6 +57,14 @@ public class JumpEnemy : ReactiveBase
             yield return new WaitForFixedUpdate();
         }
         
+        _isJumping = false;
         GravityModifier = _initialGravityModifier;
+    }
+    
+    protected override bool CanBeDamaged(DamageInstance damageInstance)
+    {
+        _isJumping = false;
+        
+        return true;
     }
 }
