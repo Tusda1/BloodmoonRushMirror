@@ -204,7 +204,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         if (IsDead) yield break;
 
         IsStunned = false;
-        enemyAnimationBase.PlayDefaultAnimation();
+        if (enemyAnimationBase != null) enemyAnimationBase.PlayDefaultAnimation();
     }
 
     private void Die() {
