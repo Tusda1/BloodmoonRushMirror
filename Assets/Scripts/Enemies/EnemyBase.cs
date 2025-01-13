@@ -114,6 +114,10 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         if (Time.time - TakeDamageTimer < invulnerableTime && !damageInstance.ignoreInvincibility) {
             return;
         }
+        
+        if (!CanBeDamaged()) {
+            return;
+        }
 
         TakeDamageTimer = Time.time;
 
@@ -147,6 +151,11 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         else {
             StartCoroutine(Knockback(damageInstance.knockback));
         }
+    }
+    
+    protected virtual bool CanBeDamaged()
+    {
+        return true;
     }
 
     private IEnumerator FlashWhite() {
@@ -280,8 +289,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             Vector2 directionToPlayer = (playerObject.transform.position - transform.position).normalized;
             Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
 
-            enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized *
-                                            enemyDamageInstance.knockbackStrength;
+            enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * enemyDamageInstance.knockbackStrength;
             Player.TakeDamage(enemyDamageInstance);
         }
     }
