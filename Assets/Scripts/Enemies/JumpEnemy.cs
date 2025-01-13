@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Player;
 using UnityEngine;
 
 public class JumpEnemy : ReactiveBase
@@ -8,13 +9,13 @@ public class JumpEnemy : ReactiveBase
     [SerializeField] private float yPositionTolerance = 0.05f;
     [SerializeField] private float jumpModifier = 1f;
     
-    private Rigidbody2D _playerRb2D;
+    private GravityObjectPlayerMovement _playerMovement;
     private Vector2 _lastFramePosition;
     private bool _readyToJump;
     
     protected override void Action()
     {
-        if (_playerRb2D == null) _playerRb2D = targetObject.GetComponent<Rigidbody2D>();
+        if (_playerMovement == null) _playerMovement = targetObject.GetComponent<GravityObjectPlayerMovement>();
         
         if (targetObject == null && Vector2.Distance(targetObject.position, transform.position) > keepAgroDistance)
         {
@@ -22,7 +23,7 @@ public class JumpEnemy : ReactiveBase
             return;
         }
 
-        if (targetObject.position.y - _lastFramePosition.y > yPositionTolerance)
+        if (targetObject.position.y - _lastFramePosition.y > yPositionTolerance && !_playerMovement.isClimbing)
         {
             _readyToJump = true;
         }
