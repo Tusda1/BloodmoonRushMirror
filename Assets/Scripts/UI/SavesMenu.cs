@@ -1,11 +1,14 @@
 using System;
 using Attributes;
+using SaveLoadSystem;
 using SceneCollections;
+using UI_Toolkit;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 namespace UI {
-    [RequireComponent(typeof(UITK_WorldSpaceInteractive))]
+    [RequireComponent(typeof(UITKWorldSpaceInteractive))]
     public class SavesMenu : MonoBehaviour {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
@@ -13,6 +16,10 @@ namespace UI {
         [SerializeField, Required] private SaveSlotData saveSlot1Data;
         [SerializeField, Required] private SaveSlotData saveSlot2Data;
         [SerializeField, Required] private SaveSlotData saveSlot3Data;
+        
+        [SerializeField, Required] private SceneCollectionSO newGameSceneCollection;
+        
+        [SerializeField, Required] private InputActionReference backAction;
         
         private event Action OnMenuActivated = delegate { };
         private event Action OnMenuDeactivated = delegate { };
@@ -30,10 +37,12 @@ namespace UI {
 
         private void Awake() {
             _root = uiDocument.rootVisualElement;
-            _savesMenuRoot = _root.Q<VisualElement>("SavesMenu");
+            _savesMenuRoot = _root.Q<VisualElement>("SavesMenuRoot");
         }
 
         private void Start() {
+            _cameraEffects = ServiceLocator.Get<CameraEffects>();
+            
             _saveSlot1 = _savesMenuRoot.Q<Button>("SaveSlot1");
             _saveSlot2 = _savesMenuRoot.Q<Button>("SaveSlot2");
             _saveSlot3 = _savesMenuRoot.Q<Button>("SaveSlot3");
@@ -41,9 +50,16 @@ namespace UI {
             _saveSlot1.clicked += () => LoadSave(saveSlot1Data);
             _saveSlot2.clicked += () => LoadSave(saveSlot2Data);
             _saveSlot3.clicked += () => LoadSave(saveSlot3Data);
+            
+            _savesMenuRoot.SetEnabled(false);
         }
 
         private void LoadSave(SaveSlotData saveSlotData) {
+            if (saveSlotData.lastTimePlayed == string.Empty) {
+                SaveLoadSystemManager.Instance.NewGame(saveSlotData);
+                saveSlotData.currentSceneCollection = newGameSceneCollection;
+            }
+            
             _cameraEffects.CircleFadeOut(1,
                 () => _ = SceneCollectionManager.LoadSceneCollectionAsync(saveSlotData.currentSceneCollection,
                     () => _cameraEffects.CircleFadeIn(1)));
@@ -59,6 +75,9 @@ namespace UI {
 
         public void Activate() {
             _saveSlot1.Focus();
+            _savesMenuRoot.SetEnabled(true);
+            _savesMenuRoot.RemoveFromClassList("left");
+            backAction.action.performed += Deactivate;
             
             Debug.Log("SavesMenu Activated");
             
@@ -66,9 +85,16 @@ namespace UI {
         }
 
         public void Deactivate() {
+            _savesMenuRoot.AddToClassList("left");
+            backAction.action.performed -= Deactivate;
+            _savesMenuRoot.SetEnabled(false);
             Debug.Log("SavesMenu Deactivated");
             
             OnMenuDeactivated.Invoke();
+        }
+
+        private void Deactivate(InputAction.CallbackContext obj) {
+            Deactivate();
         }
     }
 }

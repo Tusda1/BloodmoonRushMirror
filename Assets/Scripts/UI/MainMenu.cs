@@ -25,18 +25,14 @@ namespace UI {
 
         #region ---PrivateFields---
         private VisualElement _rootElement;
-        private VisualElement _mainMenuElement;
+        private VisualElement _mainMenuRoot;
 
         private Label _pressAnyKeyLabel;
 
         private Button _startButton;
         private Button _settingsButton;
         private Button _quitButton;
-
-        private VisualElement _mainMenu;
-        private VisualElement _settings;
-
-        private CameraEffects _cameraEffects;
+        private Button _creditsButton;
         
         private Action _updateActions = delegate { };
         #endregion
@@ -45,14 +41,13 @@ namespace UI {
         private void Awake() {
             _rootElement = uiDocument.rootVisualElement;
 
-            _mainMenuElement = _rootElement.Q<VisualElement>("MainMenu");
+            _mainMenuRoot = _rootElement.Q<VisualElement>("MainMenuRoot");
             _pressAnyKeyLabel = _rootElement.Q<Label>("PressAnyKeyLabel");
 
             _startButton = _rootElement.Q<Button>("StartButton");
             _settingsButton = _rootElement.Q<Button>("SettingsButton");
             _quitButton = _rootElement.Q<Button>("QuitButton");
-
-            _mainMenu = _rootElement.Q<VisualElement>("MainMenuRoot");
+            _creditsButton = _rootElement.Q<Button>("CreditsButton");
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -68,8 +63,6 @@ namespace UI {
         private void Start() {
             FMODManager.RaiseSetParameterEvent("levelMusicProgression", 0);
             FMODManager.RaiseMusicEvent("Music_level1");
-
-            _cameraEffects = ServiceLocator.Get<CameraEffects>();
             
             _startButton.clicked += savesMenu.Activate;
             savesMenu.SetOnActivated(HideMenu);
@@ -80,6 +73,26 @@ namespace UI {
             settingsMenu.SetOnDeactivated(ShowMenu);
             
             _quitButton.clicked += QuitButtonClicked;
+            
+            _startButton.RegisterCallback<NavigationMoveEvent>(TriggerFocusCreditsButton);
+            _settingsButton.RegisterCallback<NavigationMoveEvent>(TriggerFocusCreditsButton);
+            _quitButton.RegisterCallback<NavigationMoveEvent>(TriggerFocusCreditsButton);
+            
+            _creditsButton.RegisterCallback<NavigationMoveEvent>(evt => {
+                if (evt.direction == NavigationMoveEvent.Direction.Down) {
+                    _startButton.focusController.IgnoreEvent(evt);
+                    evt.StopPropagation();
+                    _startButton.Focus();
+                }
+            });
+        }
+
+        private void TriggerFocusCreditsButton(NavigationMoveEvent evt) {
+            if (evt.direction == NavigationMoveEvent.Direction.Up) {
+                _startButton.focusController.IgnoreEvent(evt);
+                evt.StopPropagation();
+                _creditsButton.Focus();
+            }
         }
 
         private void Update() {
@@ -87,13 +100,15 @@ namespace UI {
         }
 
         private void HideMenu() {
-            _mainMenuElement.AddToClassList("down");
-            _mainMenuElement.enabledSelf = false;
+            _mainMenuRoot.AddToClassList("down");
+            _mainMenuRoot.SetEnabled(false);
         }
         
         private void ShowMenu() {
-            _mainMenu.RemoveFromClassList("down");
-            _mainMenu.enabledSelf = true;
+            _mainMenuRoot.SetEnabled(true);
+            _mainMenuRoot.RemoveFromClassList("down");
+            
+            _startButton.Focus();
         }
 
         private static void QuitButtonClicked() {
@@ -119,9 +134,7 @@ namespace UI {
 
             _pressAnyKeyLabel.style.color = new StyleColor(new Color(0, 0, 0, 0));
 
-            _mainMenuElement.RemoveFromClassList("down");
-
-            _startButton.Focus();
+            ShowMenu();
         }
     }
 }

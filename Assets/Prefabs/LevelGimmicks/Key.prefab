@@ -102,9 +102,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4896a349078c49418bc15d686f07c90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrounded: 0
-  lockToAxis: 0
   rb2d: {fileID: 1987508211156300545}
+  isGrounded: 0
+  isFalling: 0
+  lockToAxis: 0
+  targetVelocity: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
   GravityModifier: 0
   boxCollider2D: {fileID: 6836878641867621262}
   isCollected: 0

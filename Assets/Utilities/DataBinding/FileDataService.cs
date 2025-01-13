@@ -24,12 +24,12 @@ namespace Utilities.DataBinding {
             FileExtension = Serializer.FileExtension;
         }
 
-        private string GetPathToSaveFile(string fileName) {
-            return Path.Combine(DataPath, fileName);
+        public string GetPathToSaveFile(string fileName) {
+            return Path.Combine(DataPath, fileName)  + FileExtension;
         }
 
         public void Save(TGameData gameData) {
-            var filePath = GetPathToSaveFile(gameData.Name) + FileExtension;
+            var filePath = GetPathToSaveFile(gameData.Name);
 
             File.WriteAllText(filePath, Serializer.Serialize(gameData));
         }
