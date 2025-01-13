@@ -26,7 +26,7 @@ public class JumpEnemy : ReactiveBase
             _readyToJump = true;
         }
         
-        if (Math.Abs(_lastFramePosition.y - targetObject.position.y) > yPositionTolerance && _readyToJump)
+        if (Math.Abs(_lastFramePosition.y - targetObject.position.y) > yPositionTolerance && _readyToJump && isGrounded)
         {
             StartCoroutine(Jump());
         }
