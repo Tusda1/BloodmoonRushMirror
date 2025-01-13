@@ -26,7 +26,6 @@ public class ShieldGuy : Skeleton
             {
                 _blockCounter = 0;
                 base.Attack();
-                return true;
             }
         }
         
