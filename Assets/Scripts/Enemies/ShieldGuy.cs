@@ -30,6 +30,8 @@ public class ShieldGuy : Skeleton
             }
         }
         
+        print(damageInstance.which);
+        
         return damageInstance.which == DamageInstance.WhichAttack.CrouchAttack;
     }
 }
