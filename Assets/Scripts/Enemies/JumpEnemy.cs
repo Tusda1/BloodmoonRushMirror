@@ -10,12 +10,14 @@ public class JumpEnemy : ReactiveBase
     [SerializeField] private float jumpModifier = 1f;
     
     private GravityObjectPlayerMovement _playerMovement;
-    private Vector2 _lastFramePosition;
+    private Vector2 _lastFramePosition = new Vector2(-100, -100);
     private bool _readyToJump;
     private float _initialGravityModifier;
     
     protected override void Action()
     {
+        if (_lastFramePosition == new Vector2(-100, -100)) _lastFramePosition = targetObject.position;
+        
         if (_playerMovement == null) _playerMovement = targetObject.GetComponent<GravityObjectPlayerMovement>();
         
         if (targetObject == null && Vector2.Distance(targetObject.position, transform.position) > keepAgroDistance)
