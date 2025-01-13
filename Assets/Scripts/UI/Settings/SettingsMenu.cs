@@ -12,19 +12,12 @@ namespace UI.Settings {
     public class SettingsMenu : MonoBehaviour, IMenu {
         #region ---Fields---
         #region ***---GetOrAddComponents---***
-        [GetOrAddComponent, SerializeField, HideInInspector]
-        private UIDocument uiDocument;
-
-        [GetOrAddComponent, SerializeField, HideInInspector]
-        private AudioSettingsMenu audioSettingsMenu;
-
-        [GetOrAddComponent, SerializeField, HideInInspector]
-        private VideoSettingsMenu videoSettingsMenu;
-
-        [GetOrAddComponent, SerializeField, HideInInspector]
-        private ControlsSettingsMenu controlsSettingsMenu;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private AudioSettingsMenu audioSettingsMenu; 
+        [GetOrAddComponent, SerializeField, HideInInspector] private VideoSettingsMenu videoSettingsMenu;
+        [GetOrAddComponent, SerializeField, HideInInspector] private ControlsSettingsMenu controlsSettingsMenu;
         #endregion
-
+        
         [SerializeField] private InputActionReference tabNavigateAction;
         [SerializeField] private InputActionReference backAction;
 
