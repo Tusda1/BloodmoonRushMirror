@@ -12,6 +12,13 @@ public interface IDamageable {
     public float knockbackStrength;
     public int staggerStrength;
     public bool ignoreInvincibility;
+    public WhichAttack which;
+
+    public enum WhichAttack {
+        UpAttack,
+        CrouchAttack,
+        DashAttack
+    }
         
     public event Action OnHitAction = delegate { };
     public event Action OnKillAction = delegate { };
