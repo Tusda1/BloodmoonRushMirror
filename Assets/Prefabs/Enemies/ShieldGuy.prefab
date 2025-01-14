@@ -91,6 +91,9 @@ GameObject:
   - component: {fileID: 615024018191861814}
   - component: {fileID: 6437191641786056423}
   - component: {fileID: 505606815429416726}
+  - component: {fileID: 928200434660879670}
+  - component: {fileID: -6259984085813048554}
+  - component: {fileID: -2495489385183675533}
   m_Layer: 8
   m_Name: ShieldGuy
   m_TagString: Enemy
@@ -107,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 7610073710609852711}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.08, y: -14.22, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -187,22 +190,22 @@ MonoBehaviour:
   lockToAxis: 0
   targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
-  GravityModifier: 1
-  takesSpikeDamage: 0
+  GravityModifier: 5
+  takesSpikeDamage: 1
   faceLeftOnStart: 0
-  moveSpeed: 0
-  maxHealth: 0
+  moveSpeed: 2
+  maxHealth: 3
   invulnerableTime: 0.5
   knockbackDuration: 0.1
   enemyDamageInstance:
-    damage: 0
+    damage: 1
     knockback: {x: 0, y: 0}
     knockbackStrength: 0
     staggerStrength: 0
     ignoreInvincibility: 0
     which: 0
-  weight: 0
-  rubyDropAmount: 3
+  weight: 4
+  rubyDropAmount: 5
   rubySpawnHeight: 0.8
   rubySpawnDelay: 0.2
   knockbackSmoothDampScript:
@@ -216,8 +219,8 @@ MonoBehaviour:
     health: 0
     gemsContaining: 0
     position: {x: 0, y: 0, z: 0}
-  detectionDistance: 20
-  keepAgroDistance: 2
+  detectionDistance: 10
+  keepAgroDistance: 25
   smoothDampScript:
     smoothTime: 0.1
 --- !u!50 &6437191641786056423
@@ -293,3 +296,54 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &928200434660879670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7610073710609852711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6323bfd0d68967643adf1ebbc5efd4bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
+  hitAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
+--- !u!114 &-6259984085813048554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7610073710609852711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad50f81b1d25c441943c37a89ba23f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Animator: {fileID: -2495489385183675533}
+  _Transitions: {fileID: 0}
+  _ActionOnDisable: 0
+--- !u!95 &-2495489385183675533
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7610073710609852711}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
