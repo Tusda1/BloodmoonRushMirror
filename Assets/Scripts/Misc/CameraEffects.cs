@@ -89,12 +89,9 @@ public class CameraEffects : MonoBehaviour {
             var progressValue = curve.Evaluate(currentProgress / duration) * FadeCircleDefaultSize;
             circleFadeMaterial.SetFloat(Size, progressValue);
 
-            Debug.Log(progressValue);
-
             await Awaitable.NextFrameAsync();
         }
         
-        ClearAllRenderTextures();
         callback?.Invoke();
     }
 

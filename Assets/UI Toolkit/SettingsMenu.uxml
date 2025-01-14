@@ -3,8 +3,8 @@
     <engine:Template name="VideoSettingsMenu" src="project://database/Assets/UI%20Toolkit/Menus/VideoSettingsMenu.uxml?fileID=9197481963319205126&amp;guid=4d3749700c8b02746a6d2c268c1af575&amp;type=3#VideoSettingsMenu" />
     <engine:Template name="ControlsMenu" src="project://database/Assets/UI%20Toolkit/Menus/ControlsMenu.uxml?fileID=9197481963319205126&amp;guid=16fce59cfa7388048bbdf797ad2de3b6&amp;type=3#ControlsMenu" />
     <Style src="project://database/Assets/UI%20Toolkit/SpriteElements/BatArrow.uss?fileID=7433441132597879392&amp;guid=49da07a1ecb911d4fa7527502335c7aa&amp;type=3#BatArrow" />
-    <Style src="project://database/Assets/UI%20Toolkit/Left-Right.uss?fileID=7433441132597879392&amp;guid=bf66cd8737e6f00428f5f82f7deb54f1&amp;type=3#Left-Right" />
-    <engine:VisualElement name="SettingsMenuRoot" class="down" style="flex-grow: 1; align-items: center; transition-property: translate; transition-timing-function: ease-out-bounce; transition-duration: 2s;">
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/Left-Right.uss?fileID=7433441132597879392&amp;guid=bf66cd8737e6f00428f5f82f7deb54f1&amp;type=3#Left-Right" />
+    <engine:VisualElement name="SettingsMenuRoot" class="down" style="flex-grow: 1; align-items: center; transition-property: translate; transition-timing-function: ease-out-bounce; transition-duration: 2s; width: 800px; height: 450px; max-width: 800px; min-width: 800px; max-height: 450px; min-height: 450px;">
         <engine:Instance template="AudioSettingsMenuVisualTree" name="AudioSettingsMenu" class="menu" />
         <engine:Instance template="VideoSettingsMenu" name="VideoSettingsMenu" class="menu right" />
         <engine:Instance template="ControlsMenu" name="ControlsMenu" class="menu right" />

@@ -1,4 +1,4 @@
-SpriteButton {
+Button {
     background-color: rgba(0, 0, 0, 0);
     border-top-width: 0;
     border-right-width: 0;
@@ -8,16 +8,66 @@ SpriteButton {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
 }
 
-#ResumeButton :focus :hover {
-    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%202.png?fileID=1982516478&guid=19a74dc91fd5b1045a4c3905246faefc&type=3#UI_Asset_Sheet 2_79");
+#ResumeButton {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%204.png?fileID=1960922159&guid=87098f166c6b9a64fa8b8de1e573db47&type=3#UI_Asset_Sheet 4_20");
+    width: 202px;
+    height: 41px;
+    max-height: 41px;
+    min-height: 41px;
+    max-width: 202px;
+    min-width: 202px;
 }
 
-#SettingsButton :focus :hover {
-    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%202.png?fileID=2066827320&guid=19a74dc91fd5b1045a4c3905246faefc&type=3#UI_Asset_Sheet 2_64");
+#ResumeButton:focus {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%204.png?fileID=1011916260&guid=87098f166c6b9a64fa8b8de1e573db47&type=3#UI_Asset_Sheet 4_19");
 }
 
-#MainMenuButton :focus :hover {
-    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%202.png?fileID=-1215774155&guid=19a74dc91fd5b1045a4c3905246faefc&type=3#UI_Asset_Sheet 2_21");
+#ResumeButton:hover {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%204.png?fileID=1011916260&guid=87098f166c6b9a64fa8b8de1e573db47&type=3#UI_Asset_Sheet 4_19");
+}
+
+#SettingsButton {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%204.png?fileID=1324875848&guid=87098f166c6b9a64fa8b8de1e573db47&type=3#UI_Asset_Sheet 4_22");
+    width: 252px;
+    max-width: 252px;
+    min-width: 252px;
+    height: 41px;
+    max-height: 41px;
+    min-height: 41px;
+}
+
+#SettingsButton:focus {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%204.png?fileID=-1626915258&guid=87098f166c6b9a64fa8b8de1e573db47&type=3#UI_Asset_Sheet 4_24");
+}
+
+#SettingsButton:hover {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%204.png?fileID=-1626915258&guid=87098f166c6b9a64fa8b8de1e573db47&type=3#UI_Asset_Sheet 4_24");
+}
+
+#MainMenuButton {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%204.png?fileID=-2072615422&guid=87098f166c6b9a64fa8b8de1e573db47&type=3#UI_Asset_Sheet 4_21");
+    width: 302px;
+    height: 41px;
+    max-height: 41px;
+    min-height: 41px;
+    max-width: 302px;
+    min-width: 302px;
+}
+
+#MainMenuButton:focus {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%204.png?fileID=1317435248&guid=87098f166c6b9a64fa8b8de1e573db47&type=3#UI_Asset_Sheet 4_23");
+}
+
+#MainMenuButton:hover {
+    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet%204.png?fileID=1317435248&guid=87098f166c6b9a64fa8b8de1e573db47&type=3#UI_Asset_Sheet 4_23");
 }

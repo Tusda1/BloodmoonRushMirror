@@ -11,4 +11,11 @@ public class SaveSlotDataSO : ScriptableObject {
     public string currentProgress;
     
     public SceneCollectionSO currentSceneCollection;
+
+    public void Clear() {
+        lastTimePlayed = "";
+        currentLevel = "";
+        currentProgress = "";
+        currentSceneCollection = null;
+    }
 }

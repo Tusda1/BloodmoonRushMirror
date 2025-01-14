@@ -29,6 +29,10 @@ namespace SaveLoadSystem {
                 DataService ??= new FileDataService<SaveGameData>();
             }
 #endif
+            saveSlot1Data.Clear();
+            saveSlot2Data.Clear();
+            saveSlot3Data.Clear();
+            
             LoadSaveSlotData(saveSlot1Data);
             LoadSaveSlotData(saveSlot2Data);
             LoadSaveSlotData(saveSlot3Data);
