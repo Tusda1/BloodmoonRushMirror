@@ -85,7 +85,6 @@ namespace Player {
         #endregion
 
         #region ***---GameManagers---***
-        private static PauseMenu PauseMenu => PauseMenu.Instance;
         private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
         #endregion
 
@@ -134,12 +133,6 @@ namespace Player {
         }
 
         #region ***---InputActions---***
-        public void OnPause(InputValue inputValue) {
-            if (!inputValue.isPressed) return;
-
-            PauseMenu.PauseToggle();
-        }
-
         public void OnSkipDialogue(InputValue inputValue) {
             if (!inputValue.isPressed) return;
             DialogueUI.Instance?.TriggerOnSkipDialogue();

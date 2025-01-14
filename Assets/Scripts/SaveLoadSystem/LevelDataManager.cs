@@ -100,7 +100,12 @@ namespace SaveLoadSystem {
         #region ---DataBindingMethods---
 
         public void Bind() {
-            SaveLoadSystemManager.Bind(this, DataInGameData);
+            if (SaveLoadSystemManager != null) {
+                SaveLoadSystemManager.Bind(this, DataInGameData);
+            }
+            else {
+                Debug.LogWarning("No SaveLoadSystemManager found");
+            }
         }
 
 #if UNITY_EDITOR

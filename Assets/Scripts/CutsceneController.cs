@@ -21,6 +21,8 @@ public class CutsceneController : MonoBehaviour {
         StartCoroutine(PlayCutscene());
 
         videoPlayer.loopPointReached += _ => CutsceneEnded();
+        
+        ServiceLocator.Get<CameraEffects>().ClearAllRenderTextures();
     }
 
     private IEnumerator PlayCutscene() {

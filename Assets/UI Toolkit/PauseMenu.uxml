@@ -1,13 +1,13 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="SettingsMenu" src="project://database/Assets/UI%20Toolkit/SettingsMenu.uxml?fileID=9197481963319205126&amp;guid=774d38d636bfb324eab883249e6c0099&amp;type=3#SettingsMenu" />
-    <Style src="project://database/Assets/UI%20Toolkit/---LevelUI---/PauseMenu.uss?fileID=7433441132597879392&amp;guid=23917c89f8fc1424d98e4509b5c106b5&amp;type=3#PauseMenu" />
-    <Style src="project://database/Assets/UI%20Toolkit/Left-Right.uss?fileID=7433441132597879392&amp;guid=bf66cd8737e6f00428f5f82f7deb54f1&amp;type=3#Left-Right" />
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/PauseMenu.uss?fileID=7433441132597879392&amp;guid=23917c89f8fc1424d98e4509b5c106b5&amp;type=3#PauseMenu" />
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/Left-Right.uss?fileID=7433441132597879392&amp;guid=bf66cd8737e6f00428f5f82f7deb54f1&amp;type=3#Left-Right" />
     <engine:VisualElement style="flex-grow: 1; align-items: center; justify-content: center;">
         <UI_Toolkit.SpriteElement name="PauseMenuRoot" sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%202.png?fileID=1954473027&amp;guid=19a74dc91fd5b1045a4c3905246faefc&amp;type=3#UI_Asset_Sheet 2_98" style="position: relative; align-self: center; justify-content: space-around; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 116px; padding-right: 22px; padding-bottom: 39px; padding-left: 22px;">
-            <UI_Toolkit.SpriteButton name="ResumeButton" sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%202.png?fileID=-766376916&amp;guid=19a74dc91fd5b1045a4c3905246faefc&amp;type=3#UI_Asset_Sheet 2_73" />
-            <UI_Toolkit.SpriteButton name="SettingsButton" sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%202.png?fileID=1435570532&amp;guid=19a74dc91fd5b1045a4c3905246faefc&amp;type=3#UI_Asset_Sheet 2_43" />
-            <UI_Toolkit.SpriteButton name="MainMenuButton" sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%202.png?fileID=-1781437717&amp;guid=19a74dc91fd5b1045a4c3905246faefc&amp;type=3#UI_Asset_Sheet 2_5" />
+            <engine:Button name="ResumeButton" sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%202.png?fileID=-766376916&amp;guid=19a74dc91fd5b1045a4c3905246faefc&amp;type=3#UI_Asset_Sheet 2_73" />
+            <engine:Button name="SettingsButton" sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%202.png?fileID=1435570532&amp;guid=19a74dc91fd5b1045a4c3905246faefc&amp;type=3#UI_Asset_Sheet 2_43" />
+            <engine:Button name="MainMenuButton" sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%202.png?fileID=-1781437717&amp;guid=19a74dc91fd5b1045a4c3905246faefc&amp;type=3#UI_Asset_Sheet 2_5" />
         </UI_Toolkit.SpriteElement>
-        <engine:Instance template="SettingsMenu" name="SettingsMenu" style="width: 100%; height: 100%; position: absolute;" />
+        <engine:Instance template="SettingsMenu" name="SettingsMenu" style="width: 0; height: 0; position: absolute; align-items: flex-start; align-self: flex-start; justify-content: space-around;" />
     </engine:VisualElement>
 </engine:UXML>

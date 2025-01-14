@@ -54,6 +54,10 @@ namespace UI {
             _savesMenuRoot.SetEnabled(false);
         }
 
+        private void OnDisable() {
+            backAction.action.performed -= Deactivate;
+        }
+
         private void LoadSave(SaveSlotDataSO saveSlotData) {
             if (saveSlotData.lastTimePlayed == string.Empty) {
                 SaveLoadSystemManager.Instance.NewGame(saveSlotData);

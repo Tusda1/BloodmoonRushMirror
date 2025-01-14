@@ -66,7 +66,7 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
         
         LevelDataManager.CurrentCheckpointData.ID = ID;
         LevelDataManager.CurrentCheckpointData.Position = transform.position;
-        SaveLoadSystemManager.SaveBindings();
+        SaveLoadSystemManager?.SaveBindings();
     }
 
     #region ---DataBindingMethods---
