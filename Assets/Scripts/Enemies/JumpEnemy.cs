@@ -65,6 +65,6 @@ public class JumpEnemy : ReactiveBase
     {
         _isJumping = false;
         
-        return true;
+        return false;
     }
 }

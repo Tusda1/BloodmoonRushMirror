@@ -19,6 +19,7 @@ public class BetterRuby : GravityObject
     private PlayerScript _player;
     private ParticleSystem _particleSystem;
     private GameObject _spriteGameObject;
+    private float _initialGravityModifier;
     
     private enum RubyState
     {
@@ -31,7 +32,7 @@ public class BetterRuby : GravityObject
 
     protected new void Awake()
     {
-        base.Start();
+        base.Awake();
         
         _particleSystem = GetComponentInParent<ParticleSystem>();
         _spriteGameObject = transform.GetChild(0).gameObject;
@@ -45,8 +46,7 @@ public class BetterRuby : GravityObject
         
         if (!fall)
         {
-            GravityModifier = 0;
-            _state = RubyState.Hovering;
+            SwitchToHovering();
         }
         else
         {
@@ -60,6 +60,7 @@ public class BetterRuby : GravityObject
         initialY = 0;
         _startedMoving = false;
         _particleSystem.Stop();
+        GravityModifier = _initialGravityModifier;
     }
 
     private new void FixedUpdate()
@@ -85,13 +86,20 @@ public class BetterRuby : GravityObject
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundDistance, LayerMask.GetMask("Ground"));
         if (hit.collider != null)
         {
-            _state = RubyState.Hovering;
-            GravityModifier = 0;
+            SwitchToHovering();
         }
+    }
+    
+    private void SwitchToHovering()
+    {
+        _state = RubyState.Hovering;
+        _initialGravityModifier = GravityModifier;
+        GravityModifier = 0;
     }
     
     private void Hover()
     {
+        print("hover");
         if (initialY == 0) initialY = transform.position.y;
     
         Vector3 position = transform.position;

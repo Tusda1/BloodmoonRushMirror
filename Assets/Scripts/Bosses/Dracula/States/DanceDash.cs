@@ -15,9 +15,6 @@ public class DanceDash : DraculaState
     private int _dashAmount;
     private float _waitStartTime;
     
-    private Teleport _teleport;
-    private readonly TeleportConditionalActivation _teleportConditionalActivation = new();
-    
     private enum DanceDashStage
     {
         Teleport,
@@ -26,11 +23,6 @@ public class DanceDash : DraculaState
     }
     
     private DanceDashStage _danceDashStage;
-
-    private void Start()
-    {
-        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
-    }
 
     private void OnEnable()
     {
@@ -91,7 +83,7 @@ public class DanceDash : DraculaState
         switch (_danceDashStage)
         {
             case DanceDashStage.Teleport:
-                if (!_teleport.IsTeleporting) _teleportConditionalActivation.ActivateTeleport(transform.position, _dashOrigin, OnTeleportEnd, _teleport.TeleportToLocation);
+                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_dashOrigin);
                 break;
             case DanceDashStage.Dash:
                 Dash();
@@ -102,7 +94,7 @@ public class DanceDash : DraculaState
         }
     }
     
-    private void OnTeleportEnd()
+    protected override void OnTeleportEnd()
     {
         _danceDashStage = DanceDashStage.Dash;
         Boss.EnableGravity();

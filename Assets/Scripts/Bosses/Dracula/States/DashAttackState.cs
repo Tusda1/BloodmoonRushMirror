@@ -12,9 +12,6 @@ public class DashAttackState : DraculaState
     private Vector2 _dashTarget;
     private int _dashCount;
     private float _cooldownStartTime;
-    
-    private Teleport _teleport;
-    private TeleportConditionalActivation _teleportConditionalActivation = new();
 
     private enum DashState
     {
@@ -25,11 +22,6 @@ public class DashAttackState : DraculaState
     }
     
     private DashState _dashState;
-
-    private void Start()
-    {
-        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
-    }
 
     private void OnEnable()
     {
@@ -81,7 +73,7 @@ public class DashAttackState : DraculaState
         switch (_dashState)
         {
             case DashState.Teleporting:
-                _teleportConditionalActivation.ActivateTeleport(transform.position, _dashOrigin, OnTeleportEnd, _teleport.TeleportToLocation);
+                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_dashOrigin);
                 break;
             case DashState.PreparingDash:
                 PrepareDash();
@@ -95,7 +87,7 @@ public class DashAttackState : DraculaState
         }
     }
     
-    private void OnTeleportEnd()
+    protected override void OnTeleportEnd()
     {
         _dashState = DashState.PreparingDash;
         Boss.EnableGravity();

@@ -5,13 +5,6 @@ using Animancer;
 using System.Linq;
 using Random = UnityEngine.Random;
 
-public enum DraculaStateCategory
-{
-    Phase1,
-    Phase2,
-    General
-}
-
 public class DraculaBrain : MonoBehaviour 
 {
     [SerializeField] private BossBase boss;

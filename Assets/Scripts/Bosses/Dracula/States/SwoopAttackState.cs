@@ -17,9 +17,7 @@ public class SwoopAttackState : DraculaState
     private float _shootTimer;
     private float _timeSinceShoot;
     private Vector2 _temporaryPosition;
-
-    private Teleport _teleport;
-    private TeleportConditionalActivation _teleportConditionalActivation = new();
+    
     [SerializeField] private Swoop swoop = new();
     private Transform _player;
     
@@ -33,7 +31,6 @@ public class SwoopAttackState : DraculaState
 
     private void Start()
     {
-        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
         swoop.SetOnSwoopEnd(SwoopEnd);
         _player = ServiceLocator.Get<PlayerScript>().transform;
     }
@@ -92,7 +89,7 @@ public class SwoopAttackState : DraculaState
         switch (_swoopState)
         {
             case SwoopState.Teleporting:
-                if (!_teleport.IsTeleporting) _teleportConditionalActivation.ActivateTeleport(transform.position, _swoopOrigin, OnTeleportEnd, _teleport.TeleportToLocation);
+                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_swoopOrigin);
                 break;
             case SwoopState.Swooping:
                 transform.position = swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom);
@@ -106,7 +103,7 @@ public class SwoopAttackState : DraculaState
         }
     }
     
-    private void OnTeleportEnd()
+    protected override void OnTeleportEnd()
     {
         _swoopState = SwoopState.Swooping;
     }
@@ -143,7 +140,7 @@ public class SwoopAttackState : DraculaState
             
             // Shoot a projectile at the random point
             var position = transform.position;
-            var projectile = DraculaReference.pooler.GetPooledObject();
+            var projectile = DraculaReference.Pooler.GetPooledObject();
             projectile.transform.position = position;
             projectile.GetComponent<DraculaBatScript>().targetVector = (randomPoint - (Vector2)position).normalized;
             projectile.SetActive(true);
