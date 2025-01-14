@@ -50,7 +50,6 @@ public static class Builder {
             Directory.Delete(doNotShip, true);
         }
     }
-    #endregion
 
     private static void BuildSteamProfileAtPath(string profilePath) {
         FileUtil.DeleteFileOrDirectory(SteamBuildLocationPath);
@@ -58,6 +57,7 @@ public static class Builder {
         
         BuildProfileAtPath(profilePath, SteamBuildLocationPath);
     }
+    #endregion
 
     private static void BuildProfileAtPath(string profilePath, string locationPath) {
         var currentBuildProfile = BuildProfile.GetActiveBuildProfile();
