@@ -197,13 +197,14 @@ namespace Player {
             
             GroundCheck();
             isActuallyGrounded = isGrounded;
+            
+            if (_playerLadderLogic.LadderLogic()) return;
+            
 
             player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
             player.animator.SetBool(AnimatorIsFallingBool, isFalling);
             
             if (!PlayerMovementEnabled) return;
-            
-            if (_playerLadderLogic.LadderLogic()) return;
 
             CoyoteTimeLogic();
 

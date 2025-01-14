@@ -84,6 +84,8 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
             }
         }
 
+        IsGrounded = IsClimbing;
+
         _playerMovement.targetVelocity = new Vector2(0, InputVector.y * ClimbSpeed);
 
         if (InputVector.y > 0) {
@@ -104,7 +106,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
             }
         }
         else if (InputVector.y < 0) {
-            if (_playerMovement.isActuallyGrounded || LadderMiddle == null) {
+            if (_playerMovement.isActuallyGrounded) {
                 ExitLadder();
             }
         }
