@@ -8,11 +8,4 @@ public class DraculaState : BossState
     public DraculaStateCategory Category => category;
     
     protected Dracula DraculaReference => (Dracula)Boss;
-    
-    public event Action OnStateEnd;
-    
-    protected void EndState()
-    {
-        OnStateEnd?.Invoke();
-    }
 }

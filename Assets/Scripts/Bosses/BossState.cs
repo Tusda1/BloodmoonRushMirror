@@ -1,6 +1,7 @@
 using Animancer;
 using Animancer.FSM;
 using UnityEngine;
+using System;
 
 public enum BossStatePriority
 {
@@ -35,6 +36,13 @@ public class BossState : StateBehaviour
             
             return nextState.Priority > Priority;
         }
+    }
+    
+    public event Action OnStateEnd;
+    
+    protected void EndState()
+    {
+        OnStateEnd?.Invoke();
     }
     
 #if UNITY_EDITOR
