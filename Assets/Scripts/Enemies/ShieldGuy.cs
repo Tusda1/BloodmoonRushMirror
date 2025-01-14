@@ -19,17 +19,14 @@ public class ShieldGuy : Skeleton
                 _playerMovement.isDashing = false;
                 _blockCounter = 0;
                 base.Attack();
-                return true;
             }
             
-            if (_blockCounter >= 3)
+            else if (_blockCounter >= 3)
             {
                 _blockCounter = 0;
                 base.Attack();
             }
         }
-        
-        print(damageInstance.which);
         
         return damageInstance.which == DamageInstance.WhichAttack.CrouchAttack;
     }
