@@ -48,7 +48,7 @@ public class JumpEnemy : ReactiveBase
         _isJumping = true;
         float yDifference = targetObject.position.y - _lastFramePosition.y;
 
-        while (yDifference > 0 || !_isJumping)
+        while (yDifference > 0 && _isJumping)
         {
             yDifference = targetObject.position.y - _lastFramePosition.y;
             
