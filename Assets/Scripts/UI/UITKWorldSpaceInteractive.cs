@@ -23,7 +23,7 @@ public class UITKWorldSpaceInteractive : MonoBehaviour {
             Debug.DrawRay(cameraRay.origin, cameraRay.direction * 100f, Color.magenta);
 
             if (!Physics.Raycast(cameraRay, out var hit, 100f, LayerMask.GetMask("RenderTextures"))) {
-                Debug.Log("invalid position");
+                // Debug.Log("invalid position");
                 return invalidPosition;
             }
 

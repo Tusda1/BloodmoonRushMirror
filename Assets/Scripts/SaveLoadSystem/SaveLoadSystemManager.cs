@@ -84,6 +84,8 @@ namespace SaveLoadSystem {
         public void SaveBindings() {
 #if UNITY_EDITOR
             if (!Application.isPlaying) {
+                instance = this;
+                
                 SetDataBindsInEditor();
             }
 #endif
@@ -95,6 +97,8 @@ namespace SaveLoadSystem {
         public void LoadDataBinds() {
 #if UNITY_EDITOR
             if (!Application.isPlaying) {
+                instance = this;
+                
                 SetDataBindsInEditor();
             }
 #endif

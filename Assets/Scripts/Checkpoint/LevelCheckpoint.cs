@@ -71,11 +71,11 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
 
     #region ---DataBindingMethods---
     public void Bind() {
-        if (SaveLoadSystemManager != null) {
+        if (SaveLoadSystemManager != null || !Application.isPlaying) {
             SaveLoadSystemManager.Bind(this, DataInGameData);
         }
         else {
-            Debug.LogWarning("No SaveLoadSystemManager found");
+            Debug.LogWarning("No SaveLoadSystemManager found", this);
         }
     }
 
