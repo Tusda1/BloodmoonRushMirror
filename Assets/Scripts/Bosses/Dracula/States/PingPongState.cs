@@ -10,7 +10,6 @@ public class PingPongState : DraculaState
     private GameObject _player;
     private int _pingPongHitCount;
     private Vector2 _directionToPingPong;
-    private Teleport _teleport;
     private Vector2 _teleportPosition;
     
     [SerializeField] private float pingPongStartSpeed = 5f;
@@ -29,8 +28,6 @@ public class PingPongState : DraculaState
         //Initialize variables
         _pingPongCircle = Resources.Load<GameObject>("Prefabs/PingPongCircle");
         _player = ServiceLocator.Get<PlayerScript>().gameObject;
-        
-        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
     }
 
     private void OnEnable()
@@ -75,7 +72,7 @@ public class PingPongState : DraculaState
         switch (_pingPongState)
         {
             case PingPong.Teleport:
-                if (!_teleport.IsTeleporting) _teleport.TeleportToLocation(_teleportPosition);
+                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportPosition);
                 break;
             case PingPong.Spawn:
                 SpawnPingPongCircle();
@@ -86,7 +83,7 @@ public class PingPongState : DraculaState
         }
     }
     
-    private void OnTeleportEnd()
+    protected override void OnTeleportEnd()
     {
         _pingPongState = PingPong.Spawn;
     }

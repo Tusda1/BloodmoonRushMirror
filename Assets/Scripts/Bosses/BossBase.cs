@@ -12,11 +12,7 @@ public class BossBase : GravityObject
     
     [SerializeField] private StateMachine<BossState>.WithDefault _stateMachine;
     public StateMachine<BossState>.WithDefault StateMachine => _stateMachine;
-
-    [SerializeField] private AnimationClip teleportEnter;
-    public AnimationClip TeleportEnter => teleportEnter;
-    [SerializeField] private AnimationClip teleportExit;
-    public AnimationClip TeleportExit => teleportExit;
+    
     [SerializeField] private int maxHealth;
     public int MaxHealth => maxHealth;
     public int CurrentHealth {get; private set;}

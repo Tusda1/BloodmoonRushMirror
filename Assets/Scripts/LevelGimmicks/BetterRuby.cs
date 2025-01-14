@@ -31,7 +31,7 @@ public class BetterRuby : GravityObject
 
     protected new void Awake()
     {
-        base.Start();
+        base.Awake();
         
         _particleSystem = GetComponentInParent<ParticleSystem>();
         _spriteGameObject = transform.GetChild(0).gameObject;

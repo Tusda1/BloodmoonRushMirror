@@ -12,7 +12,6 @@ public class BatAttackState : DraculaState
     private float _timeSinceAttackStart;
     private float _timeSinceLastBatSpawn;
     private Vector2 _teleportLocation;
-    private Teleport _teleport;
     private Transform _player;
     private Vector2 _attackDirection;
     
@@ -26,7 +25,6 @@ public class BatAttackState : DraculaState
 
     private void Start()
     {
-        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
         _collider = GetComponent<Collider2D>();
         _player = ServiceLocator.Get<PlayerScript>().transform;
     }
@@ -62,7 +60,7 @@ public class BatAttackState : DraculaState
         switch (_attackPhase)
         {
             case AttackPhase.Teleporting:
-                if(!_teleport.IsTeleporting) _teleport.TeleportToLocation(_teleportLocation);
+                if(!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportLocation);
                 break;
             case AttackPhase.SpawningBats:
                 Bats();
@@ -70,7 +68,7 @@ public class BatAttackState : DraculaState
         }
     }
     
-    private void OnTeleportEnd()
+    protected override void OnTeleportEnd()
     {
         _attackPhase = AttackPhase.SpawningBats;
         _timeSinceAttackStart = Time.time;
@@ -92,7 +90,7 @@ public class BatAttackState : DraculaState
             _timeSinceLastBatSpawn = Time.time;
             var position = _attackDirection == Vector2.left ? _collider.bounds.min : _collider.bounds.max;
             position.y += Random.Range(0, _collider.bounds.size.y);
-            var bat = DraculaReference.pooler.GetPooledObject();
+            var bat = DraculaReference.Pooler.GetPooledObject();
             bat.transform.position = position;
             bat.GetComponent<DraculaBatScript>().targetVector = _attackDirection;
             bat.SetActive(true);

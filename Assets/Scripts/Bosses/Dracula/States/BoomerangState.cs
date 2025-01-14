@@ -9,9 +9,6 @@ public class BoomerangState : DraculaState
     private Vector2 _teleportPosition;
     private Boomerang _boomerang;
     
-    private Teleport _teleport;
-    private TeleportConditionalActivation _teleportConditionalActivation = new();
-    
     private enum BoomerangStage
     {
         Teleport,
@@ -23,7 +20,6 @@ public class BoomerangState : DraculaState
 
     private void Start()
     {
-        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
         _boomerang = Instantiate(boomerangPrefab, transform.position, Quaternion.identity).GetComponent<Boomerang>();
         _boomerang.gameObject.SetActive(false);
     }
@@ -82,7 +78,7 @@ public class BoomerangState : DraculaState
         switch (_boomerangStage)
         {
             case BoomerangStage.Teleport:
-                if (!_teleport.IsTeleporting) _teleportConditionalActivation.ActivateTeleport(transform.position, _teleportPosition, OnTeleportEnd, _teleport.TeleportToLocation);
+                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportPosition);
                 break;
             case BoomerangStage.Boomerang:
                 Boomerang();
@@ -93,7 +89,7 @@ public class BoomerangState : DraculaState
         }
     }
     
-    private void OnTeleportEnd()
+    protected override void OnTeleportEnd()
     {
         _boomerangStage = BoomerangStage.Boomerang;
     }

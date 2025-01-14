@@ -20,7 +20,6 @@ public class DashAndSwoopState : DraculaState
     private Vector2 _swoopTarget;
     
     [SerializeField] private Swoop swoop = new();
-    private Teleport _teleport;
     
     private enum Stage
     {
@@ -35,7 +34,6 @@ public class DashAndSwoopState : DraculaState
 
     private void Start()
     {
-        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
         swoop.SetOnSwoopEnd(SwoopEnd);
     }
     
@@ -93,7 +91,7 @@ public class DashAndSwoopState : DraculaState
                 Calculate();
                 break;
             case Stage.Teleporting:
-                if(!_teleport.IsTeleporting) _teleport.TeleportToLocation(teleportLocation);
+                if(!teleport.IsTeleporting) teleport.TeleportToLocation(teleportLocation);
                 break;
             case Stage.Dashing:
                 Dash();
@@ -104,7 +102,7 @@ public class DashAndSwoopState : DraculaState
         }
     }
     
-    private void OnTeleportEnd()
+    protected override void OnTeleportEnd()
     {
         _currentStage = _stage;
     }

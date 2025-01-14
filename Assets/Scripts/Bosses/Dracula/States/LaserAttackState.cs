@@ -23,9 +23,6 @@ public class LaserAttackState : DraculaState
     
     private bool _hasStartedFiring;
     
-    private Teleport _teleport;
-    private TeleportConditionalActivation _teleportConditionalActivation = new();
-    
     private enum LaserAttackStage
     {
         Teleporting,
@@ -38,7 +35,6 @@ public class LaserAttackState : DraculaState
 
     private void Start()
     {
-        _teleport = new Teleport(transform, Boss.AnimancerComponent, Boss.TeleportEnter, Boss.TeleportExit, OnTeleportEnd);
         _player = ServiceLocator.Get<PlayerScript>().transform;
         _playerCollider = _player.GetComponent<Collider2D>();
         _trackerPrefab = Resources.Load<GameObject>("Prefabs/LineRenderer");
@@ -87,7 +83,7 @@ public class LaserAttackState : DraculaState
         switch (stage)
         {
             case LaserAttackStage.Teleporting:
-                _teleportConditionalActivation.ActivateTeleport(transform.position, _teleportDestination, OnTeleportEnd, _teleport.TeleportToLocation);
+                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportDestination);
                 break;
             case LaserAttackStage.Tracking:
                 Tracking();
@@ -101,7 +97,7 @@ public class LaserAttackState : DraculaState
         }
     }
     
-    private void OnTeleportEnd()
+    protected override void OnTeleportEnd()
     {
         stage = LaserAttackStage.Tracking;
     }

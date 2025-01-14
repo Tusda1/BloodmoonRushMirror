@@ -10,7 +10,7 @@ using Utilities.DataBinding;
 public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     #region ---Fields---
     #region ***---SerializedFields---***
-    [SerializeField] private bool takesSpikeDamage;
+    public bool takesSpikeDamage;
     [SerializeField] private bool faceLeftOnStart;
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected int maxHealth;
@@ -23,6 +23,8 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     [SerializeField] private float rubySpawnDelay = 0.2f;
     [SerializeField] private SmoothDampScript knockbackSmoothDampScript = new();
     [SerializeField] private ParticleSystem bloodSplatter;
+    [SerializeField] private bool isImmortal;
+    [SerializeField] private bool canTakeKnockback = true;
     #endregion
 
     #region ***---PrivateFields---***
@@ -110,12 +112,12 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     public void TakeDamage(DamageInstance damageInstance) {
-        print("taking damage");
-        if (Time.time - TakeDamageTimer < invulnerableTime && !damageInstance.ignoreInvincibility) {
+        if (!CanBeDamaged(damageInstance)) {
             return;
         }
         
-        if (!CanBeDamaged(damageInstance)) {
+        print("taking damage");
+        if (Time.time - TakeDamageTimer < invulnerableTime && !damageInstance.ignoreInvincibility) {
             return;
         }
 
@@ -144,7 +146,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         // Play hit animation
         // Play hit sound
-        print(damageInstance.knockback.normalized);
+        if (!canTakeKnockback) 
         if (damageInstance.knockback.normalized == Vector2.up) {
             StartCoroutine(KnockUp(damageInstance.knockback));
         }

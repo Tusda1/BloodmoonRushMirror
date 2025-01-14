@@ -2,16 +2,21 @@ using UnityEngine;
 
 public class Dracula : BossBase
 {
-    public Pooler pooler { get; private set; }
+    public Pooler Pooler { get; private set; }
     
     private GameObject _batPrefab;
+    
+    [SerializeField] private AnimationClip teleportEnter;
+    public AnimationClip TeleportEnter => teleportEnter;
+    [SerializeField] private AnimationClip teleportExit;
+    public AnimationClip TeleportExit => teleportExit;
 
     protected override void Start()
     {
         base.Start();
         
         _batPrefab = Resources.Load<GameObject>("Prefabs/DraculaBat");
-        pooler = new Pooler(_batPrefab, 15);
+        Pooler = new Pooler(_batPrefab, 15);
         
         GravityModifier = 0;
         DisableGravity();

@@ -4,38 +4,45 @@ using UnityEngine;
 
 public class Teleport
 {
-    private readonly Transform transform;
-    private readonly AnimancerComponent animancerComponent;
-    private readonly AnimationClip teleportEnter;
-    private readonly AnimationClip teleportExit;
-    private readonly Action onTeleportEnd;
+    private readonly Transform _transform;
+    private readonly AnimancerComponent _animancerComponent;
+    private readonly AnimationClip _teleportEnter;
+    private readonly AnimationClip _teleportExit;
+    private readonly Action _onTeleportEnd;
     
     public bool IsTeleporting { get; private set; }
     
     public Teleport(Transform externalTransform, AnimancerComponent externalAnimancerComponent, AnimationClip externalTeleportEnter, AnimationClip externalTeleportExit, Action externalOnTeleportEnd = null)
     {
-        transform = externalTransform;
-        animancerComponent = externalAnimancerComponent;
-        teleportEnter = externalTeleportEnter;
-        teleportExit = externalTeleportExit;
-        onTeleportEnd = externalOnTeleportEnd;
+        _transform = externalTransform;
+        _animancerComponent = externalAnimancerComponent;
+        _teleportEnter = externalTeleportEnter;
+        _teleportExit = externalTeleportExit;
+        _onTeleportEnd = externalOnTeleportEnd;
     }
     
     public void TeleportToLocation(Vector2 destination)
     {
+        if (Vector2.Distance(_transform.position, destination) < 0.1f)
+        {
+            _onTeleportEnd.Invoke();
+            Debug.Log("Teleport destination same as current position. Teleport cancelled.");
+            return;
+        }
+        
         IsTeleporting = true;
         
-        AnimancerState animancerState = animancerComponent.Play(teleportEnter);
+        AnimancerState animancerState = _animancerComponent.Play(_teleportEnter);
         animancerState.Events(this).OnEnd ??= () =>
         {
-            transform.position = destination;
-            animancerComponent.Play(teleportExit).Time = 0;
+            _transform.position = destination;
+            _animancerComponent.Play(_teleportExit).Time = 0;
             animancerState.Events(this).OnEnd = () =>
             {
                 animancerState.Stop();
                 animancerState.Events(this).OnEnd = null;
                 animancerState.Destroy();
-                onTeleportEnd?.Invoke();
+                _onTeleportEnd?.Invoke();
                 
                 IsTeleporting = false;
             };
