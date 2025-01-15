@@ -330,6 +330,9 @@ namespace Player {
             ForceExitDuck();
             _playerLadderLogic.ExitLadder();
             if (isGrounded || killCharges > 0) {
+                isDashing = false;
+                lockToAxis = Axis.None;
+                ResetMovement(Axis.None);
                 isJumping = true;
                 _minJumpTimer.StartTimer();
                 _coyoteTimer.StopTimer();
@@ -337,7 +340,6 @@ namespace Player {
 
                 if (killCharges > 0) {
                     doubleJumping = true;
-                    isDashing = false;
                     killCharges--;
                     player.animator.SetTrigger(AnimatorGunJumpTrigger);
                     coolParticles.Play();
