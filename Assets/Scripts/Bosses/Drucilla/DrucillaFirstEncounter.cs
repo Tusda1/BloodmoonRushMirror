@@ -7,6 +7,7 @@ using UnityEngine;
 public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
     #region ---Fields---
     [SerializeField, Required] private ActionEventChannel drucillaInteractionChannel;
+    [SerializeField, Required] private SceneCollectionSO nextLevelSceneCollection;
     [SerializeField, Required] private SceneCollectionSO endDemoSceneCollection;
     [SerializeField] private DamageInstance drucillaDamageInstance = new() { knockback = Vector2.left };
     
@@ -15,11 +16,12 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
     #endregion
 
     private void Start() {
+        _cameraEffects = ServiceLocator.Get<CameraEffects>();
+        
         _startPosition = transform.position;
         
         transform.DOBlendableMoveBy(new Vector3(0, 1, 0), 0.5f)
             .SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
-        _cameraEffects = ServiceLocator.Get<CameraEffects>();
     }
 
     public void TakeDamage(DamageInstance damageInstance) {
@@ -34,7 +36,12 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
     }
 
     public void EndDemo() {
+#if DEMO_BUILD
         _cameraEffects.CircleFadeOut(1, 
             () => _ = SceneCollectionManager.LoadSceneCollectionAsync(endDemoSceneCollection));
+        return;
+#endif
+        _cameraEffects.CircleFadeOut(1, 
+            () => _ = SceneCollectionManager.LoadSceneCollectionAsync(nextLevelSceneCollection));
     }
 }

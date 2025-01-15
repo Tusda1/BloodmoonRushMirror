@@ -4,10 +4,10 @@ using Serializers;
 
 namespace Utilities.DataBinding {
     public interface IDataService<TGameData> where TGameData : IGameData {
-        public ISerializer Serializer { get;}
-        public string DataPath { get;}
-        public string FileExtension { get;}
-        
+        public ISerializer Serializer { get; }
+        public string DataPath { get; }
+        public string FileExtension { get; }
+
         string GetPathToSaveFile(string filename);
         void Save(TGameData gameData);
         TGameData LoadByName(string name);
