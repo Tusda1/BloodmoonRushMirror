@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 15003, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SteamDevelopment
+  m_Name: SteamDemo
   m_EditorClassIdentifier: 
   m_AssetVersion: 1
   m_BuildTarget: 19
@@ -18,11 +18,31 @@ MonoBehaviour:
   m_PlatformId: 4e3c793746204150860bf175a9a41a05
   m_PlatformBuildProfile:
     rid: 7815731217397710861
-  m_OverrideGlobalSceneList: 0
-  m_Scenes: []
+  m_OverrideGlobalSceneList: 1
+  m_Scenes:
+  - m_enabled: 1
+    m_path: Assets/Scenes/InitializationScene.unity
+  - m_enabled: 1
+    m_path: Packages/com.erlend-eiken-oppedal.scenecollections/Runtime/EmptyScene.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/PersistentManagers.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/MainMenu.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Player.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Levels/Entrance Hall.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Level UI.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/EndDemo.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/GameOver.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/OpeningCutscene.unity
   m_ScriptingDefines:
   - STEAM_BUILD
-  - DEVELOPMENT_BUILD
+  - DEMO_BUILD
   m_PlayerSettingsYaml:
     m_Settings: []
   references:
@@ -31,7 +51,7 @@ MonoBehaviour:
     - rid: 7815731217397710861
       type: {class: WindowsPlatformSettings, ns: UnityEditor.WindowsStandalone, asm: UnityEditor.WindowsStandalone.Extensions}
       data:
-        m_Development: 1
+        m_Development: 0
         m_ConnectProfiler: 0
         m_BuildWithDeepProfilingSupport: 0
         m_AllowDebugging: 0
