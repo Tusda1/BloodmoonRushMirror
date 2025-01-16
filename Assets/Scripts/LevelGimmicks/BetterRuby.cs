@@ -40,6 +40,8 @@ public class BetterRuby : GravityObject
 
     private void OnEnable()
     {
+        _initialGravityModifier = GravityModifier;
+        
         _spriteGameObject.SetActive(true);
         
         _spawnTime = Time.time;
@@ -93,7 +95,6 @@ public class BetterRuby : GravityObject
     private void SwitchToHovering()
     {
         _state = RubyState.Hovering;
-        _initialGravityModifier = GravityModifier;
         GravityModifier = 0;
     }
     
