@@ -8,11 +8,14 @@ public class Harpy : ReactiveBase
     [SerializeField] private float hoverHeight;
     [SerializeField] private float xDistanceFromPlayer;
     [SerializeField] private float attackDistance;
-    [SerializeField] private float yAttackPositionOffset;
+    [SerializeField] private float swoopSpeed = 10;
+    [SerializeField] private float maxSwoopDuration = 2f;
+    [SerializeField] private float yAttackPositionOffset = 2f;
     [SerializeField] private float pathUpdateInterval = 1f;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
     
     private float _repeatTimer;
+    private float _swoopTimer;
     private Path _path;
     private int _currentWaypoint;
     private Seeker _seeker;
@@ -93,17 +96,32 @@ public class Harpy : ReactiveBase
     
     private void Swoop()
     {
+        if (_swoopTimer > maxSwoopDuration)
+        {
+            EndSwoop();
+        }
+        else
+        {
+            _swoopTimer += Time.deltaTime;
+        }
+        
         // Swoop towards the player
         Vector2 direction = (targetObject.position + Vector3.up * yAttackPositionOffset - transform.position).normalized;
-        Vector2 force = direction * moveSpeed;
+        Vector2 force = direction * swoopSpeed;
         
         smoothDampScript.SmoothDampVector2(force, ref targetVelocity);
         
         if (Vector2.Distance(transform.position, targetObject.position) < attackDistance)
         {
-            _swooping = false;
-            StartPath();
+            EndSwoop();
         }
+    }
+
+    private void EndSwoop()
+    {
+        _swooping = false;
+        _swoopTimer = 0;
+        StartPath();
     }
     
     private void StartPath()
