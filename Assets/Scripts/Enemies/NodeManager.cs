@@ -6,6 +6,7 @@ public class NodeManager : MonoBehaviour
     [SerializeField] private int xDistance = 5;
     [SerializeField] private int yDistance = 5;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private bool showOutline = true;
 
     private List<GameObject> emptyObjects = new List<GameObject>();
 
@@ -99,6 +100,8 @@ public class NodeManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!showOutline) return;
+        
         Gizmos.color = Color.red;
         Vector3 topLeft = new Vector3(transform.position.x - xDistance + 0.5f, transform.position.y + yDistance + 0.5f, 0);
         Vector3 topRight = new Vector3(transform.position.x + xDistance + 0.5f, transform.position.y + yDistance + 0.5f, 0);

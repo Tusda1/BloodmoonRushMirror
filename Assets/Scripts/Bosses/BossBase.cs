@@ -23,6 +23,8 @@ public class BossBase : GravityObject
     [HideInInspector] public bool bossGrounded;
     [HideInInspector] public Collider2D bossCollider;
     
+    private 
+    
     protected new void Awake()
     {
         base.Awake();
