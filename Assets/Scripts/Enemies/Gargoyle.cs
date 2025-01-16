@@ -16,15 +16,19 @@ public class Gargoyle : ReactiveBase
     {
         base.Start();
         
+        _cooldownTimer = projectileCooldown;
+        
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/GargoyleProjectile");
         _playerTransform = ServiceLocator.Get<PlayerScript>().transform;
         _projectilePooler = TryGetCommunityPooler.TryGetPooler(_projectilePrefab);
         
         var hit = Physics2D.OverlapCircle(transform.position, 1f, LayerMask.GetMask("Room"));
-        if (hit != null)
+        if (hit == null)
         {
-            _virtualCameraSwitch = hit.GetComponent<VirtualCameraSwitch>();
+            Debug.LogWarning($"{gameObject.name} is not placed in a room");
         }
+            
+        _virtualCameraSwitch = hit.GetComponent<VirtualCameraSwitch>();
     }
 
     protected override void Scan()

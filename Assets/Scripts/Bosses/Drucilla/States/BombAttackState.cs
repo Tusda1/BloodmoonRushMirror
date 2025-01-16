@@ -1,15 +1,13 @@
 using System;
 using UnityEngine;
 
-public class BombAttackState : BossState
+public class BombAttackState : DrucillaState
 {
     [SerializeField] private GameObject bombPrefab;
     
-    private Teleport _teleport;
-    
     private enum BombAttackStage
     {
-        Position,
+        Teleport,
         DropBombs,
         GroundSlam
     }
@@ -30,7 +28,7 @@ public class BombAttackState : BossState
     {
         switch (_stage)
         {
-            case BombAttackStage.Position:
+            case BombAttackStage.Teleport:
                 
                 break;
         }

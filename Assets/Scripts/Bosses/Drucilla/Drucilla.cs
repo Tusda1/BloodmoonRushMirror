@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class Drucilla : MonoBehaviour 
+public class Drucilla : BossBase
 {
-    #region ---Fields---
-    #endregion
+    [SerializeField] private AnimationClip teleportEnter;
+    public AnimationClip TeleportEnter => teleportEnter;
+    [SerializeField] private AnimationClip teleportExit;
+    public AnimationClip TeleportExit => teleportExit;
 }
