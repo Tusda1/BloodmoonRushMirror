@@ -130,12 +130,13 @@ namespace Player {
             DashTimer = CountdownTimerBuilder.Start(dashTime)
                 .WithOnBegin(() => {
                     player.animator.SetBool(AnimatorDashBool, true);
-                    player.healthComponent.TriggerInvulnerability(dashTime - 0.2f);
+                    player.healthComponent.HasInvincibilityFrames = true;
                 })
                 .WithOnStop(() => {
                     isDashing = false;
                     lockToAxis = Axis.None;
                     ResetMovement(Axis.YAxis);
+                    player.healthComponent.HasInvincibilityFrames = false;
                     player.animator.SetBool(AnimatorDashBool, false);
                 })
                 .Finish();
