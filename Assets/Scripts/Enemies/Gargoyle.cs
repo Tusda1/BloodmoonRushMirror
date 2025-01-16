@@ -10,6 +10,7 @@ public class Gargoyle : ReactiveBase
     private GameObject _projectilePrefab;
     private Pooler _projectilePooler;
     private Transform _playerTransform;
+    private VirtualCameraSwitch _virtualCameraSwitch;
     
     protected override void Start()
     {
@@ -18,12 +19,26 @@ public class Gargoyle : ReactiveBase
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/GargoyleProjectile");
         _playerTransform = ServiceLocator.Get<PlayerScript>().transform;
         _projectilePooler = TryGetCommunityPooler.TryGetPooler(_projectilePrefab);
+        
+        var hit = Physics2D.OverlapCircle(transform.position, 1f, LayerMask.GetMask("Room"));
+        if (hit != null)
+        {
+            _virtualCameraSwitch = hit.GetComponent<VirtualCameraSwitch>();
+        }
+    }
+
+    protected override void Scan()
+    {
+        if (_virtualCameraSwitch.isActiveRoom)
+        {
+            currentState = EnemyState.Action;
+        }
     }
 
     protected override void Action()
     {
         // if distance to player is greater than detection distance, return to scanning
-        if (Vector2.Distance(transform.position, targetObject.position) > detectionDistance)
+        if (!_virtualCameraSwitch.isActiveRoom)
         {
             currentState = EnemyState.Scanning;
             return;
