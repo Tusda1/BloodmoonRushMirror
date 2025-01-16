@@ -48,7 +48,12 @@ public class ConversationTrigger : MonoBehaviour, IBind<TriggerData> {
 
     #region ---DataBindingMethods---
     public void Bind() {
-        SaveLoadSystemManager.Bind(this, DataInGameData);
+        if (SaveLoadSystemManager != null || !Application.isPlaying) {
+            SaveLoadSystemManager.Bind(this, DataInGameData);
+        }
+        else {
+            Debug.LogWarning("No SaveLoadSystemManager found", this);
+        }
     }
 
 #if UNITY_EDITOR

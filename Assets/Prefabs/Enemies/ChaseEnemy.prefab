@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 5302632098848550849}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.48, y: -3.54, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -151,6 +151,7 @@ MonoBehaviour:
     knockbackStrength: 15
     staggerStrength: 0
     ignoreInvincibility: 0
+    which: 0
   weight: 1
   rubyDropAmount: 3
   rubySpawnHeight: 0.8
@@ -158,6 +159,8 @@ MonoBehaviour:
   knockbackSmoothDampScript:
     smoothTime: 0.1
   bloodSplatter: {fileID: 0}
+  isImmortal: 0
+  canTakeKnockback: 1
   <ID>k__BackingField: 
   <SaveSystemData>k__BackingField:
     name: 

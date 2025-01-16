@@ -105,9 +105,7 @@ namespace Player {
         }
 
         private void Start() {
-            if (DataInGameData != null) {
-                Bind();
-            }
+            Bind();
 
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
@@ -366,11 +364,11 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            if (SaveLoadSystemManager != null) {
+            if (SaveLoadSystemManager != null || !Application.isPlaying) {
                 SaveLoadSystemManager.Bind(this, DataInGameData);
             }
             else {
-                Debug.LogWarning("No SaveLoadSystemManager found");
+                Debug.LogWarning("No SaveLoadSystemManager found", this);
             }
         }
 

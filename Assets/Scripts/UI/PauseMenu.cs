@@ -8,6 +8,7 @@ using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 namespace UI {
     [RequireComponent(typeof(SettingsMenu), typeof(UITKWorldSpaceInteractive))]
@@ -42,9 +43,9 @@ namespace UI {
             _root = uiDocument.rootVisualElement;
             _pauseMenuRoot = _root.Q<VisualElement>("PauseMenuRoot");
 
-            _resumeButton = _pauseMenuRoot.Q<SpriteButton>("ResumeButton");
-            _settingsButton = _pauseMenuRoot.Q<SpriteButton>("SettingsButton");
-            _mainMenuButton = _pauseMenuRoot.Q<SpriteButton>("MainMenuButton");
+            _resumeButton = _pauseMenuRoot.Q<Button>("ResumeButton");
+            _settingsButton = _pauseMenuRoot.Q<Button>("SettingsButton");
+            _mainMenuButton = _pauseMenuRoot.Q<Button>("MainMenuButton");
             
             pauseAction.action.performed += PauseToggle;
             
@@ -82,6 +83,9 @@ namespace UI {
             
             _eventSystem.SetSelectedGameObject(gameObject);
             _resumeButton.Focus();
+            
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
         [ContextMenu(nameof(ResumeGame))]
@@ -92,6 +96,9 @@ namespace UI {
             _root.style.display = DisplayStyle.None;
             _root.enabledSelf = false;
             playerCanMove.ChangeVote(_currentVote, true);
+            
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         [ContextMenu(nameof(HideMenu))]
@@ -102,8 +109,8 @@ namespace UI {
 
         [ContextMenu(nameof(ShowMenu))]
         private void ShowMenu() {
-            _pauseMenuRoot.RemoveFromClassList("left");
             _pauseMenuRoot.enabledSelf = true;
+            _pauseMenuRoot.RemoveFromClassList("left");
         }
     }
 }

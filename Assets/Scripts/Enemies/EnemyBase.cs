@@ -308,11 +308,11 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
     #region ---DataBindingMethods---
     public virtual void Bind() {
-        if (SaveLoadSystemManager.HasInstance) {
+        if (SaveLoadSystemManager.HasInstance || !Application.isPlaying) {
             SaveLoadSystemManager.Bind(this, DataInGameData);
         }
         else {
-            Debug.LogWarning("No SaveLoadSystemManager found");
+            Debug.LogWarning("No SaveLoadSystemManager found", this);
         }
     }
     

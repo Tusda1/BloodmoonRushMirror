@@ -9,10 +9,15 @@ public static class Builder {
 
     #region ***---Steam---***
     private const string SteamContextMenuPath = ContextMenuPath + "Steam/";
+    
     private const string SteamBuildProfilePath = "Assets/Settings/Build Profiles/Steam.asset";
-    private const string SteamDevelopmentProfilePath = "Assets/Settings/Build Profiles/SteamDevelopment.asset";
+    private const string SteamDemoProfilePath = "Assets/Settings/Build Profiles/SteamDemo.asset";
+
     private const string SteamBuildLocationPath = @"C:\Users\erlen\Documents\steamworks_sdk_161\sdk\tools\ContentBuilder\content\Windows";
+    
     private const string SteamBuildBatchFilePath = @"C:\Users\erlen\Documents\steamworks_sdk_161\sdk\tools\ContentBuilder\scripts\run_build_3360780.bat";
+    private const string SteamDemoBuildBatchFilePath = @"C:\Users\erlen\Documents\steamworks_sdk_161\sdk\tools\ContentBuilder\scripts\run_build_3468140.bat";
+
     #endregion
     #endregion
     
@@ -26,16 +31,18 @@ public static class Builder {
     public static void UploadSteamBuild() {
         BuildSteamProfileAtPath(SteamBuildProfilePath);
         
-        DeleteDoNotShipFiles();
+        DeleteDoNotShipFiles(SteamBuildLocationPath);
         
         RunSteamBuildBatchFile();
     }
     
-    [MenuItem(SteamContextMenuPath + nameof(UploadSteamDevelopmentBuild))]
-    public static void UploadSteamDevelopmentBuild() {
-        BuildSteamProfileAtPath(SteamDevelopmentProfilePath);
+    [MenuItem(SteamContextMenuPath + nameof(UploadSteamDemoBuild))]
+    public static void UploadSteamDemoBuild() {
+        BuildSteamProfileAtPath(SteamDemoProfilePath);
         
-        RunSteamBuildBatchFile();
+        DeleteDoNotShipFiles(SteamBuildLocationPath);
+        
+        RunSteamDemoBuildBatchFile();
     }
 
     private static void RunSteamBuildBatchFile() {
@@ -43,11 +50,18 @@ public static class Builder {
         process.StartInfo.FileName = SteamBuildBatchFilePath;
         process.Start();
     }
+    
+    private static void RunSteamDemoBuildBatchFile() {
+        var process = new Process();
+        process.StartInfo.FileName = SteamDemoBuildBatchFilePath;
+        process.Start();
+    }
 
-    private static void DeleteDoNotShipFiles() {
+    private static void DeleteDoNotShipFiles(string directory) {
         const string doNotShip = "BloodmoonRush_BurstDebugInformation_DoNotShip";
-        if (Directory.Exists(doNotShip)) {
-            Directory.Delete(doNotShip, true);
+        var doNotShipPath = Path.Combine(directory, doNotShip);
+        if (Directory.Exists(doNotShipPath)) {
+            Directory.Delete(doNotShipPath, true);
         }
     }
 
