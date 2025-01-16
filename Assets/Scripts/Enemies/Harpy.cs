@@ -29,7 +29,7 @@ public class Harpy : ReactiveBase
     protected override void Scan()
     {
         var playerObject = Physics2D.OverlapCircle(transform.position, detectionDistance, LayerMask.GetMask("Player"));
-        if (playerObject.CompareTag("Player"))
+        if (playerObject && playerObject.CompareTag("Player"))
         {
             targetObject = playerObject.transform;
             _targetPosition = targetObject.GetComponent<Collider2D>().bounds.center;
