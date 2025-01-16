@@ -13,7 +13,7 @@ public class BetterRuby : GravityObject
     [SerializeField] private float pickupableTime = 0.2f; // Time after which the Ruby can be picked up
     public bool fall; // Whether the Ruby should fall to the ground or hover in place
     
-    private float initialY;
+    private float _initialY;
     private float _spawnTime;
     private bool _startedMoving;
     private PlayerScript _player;
@@ -57,7 +57,7 @@ public class BetterRuby : GravityObject
     private void OnDisable()
     {
         _spriteGameObject.SetActive(false);
-        initialY = 0;
+        _initialY = 0;
         _startedMoving = false;
         _particleSystem.Stop();
         GravityModifier = _initialGravityModifier;
@@ -100,10 +100,10 @@ public class BetterRuby : GravityObject
     private void Hover()
     {
         print("hover");
-        if (initialY == 0) initialY = transform.position.y;
+        if (_initialY == 0) _initialY = transform.position.y;
     
         Vector3 position = transform.position;
-        position.y = initialY + Mathf.Sin(Time.time * hoverSpeed - Mathf.PI / 2) * hoverHeight;
+        position.y = _initialY + Mathf.Sin(Time.time * hoverSpeed - Mathf.PI / 2) * hoverHeight;
         transform.position = position;
     }
     

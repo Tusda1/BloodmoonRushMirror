@@ -137,7 +137,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             Debug.LogWarning($"blood splatter on {name} is null");
         }
 
-        CurrentHealth -= damageInstance.damage;
+        if (!isImmortal) CurrentHealth -= damageInstance.damage;
 
         if (CurrentHealth <= 0) {
             Die();
@@ -146,13 +146,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         // Play hit animation
         // Play hit sound
-        if (!canTakeKnockback) 
-        if (damageInstance.knockback.normalized == Vector2.up) {
-            StartCoroutine(KnockUp(damageInstance.knockback));
-        }
-        else {
-            StartCoroutine(Knockback(damageInstance.knockback));
-        }
+        if (canTakeKnockback) StartCoroutine(Knockback(damageInstance.knockback));
     }
     
     protected virtual bool CanBeDamaged(DamageInstance damageInstance)
