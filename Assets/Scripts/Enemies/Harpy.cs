@@ -10,6 +10,7 @@ public class Harpy : ReactiveBase
     [SerializeField] private float attackDistance;
     [SerializeField] private float swoopSpeed = 10;
     [SerializeField] private float maxSwoopDuration = 2f;
+    [SerializeField] private float swoopChance = 0.1f;
     [SerializeField] private float yAttackPositionOffset = 2f;
     [SerializeField] private float pathUpdateInterval = 1f;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
@@ -18,6 +19,7 @@ public class Harpy : ReactiveBase
     private float _swoopTimer;
     private Path _path;
     private int _currentWaypoint;
+    private Vector2 _currentHoverPoint;
     private Seeker _seeker;
     private bool _swooping;
     
@@ -35,7 +37,7 @@ public class Harpy : ReactiveBase
         {
             targetObject = playerObject.transform;
             currentState = EnemyState.Action;
-            StartPath();
+            StartFollow();
         }
     }
     
@@ -54,16 +56,16 @@ public class Harpy : ReactiveBase
     private void FollowPlayer()
     {
         if (_path == null) return;
-        print(_currentWaypoint);
-        print(_path.vectorPath.Count);
+       
         if (_currentWaypoint >= _path.vectorPath.Count - 1)
         {
-            if  (Random.value < 0.1f)
+            if  (Random.value < swoopChance)
             {
                 _swooping = true;
             }
             else
             {
+                FindHoverPoint();
                 StartPath();
             }
             
@@ -98,7 +100,7 @@ public class Harpy : ReactiveBase
     {
         if (_swoopTimer > maxSwoopDuration)
         {
-            EndSwoop();
+            StartFollow();
         }
         else
         {
@@ -113,14 +115,15 @@ public class Harpy : ReactiveBase
         
         if (Vector2.Distance(transform.position, targetObject.position) < attackDistance)
         {
-            EndSwoop();
+            StartFollow();
         }
     }
 
-    private void EndSwoop()
+    private void StartFollow()
     {
         _swooping = false;
         _swoopTimer = 0;
+        FindHoverPoint();
         StartPath();
     }
     
@@ -128,10 +131,10 @@ public class Harpy : ReactiveBase
     {
         if (!_seeker.IsDone()) return;
         
-        _seeker.StartPath(transform.position, FindHoverPoint(), OnPathComplete);
+        _seeker.StartPath(transform.position, _currentHoverPoint, OnPathComplete);
     }
 
-    private Vector2 FindHoverPoint()
+    private void FindHoverPoint()
     {
         // Choose a random point above the player using hoverHeight
         var position = targetObject.position;
@@ -145,7 +148,7 @@ public class Harpy : ReactiveBase
             // Make sure the point is not inside ground
             if (Physics2D.OverlapPoint(targetvector, LayerMask.GetMask("Ground")) == null)
             {
-                return targetvector;
+                _currentHoverPoint = targetvector;
             }
         }
     }
