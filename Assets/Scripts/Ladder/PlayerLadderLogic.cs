@@ -158,7 +158,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         IsClimbing = true;
         IsGrounded = true;
         _playerMovement.lockToAxis = Axis.YAxis;
-        _playerMovement.killCharges = 1;
+        _playerMovement.canDash = true;
 
         _transform.position = new Vector3(
             x: LadderMiddle.transform.position.x + 0.5f,
