@@ -13,7 +13,6 @@ public class Harpy : ReactiveBase
     [SerializeField] private SmoothDampScript smoothDampScript = new();
     
     private float _repeatTimer;
-    private Vector2 _targetPosition;
     private Path _path;
     private int _currentWaypoint;
     private Seeker _seeker;
@@ -32,7 +31,6 @@ public class Harpy : ReactiveBase
         if (playerObject && playerObject.CompareTag("Player"))
         {
             targetObject = playerObject.transform;
-            _targetPosition = targetObject.GetComponent<Collider2D>().bounds.center;
             currentState = EnemyState.Action;
             StartPath();
         }
@@ -96,12 +94,12 @@ public class Harpy : ReactiveBase
     private void Swoop()
     {
         // Swoop towards the player
-        Vector2 direction = ((Vector3)(_targetPosition + Vector2.up * yAttackPositionOffset) - transform.position).normalized;
+        Vector2 direction = (targetObject.position + Vector3.up * yAttackPositionOffset - transform.position).normalized;
         Vector2 force = direction * moveSpeed;
         
         smoothDampScript.SmoothDampVector2(force, ref targetVelocity);
         
-        if (Vector2.Distance(transform.position, _targetPosition) < attackDistance)
+        if (Vector2.Distance(transform.position, targetObject.position) < attackDistance)
         {
             _swooping = false;
             StartPath();
@@ -118,7 +116,7 @@ public class Harpy : ReactiveBase
     private Vector2 FindHoverPoint()
     {
         // Choose a random point above the player using hoverHeight
-        var position = _targetPosition;
+        var position = targetObject.position;
         var targetvector = Vector2.zero;
         
         while (true)
