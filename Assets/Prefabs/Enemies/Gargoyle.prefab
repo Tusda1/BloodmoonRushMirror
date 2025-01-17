@@ -109,7 +109,7 @@ MonoBehaviour:
   lockToAxis: 0
   targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
-  GravityModifier: 1
+  GravityModifier: 5
   takesSpikeDamage: 0
   faceLeftOnStart: 0
   moveSpeed: 0
@@ -123,7 +123,7 @@ MonoBehaviour:
     staggerStrength: 0
     ignoreInvincibility: 0
     which: 0
-  weight: 0
+  weight: 4
   rubyDropAmount: 3
   rubySpawnHeight: 0.8
   rubySpawnDelay: 0.2
@@ -141,7 +141,7 @@ MonoBehaviour:
     gemsContaining: 0
     position: {x: 0, y: 0, z: 0}
   detectionDistance: 20
-  projectileCooldown: 2
+  projectileCooldown: 3
 --- !u!50 &7327643573616930920
 Rigidbody2D:
   serializedVersion: 5
