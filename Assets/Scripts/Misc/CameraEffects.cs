@@ -20,16 +20,10 @@ public class CameraEffects : MonoBehaviour {
 
     private const float FadeCircleDefaultSize = 2.5f;
 
-    #region ---ShaderPropertyID---
+    #region ***---ShaderPropertyID---***
     private static readonly int Size = Shader.PropertyToID("_Size");
     #endregion
     #endregion
-
-    private void Awake() {
-        ServiceLocator.Register(this);
-        
-        
-    }
 
     private void OnEnable() {
         circleFadeMaterial.SetFloat(Size, FadeCircleDefaultSize);

@@ -1,13 +1,12 @@
 using Animancer;
-using Attributes;
 using FMODScripts;
 using Player;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using Triggers;
-using Unity.Behavior;
 using UnityEngine;
 using Utilities.DataBinding;
+using Zenject;
 using Action = System.Action;
 #if UNITY_EDITOR
 using System;
@@ -26,7 +25,7 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     private AnimancerComponent _animancerComponent;
 
     #region ***---GameManagers---***
-    private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
+    [Inject] private SaveLoadSystemManager _saveLoadSystemManager;
     private static LevelDataManager LevelDataManager => LevelDataManager.LevelDataManagerCache;
     #endregion
 
@@ -66,13 +65,13 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
         
         LevelDataManager.CurrentCheckpointData.ID = ID;
         LevelDataManager.CurrentCheckpointData.Position = transform.position;
-        SaveLoadSystemManager?.SaveBindings();
+        _saveLoadSystemManager?.SaveBindings();
     }
 
     #region ---DataBindingMethods---
     public void Bind() {
-        if (SaveLoadSystemManager != null || !Application.isPlaying) {
-            SaveLoadSystemManager.Bind(this, DataInGameData);
+        if (_saveLoadSystemManager != null || !Application.isPlaying) {
+            _saveLoadSystemManager.Bind(this, DataInGameData);
         }
         else {
             Debug.LogWarning("No SaveLoadSystemManager found", this);

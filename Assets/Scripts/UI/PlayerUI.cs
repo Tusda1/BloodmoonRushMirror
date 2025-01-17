@@ -2,27 +2,25 @@ using Attributes;
 using UI_Toolkit;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Zenject;
 
 namespace Player {
     public class PlayerUI : MonoBehaviour {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
-        private PlayerScript _player;
         private VisualElement _root;
         private Hearts _playerHeartBar;
         private Hearts _playerTempHeartBar;
+        
+        [Inject] private PlayerScript _player;
         #endregion
 
-        private void Awake() {
+        private void Start() {
             _root = uiDocument.rootVisualElement;
 
             _playerHeartBar = _root.Q<Hearts>("PlayerHearts");
             _playerTempHeartBar = _root.Q<Hearts>("PlayerTempHearts");
-        }
-
-        private void Start() {
-            _player = ServiceLocator.Get<PlayerScript>();
             
             _root.dataSource = _player;
 

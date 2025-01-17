@@ -4,6 +4,7 @@ using FMODScripts;
 using SceneCollections;
 using UnityEngine;
 using UnityEngine.Video;
+using Zenject;
 
 public class CutsceneController : MonoBehaviour {
     #region ---Fields---
@@ -15,6 +16,7 @@ public class CutsceneController : MonoBehaviour {
     [SerializeField] private SceneCollectionSO firstLevelCollection;
     
     public static bool PlayOldCutscene = false;
+    [Inject] private CameraEffects _cameraEffects;
     #endregion
 
     private void Start() {
@@ -22,7 +24,7 @@ public class CutsceneController : MonoBehaviour {
 
         videoPlayer.loopPointReached += _ => CutsceneEnded();
         
-        ServiceLocator.Get<CameraEffects>().ClearAllRenderTextures();
+        _cameraEffects.ClearAllRenderTextures();
     }
 
     private IEnumerator PlayCutscene() {

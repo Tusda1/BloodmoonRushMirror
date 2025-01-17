@@ -10,8 +10,10 @@ using SceneCollections;
 using TetraCreations.Attributes;
 using UI;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 using Utilities.DataBinding;
+using Zenject;
 
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {
@@ -31,7 +33,7 @@ namespace Player {
         public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
-        [SerializeField] private PlayerHitbox hitbox;
+        public PlayerHitbox hitbox;
         [SerializeField] private ParticleSystem bloodSplatter;
 
         [Header("Taking Damage")] 
@@ -84,8 +86,9 @@ namespace Player {
         private static readonly int AnimatorDeathTrigger = Animator.StringToHash("Death");
         #endregion
 
-        #region ***---GameManagers---***
-        private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
+        #region ***---DI---***
+        private SaveLoadSystemManager _saveLoadSystemManager;
+        private CameraEffects _cameraEffects;
         #endregion
 
         #region ***---DataBindingVariables---***
@@ -97,6 +100,12 @@ namespace Player {
         public PlayerData DataInGameData => SaveLoadSystemManager.Instance.gameData.playerData;
         #endregion
         #endregion
+        
+        [Inject]
+        public void Init(SaveLoadSystemManager saveLoadSystemManager, CameraEffects cameraEffects) {
+            _saveLoadSystemManager = saveLoadSystemManager;
+            _cameraEffects = cameraEffects;
+        }
 
         #region ---EventFunctions---
         private void Awake() {
@@ -122,6 +131,8 @@ namespace Player {
             Cursor.lockState = CursorLockMode.Locked;
 
             StartCoroutine(ResetPlayerInput());
+            
+            Assert.IsNotNull(_cameraEffects);
         }
 
         private void OnDestroy() {
@@ -212,10 +223,9 @@ namespace Player {
             playerMovement.Knockback(damageInstance.knockback);
             animator.SetTrigger(AnimatorTakeDamageTrigger);
             healthComponent.TakeDamage(damageInstance.damage, damageInstance.ignoreInvincibility);
-            var cameraEffects = ServiceLocator.Get<CameraEffects>();
 
-            _ = cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
-            _ = cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
+            _ = _cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
+            _ = _cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
             
             playerMovement.lameParticles.Play();
 
@@ -237,8 +247,6 @@ namespace Player {
 
         #region ***---Death---***
         private IEnumerator Die() {
-            var cameraEffects = ServiceLocator.Get<CameraEffects>();
-            
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
@@ -249,7 +257,7 @@ namespace Player {
             debugLogger.Log("Setting death trigger");
             animator.SetTrigger(AnimatorDeathTrigger);
             
-            cameraEffects.CircleFadeOut(2);
+            _cameraEffects.CircleFadeOut(2);
 
             yield return new WaitUntil(() => animator.GetCurrentAnimationClip().name == "[DVD]Death");
             yield return new WaitForSeconds(animator.GetCurrentAnimationClip().length + 2f);
@@ -259,13 +267,13 @@ namespace Player {
             if (playerLives < 0) {
                 debugLogger.Log("Ran out of lives");
                 _ = SceneCollectionManager.LoadSceneCollectionAsync(gameOverScene, 
-                    () => cameraEffects.CircleFadeIn(0.5f));
+                    () => _cameraEffects.CircleFadeIn(0.5f));
             }
             else {
                 Respawn();
             
                 yield return new WaitForSeconds(0.5f);
-                cameraEffects.CircleFadeIn(0.5f);
+                _cameraEffects.CircleFadeIn(0.5f);
             }
         }
 
@@ -364,8 +372,8 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            if (SaveLoadSystemManager != null || !Application.isPlaying) {
-                SaveLoadSystemManager.Bind(this, DataInGameData);
+            if (_saveLoadSystemManager != null || !Application.isPlaying) {
+                _saveLoadSystemManager.Bind(this, DataInGameData);
             }
             else {
                 Debug.LogWarning("No SaveLoadSystemManager found", this);

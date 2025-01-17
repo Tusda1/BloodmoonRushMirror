@@ -4,6 +4,7 @@ using Player;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
+using Zenject;
 
 [DefaultExecutionOrder(100)]
 public class VirtualCameraSwitch : MonoBehaviour {
@@ -23,6 +24,8 @@ public class VirtualCameraSwitch : MonoBehaviour {
     private bool _isDeactivating;
     private static int _priority;
     private Coroutine _coroutine;
+    
+    [Inject] private PlayerScript _playerScript;
     #endregion
 
     private void Awake() {
@@ -30,6 +33,8 @@ public class VirtualCameraSwitch : MonoBehaviour {
     }
 
     private void Start() {
+        _playerScript ??= ServiceLocator.Get<PlayerScript>();
+        
         areaGameObjects.SetActive(false);
         enemyGameObject.SetActive(false);
 
@@ -38,7 +43,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
         }
 
         if (cinemachineCamera.Follow == null) {
-            cinemachineCamera.Follow = ServiceLocator.Get<PlayerScript>().transform;
+            cinemachineCamera.Follow = _playerScript.transform;
         }
     }
 

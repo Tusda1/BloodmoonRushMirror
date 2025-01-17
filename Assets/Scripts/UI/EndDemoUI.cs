@@ -2,6 +2,7 @@ using Attributes;
 using SceneCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Zenject;
 
 public class EndDemoUI : MonoBehaviour {
     #region ---Fields---
@@ -10,7 +11,7 @@ public class EndDemoUI : MonoBehaviour {
     
     [SerializeField] private SceneCollectionSO mainMenu;
     
-    private CameraEffects _cameraEffects;
+    [Inject] private CameraEffects _cameraEffects;
     private VisualElement _root;
     #endregion
 
@@ -19,8 +20,6 @@ public class EndDemoUI : MonoBehaviour {
     }
 
     private void Start() {
-        _cameraEffects = ServiceLocator.Get<CameraEffects>();
-
         _cameraEffects.CircleFadeIn(1);
         
         var backToMainMenuButton = _root.Q<Button>("BackToMainMenuButton");
