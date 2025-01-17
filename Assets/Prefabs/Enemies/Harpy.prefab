@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1976493128931519501}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 38.16, y: -5.6000004, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -66,7 +66,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.21133333}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.28866667}
@@ -219,8 +219,8 @@ MonoBehaviour:
   GravityModifier: 1
   takesSpikeDamage: 0
   faceLeftOnStart: 0
-  moveSpeed: 6
-  maxHealth: 0
+  moveSpeed: 8
+  maxHealth: 3
   invulnerableTime: 0.5
   knockbackDuration: 0.1
   enemyDamageInstance:
@@ -230,7 +230,7 @@ MonoBehaviour:
     staggerStrength: 0
     ignoreInvincibility: 0
     which: 0
-  weight: 0
+  weight: 4
   rubyDropAmount: 3
   rubySpawnHeight: 0.8
   rubySpawnDelay: 0.2
@@ -238,8 +238,8 @@ MonoBehaviour:
     smoothTime: 0.1
   bloodSplatter: {fileID: 0}
   isImmortal: 0
-  canTakeKnockback: 1
-  <ID>k__BackingField: 04ee8cef-a9d5-4cce-b205-38ef6c202079
+  canTakeKnockback: 0
+  <ID>k__BackingField: 8bb1cf65-01fe-41f5-9bf4-42a40d31dc9d
   <SaveSystemData>k__BackingField:
     name: 
     <ID>k__BackingField: 
@@ -248,13 +248,14 @@ MonoBehaviour:
     gemsContaining: 0
     position: {x: 0, y: 0, z: 0}
   detectionDistance: 20
-  nextWaypointDistance: 1
-  hoverHeight: 4
+  nextWaypointDistance: 3
+  hoverHeight: 9
   xDistanceFromPlayer: 3
   attackDistance: 0.5
-  swoopSpeed: 10
-  maxSwoopDuration: 2
-  yAttackPositionOffset: 2
+  swoopSpeed: 16
+  maxSwoopDuration: 1.5
+  swoopChance: 0.1
+  yAttackPositionOffset: 1.5
   pathUpdateInterval: 1
   smoothDampScript:
     smoothTime: 0.4
