@@ -14,7 +14,8 @@ public class Harpy : ReactiveBase
     [SerializeField] private float yAttackPositionOffset = 2f;
     [SerializeField] private float pathUpdateInterval = 1f;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
-    
+
+    private float _actualHoverHeight;
     private float _repeatTimer;
     private float _swoopTimer;
     private Path _path;
@@ -139,17 +140,21 @@ public class Harpy : ReactiveBase
         // Choose a random point above the player using hoverHeight
         var position = targetObject.position;
         var targetvector = Vector2.zero;
+        _actualHoverHeight = hoverHeight;
         
         while (true)
         {
             var randomX = Random.Range(-xDistanceFromPlayer, xDistanceFromPlayer);
-            targetvector = new Vector2(position.x + randomX, position.y + hoverHeight);
+            targetvector = new Vector2(position.x + randomX, position.y + _actualHoverHeight);
 
             // Make sure the point is not inside ground
             if (Physics2D.OverlapPoint(targetvector, LayerMask.GetMask("Ground")) == null)
             {
                 _currentHoverPoint = targetvector;
+                break;
             }
+
+            _actualHoverHeight -= 0.5f;
         }
     }
     
