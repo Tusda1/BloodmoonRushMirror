@@ -79,64 +79,64 @@ public abstract class GravityObject : MonoBehaviour {
     }
 
     private void Movement(Vector2 move, bool yMovement) {
-    var distance = move.magnitude;
-
-    if (distance > MinMoveDistance) {
-        _hitBufferList.Clear();
-
-        // Get all colliders attached to the Rigidbody2D
-        var attachedColliders = new Collider2D[16];
-        int colliderCount = rb2d.GetAttachedColliders(attachedColliders, true);
-        Array.Resize(ref attachedColliders, colliderCount); // Resize the array to the actual number of colliders
-
-        foreach (var attachedCollider in attachedColliders) {
-            if (attachedCollider.isTrigger) continue; // Skip trigger colliders
-
-            // Create a ContactFilter2D for the collider's layer
-            var contactFilter = new ContactFilter2D {
-                useTriggers = false,
-                layerMask = Physics2D.GetLayerCollisionMask(attachedCollider.gameObject.layer),
-                useLayerMask = true
-            };
-
-            // Perform the cast for the current collider
-            var count = attachedCollider.Cast(move, contactFilter, _hitBuffer, distance + ShellRadius);
-
-            for (var i = 0; i < count; i++) {
-                _hitBufferList.Add(_hitBuffer[i]);
+        var distance = move.magnitude;
+    
+        if (distance > MinMoveDistance) {
+            _hitBufferList.Clear();
+    
+            // Get all colliders attached to the Rigidbody2D
+            var attachedColliders = new Collider2D[16];
+            int colliderCount = rb2d.GetAttachedColliders(attachedColliders, true);
+            Array.Resize(ref attachedColliders, colliderCount); // Resize the array to the actual number of colliders
+    
+            foreach (var attachedCollider in attachedColliders) {
+                if (attachedCollider.isTrigger) continue; // Skip trigger colliders
+    
+                // Create a ContactFilter2D for the collider's layer
+                var contactFilter = new ContactFilter2D {
+                    useTriggers = false,
+                    layerMask = Physics2D.GetLayerCollisionMask(attachedCollider.gameObject.layer),
+                    useLayerMask = true
+                };
+    
+                // Perform the cast for the current collider
+                var count = attachedCollider.Cast(move, contactFilter, _hitBuffer, distance + ShellRadius);
+    
+                for (var i = 0; i < count; i++) {
+                    _hitBufferList.Add(_hitBuffer[i]);
+                } 
             }
-        }
-
-        foreach (var hit2D in _hitBufferList) {
-            var currentNormal = hit2D.normal;
-            if (currentNormal.y > MinGroundNormalY) {
-                isGrounded = true;
-                if (yMovement) {
-                    GroundNormal = currentNormal;
-                    currentNormal.x = 0;
+    
+            foreach (var hit2D in _hitBufferList) {
+                var currentNormal = hit2D.normal;
+                if (currentNormal.y > MinGroundNormalY) {
+                    isGrounded = true;
+                    if (yMovement) {
+                        GroundNormal = currentNormal;
+                        currentNormal.x = 0;
+                    }
                 }
+    
+                var projection = Vector2.Dot(velocity, currentNormal);
+                if (projection < 0) {
+                    velocity -= projection * currentNormal;
+                }
+    
+                var modifiedDistance = hit2D.distance - ShellRadius;
+                distance = modifiedDistance < distance ? modifiedDistance : distance;
             }
-
-            var projection = Vector2.Dot(velocity, currentNormal);
-            if (projection < 0) {
-                velocity -= projection * currentNormal;
-            }
-
-            var modifiedDistance = hit2D.distance - ShellRadius;
-            distance = modifiedDistance < distance ? modifiedDistance : distance;
         }
+
+        if (move.normalized.y * distance < 0 && !isGrounded) isFalling = true;
+        else isFalling = false;
+    
+        rb2d.position = lockToAxis switch {
+            Axis.None => rb2d.position + move.normalized * distance,
+            Axis.XAxis => new Vector2(rb2d.position.x + move.normalized.x * distance, rb2d.position.y),
+            Axis.YAxis => new Vector2(rb2d.position.x, rb2d.position.y + move.normalized.y * distance),
+            _ => rb2d.position
+        };
     }
-
-    if (move.normalized.y * distance < 0 && !isGrounded) isFalling = true;
-    else isFalling = false;
-
-    rb2d.position = lockToAxis switch {
-        Axis.None => rb2d.position + move.normalized * distance,
-        Axis.XAxis => new Vector2(rb2d.position.x + move.normalized.x * distance, rb2d.position.y),
-        Axis.YAxis => new Vector2(rb2d.position.x, rb2d.position.y + move.normalized.y * distance),
-        _ => rb2d.position
-    };
-}
 
     public void ResetMovement(Axis axis) {
         velocity = axis switch {
