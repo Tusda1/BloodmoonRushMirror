@@ -64,7 +64,7 @@ public class SpitterEnemy : ReactiveBase
         projectile.transform.position = spawnPosition;
         var projectileScript = projectile.GetComponent<ProjectileDeflectable>();
         projectileScript.shooter = gameObject;
-        projectileScript.velocityDirection = FacingDirection;
+        projectileScript.velocityDirection = facingDirection;
         projectile.SetActive(true);
     }
 }

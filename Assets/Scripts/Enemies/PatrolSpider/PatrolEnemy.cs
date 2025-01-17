@@ -22,7 +22,7 @@ public class PatrolEnemy : EnemyBase
     {
         base.Update();
         
-        if (IsDead || IsStunned || !isGrounded || _patrolAnimation.isAttacking)
+        if (isDead || isStunned || !isGrounded || _patrolAnimation.isAttacking)
         {
             smoothDampScript.SetStartVelocity(velocity);
             return;
@@ -34,23 +34,23 @@ public class PatrolEnemy : EnemyBase
     private void Patrol()
     {
         // Smoothly move towards the target
-        smoothDampScript.SmoothDampFloat(FacingDirection, moveSpeed, ref targetVelocity);
+        smoothDampScript.SmoothDampFloat(facingDirection, moveSpeed, ref targetVelocity);
         _visualVelocity = targetVelocity;
         
         // Check if there is a wall in front of the enemy
-        RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition(), FacingDirection, ledgeDistance, EnemyAndGroundLayerMask);
+        RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition(), facingDirection, ledgeDistance, enemyAndGroundLayerMask);
         if (hit.collider != null)
         {
             // Change direction
-            FacingDirection = -FacingDirection;
+            facingDirection = -facingDirection;
         }
         
         // Check if there is a ledge in front of the enemy
-        hit = Physics2D.Raycast(GetBottomPosition() + FacingDirection * ledgeDistance, Vector2.down, 1f, LayerMask.GetMask("Ground"));
+        hit = Physics2D.Raycast(GetBottomPosition() + facingDirection * ledgeDistance, Vector2.down, 1f, LayerMask.GetMask("Ground"));
         if (hit.collider == null)
         {
             // Change direction
-            FacingDirection = -FacingDirection;
+            facingDirection = -facingDirection;
         }
     }
 
@@ -68,6 +68,6 @@ public class PatrolEnemy : EnemyBase
 
     protected override void SetVisualFacingDirection()
     {
-        VisualFacingDirection = _visualVelocity.x > 0 ? Vector2.right : Vector2.left;
+        visualFacingDirection = _visualVelocity.x > 0 ? Vector2.right : Vector2.left;
     }
 }

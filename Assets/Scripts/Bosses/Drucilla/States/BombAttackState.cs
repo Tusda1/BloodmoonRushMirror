@@ -8,8 +8,13 @@ public class BombAttackState : DrucillaState
     [SerializeField] private float bombCooldown = 1f;
     [SerializeField] private float glideSpeed = 4f;
     [SerializeField] private float glideFallVelocity = -1f;
+    [SerializeField] private float groundSlamSpeed = 10f;
+    [SerializeField] private float groundSlamPrepTime = 0.5f;
     
     private float _bombTimer;
+    private int _bombCount;
+    private int _groundSlamStage;
+    private float _groundSlamTimer;
     private Vector2 _teleportPosition;
     
     private PlayerScript _player;
@@ -74,14 +79,11 @@ public class BombAttackState : DrucillaState
             SpawnBomb();
         }
         
-        Vector2 vector = Vector2.zero;
+        var direction = (_player.transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
         
-        Vector2 direction = (_player.transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
+        _smoothDampScript.SmoothDampFloat(direction, glideSpeed, ref Boss.targetVelocityPublic);
         
-        _smoothDampScript.SmoothDampFloat(direction, glideSpeed, ref vector);
-        
-        Boss.targetVelocityX = vector.x;
-        Boss.velocityY = glideFallVelocity;
+        Boss.velocityPublic.y = glideFallVelocity;
     }
     
     private void SpawnBomb()
@@ -93,6 +95,26 @@ public class BombAttackState : DrucillaState
     
     private void GroundSlam()
     {
-        
+        if (_groundSlamStage == 0)
+        {
+            if (_groundSlamTimer > groundSlamPrepTime)
+            {
+                _groundSlamTimer += Time.deltaTime;
+            }
+            else
+            {
+                _groundSlamTimer = 0;
+                _groundSlamStage++;
+            }
+            Boss.velocityPublic.y = 10f;
+        }
+        else if (_groundSlamStage == 1)
+        {
+            
+        }
+        else
+        {
+            
+        }
     }
 }
