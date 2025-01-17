@@ -5,11 +5,16 @@ using UnityEngine;
 public class BombAttackState : DrucillaState
 {
     [SerializeField] private GameObject bombPrefab;
+    [SerializeField] private float bombCooldown = 1f;
+    [SerializeField] private float glideSpeed = 4f;
+    [SerializeField] private float glideFallVelocity = -1f;
     
+    private float _bombTimer;
     private Vector2 _teleportPosition;
     
     private PlayerScript _player;
     private Pooler _bombPooler;
+    private SmoothDampScript _smoothDampScript = new();
     
     private enum BombAttackStage
     {
@@ -52,7 +57,34 @@ public class BombAttackState : DrucillaState
         }
     }
 
+    protected override void OnTeleportEnd()
+    {
+        _stage = BombAttackStage.DropBombs;
+    }
+
     private void DropBombs()
+    {
+        if (_bombTimer > bombCooldown)
+        {
+            _bombTimer += Time.deltaTime;
+        }
+        else
+        {
+            _bombTimer = 0;
+            SpawnBomb();
+        }
+        
+        Vector2 vector = Vector2.zero;
+        
+        Vector2 direction = (_player.transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
+        
+        _smoothDampScript.SmoothDampFloat(direction, glideSpeed, ref vector);
+        
+        Boss.targetVelocityX = vector.x;
+        Boss.velocityY = glideFallVelocity;
+    }
+    
+    private void SpawnBomb()
     {
         var bomb = _bombPooler.GetPooledObject();
         bomb.transform.position = transform.position;

@@ -20,6 +20,8 @@ public class BossBase : GravityObject
     public event Action OnBattleStart;
     
     [HideInInspector] public float targetVelocityX;
+    [HideInInspector] public float velocityY;
+    [HideInInspector] public Vector2 facingDirection;
     [HideInInspector] public bool bossGrounded;
     [HideInInspector] public Collider2D bossCollider;
     
@@ -51,7 +53,10 @@ public class BossBase : GravityObject
     protected override void ComputeVelocity()
     {
         targetVelocity.x = targetVelocityX;
+        velocity.y = velocityY;
         bossGrounded = isGrounded;
+        
+        facingDirection = targetVelocityX > 0 ? Vector2.right : Vector2.left;
     }
     
     public void StartBattle()
