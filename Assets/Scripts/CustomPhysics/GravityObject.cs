@@ -85,9 +85,9 @@ public abstract class GravityObject : MonoBehaviour {
             _hitBufferList.Clear();
     
             // Get all colliders attached to the Rigidbody2D
-            var attachedColliders = new Collider2D[16];
+            var attachedColliders = new Collider2D[16]; // Create an array with 16 spaces to store colliders
             int colliderCount = rb2d.GetAttachedColliders(attachedColliders, true);
-            Array.Resize(ref attachedColliders, colliderCount); // Resize the array to the actual number of colliders
+            Array.Resize(ref attachedColliders, colliderCount); // Resize the array to the number of found colliders
     
             foreach (var attachedCollider in attachedColliders) {
                 if (attachedCollider.isTrigger) continue; // Skip trigger colliders
