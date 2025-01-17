@@ -28,16 +28,16 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     #endregion
 
     #region ***---PrivateFields---***
-    protected Vector2 StartPosition;
-    protected Vector2 FacingDirection;
-    protected Vector2 VisualFacingDirection;
+    protected Vector2 startPosition;
+    protected Vector2 facingDirection;
+    protected Vector2 visualFacingDirection;
     
-    protected bool IsDead;
-    protected bool IsStunned;
-    protected bool IsVulnerable;
-    protected int CurrentHealth = 2;
-    protected float TakeDamageTimer;
-    protected LayerMask EnemyAndGroundLayerMask;
+    protected bool isDead;
+    protected bool isStunned;
+    protected bool isVulnerable;
+    protected int currentHealth = 2;
+    protected float takeDamageTimer;
+    protected LayerMask enemyAndGroundLayerMask;
     
     protected EnemyAnimationBase enemyAnimationBase;
     protected PlayerScript Player;
@@ -62,9 +62,9 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         new EnemyData {
             name = name,
             ID = ID,
-            health = CurrentHealth,
+            health = currentHealth,
             gemsContaining = rubyDropAmount,
-            isAlive = !IsDead,
+            isAlive = !isDead,
             position = transform.position
         });
     #endregion
@@ -74,15 +74,15 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected override void Start() {
         base.Start();
 
-        StartPosition = transform.position;
+        startPosition = transform.position;
 
-        CurrentHealth = maxHealth;
+        currentHealth = maxHealth;
 
         enemyAnimationBase = GetComponent<EnemyAnimationBase>();
 
-        FacingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
+        facingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
 
-        EnemyAndGroundLayerMask = LayerMask.GetMask("Enemy", "Ground");
+        enemyAndGroundLayerMask = LayerMask.GetMask("Enemy", "Ground");
 
         Player = ServiceLocator.Get<PlayerScript>();
         _boxCollider = GetComponent<Collider2D>();
@@ -104,11 +104,11 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         SetVisualFacingDirection();
         // Set the localscale of the enemy to face the direction it is moving
-        transform.localScale = new Vector3(-VisualFacingDirection.x, 1, 1);
+        transform.localScale = new Vector3(-visualFacingDirection.x, 1, 1);
     }
 
     protected virtual void SetVisualFacingDirection() {
-        VisualFacingDirection = FacingDirection;
+        visualFacingDirection = facingDirection;
     }
 
     public void TakeDamage(DamageInstance damageInstance) {
@@ -117,11 +117,11 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         }
         
         print("taking damage");
-        if (Time.time - TakeDamageTimer < invulnerableTime && !damageInstance.ignoreInvincibility) {
+        if (Time.time - takeDamageTimer < invulnerableTime && !damageInstance.ignoreInvincibility) {
             return;
         }
 
-        TakeDamageTimer = Time.time;
+        takeDamageTimer = Time.time;
 
         if (enemyAnimationBase != null) enemyAnimationBase.PlayHitAnimation();
         StartCoroutine(FlashWhite());
@@ -137,9 +137,9 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             Debug.LogWarning($"blood splatter on {name} is null");
         }
 
-        if (!isImmortal) CurrentHealth -= damageInstance.damage;
+        if (!isImmortal) currentHealth -= damageInstance.damage;
 
-        if (CurrentHealth <= 0) {
+        if (currentHealth <= 0) {
             Die();
             return;
         }
@@ -163,20 +163,20 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     private IEnumerator KnockUp(Vector2 knockbackStrength) {
-        IsStunned = true;
-        IsVulnerable = true;
+        isStunned = true;
+        isVulnerable = true;
         float force = knockbackStrength.magnitude;
         velocity.y = force / weight;
         yield return new WaitUntil((() => velocity.y <= 0));
         yield return new WaitUntil((() => isGrounded));
-        if (IsDead) yield break;
-        IsStunned = false;
-        IsVulnerable = false;
+        if (isDead) yield break;
+        isStunned = false;
+        isVulnerable = false;
         enemyAnimationBase.PlayDefaultAnimation();
     }
 
     private IEnumerator Knockback(Vector2 knockbackStrength) {
-        IsStunned = true;
+        isStunned = true;
         Vector2 knockbackVelocity = knockbackStrength.magnitude * knockbackStrength.normalized / weight;
         Vector2 smoothedVelocity = knockbackVelocity;
         smoothedVelocity.y = 0;
@@ -197,14 +197,14 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             yield return null;
         }
 
-        if (IsDead) yield break;
+        if (isDead) yield break;
 
-        IsStunned = false;
+        isStunned = false;
         if (enemyAnimationBase != null) enemyAnimationBase.PlayDefaultAnimation();
     }
 
     private void Die() {
-        IsDead = true;
+        isDead = true;
 
         if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, () => { gameObject.SetActive(false); });
     }
@@ -253,20 +253,20 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     public void Respawn() {
-        IsDead = false;
-        IsVulnerable = false;
-        IsStunned = false;
+        isDead = false;
+        isVulnerable = false;
+        isStunned = false;
         gameObject.SetActive(true);
-        CurrentHealth = maxHealth;
-        transform.position = StartPosition;
+        currentHealth = maxHealth;
+        transform.position = startPosition;
     }
 
     private void OnTriggerStay2D(Collider2D other) {
-        if (IsDead) {
+        if (isDead) {
             return;
         }
 
-        if (IsStunned) {
+        if (isStunned) {
             return;
         }
 
@@ -302,7 +302,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             Debug.Log($"Setting new guid for {name}");
         }
 
-        CurrentHealth = maxHealth;
+        currentHealth = maxHealth;
     }
 #endif
 
@@ -319,18 +319,18 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     [ContextMenu(nameof(LoadBindData))]
     public virtual void LoadBindData() {
         name = SaveSystemData.name;
-        CurrentHealth = SaveSystemData.health;
+        currentHealth = SaveSystemData.health;
         rubyDropAmount = SaveSystemData.gemsContaining;
-        IsDead = !SaveSystemData.isAlive;
+        isDead = !SaveSystemData.isAlive;
         transform.position = SaveSystemData.position;
     }
 
     [ContextMenu(nameof(SaveBindData))]
     public virtual void SaveBindData() {
         SaveSystemData.name = name;
-        SaveSystemData.health = CurrentHealth;
+        SaveSystemData.health = currentHealth;
         SaveSystemData.gemsContaining = rubyDropAmount;
-        SaveSystemData.isAlive = !IsDead;
+        SaveSystemData.isAlive = !isDead;
         SaveSystemData.position = transform.position;
     }
     #endregion

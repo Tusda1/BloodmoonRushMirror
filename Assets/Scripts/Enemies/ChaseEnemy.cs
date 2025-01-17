@@ -61,13 +61,13 @@ public class ChaseEnemy : ReactiveBase
         float directionThreshold = 0.1f;
         if (Mathf.Abs(direction.x) > directionThreshold)
         {
-            FacingDirection = direction.x > 0 ? Vector2.right : Vector2.left;
+            facingDirection = direction.x > 0 ? Vector2.right : Vector2.left;
         }
 
         // Move towards the next waypoint if grounded and angle to next waypoint is less than 75 degrees
         if (isGrounded && !(Vector2.Angle(Vector2.up, direction) < 15))
         {
-            targetVelocity = FacingDirection * moveSpeed;
+            targetVelocity = facingDirection * moveSpeed;
         }
 
         // Check if the enemy has reached the next waypoint
