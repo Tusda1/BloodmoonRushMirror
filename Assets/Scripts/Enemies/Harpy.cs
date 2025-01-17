@@ -141,9 +141,11 @@ public class Harpy : ReactiveBase
         var position = targetObject.position;
         var targetvector = Vector2.zero;
         _actualHoverHeight = hoverHeight;
+        int attempts = 0;
         
         while (true)
         {
+            attempts++;
             var randomX = Random.Range(-xDistanceFromPlayer, xDistanceFromPlayer);
             targetvector = new Vector2(position.x + randomX, position.y + _actualHoverHeight);
 
@@ -155,6 +157,12 @@ public class Harpy : ReactiveBase
             }
 
             _actualHoverHeight -= 0.5f;
+            
+            if (attempts > 10)
+            {
+                _currentHoverPoint = targetvector;
+                break;
+            }
         }
     }
     
