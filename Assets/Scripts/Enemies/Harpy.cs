@@ -1,5 +1,6 @@
 using Pathfinding;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Seeker))]
 public class Harpy : ReactiveBase
