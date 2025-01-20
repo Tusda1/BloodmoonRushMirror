@@ -29,7 +29,7 @@
             <engine:Label text="x" name="x" class="davidLabel" />
             <engine:Label text="00" class="davidLabel">
                 <Bindings>
-                    <engine:DataBinding property="text" data-source-path="gems" binding-mode="ToTarget" source-to-ui-converters="Int To String With Two Digits" />
+                    <engine:DataBinding property="text" data-source-path="playerMovement.killCharges" binding-mode="ToTarget" source-to-ui-converters="Int To String With Two Digits" />
                 </Bindings>
             </engine:Label>
         </engine:VisualElement>
