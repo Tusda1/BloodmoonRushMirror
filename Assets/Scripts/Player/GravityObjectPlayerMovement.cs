@@ -5,6 +5,7 @@ using Gaskellgames;
 using PlayerLoopTimer;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace Player {
     public class GravityObjectPlayerMovement : GravityObject {

@@ -3,6 +3,7 @@ using DG.Tweening;
 using Player;
 using SceneCollections;
 using UnityEngine;
+using Zenject;
 
 public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
     #region ---Fields---
@@ -12,12 +13,12 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
     [SerializeField] private DamageInstance drucillaDamageInstance = new() { knockback = Vector2.left };
     
     private Vector3 _startPosition;
-    private CameraEffects _cameraEffects;
+    
+    [Inject] private CameraEffects _cameraEffects;
+    [Inject] private PlayerScript _playerScript;
     #endregion
 
     private void Start() {
-        _cameraEffects = ServiceLocator.Get<CameraEffects>();
-        
         _startPosition = transform.position;
         
         transform.DOBlendableMoveBy(new Vector3(0, 1, 0), 0.5f)
@@ -28,7 +29,7 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
         DOTween.Kill(transform);
         transform.position = _startPosition;
         
-        ServiceLocator.Get<PlayerScript>().TakeDamage(drucillaDamageInstance);
+        _playerScript.TakeDamage(drucillaDamageInstance);
         
         _ = _cameraEffects.ShakeCamera(0.6f, 0.4f);
         

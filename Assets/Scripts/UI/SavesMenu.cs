@@ -6,6 +6,7 @@ using UI.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Zenject;
 
 namespace UI {
     [RequireComponent(typeof(UITKWorldSpaceInteractive))]
@@ -28,11 +29,12 @@ namespace UI {
         private VisualElement _root;
         private VisualElement _savesMenuRoot;
 
-        private CameraEffects _cameraEffects;
         private Button _saveSlot1;
         private Button _saveSlot2;
         private Button _saveSlot3;
         #endregion
+        
+        [Inject] private CameraEffects _cameraEffects;
         #endregion
 
         private void Awake() {
@@ -45,8 +47,6 @@ namespace UI {
         }
 
         private void Start() {
-            _cameraEffects = ServiceLocator.Get<CameraEffects>();
-
             _saveSlot1.clicked += () => LoadSave(saveSlot1Data);
             _saveSlot2.clicked += () => LoadSave(saveSlot2Data);
             _saveSlot3.clicked += () => LoadSave(saveSlot3Data);

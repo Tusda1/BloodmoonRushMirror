@@ -5,6 +5,7 @@ using SaveLoadSystem.Data;
 using SceneCollections;
 using UnityEngine;
 using Utilities.DataBinding;
+using Zenject;
 
 namespace SaveLoadSystem {
     public class LevelDataManager : Singleton<LevelDataManager>, IBind<LevelData> {
@@ -59,7 +60,7 @@ namespace SaveLoadSystem {
                 throw new NullReferenceException();
             }
         }
-        private PlayerScript _playerScript;
+        [Inject] private PlayerScript _playerScript;
         
         public static LevelDataManager LevelDataManagerCache {
             get {

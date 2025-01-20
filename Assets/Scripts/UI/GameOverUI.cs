@@ -2,6 +2,7 @@ using Attributes;
 using SceneCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Zenject;
 
 public class GameOverUI : MonoBehaviour {
     #region ---Fields---
@@ -12,12 +13,10 @@ public class GameOverUI : MonoBehaviour {
     private Button _retryButton;
     private Button _quitButton;
     
-    private CameraEffects _cameraEffects;
+    [Inject] private CameraEffects _cameraEffects;
     #endregion
     
     private void Start() {
-        _cameraEffects = ServiceLocator.Get<CameraEffects>();
-        
         _root = uiDocument.rootVisualElement;
         
         _retryButton = _root.Q<Button>("RetryButton");
