@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Player;
 using UnityEngine;
 
@@ -9,12 +10,12 @@ public class BombAttackState : DrucillaState
     [SerializeField] private float glideSpeed = 4f;
     [SerializeField] private float glideFallVelocity = -1f;
     [SerializeField] private float groundSlamSpeed = 10f;
-    [SerializeField] private float groundSlamPrepTime = 0.5f;
+    [SerializeField] private float groundsSlamUpSpeed = 10f;
+    [SerializeField] private float groundSlamUpTime = 0.5f;
     
     private float _bombTimer;
     private int _bombCount;
-    private int _groundSlamStage;
-    private float _groundSlamTimer;
+    private bool _isGroundSlamming;
     private Vector2 _teleportPosition;
     
     private PlayerScript _player;
@@ -44,6 +45,11 @@ public class BombAttackState : DrucillaState
         var hit = Physics2D.Raycast(_player.transform.position, Vector2.up, 100f, LayerMask.GetMask("Ground"));
         
         _teleportPosition = hit.point + Vector2.down * 2.5f;
+    }
+
+    private void OnDisable()
+    {
+        
     }
 
     private void Update()
@@ -95,26 +101,26 @@ public class BombAttackState : DrucillaState
     
     private void GroundSlam()
     {
-        if (_groundSlamStage == 0)
+        if (!_isGroundSlamming)
         {
-            if (_groundSlamTimer > groundSlamPrepTime)
-            {
-                _groundSlamTimer += Time.deltaTime;
-            }
-            else
-            {
-                _groundSlamTimer = 0;
-                _groundSlamStage++;
-            }
-            Boss.velocityPublic.y = 10f;
+            _isGroundSlamming = true;
+            StartCoroutine(GroundSlamCoroutine());
         }
-        else if (_groundSlamStage == 1)
+    }
+
+    private IEnumerator GroundSlamCoroutine()
+    {
+        Boss.velocityPublic.y = groundsSlamUpSpeed;
+        
+        yield return new WaitForSeconds(groundSlamUpTime);
+        
+        Boss.velocityPublic.y = -groundSlamSpeed;
+
+        while (!Boss.isGrounded)
         {
-            
+            yield return null;
         }
-        else
-        {
-            
-        }
+        
+        
     }
 }
