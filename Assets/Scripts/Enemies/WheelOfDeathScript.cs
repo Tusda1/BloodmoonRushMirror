@@ -5,19 +5,22 @@ public class WheelOfDeathScript : MonoBehaviour, IDamageable
     [SerializeField] private Transform centerPoint; // The center point around which the object will move
     [SerializeField] private float radius = 5f; // The radius of the circular path
     [SerializeField] private float speed = 1f; // The speed of the circular motion
+    [SerializeField] private float startAngle = 0f; // The starting angle of the object
     [SerializeField] private DamageInstance damageInstance; // The damage instance to apply to the player
 
     private float angle = 0f; // Initialize the angle to 0
     private LineRenderer lineRenderer;
     private int positionCount = 0;
 
-    void Start()
+    private void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
+        
+        angle = startAngle;
     }
 
-    void Update()
+    private void Update()
     {
         if (centerPoint == null)
         {

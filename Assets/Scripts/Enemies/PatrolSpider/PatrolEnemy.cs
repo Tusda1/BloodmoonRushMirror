@@ -34,7 +34,7 @@ public class PatrolEnemy : EnemyBase
     private void Patrol()
     {
         // Smoothly move towards the target
-        smoothDampScript.SmoothDampFloat(facingDirection, moveSpeed, ref targetVelocity);
+        smoothDampScript.SmoothDampVector2(facingDirection * moveSpeed, ref targetVelocity);
         _visualVelocity = targetVelocity;
         
         // Check if there is a wall in front of the enemy

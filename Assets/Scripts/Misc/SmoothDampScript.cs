@@ -14,12 +14,6 @@ public class SmoothDampScript
         smoothVelocity = startVelocity;
     }
     
-    public void SmoothDampFloat(Vector2 facingDirection, float moveSpeed, ref Vector2 targetVelocity)
-    {
-        smoothVelocity = Vector2.SmoothDamp(smoothVelocity, facingDirection * moveSpeed, ref currentVelocity, smoothTime);
-        targetVelocity = smoothVelocity;
-    }
-    
     public void SmoothDampVector2(Vector2 target, ref Vector2 targetVelocity)
     {
         smoothVelocity = Vector2.SmoothDamp(smoothVelocity, target, ref currentVelocity, smoothTime);
