@@ -14,12 +14,14 @@ public class BetterRuby : GravityObject
     public bool fall; // Whether the Ruby should fall to the ground or hover in place
     
     private float _initialY;
+    private float _initialGravityModifier;
+    private float _initialMoveSpeed;
     private float _spawnTime;
     private bool _startedMoving;
     private PlayerScript _player;
     private ParticleSystem _particleSystem;
     private GameObject _spriteGameObject;
-    private float _initialGravityModifier;
+    
     
     private enum RubyState
     {
@@ -34,6 +36,7 @@ public class BetterRuby : GravityObject
     {
         base.Awake();
         
+        _initialMoveSpeed = moveSpeed;
         _particleSystem = GetComponentInParent<ParticleSystem>();
         _spriteGameObject = transform.GetChild(0).gameObject;
     }
@@ -63,6 +66,8 @@ public class BetterRuby : GravityObject
         _startedMoving = false;
         _particleSystem.Stop();
         GravityModifier = _initialGravityModifier;
+        velocity = Vector2.zero;
+        moveSpeed = _initialMoveSpeed;
     }
 
     private new void FixedUpdate()
@@ -95,7 +100,7 @@ public class BetterRuby : GravityObject
     private void SwitchToHovering()
     {
         _state = RubyState.Hovering;
-        GravityModifier = 0;
+        GravityModifier = 0f;
     }
     
     private void Hover()
