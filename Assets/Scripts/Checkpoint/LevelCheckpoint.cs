@@ -8,8 +8,8 @@ using UnityEngine;
 using Utilities.DataBinding;
 using Zenject;
 using Action = System.Action;
-#if UNITY_EDITOR
 using System;
+#if UNITY_EDITOR
 using UnityEditor;
 #endif
 
@@ -25,6 +25,20 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     private AnimancerComponent _animancerComponent;
 
     #region ***---GameManagers---***
+    private SaveLoadSystemManager SaveLoadSystemManager {
+        get {
+            if (_saveLoadSystemManager != null) {
+                return _saveLoadSystemManager;
+            }
+                
+            if (SaveLoadSystemManager.HasInstance) {
+                _saveLoadSystemManager = SaveLoadSystemManager.Instance;
+                return _saveLoadSystemManager;
+            }
+                
+            throw new NullReferenceException("SaveLoadSystemManager is null");
+        }
+    }
     [Inject] private SaveLoadSystemManager _saveLoadSystemManager;
     private static LevelDataManager LevelDataManager => LevelDataManager.LevelDataManagerCache;
     #endregion
@@ -65,13 +79,13 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
         
         LevelDataManager.CurrentCheckpointData.ID = ID;
         LevelDataManager.CurrentCheckpointData.Position = transform.position;
-        _saveLoadSystemManager?.SaveBindings();
+        SaveLoadSystemManager?.SaveBindings();
     }
 
     #region ---DataBindingMethods---
     public void Bind() {
-        if (_saveLoadSystemManager != null || !Application.isPlaying) {
-            _saveLoadSystemManager.Bind(this, DataInGameData);
+        if (SaveLoadSystemManager != null || !Application.isPlaying) {
+            SaveLoadSystemManager.Bind(this, DataInGameData);
         }
         else {
             Debug.LogWarning("No SaveLoadSystemManager found", this);

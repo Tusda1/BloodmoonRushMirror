@@ -80,9 +80,7 @@ namespace Player {
         [HideInInspector] public Vector2 lastPlatformCheckpoint;
         [HideInInspector] public bool wasGroundedLastFrame;
         
-        private IPlayerLadderLogic _playerLadderLogic; 
-        public LadderMiddle ladderMiddle;
-        public LadderTop ladderTop;
+        public IPlayerLadderLogic PlayerLadderLogic;
         #endregion
 
         #region ***---AnimatorStringToHash---***
@@ -105,7 +103,7 @@ namespace Player {
 
             lastPlatformCheckpoint = transform.position;
 
-            _playerLadderLogic = new PlayerLadderLogic(player, ladderDebugLogger);
+            PlayerLadderLogic = new PlayerLadderLogic(player, ladderDebugLogger);
 
             InitializeTimers();
         }
@@ -200,7 +198,7 @@ namespace Player {
             GroundCheck();
             isActuallyGrounded = isGrounded;
             
-            if (_playerLadderLogic.LadderLogic()) return;
+            if (PlayerLadderLogic.LadderLogic()) return;
             
 
             player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
@@ -330,7 +328,7 @@ namespace Player {
             if (!isHoldingJump) return;
             
             ForceExitDuck();
-            _playerLadderLogic.ExitLadder();
+            PlayerLadderLogic.ExitLadder();
             if (isGrounded || killCharges > 0) {
                 isDashing = false;
                 lockToAxis = Axis.None;
@@ -370,7 +368,7 @@ namespace Player {
                 }
             }
 
-            _playerLadderLogic.ExitLadder();
+            PlayerLadderLogic.ExitLadder();
             ForceExitDuck();
             isDashing = true;
             canDash = false;
@@ -405,7 +403,7 @@ namespace Player {
         private void EnterDuck() {
             playerMovementDebugLogger.Log("entering duck");
 
-            if (_playerLadderLogic.TryGetLadderTop(out ladderTop)) return;
+            if (PlayerLadderLogic.TryGetLadderTop(out var ladderTop)) return;
             
             isDucking = true;
             player.animator.SetBool(AnimatorCrouchBool, true);

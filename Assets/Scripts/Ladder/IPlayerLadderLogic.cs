@@ -1,4 +1,8 @@
 ﻿public interface IPlayerLadderLogic {
+    public LadderTop LadderTop { get; set; }
+    public LadderMiddle LadderMiddle { get; set; }
+    public LadderBottom LadderBottom { get; set; }
+
     bool TryGetLadderTop(out LadderTop ladderTop);
     bool LadderLogic();
     void EnterLadder();

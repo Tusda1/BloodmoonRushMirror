@@ -1,7 +1,10 @@
 using Attributes;
 using SaveLoadSystem;
+using SaveLoadSystem.Data;
+using Serializers;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Utilities.DataBinding;
 using Zenject;
 
 public class PersistentManagersInstaller : MonoInstaller {
@@ -15,5 +18,8 @@ public class PersistentManagersInstaller : MonoInstaller {
         Container.BindInstance(cameraEffects);
         Container.BindInstance(eventSystem);
         Container.BindInstance(renderTextureCamera);
+
+        Container.Bind<FileDataService<SaveGameData>>().AsSingle();
+        Container.Bind<ISerializer>().FromInstance(new JSONSerializer());
     }
 }

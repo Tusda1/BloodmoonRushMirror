@@ -14,10 +14,6 @@ namespace UI {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
         
-        [SerializeField, Required] private SaveSlotDataSO saveSlot1Data;
-        [SerializeField, Required] private SaveSlotDataSO saveSlot2Data;
-        [SerializeField, Required] private SaveSlotDataSO saveSlot3Data;
-        
         [SerializeField, Required] private SceneCollectionSO newGameSceneCollection;
         
         [SerializeField, Required] private InputActionReference backAction;
@@ -33,8 +29,15 @@ namespace UI {
         private Button _saveSlot2;
         private Button _saveSlot3;
         #endregion
-        
+
+        #region ***---DI---***
         [Inject] private CameraEffects _cameraEffects;
+        [Inject] private SaveLoadSystemManager _saveLoadSystemManager;
+        
+        [Inject(Id = "Slot1")] private SaveSlotDataSO _saveSlot1Data;
+        [Inject(Id = "Slot2")] private SaveSlotDataSO _saveSlot2Data;
+        [Inject(Id = "Slot3")] private SaveSlotDataSO _saveSlot3Data;
+        #endregion
         #endregion
 
         private void Awake() {
@@ -44,12 +47,14 @@ namespace UI {
             _saveSlot1 = _savesMenuRoot.Q<Button>("SaveSlot1");
             _saveSlot2 = _savesMenuRoot.Q<Button>("SaveSlot2");
             _saveSlot3 = _savesMenuRoot.Q<Button>("SaveSlot3");
+
+            _saveLoadSystemManager.UpdateSaveSlotSO();
         }
 
         private void Start() {
-            _saveSlot1.clicked += () => LoadSave(saveSlot1Data);
-            _saveSlot2.clicked += () => LoadSave(saveSlot2Data);
-            _saveSlot3.clicked += () => LoadSave(saveSlot3Data);
+            _saveSlot1.clicked += () => LoadSave(_saveSlot1Data);
+            _saveSlot2.clicked += () => LoadSave(_saveSlot2Data);
+            _saveSlot3.clicked += () => LoadSave(_saveSlot3Data);
             
             _savesMenuRoot.SetEnabled(false);
         }

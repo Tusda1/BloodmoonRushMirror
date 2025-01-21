@@ -101,7 +101,7 @@ namespace SaveLoadSystem {
         #region ---DataBindingMethods---
 
         public void Bind() {
-            if (SaveLoadSystemManager != null || !Application.isPlaying) {
+            if (SaveLoadSystemManager.HasInstance || !Application.isPlaying) {
                 SaveLoadSystemManager.Bind(this, DataInGameData);
             }
             else {

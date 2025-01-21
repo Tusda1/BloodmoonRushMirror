@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Encryption;
 using Serializers;
+using Zenject;
 using Application = UnityEngine.Device.Application;
 
 namespace Utilities.DataBinding {
@@ -14,14 +14,19 @@ namespace Utilities.DataBinding {
         public ISerializer Serializer { get; }
         public string DataPath { get; }
         public string FileExtension { get; }
-
-        public FileDataService(ISerializer serializer = null, bool encrypted = false) {
-            Serializer = encrypted ? new EncryptedSerializer(serializer) : serializer ?? new JSONSerializer();
-
+        
+        [Inject]
+        public FileDataService(ISerializer serializer) {
+            Serializer = serializer;
+            
             DataPath = Path.Combine(Application.persistentDataPath, typeof(TGameData).Name);
             if (!Directory.Exists(DataPath)) Directory.CreateDirectory(DataPath);
 
             FileExtension = Serializer.FileExtension;
+        }
+        
+        public void OpenFileLocation() {
+            System.Diagnostics.Process.Start(DataPath);
         }
 
         public string GetPathToSaveFile(string fileName) {

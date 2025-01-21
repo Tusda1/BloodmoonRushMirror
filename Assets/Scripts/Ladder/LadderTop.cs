@@ -18,7 +18,7 @@ public class LadderTop : MonoBehaviour {
         debugLogger?.Log("Player collided with ladder top", this);
         
         var player = other.gameObject.GetComponent<PlayerScript>();
-        player.playerMovement.ladderTop = this;
+        player.playerMovement.PlayerLadderLogic.LadderTop = this;
     }
     
     private void OnCollisionExit2D(Collision2D other) {
@@ -27,6 +27,6 @@ public class LadderTop : MonoBehaviour {
         debugLogger?.Log("Player stopped colliding with ladder top", this);
         
         var player = other.gameObject.GetComponent<PlayerScript>();
-        player.playerMovement.ladderTop = null;
+        player.playerMovement.PlayerLadderLogic.LadderTop = null;
     }
 }

@@ -12,7 +12,7 @@ public class LadderMiddle : MonoBehaviour {
 
         debugLogger?.Log("Ladder middle entered", this);
 
-        other.GetComponent<PlayerScript>().playerMovement.ladderMiddle = this;
+        other.GetComponent<PlayerScript>().playerMovement.PlayerLadderLogic.LadderMiddle = this;
     }
 
     private void OnTriggerExit2D(Collider2D other) {
@@ -20,6 +20,6 @@ public class LadderMiddle : MonoBehaviour {
 
         debugLogger?.Log("Ladder middle exited", this);
 
-        other.GetComponent<PlayerScript>().playerMovement.ladderMiddle = null;
+        other.GetComponent<PlayerScript>().playerMovement.PlayerLadderLogic.LadderMiddle = null;
     }
 }

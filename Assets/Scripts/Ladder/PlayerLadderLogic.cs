@@ -10,19 +10,21 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     private readonly PlayerScript _player;
     private readonly GravityObjectPlayerMovement _playerMovement;
     private readonly DebugLoggerSO _debugLogger;
+        
+    [field: SerializeField] public LadderTop LadderTop { get; set; }
+    [field: SerializeField] public LadderMiddle LadderMiddle { get; set; }
+    [field: SerializeField] public LadderBottom LadderBottom { get; set; }
 
     #region ---PlayerMovementShortcuts---
-    private LadderMiddle LadderMiddle {
-        get {
-            if (_playerMovement.ladderMiddle == null && LadderTop != null && InputVector.y < 0) {
-                return LadderTop.ladderMiddle;
-            }
-
-            return _playerMovement.ladderMiddle;
-        }
-    }
-
-    private LadderTop LadderTop => _playerMovement.ladderTop;
+    // private LadderMiddle LadderMiddle {
+    //     get {
+    //         if (_playerMovement.ladderMiddle == null && LadderTop != null && InputVector.y < 0) {
+    //             return LadderTop.ladderMiddle;
+    //         }
+    //
+    //         return _playerMovement.ladderMiddle;
+    //     }
+    // }
 
     private bool IsClimbing {
         get => _playerMovement.isClimbing;
@@ -84,6 +86,10 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
             }
         }
 
+        if (LadderMiddle == null && LadderBottom == null) {
+            ExitLadder();
+        }
+
         IsGrounded = IsClimbing;
 
         _playerMovement.targetVelocity = new Vector2(0, InputVector.y * ClimbSpeed);
@@ -138,7 +144,8 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         if (ladder != null) {
             if (!ladder.TryGetComponent(out ladderTop)) return false;
             EnterLadderFromTop();
-            _playerMovement.ladderMiddle = ladderTop.ladderMiddle;
+            LadderMiddle = ladderTop.ladderMiddle;
+            LadderTop = ladderTop;
             return true;
         }
 
