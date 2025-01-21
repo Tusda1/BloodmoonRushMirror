@@ -30,9 +30,11 @@ namespace SaveLoadSystem {
             new LevelData {
                 ID = ID,
                 SceneCollection = SceneCollection,
+                LevelStartPoint = PlayerScriptCache.transform.position,
                 enemyDatas = enemyDatas,
                 checkpointDatas = checkpointDatas,
-                CurrentCheckpointData = CurrentCheckpointData
+                CurrentCheckpointData = CurrentCheckpointData,
+
             });
         #endregion
 

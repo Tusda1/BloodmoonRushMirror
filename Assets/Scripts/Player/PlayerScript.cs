@@ -145,8 +145,6 @@ namespace Player {
             Cursor.lockState = CursorLockMode.Locked;
 
             StartCoroutine(ResetPlayerInput());
-            
-            Assert.IsNotNull(_cameraEffects);
         }
 
         private void OnDestroy() {

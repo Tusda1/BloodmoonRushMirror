@@ -8,18 +8,18 @@ public class LadderMiddle : MonoBehaviour {
     #endregion
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (!other.CompareTag("Player")) return;
+        if (!other.TryGetComponent<PlayerScript>(out var playerScript)) return;
 
         debugLogger?.Log("Ladder middle entered", this);
 
-        other.GetComponent<PlayerScript>().playerMovement.PlayerLadderLogic.LadderMiddle = this;
+        playerScript.playerMovement.PlayerLadderLogic.LadderMiddle = this;
     }
 
     private void OnTriggerExit2D(Collider2D other) {
-        if (!other.CompareTag("Player")) return;
+        if (!other.TryGetComponent<PlayerScript>(out var playerScript)) return;
 
         debugLogger?.Log("Ladder middle exited", this);
 
-        other.GetComponent<PlayerScript>().playerMovement.PlayerLadderLogic.LadderMiddle = null;
+        playerScript.playerMovement.PlayerLadderLogic.LadderMiddle = null;
     }
 }

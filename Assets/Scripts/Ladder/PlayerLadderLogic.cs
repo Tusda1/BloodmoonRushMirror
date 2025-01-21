@@ -11,21 +11,22 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     private readonly GravityObjectPlayerMovement _playerMovement;
     private readonly DebugLoggerSO _debugLogger;
         
-    [field: SerializeField] public LadderTop LadderTop { get; set; }
-    [field: SerializeField] public LadderMiddle LadderMiddle { get; set; }
-    [field: SerializeField] public LadderBottom LadderBottom { get; set; }
+    public LadderTop LadderTop { get; set; }
+    public LadderMiddle LadderMiddle {
+        get {
+            if (_ladderMiddle == null && LadderTop != null && InputVector.y < 0) {
+                _ladderMiddle = LadderTop.ladderMiddle;
+            }
+
+            return _ladderMiddle;
+        }
+        set => _ladderMiddle = value;
+    }
+    
+    private LadderMiddle _ladderMiddle;
+    public LadderBottom LadderBottom { get; set; }
 
     #region ---PlayerMovementShortcuts---
-    // private LadderMiddle LadderMiddle {
-    //     get {
-    //         if (_playerMovement.ladderMiddle == null && LadderTop != null && InputVector.y < 0) {
-    //             return LadderTop.ladderMiddle;
-    //         }
-    //
-    //         return _playerMovement.ladderMiddle;
-    //     }
-    // }
-
     private bool IsClimbing {
         get => _playerMovement.isClimbing;
         set => _playerMovement.isClimbing = value;
@@ -67,7 +68,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         _player = player;
         _debugLogger = debugLogger;
         _playerMovement = player.playerMovement;
-        _transform = player.GetComponent<Transform>();
+        _transform = player.transform;
         Assert.IsNotNull(_transform);
     }
 
@@ -86,7 +87,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
             }
         }
 
-        if (LadderMiddle == null && LadderBottom == null) {
+        if (LadderMiddle == null && LadderBottom == null && LadderTop == null) {
             ExitLadder();
         }
 
