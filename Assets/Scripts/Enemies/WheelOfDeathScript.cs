@@ -12,13 +12,15 @@ public class WheelOfDeathScript : MonoBehaviour, IDamageable
     private LineRenderer lineRenderer;
     private int positionCount = 0;
 
-    void Start()
+    private void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
+        
+        angle = startAngle;
     }
 
-    void Update()
+    private void Update()
     {
         if (centerPoint == null)
         {
