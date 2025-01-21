@@ -29,7 +29,7 @@ public abstract class GravityObject : MonoBehaviour {
     private const float MinMoveDistance = 0.001f;
     private const float ShellRadius = 0.01f; //0.01
     private ContactFilter2D _contactFilter;
-    private const float MinGroundNormalY = 0.65f; //0.65f
+    private const float MinGroundNormalY = 0.7f; //0.65f
     #endregion
 
     protected void Awake() {

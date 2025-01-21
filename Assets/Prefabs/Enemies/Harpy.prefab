@@ -92,6 +92,9 @@ GameObject:
   - component: {fileID: 3415409253440226810}
   - component: {fileID: 4924562539391162419}
   - component: {fileID: 4772313629368232094}
+  - component: {fileID: 487702348827100987}
+  - component: {fileID: 3386290623571455425}
+  - component: {fileID: -8681967783955431478}
   m_Layer: 8
   m_Name: Harpy
   m_TagString: Untagged
@@ -220,7 +223,7 @@ MonoBehaviour:
   takesSpikeDamage: 0
   faceLeftOnStart: 0
   moveSpeed: 8
-  maxHealth: 3
+  maxHealth: 2
   invulnerableTime: 0.5
   knockbackDuration: 0.1
   enemyDamageInstance:
@@ -322,3 +325,54 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &487702348827100987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8982453382835245506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad50f81b1d25c441943c37a89ba23f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Animator: {fileID: 3386290623571455425}
+  _Transitions: {fileID: 0}
+  _ActionOnDisable: 0
+--- !u!95 &3386290623571455425
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8982453382835245506}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8681967783955431478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8982453382835245506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6323bfd0d68967643adf1ebbc5efd4bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathAnimation: {fileID: 0}
+  hitAnimation: {fileID: 0}
