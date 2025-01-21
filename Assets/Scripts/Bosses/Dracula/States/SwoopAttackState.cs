@@ -8,18 +8,19 @@ public class SwoopAttackState : DraculaState
     [SerializeField] private float shootCooldown = 0.5f;
     [SerializeField] private float shootDuration = 1f;
     [SerializeField] private int swoopAmount = 3;
+    [SerializeField] private GameObject projectilePrefab;
     
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
     private Vector2 _swoopArcBottom;
     private int swoopCount;
-    private SwoopState _swoopState;
     private float _shootTimer;
     private float _timeSinceShoot;
     private Vector2 _temporaryPosition;
     
-    [SerializeField] private Swoop swoop = new();
+    private Swoop swoop = new();
     private Transform _player;
+    private Pooler _projectilePooler;
     
     private enum SwoopState 
     {
@@ -28,11 +29,14 @@ public class SwoopAttackState : DraculaState
         Shooting,
         Finished
     }
+    
+    private SwoopState _swoopState;
 
     private void Start()
     {
         swoop.SetOnSwoopEnd(SwoopEnd);
         _player = ServiceLocator.Get<PlayerScript>().transform;
+        _projectilePooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab);
     }
 
     private void OnEnable()
@@ -140,7 +144,7 @@ public class SwoopAttackState : DraculaState
             
             // Shoot a projectile at the random point
             var position = transform.position;
-            var projectile = DraculaReference.Pooler.GetPooledObject();
+            var projectile = _projectilePooler.GetPooledObject();
             projectile.transform.position = position;
             projectile.GetComponent<DraculaBatScript>().targetVector = (randomPoint - (Vector2)position).normalized;
             projectile.SetActive(true);

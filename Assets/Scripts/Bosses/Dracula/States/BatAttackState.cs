@@ -7,13 +7,16 @@ public class BatAttackState : DraculaState
 {
     [SerializeField] private float attackLength = 0.5f;
     [SerializeField] private float batSpawnRate = 0.1f;
+    [SerializeField] private GameObject batPrefab;
     
-    private Collider2D _collider;
     private float _timeSinceAttackStart;
     private float _timeSinceLastBatSpawn;
     private Vector2 _teleportLocation;
     private Transform _player;
     private Vector2 _attackDirection;
+    
+    private Collider2D _collider;
+    private Pooler _batPooler;
     
     private enum AttackPhase
     {
@@ -27,6 +30,7 @@ public class BatAttackState : DraculaState
     {
         _collider = GetComponent<Collider2D>();
         _player = ServiceLocator.Get<PlayerScript>().transform;
+        _batPooler = TryGetCommunityPooler.TryGetPooler(batPrefab);
     }
 
     private void OnEnable()
@@ -90,7 +94,7 @@ public class BatAttackState : DraculaState
             _timeSinceLastBatSpawn = Time.time;
             var position = _attackDirection == Vector2.left ? _collider.bounds.min : _collider.bounds.max;
             position.y += Random.Range(0, _collider.bounds.size.y);
-            var bat = DraculaReference.Pooler.GetPooledObject();
+            var bat = _batPooler.GetPooledObject();
             bat.transform.position = position;
             bat.GetComponent<DraculaBatScript>().targetVector = _attackDirection;
             bat.SetActive(true);
