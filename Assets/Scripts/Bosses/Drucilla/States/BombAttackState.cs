@@ -87,7 +87,7 @@ public class BombAttackState : DrucillaState
         
         var direction = (_player.transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
         
-        _smoothDampScript.SmoothDampFloat(direction, glideSpeed, ref Boss.targetVelocityPublic);
+        _smoothDampScript.SmoothDampVector2(direction * glideSpeed, ref Boss.targetVelocityPublic);
         
         Boss.velocityPublic.y = glideFallVelocity;
     }

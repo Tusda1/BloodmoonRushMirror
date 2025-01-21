@@ -192,7 +192,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         knockbackSmoothDampScript.SetStartVelocity(smoothedVelocity);
         while (!isGrounded) {
             // Smoothly come to a stop from knockback
-            knockbackSmoothDampScript.SmoothDampFloat(knockbackVelocity.normalized, 0f, ref smoothedVelocity);
+            knockbackSmoothDampScript.SmoothDampVector2(Vector2.zero, ref smoothedVelocity);
             targetVelocity = smoothedVelocity;
             yield return null;
         }
