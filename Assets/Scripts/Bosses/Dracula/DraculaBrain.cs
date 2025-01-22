@@ -11,9 +11,9 @@ public class DraculaBrain : MonoBehaviour
     [SerializeField] private int baseAttackQueueSize = 3;
     [SerializeField] private int attackQueueSizeIncreaseFactor = 1;
     
-    private DraculaState[] _states;
-    private List<DraculaState> _attackQueue = new List<DraculaState>();
-    private DraculaState _currentState;
+    private BossState[] _states;
+    private List<BossState> _attackQueue = new List<BossState>();
+    private BossState _currentState;
     private int _currentPhase = 1;
     private bool _lastInQueue;
     private bool _isFighting;
@@ -55,7 +55,7 @@ public class DraculaBrain : MonoBehaviour
         _isFighting = false;
     }
 
-    private DraculaState[] GetStatesByPhase(int phase)
+    private BossState[] GetStatesByPhase(int phase)
     {
         return _states.Where(state => state.StatePhase == phase).ToArray();
     }

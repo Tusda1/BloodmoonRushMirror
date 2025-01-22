@@ -21,6 +21,7 @@ public class SwoopAttackState : DraculaState
     private Swoop swoop = new();
     private Transform _player;
     private Pooler _projectilePooler;
+    private CornerFinder _cornerFinder;
     
     private enum SwoopState 
     {
@@ -37,34 +38,19 @@ public class SwoopAttackState : DraculaState
         swoop.SetOnSwoopEnd(SwoopEnd);
         _player = ServiceLocator.Get<PlayerScript>().transform;
         _projectilePooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab);
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
 
     private void OnEnable()
     {
         swoopCount = 0;
         
-        // Send a ray straight up and find the roof
-        var hit = Physics2D.Raycast(transform.position, Vector2.up, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find roof"); return;}
-        
-        var roof = hit.point;
-        roof.y -= 0.1f;
-        
-        // Find the right corner
-        hit = Physics2D.Raycast(roof, Vector2.right, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find right corner"); return;}
-        
-        Vector2 rightCorner = hit.point;
-        rightCorner.x -= 1f;
-        rightCorner.y -= 2f;
-        
-        // Find the left corner
-        hit = Physics2D.Raycast(roof, Vector2.left, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find left corner"); return;}
-        
-        Vector2 leftCorner = hit.point;
+        var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
         leftCorner.x += 1f;
         leftCorner.y -= 2f;
+        var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
+        rightCorner.x -= 1f;
+        rightCorner.y -= 2f;
         
         // 50% chance to go left or right
         if (UnityEngine.Random.value > 0.5f)
@@ -80,7 +66,7 @@ public class SwoopAttackState : DraculaState
         
         // Send a ray from exactly between the two corners to find the arc bottom
         _swoopArcBottom = (rightCorner + leftCorner) / 2;
-        hit = Physics2D.Raycast(_swoopArcBottom, Vector2.down, 100, LayerMask.GetMask("Ground"));
+        var hit = Physics2D.Raycast(_swoopArcBottom, Vector2.down, 100, LayerMask.GetMask("Ground"));
         if (hit.collider == null){Debug.LogError("Couldn't find arc bottom"); return;}
         
         _swoopArcBottom = hit.point + Vector2.up;

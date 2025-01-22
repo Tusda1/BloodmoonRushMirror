@@ -19,7 +19,8 @@ public class DashAndSwoopState : DraculaState
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
     
-    [SerializeField] private Swoop swoop = new();
+    private readonly Swoop _swoop = new();
+    private CornerFinder _cornerFinder;
     
     private enum Stage
     {
@@ -34,49 +35,24 @@ public class DashAndSwoopState : DraculaState
 
     private void Start()
     {
-        swoop.SetOnSwoopEnd(SwoopEnd);
+        _swoop.SetOnSwoopEnd(SwoopEnd);
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
     
     private void OnEnable()
     {
-        // Find all 4 corners of the room
-        var hit = Physics2D.Raycast(transform.position, Vector2.down, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find ground"); return;}
-        
-        var ground = hit.point;
-        ground.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
-        
-        hit = Physics2D.Raycast(ground, Vector2.right, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find right wall"); return;}
-        
-        bottomRight = hit.point;
-        bottomRight.x -= 1f;
-        
-        hit = Physics2D.Raycast(ground, Vector2.left, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find left wall"); return;}
-        
-        bottomLeft = hit.point;
-        bottomLeft.x += 1f;
-        
-        hit = Physics2D.Raycast(ground, Vector2.up, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find roof"); return;}
-        
-        var roof = hit.point;
-        roof.y -= 2f;
-        
-        // Find the right corner
-        hit = Physics2D.Raycast(roof, Vector2.right, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find right corner"); return;}
-        
-        topRight = hit.point;
-        topRight.x -= 1f;
-        
-        // Find the left corner
-        hit = Physics2D.Raycast(roof, Vector2.left, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find left corner"); return;}
-        
-        topLeft = hit.point;
+        topLeft = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
         topLeft.x += 1f;
+        topLeft.y -= 2f;
+        topRight = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
+        topRight.x -= 1f;
+        topRight.y -= 2f;
+        bottomRight = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
+        bottomRight.x -= 1f;
+        bottomRight.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
+        bottomLeft = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
+        bottomLeft.x += 1f;
+        bottomLeft.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         
         bottomMiddle = (bottomRight + bottomLeft) / 2;
         
@@ -163,7 +139,7 @@ public class DashAndSwoopState : DraculaState
             _swoopStarted = true;
         }
 
-        swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, bottomMiddle);
+        _swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, bottomMiddle);
     }
     
     private void SwoopEnd()

@@ -15,6 +15,8 @@ public class DanceDash : DraculaState
     private int _dashAmount;
     private float _waitStartTime;
     
+    private CornerFinder _cornerFinder;
+    
     private enum DanceDashStage
     {
         Teleport,
@@ -24,47 +26,25 @@ public class DanceDash : DraculaState
     
     private DanceDashStage _danceDashStage;
 
+    private void Start()
+    {
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+    }
+
     private void OnEnable()
     {
         // Randomize the amount of dashes
         _dashAmount = Random.Range(minDashAmount, maxDashAmount + 1);
         
-        // Find bottom right and left corner by sending a ray straight down and then right
-        var hit = Physics2D.Raycast(transform.position, Vector2.down, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null)
-        {
-            Debug.LogError("Couldn't find ground");
-            return;
-        }
-
-        var bottom = hit.point;
-        bottom.y += 0.01f;
-
-        hit = Physics2D.Raycast(bottom, Vector2.right, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null)
-        {
-            Debug.LogError("Couldn't find right corner");
-            return;
-        }
-
-        var rightCorner = hit.point;
+        var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
         rightCorner.x -= 1f;
         rightCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
-
-        // Find the left corner
-        hit = Physics2D.Raycast(bottom, Vector2.left, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null)
-        {
-            Debug.LogError("Couldn't find left corner");
-            return;
-        }
-
-        var leftCorner = hit.point;
+        var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
         leftCorner.x += 1f;
         leftCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         
         // 50% chance to go left or right
-        if (UnityEngine.Random.Range(0, 2) == 0)
+        if (Random.Range(0, 2) == 0)
         {
             _dashOrigin = rightCorner;
             _dashTarget = leftCorner;
