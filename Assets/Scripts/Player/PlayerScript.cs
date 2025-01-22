@@ -107,11 +107,22 @@ namespace Player {
 
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
-        [field: SerializeField]
-        public string ID { get; set; } = Guid.NewGuid().ToString();
-
+        [field: SerializeField] public string ID { get; set; } = "Player";
         [field: SerializeField] public PlayerData SaveSystemData { get; set; }
-        public PlayerData DataInGameData => SaveLoadSystemManager.Instance.gameData.playerData;
+        public PlayerData DataInGameData {
+            get {
+                if (string.IsNullOrEmpty(PlayerData.ID)) {
+                    PlayerData.ID = ID;
+                    PlayerData.health = healthComponent.Health;
+                    PlayerData.lives = playerLives;
+                    PlayerData.gems = gems;
+                }
+                
+                return PlayerData;
+            }
+        }
+        
+        private static PlayerData PlayerData => SaveLoadSystemManager.Instance.gameData.playerData;
         #endregion
         #endregion
         

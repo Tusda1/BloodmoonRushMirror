@@ -60,13 +60,15 @@ public class CameraEffects : MonoBehaviour {
         transform.position = originalPosition;
     }
 
-    public async Awaitable TimeSlow(float duration) {
+    public async Awaitable TimeSlow(float duration, AnimationCurve curve = null) {
+        curve ??= timeSlowCurve;
+        
         float currentProgress = 0;
 
         while (currentProgress < duration) {
             currentProgress += Time.unscaledDeltaTime;
             
-            Time.timeScale = Mathf.Clamp01(timeSlowCurve.Evaluate(currentProgress));
+            Time.timeScale = Mathf.Clamp01(curve.Evaluate(currentProgress));
 
             await Awaitable.NextFrameAsync();
         }

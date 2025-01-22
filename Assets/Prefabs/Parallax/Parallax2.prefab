@@ -174,37 +174,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &5897460086174753276
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8737657112846632995}
-  m_Layer: 0
-  m_Name: ParallaxController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &8737657112846632995
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5897460086174753276}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8189076780860724087}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7385701879858407270
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +273,82 @@ PrefabInstance:
       propertyPath: m_Name
       value: Parallax2
       objectReference: {fileID: 0}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[0].gameObject
+      value: 
+      objectReference: {fileID: 4352502790585947909}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[1].gameObject
+      value: 
+      objectReference: {fileID: 7385701879858407270}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[2].gameObject
+      value: 
+      objectReference: {fileID: 4649612124846651779}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[0].spriteRenderer
+      value: 
+      objectReference: {fileID: 3213973558182515909}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[1].spriteRenderer
+      value: 
+      objectReference: {fileID: 7451590708019567576}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[2].spriteRenderer
+      value: 
+      objectReference: {fileID: 841741885081394783}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[0].objectTransform
+      value: 
+      objectReference: {fileID: 3503037348795994633}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[1].objectTransform
+      value: 
+      objectReference: {fileID: 8871529441177625375}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[2].objectTransform
+      value: 
+      objectReference: {fileID: 7594058686808524684}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[0].yAxisParallaxEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[1].yAxisParallaxEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[2].yAxisParallaxEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[0].yAxisEffectMultiplier
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[1].yAxisEffectMultiplier
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[2].yAxisEffectMultiplier
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[0].infiniteScrollingYAxis
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[1].infiniteScrollingYAxis
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565423183245314264, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
+      propertyPath: parallaxElements.Array.data[2].infiniteScrollingYAxis
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6974577784208123850, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -352,9 +397,6 @@ PrefabInstance:
     - {fileID: 5071354464241755846, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
     - {fileID: 1740648505310773871, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6974577784208123850, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8737657112846632995}
     - targetCorrespondingSourceObject: {fileID: 6974577784208123850, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3503037348795994633}

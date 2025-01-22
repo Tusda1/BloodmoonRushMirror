@@ -1,18 +1,36 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Zenject;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-public class ParallaxDI : MonoBehaviour {
+public class Parallax : MonoBehaviour {
     #region ---Fields---
+    [SerializeField] private bool startEnabled;
     [SerializeField] private ParallaxElement[] parallaxElements;
     
-    [Inject(Id = "MainCamera")] private Transform _mainCameraTransform;
+    [Inject(Id = "MainCamera")] private Camera _mainCamera;
     
+    private Transform _mainCameraTransform;
     private Vector3 _previousCameraPosition;
     private Vector3 _cameraDeltaMovement;
+    private bool _enabled;
     #endregion
 
-    private void OnEnable() {
+    private IEnumerator Start() {
+        _mainCameraTransform = _mainCamera.transform;
+        
+        yield return null;
+        
+        if (startEnabled) Enable();
+    }
+
+    public void Enable() {
+        if (_enabled) return;
+        _enabled = true;
+        
         _previousCameraPosition = _mainCameraTransform.position;
 
         foreach (var parallaxElement in parallaxElements) {
@@ -21,8 +39,9 @@ public class ParallaxDI : MonoBehaviour {
                 continue;
             }
 
-            parallaxElement.objectTransform = parallaxElement.gameObject.transform;
-            parallaxElement.spriteRenderer = parallaxElement.objectTransform.GetComponent<SpriteRenderer>();
+            parallaxElement.objectTransform ??= parallaxElement.gameObject.transform;
+            parallaxElement.spriteRenderer ??= parallaxElement.objectTransform.GetComponent<SpriteRenderer>();
+            parallaxElement.originalSize = parallaxElement.spriteRenderer.bounds.size;
 
             if (parallaxElement.gameObject == null) {
                 Debug.LogError("Parallax gameObject has no spriteRenderer!", this);
@@ -50,21 +69,19 @@ public class ParallaxDI : MonoBehaviour {
         }
     }
 
-    private void OnDisable() {
+    public void Disable() {
+        if (!_enabled) return;
+        _enabled = false;
+        
         foreach (var parallaxElement in parallaxElements) {
             parallaxElement.ResetEffectActions();
-
-            if (parallaxElement.infiniteScrollingXAxis) {
-                UnsetInfiniteScrollingEffectXAxis(parallaxElement);
-            }
-
-            if (parallaxElement.infiniteScrollingYAxis) {
-                UnsetInfiniteScrollingEffectYAxis(parallaxElement);
-            }
+            parallaxElement.spriteRenderer.size = parallaxElement.originalSize;
         }
     }
 
     private void LateUpdate() {
+        if (!enabled) return;
+        
         _cameraDeltaMovement = _mainCameraTransform.position - _previousCameraPosition;
 
         foreach (var parallaxElement in parallaxElements) {
@@ -73,16 +90,30 @@ public class ParallaxDI : MonoBehaviour {
 
         _previousCameraPosition = _mainCameraTransform.position;
     }
+
+#if UNITY_EDITOR
+    [ContextMenu(nameof(SetParallaxElementsToChildren))]
+    public void SetParallaxElementsToChildren() {
+        parallaxElements = new ParallaxElement[transform.childCount];
+        
+        for (var i = 0; i < transform.childCount; i++) {
+            var objectTransform = transform.GetChild(i);
+            
+            parallaxElements[i] = new ParallaxElement {
+                objectTransform = objectTransform,
+                gameObject = objectTransform.gameObject,
+                spriteRenderer = objectTransform.GetComponent<SpriteRenderer>()
+            };
+        }
+        
+        EditorUtility.SetDirty(this);
+    }
+#endif
     
     #region ---XAxis---
     private static void SetInfiniteScrollingEffectXAxis(ParallaxElement parallaxElement) {
         parallaxElement.spriteRenderer.drawMode = SpriteDrawMode.Tiled;
         parallaxElement.spriteRenderer.size = new Vector2(parallaxElement.spriteRenderer.size.x * 3,
-            parallaxElement.spriteRenderer.size.y);
-    }
-
-    private static void UnsetInfiniteScrollingEffectXAxis(ParallaxElement parallaxElement) {
-        parallaxElement.spriteRenderer.size = new Vector2(parallaxElement.spriteRenderer.size.x / 3,
             parallaxElement.spriteRenderer.size.y);
     }
 
@@ -114,11 +145,6 @@ public class ParallaxDI : MonoBehaviour {
             parallaxElement.spriteRenderer.size.y * 3);
     }
 
-    private static void UnsetInfiniteScrollingEffectYAxis(ParallaxElement parallaxElement) {
-        parallaxElement.spriteRenderer.size = new Vector2(parallaxElement.spriteRenderer.size.x,
-            parallaxElement.spriteRenderer.size.y / 3);
-    }
-
     private void ApplyInfiniteScrollingMovementYAxis(ParallaxElement parallaxElement) {
         var parallaxElementSprite = parallaxElement.spriteRenderer.sprite;
         var height = parallaxElementSprite.texture.height / parallaxElementSprite.pixelsPerUnit;
@@ -143,6 +169,7 @@ public class ParallaxDI : MonoBehaviour {
         [Header("Parallax Object")] public GameObject gameObject;
         [HideInInspector] public Transform objectTransform;
         [HideInInspector] public SpriteRenderer spriteRenderer;
+        [HideInInspector] public Vector2 originalSize;
 
         [Header("X Axis Parallax")] [Tooltip("Set to 0 to move equal to the camera and -1 to not move in the X axis")]
         public bool xAxisParallaxEnabled;
