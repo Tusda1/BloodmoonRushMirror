@@ -35,7 +35,7 @@ public class Ladder : MonoBehaviour {
 
         SetLadderTopTilemap(effectiveHeight);
         SetLadderMiddleTilemap(effectiveHeight);
-        SetLadderBottomTilemap();
+        // SetLadderBottomTilemap();
     }
 
     private void SetLadderTopTilemap(in int effectiveHeight) {
@@ -53,12 +53,14 @@ public class Ladder : MonoBehaviour {
         for (var i = 0; i < effectiveHeight; i++) {
             ladderMiddle.tilemap.SetTile(new Vector3Int(0, i, 0), ladderMiddle.tile);
         }
+        
+        ladderMiddle.tilemap.SetTile(new Vector3Int(0, -1, 0), ladderBottom.tile);
     }
 
-    private void SetLadderBottomTilemap() {
-        ladderBottom.tilemap.ClearAllTiles();
-        
-        ladderBottom.tilemap.SetTile(new Vector3Int(0, 0, 0), ladderBottom.tile);
-    }
+    // private void SetLadderBottomTilemap() {
+    //     ladderBottom.tilemap.ClearAllTiles();
+    //     
+    //     ladderBottom.tilemap.SetTile(new Vector3Int(0, 0, 0), ladderBottom.tile);
+    // }
 #endif
 }

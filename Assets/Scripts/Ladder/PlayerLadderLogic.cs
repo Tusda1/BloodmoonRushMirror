@@ -155,6 +155,8 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     }
 
     public void EnterLadder() {
+        if (IsClimbing) return;
+        
         _debugLogger.Log("EnterLadder");
 
         GravityModifier = 0;
@@ -177,11 +179,14 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     }
 
     public void ExitLadder() {
+        if (!IsClimbing) return;
+        
         _debugLogger.Log("ExitLadder");
 
         GravityModifier = GravityMultiplier;
 
         IsClimbing = false;
+        IsGrounded = true;
         _playerMovement.lockToAxis = Axis.None;
 
         _player.animator.SetBool(AnimatorClimbBool, false);

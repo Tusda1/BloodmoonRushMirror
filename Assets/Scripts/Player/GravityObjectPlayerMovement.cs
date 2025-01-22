@@ -329,7 +329,7 @@ namespace Player {
             
             ForceExitDuck();
             PlayerLadderLogic.ExitLadder();
-            if (isGrounded || killCharges > 0) {
+             if (isGrounded || killCharges > 0) {
                 isDashing = false;
                 lockToAxis = Axis.None;
                 ResetMovement(Axis.None);

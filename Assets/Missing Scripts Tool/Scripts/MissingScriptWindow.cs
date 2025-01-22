@@ -1,7 +1,6 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using PCLauncher;
-
-#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
