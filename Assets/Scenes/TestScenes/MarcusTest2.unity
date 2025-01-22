@@ -428,8 +428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500ff69dc26a26a4fa23ca288340ba16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boss: {fileID: 172654498}
-  category: 2
+  boss: {fileID: 172654498}
+  statePhase: 1
   pingPongStartSpeed: 5
 --- !u!114 &172654488
 MonoBehaviour:
@@ -458,8 +458,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d84ee01afb4454c926a65353a56e9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boss: {fileID: 172654498}
-  category: 2
+  boss: {fileID: 172654498}
+  statePhase: 1
 --- !u!114 &172654491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,10 +472,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4249c76cdc7ef46bc181d2cbd80d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boss: {fileID: 172654498}
-  category: 0
+  boss: {fileID: 172654498}
+  statePhase: 1
   attackLength: 1
   batSpawnRate: 0.1
+  batPrefab: {fileID: 0}
 --- !u!114 &172654493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,14 +489,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 732bbdcfca13eaf4ab6bccfafba281fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boss: {fileID: 172654498}
-  category: 0
+  boss: {fileID: 172654498}
+  statePhase: 1
   shootCooldown: 0.5
   shootDuration: 1
   swoopAmount: 3
-  swoop:
-    easePower: 2
-    swoopDuration: 1
+  projectilePrefab: {fileID: 0}
 --- !u!114 &172654494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,8 +544,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0bce7a4f1ec4148be73d388aab0ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boss: {fileID: 172654498}
-  category: 0
+  boss: {fileID: 172654498}
+  statePhase: 1
   dashAmount: 5
   dashSpeed: 20
   dashCooldown: 1
@@ -562,8 +561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6809ecf75b9a79548ab6c35e40f116db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _boss: {fileID: 172654498}
-  category: 0
+  boss: {fileID: 172654498}
+  statePhase: 1
   trackingTime: 2
   waitingTime: 1
   firingTime: 3
@@ -590,12 +589,14 @@ MonoBehaviour:
   _stateMachine:
     _CurrentState: {fileID: 0}
     _DefaultState: {fileID: 172654490}
-  teleportEnter: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
-  teleportExit: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
   maxHealth: 0
-  targetVelocityX: 0
+  targetVelocityPublic: {x: 0, y: 0}
+  velocityPublic: {x: 0, y: 0}
+  facingDirection: {x: 0, y: 0}
   bossGrounded: 0
   bossCollider: {fileID: 0}
+  teleportEnter: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
+  teleportExit: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
 --- !u!1 &252259201
 GameObject:
   m_ObjectHideFlags: 0

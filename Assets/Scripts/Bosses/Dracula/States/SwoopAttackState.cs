@@ -8,18 +8,20 @@ public class SwoopAttackState : DraculaState
     [SerializeField] private float shootCooldown = 0.5f;
     [SerializeField] private float shootDuration = 1f;
     [SerializeField] private int swoopAmount = 3;
+    [SerializeField] private GameObject projectilePrefab;
     
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
     private Vector2 _swoopArcBottom;
     private int swoopCount;
-    private SwoopState _swoopState;
     private float _shootTimer;
     private float _timeSinceShoot;
     private Vector2 _temporaryPosition;
     
-    [SerializeField] private Swoop swoop = new();
+    private Swoop swoop = new();
     private Transform _player;
+    private Pooler _projectilePooler;
+    private CornerFinder _cornerFinder;
     
     private enum SwoopState 
     {
@@ -28,39 +30,27 @@ public class SwoopAttackState : DraculaState
         Shooting,
         Finished
     }
+    
+    private SwoopState _swoopState;
 
     private void Start()
     {
         swoop.SetOnSwoopEnd(SwoopEnd);
         _player = ServiceLocator.Get<PlayerScript>().transform;
+        _projectilePooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab);
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
 
     private void OnEnable()
     {
         swoopCount = 0;
         
-        // Send a ray straight up and find the roof
-        var hit = Physics2D.Raycast(transform.position, Vector2.up, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find roof"); return;}
-        
-        var roof = hit.point;
-        roof.y -= 0.1f;
-        
-        // Find the right corner
-        hit = Physics2D.Raycast(roof, Vector2.right, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find right corner"); return;}
-        
-        Vector2 rightCorner = hit.point;
-        rightCorner.x -= 1f;
-        rightCorner.y -= 2f;
-        
-        // Find the left corner
-        hit = Physics2D.Raycast(roof, Vector2.left, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find left corner"); return;}
-        
-        Vector2 leftCorner = hit.point;
+        var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
         leftCorner.x += 1f;
         leftCorner.y -= 2f;
+        var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
+        rightCorner.x -= 1f;
+        rightCorner.y -= 2f;
         
         // 50% chance to go left or right
         if (UnityEngine.Random.value > 0.5f)
@@ -76,7 +66,7 @@ public class SwoopAttackState : DraculaState
         
         // Send a ray from exactly between the two corners to find the arc bottom
         _swoopArcBottom = (rightCorner + leftCorner) / 2;
-        hit = Physics2D.Raycast(_swoopArcBottom, Vector2.down, 100, LayerMask.GetMask("Ground"));
+        var hit = Physics2D.Raycast(_swoopArcBottom, Vector2.down, 100, LayerMask.GetMask("Ground"));
         if (hit.collider == null){Debug.LogError("Couldn't find arc bottom"); return;}
         
         _swoopArcBottom = hit.point + Vector2.up;
@@ -140,7 +130,7 @@ public class SwoopAttackState : DraculaState
             
             // Shoot a projectile at the random point
             var position = transform.position;
-            var projectile = DraculaReference.Pooler.GetPooledObject();
+            var projectile = _projectilePooler.GetPooledObject();
             projectile.transform.position = position;
             projectile.GetComponent<DraculaBatScript>().targetVector = (randomPoint - (Vector2)position).normalized;
             projectile.SetActive(true);

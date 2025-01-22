@@ -23,6 +23,8 @@ public class LaserAttackState : DraculaState
     
     private bool _hasStartedFiring;
     
+    private CornerFinder _cornerFinder;
+    
     private enum LaserAttackStage
     {
         Teleporting,
@@ -39,6 +41,7 @@ public class LaserAttackState : DraculaState
         _playerCollider = _player.GetComponent<Collider2D>();
         _trackerPrefab = Resources.Load<GameObject>("Prefabs/LineRenderer");
         _laserPrefab = Resources.Load<GameObject>("Prefabs/BigLaser");
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
         
         if (_laserObject == null)
         {
@@ -53,27 +56,12 @@ public class LaserAttackState : DraculaState
 
     private void OnEnable()
     {
-        // Find top of the room
-        var hit = Physics2D.Raycast(transform.position, Vector2.up, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find roof"); return;}
-        
-        var roof = hit.point;
-        roof.y -= 1.5f;
-        
-        // Find the right corner
-        hit = Physics2D.Raycast(roof, Vector2.right, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find right corner"); return;}
-        
-        var rightCorner = hit.point;
-        
-        // Find the left corner
-        hit = Physics2D.Raycast(roof, Vector2.left, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find left corner"); return;}
-        
-        var leftCorner = hit.point;
+        var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
+        var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
         
         // Find middle point between left and right corner
         _teleportDestination = (rightCorner + leftCorner) / 2;
+        _teleportDestination.y -= 1.5f;
         
         stage = LaserAttackStage.Teleporting;
     }

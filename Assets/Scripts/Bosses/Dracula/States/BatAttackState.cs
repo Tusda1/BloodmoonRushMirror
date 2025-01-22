@@ -7,13 +7,17 @@ public class BatAttackState : DraculaState
 {
     [SerializeField] private float attackLength = 0.5f;
     [SerializeField] private float batSpawnRate = 0.1f;
+    [SerializeField] private GameObject batPrefab;
     
-    private Collider2D _collider;
     private float _timeSinceAttackStart;
     private float _timeSinceLastBatSpawn;
     private Vector2 _teleportLocation;
     private Transform _player;
     private Vector2 _attackDirection;
+    
+    private Collider2D _collider;
+    private Pooler _batPooler;
+    private CornerFinder _cornerFinder;
     
     private enum AttackPhase
     {
@@ -27,32 +31,17 @@ public class BatAttackState : DraculaState
     {
         _collider = GetComponent<Collider2D>();
         _player = ServiceLocator.Get<PlayerScript>().transform;
+        _batPooler = TryGetCommunityPooler.TryGetPooler(batPrefab);
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
 
     private void OnEnable()
     {
-        // Send a ray down to find ground level
-        var hit = Physics2D.Raycast(transform.position, Vector2.down, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find ground"); return;}
+        var rightWall = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
+        var leftWall = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
         
-        var ground = hit.point;
-        ground.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
-        
-        // Find the left and right wall then pick a random spot between them
-        hit = Physics2D.Raycast(ground, Vector2.right, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find right wall"); return;}
-        
-        var rightWall = hit.point;
-        rightWall.x -= 1f;
-        
-        hit = Physics2D.Raycast(ground, Vector2.left, 100, LayerMask.GetMask("Ground"));
-        if (hit.collider == null){Debug.LogError("Couldn't find left wall"); return;}
-        
-        var leftWall = hit.point;
-        leftWall.x += 1f;
-        
-        var randomX = Random.Range(leftWall.x, rightWall.x);
-        _teleportLocation = new Vector2(randomX, ground.y);
+        var randomX = Random.Range(leftWall.x + 1, rightWall.x - 1);
+        _teleportLocation = new Vector2(randomX, rightWall.y + Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y));
     }
     
     public void Update()
@@ -90,7 +79,7 @@ public class BatAttackState : DraculaState
             _timeSinceLastBatSpawn = Time.time;
             var position = _attackDirection == Vector2.left ? _collider.bounds.min : _collider.bounds.max;
             position.y += Random.Range(0, _collider.bounds.size.y);
-            var bat = DraculaReference.Pooler.GetPooledObject();
+            var bat = _batPooler.GetPooledObject();
             bat.transform.position = position;
             bat.GetComponent<DraculaBatScript>().targetVector = _attackDirection;
             bat.SetActive(true);
