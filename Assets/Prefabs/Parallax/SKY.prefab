@@ -246,7 +246,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2955637013561371827}
-  - component: {fileID: 4376036905213908262}
   m_Layer: 0
   m_Name: SkyParallax
   m_TagString: Untagged
@@ -269,34 +268,3 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4397909638597277853}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4376036905213908262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5176809296149692247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 576157fd39062d64680fcc52c7946dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parallaxElements:
-  - gameObject: {fileID: 5048026463067765460}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: 0
-    infiniteScrollingXAxis: 0
-    yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: 0
-    infiniteScrollingYAxis: 0
-  - gameObject: {fileID: 4996137966638520734}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: -0.1
-    infiniteScrollingXAxis: 1
-    yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: 0
-    infiniteScrollingYAxis: 0

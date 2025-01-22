@@ -87,6 +87,20 @@ namespace Player {
         #endregion
 
         #region ***---DI---***
+        private SaveLoadSystemManager SaveLoadSystemManager {
+            get {
+                if (_saveLoadSystemManager != null) {
+                    return _saveLoadSystemManager;
+                }
+                
+                if (SaveLoadSystemManager.HasInstance) {
+                    _saveLoadSystemManager = SaveLoadSystemManager.Instance;
+                    return _saveLoadSystemManager;
+                }
+                
+                throw new NullReferenceException("SaveLoadSystemManager is null");
+            }
+        }
         private SaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
         #endregion
@@ -111,11 +125,11 @@ namespace Player {
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
+            
+            Bind();
         }
 
         private void Start() {
-            Bind();
-
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
             healthComponent.InvulnerabilityTimer.OnBegin +=
@@ -131,8 +145,6 @@ namespace Player {
             Cursor.lockState = CursorLockMode.Locked;
 
             StartCoroutine(ResetPlayerInput());
-            
-            Assert.IsNotNull(_cameraEffects);
         }
 
         private void OnDestroy() {
@@ -372,8 +384,8 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            if (_saveLoadSystemManager != null || !Application.isPlaying) {
-                _saveLoadSystemManager.Bind(this, DataInGameData);
+            if (SaveLoadSystemManager != null || !Application.isPlaying) {
+                SaveLoadSystemManager.Bind(this, DataInGameData);
             }
             else {
                 Debug.LogWarning("No SaveLoadSystemManager found", this);

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4279228214791251485}
   - component: {fileID: 8575845746593423669}
+  - component: {fileID: 4714945022040647700}
   m_Layer: 0
   m_Name: PersistentManagersContext
   m_TagString: Untagged
@@ -46,9 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
   _monoInstallers:
-  - {fileID: 0}
+  - {fileID: 4714945022040647700}
   _installerPrefabs: []
-  _findSiblingMonoInstallers: 0
+  _findSiblingMonoInstallers: 1
   _autoRun: 1
   OnPreInstall:
     m_PersistentCalls:
@@ -66,3 +67,19 @@ MonoBehaviour:
   _contractNames:
   - PersistentManagersContext
   _parentContractNames: []
+--- !u!114 &4714945022040647700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679250871404320045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da898f9f563f9fe4a9c59c12b94c37da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveLoadSystemManager: {fileID: 0}
+  cameraEffects: {fileID: 0}
+  eventSystem: {fileID: 0}
+  renderTextureCamera: {fileID: 0}

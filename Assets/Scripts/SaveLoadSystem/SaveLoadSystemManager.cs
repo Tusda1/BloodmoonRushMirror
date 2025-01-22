@@ -2,40 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Attributes;
 using SaveLoadSystem.Data;
 using UnityEngine;
 using Utilities.DataBinding;
+using Zenject;
 
 namespace SaveLoadSystem {
     public class SaveLoadSystemManager : SaveLoadSystemBase<SaveLoadSystemManager, SaveGameData> {
-        [SerializeField, Required] private SaveSlotDataSO saveSlot1Data;
-        [SerializeField, Required] private SaveSlotDataSO saveSlot2Data;
-        [SerializeField, Required] private SaveSlotDataSO saveSlot3Data;
+        #region ---Fields---
+        #region ***---DI---***
+        [Inject(Id = "Slot1")] private SaveSlotDataSO _saveSlot1Data;
+        [Inject(Id = "Slot2")] private SaveSlotDataSO _saveSlot2Data;
+        [Inject(Id = "Slot3")] private SaveSlotDataSO _saveSlot3Data;
+        #endregion
+        #endregion
         
-        protected override void Awake() {
-            base.Awake();
-
-            DataService = new FileDataService<SaveGameData>();
-
-            LoadAllSaveSlotDatas();
+        [Inject]
+        public void Init(FileDataService<SaveGameData> dataService) {
+            DataService = dataService;
         }
-
+        
         #region ---SaveSlots---
-        [ContextMenu("SaveFiles/" + nameof(LoadAllSaveSlotDatas))]
-        private void LoadAllSaveSlotDatas() {
-#if UNITY_EDITOR
-            if (!Application.isPlaying) {
-                DataService ??= new FileDataService<SaveGameData>();
-            }
-#endif
-            saveSlot1Data.Clear();
-            saveSlot2Data.Clear();
-            saveSlot3Data.Clear();
-            
-            LoadSaveSlotData(saveSlot1Data);
-            LoadSaveSlotData(saveSlot2Data);
-            LoadSaveSlotData(saveSlot3Data);
+        public void UpdateSaveSlotSO() {
+            LoadSaveSlotData(_saveSlot1Data);
+            LoadSaveSlotData(_saveSlot2Data);
+            LoadSaveSlotData(_saveSlot3Data);
         }
 
         private void LoadSaveSlotData(SaveSlotDataSO saveSlotData) {
@@ -48,23 +39,15 @@ namespace SaveLoadSystem {
             var metaData = DataService.ReadFileMetadata(pathToSaveFile);
             saveSlotData.lastTimePlayed = metaData.LastWriteTime.ToString("HH:mm dd/MM/yyyy");
         }
-        
-#if UNITY_EDITOR
-        [ContextMenu("SaveFiles/" + nameof(OpenFileLocation))]
-        private void OpenFileLocation() {
-            DataService ??= new FileDataService<SaveGameData>();
-            System.Diagnostics.Process.Start(DataService.DataPath);
-        }
-#endif
         #endregion
 
         [ContextMenu("Runtime/" + nameof(SaveToFile))]
         public void SaveToFile() {
-#if UNITY_EDITOR
-            if (!Application.isPlaying) {
-                DataService ??= new FileDataService<SaveGameData>();
-            }
-#endif
+// #if UNITY_EDITOR
+//             if (!Application.isPlaying) {
+//                 DataService ??= new FileDataService<SaveGameData>();
+//             }
+// #endif
             SaveGame();
         }
 
@@ -133,7 +116,7 @@ namespace SaveLoadSystem {
                     return;
                 }
 
-                debugLogger.Log($"{dataBinds.Length} data binds saved successfully.");
+                DebugLogger.Log($"{dataBinds.Length} data binds saved successfully.");
             }
             catch (Exception ex) {
                 Debug.LogError($"Error while saving data binds: {ex.Message}");

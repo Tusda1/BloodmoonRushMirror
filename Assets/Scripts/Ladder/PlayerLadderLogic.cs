@@ -10,20 +10,23 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     private readonly PlayerScript _player;
     private readonly GravityObjectPlayerMovement _playerMovement;
     private readonly DebugLoggerSO _debugLogger;
-
-    #region ---PlayerMovementShortcuts---
-    private LadderMiddle LadderMiddle {
+        
+    public LadderTop LadderTop { get; set; }
+    public LadderMiddle LadderMiddle {
         get {
-            if (_playerMovement.ladderMiddle == null && LadderTop != null && InputVector.y < 0) {
-                return LadderTop.ladderMiddle;
+            if (_ladderMiddle == null && LadderTop != null && InputVector.y < 0) {
+                _ladderMiddle = LadderTop.ladderMiddle;
             }
 
-            return _playerMovement.ladderMiddle;
+            return _ladderMiddle;
         }
+        set => _ladderMiddle = value;
     }
+    
+    private LadderMiddle _ladderMiddle;
+    public LadderBottom LadderBottom { get; set; }
 
-    private LadderTop LadderTop => _playerMovement.ladderTop;
-
+    #region ---PlayerMovementShortcuts---
     private bool IsClimbing {
         get => _playerMovement.isClimbing;
         set => _playerMovement.isClimbing = value;
@@ -65,7 +68,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         _player = player;
         _debugLogger = debugLogger;
         _playerMovement = player.playerMovement;
-        _transform = player.GetComponent<Transform>();
+        _transform = player.transform;
         Assert.IsNotNull(_transform);
     }
 
@@ -82,6 +85,10 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
             else {
                 return false;
             }
+        }
+
+        if (LadderMiddle == null && LadderBottom == null && LadderTop == null) {
+            ExitLadder();
         }
 
         IsGrounded = IsClimbing;
@@ -138,7 +145,8 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
         if (ladder != null) {
             if (!ladder.TryGetComponent(out ladderTop)) return false;
             EnterLadderFromTop();
-            _playerMovement.ladderMiddle = ladderTop.ladderMiddle;
+            LadderMiddle = ladderTop.ladderMiddle;
+            LadderTop = ladderTop;
             return true;
         }
 
@@ -147,6 +155,8 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     }
 
     public void EnterLadder() {
+        if (IsClimbing) return;
+        
         _debugLogger.Log("EnterLadder");
 
         GravityModifier = 0;
@@ -169,11 +179,14 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     }
 
     public void ExitLadder() {
+        if (!IsClimbing) return;
+        
         _debugLogger.Log("ExitLadder");
 
         GravityModifier = GravityMultiplier;
 
         IsClimbing = false;
+        IsGrounded = true;
         _playerMovement.lockToAxis = Axis.None;
 
         _player.animator.SetBool(AnimatorClimbBool, false);

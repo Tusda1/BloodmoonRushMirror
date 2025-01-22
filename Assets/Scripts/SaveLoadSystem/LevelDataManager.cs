@@ -30,9 +30,11 @@ namespace SaveLoadSystem {
             new LevelData {
                 ID = ID,
                 SceneCollection = SceneCollection,
+                LevelStartPoint = PlayerScriptCache.transform.position,
                 enemyDatas = enemyDatas,
                 checkpointDatas = checkpointDatas,
-                CurrentCheckpointData = CurrentCheckpointData
+                CurrentCheckpointData = CurrentCheckpointData,
+
             });
         #endregion
 
@@ -101,7 +103,7 @@ namespace SaveLoadSystem {
         #region ---DataBindingMethods---
 
         public void Bind() {
-            if (SaveLoadSystemManager != null || !Application.isPlaying) {
+            if (SaveLoadSystemManager.HasInstance || !Application.isPlaying) {
                 SaveLoadSystemManager.Bind(this, DataInGameData);
             }
             else {

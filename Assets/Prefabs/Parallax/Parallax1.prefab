@@ -270,7 +270,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8822890716311738054}
-  - component: {fileID: 7712157988219721696}
   m_Layer: 0
   m_Name: ParallaxController
   m_TagString: Untagged
@@ -293,46 +292,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1010018954770858496}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7712157988219721696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7614434722757213416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 576157fd39062d64680fcc52c7946dff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parallaxElements:
-  - gameObject: {fileID: 2893311078316643516}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: -1
-    infiniteScrollingXAxis: 1
-    yAxisParallaxEnabled: 0
-    yAxisEffectMultiplier: 0
-    infiniteScrollingYAxis: 0
-  - gameObject: {fileID: 4949365679030461570}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: -1
-    infiniteScrollingXAxis: 1
-    yAxisParallaxEnabled: 0
-    yAxisEffectMultiplier: 0
-    infiniteScrollingYAxis: 0
-  - gameObject: {fileID: 1570300115771650838}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: -1
-    infiniteScrollingXAxis: 1
-    yAxisParallaxEnabled: 0
-    yAxisEffectMultiplier: 0
-    infiniteScrollingYAxis: 0
 --- !u!1001 &7984569233269401034
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -371,7 +330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4978357150993918704, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
       propertyPath: m_Name
-      value: 1 Variant
+      value: Parallax1
       objectReference: {fileID: 0}
     - target: {fileID: 6055931429639597807, guid: d9b32df233cc54c4da9b9c9edb5fd8a9, type: 3}
       propertyPath: m_LocalPosition.x
