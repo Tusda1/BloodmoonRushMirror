@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7057345946494523879}
   - component: {fileID: 6840896656695637128}
+  - component: {fileID: 5082404571904875702}
   m_Layer: 0
   m_Name: MainMenuContext
   m_TagString: Untagged
@@ -45,7 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
-  _monoInstallers: []
+  _monoInstallers:
+  - {fileID: 5082404571904875702}
   _installerPrefabs: []
   _findSiblingMonoInstallers: 0
   _autoRun: 1
@@ -66,3 +68,16 @@ MonoBehaviour:
   - MainMenuContext
   _parentContractNames:
   - PersistentManagersContext
+--- !u!114 &5082404571904875702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7940037054753066520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea86e2374cf033b41805123f5b1db962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
