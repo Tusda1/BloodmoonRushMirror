@@ -65,6 +65,10 @@ namespace FMODScripts {
             if (_masterBus.Equals(default) || _sfxBus.Equals(default) || _musicBus.Equals(default)) {
                 debugLogger.Log("Busses are not valid");
             }
+            
+            SetMasterVolume(MasterVolume);
+            SetMusicVolume(MusicVolume);
+            SetSfxVolume(SfxVolume);
         }
         #endregion
 

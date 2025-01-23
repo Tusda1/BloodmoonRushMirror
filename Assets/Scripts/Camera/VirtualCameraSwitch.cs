@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
 
-[DefaultExecutionOrder(100)]
 public class VirtualCameraSwitch : MonoBehaviour {
     #region ---Fields---
     [SerializeField, Required] private CinemachineCamera cinemachineCamera;
@@ -47,6 +46,11 @@ public class VirtualCameraSwitch : MonoBehaviour {
         }
     }
 
+    private void OnDestroy() {
+        StopAllCoroutines();
+    }
+
+    #region ---Activation---
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             ManualActivation();
@@ -54,6 +58,32 @@ public class VirtualCameraSwitch : MonoBehaviour {
         }
     }
 
+    private void ManualActivation() {
+        cinemachineCamera.Priority = 1;
+        
+        if (slowTimeOnTransition) {
+            _ = _cameraEffects.TimeSlow(timeSlowDuration, timeSlowCurve);
+        }
+        
+        areaGameObjects.SetActive(true);
+        EnemyActivation();
+        
+        isActiveRoom = true;
+        _isDeactivating = false;
+    }
+
+    private void EnemyActivation() {
+        enemyGameObject.SetActive(true);
+    }
+    
+    private IEnumerator DelayedActivation() {
+        onEnable.Invoke();
+        yield return new WaitForSeconds(_cinemachineBrain.DefaultBlend.Time);
+        onEnableLate.Invoke();
+    }
+    #endregion
+
+    #region ---Deactivation---
     private void OnTriggerExit2D(Collider2D other) {
 #if UNITY_EDITOR
         if (!Application.isPlaying) return;
@@ -69,8 +99,14 @@ public class VirtualCameraSwitch : MonoBehaviour {
         }
     }
 
-    private void OnDestroy() {
-        StopAllCoroutines();
+    private void ManualDeactivation() {
+        cinemachineCamera.Priority = 0;
+        areaGameObjects.SetActive(false);
+        isActiveRoom = false;
+    }
+
+    public void EnemyDeactivation() {
+        enemyGameObject.SetActive(false);
     }
 
     private IEnumerator DelayedDeactivation() {
@@ -84,38 +120,5 @@ public class VirtualCameraSwitch : MonoBehaviour {
         ManualDeactivation();
         onDisableLate.Invoke();
     }
-    
-    private IEnumerator DelayedActivation() {
-        onEnable.Invoke();
-        yield return new WaitForSeconds(_cinemachineBrain.DefaultBlend.Time);
-        onEnableLate.Invoke();
-    }
-
-    public void ManualActivation() {
-        cinemachineCamera.Priority = _priority++;
-        
-        if (slowTimeOnTransition) {
-            _ = _cameraEffects.TimeSlow(timeSlowDuration, timeSlowCurve);
-        }
-        
-        areaGameObjects.SetActive(true);
-        EnemyActivation();
-        
-        isActiveRoom = true;
-        _isDeactivating = false;
-    }
-
-    public void ManualDeactivation() {
-        cinemachineCamera.Priority -= 5;
-        areaGameObjects.SetActive(false);
-        isActiveRoom = false;
-    }
-
-    private void EnemyActivation() {
-        enemyGameObject.SetActive(true);
-    }
-
-    public void EnemyDeactivation() {
-        enemyGameObject.SetActive(false);
-    }
+    #endregion
 }
