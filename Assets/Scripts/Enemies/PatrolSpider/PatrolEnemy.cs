@@ -56,7 +56,7 @@ public class PatrolEnemy : EnemyBase
 
     private void PatrolAttack()
     {
-        if (Vector2.Distance(Player.transform.position, transform.position) > attackRange) return;
+        if (Vector2.Distance(player.transform.position, transform.position) > attackRange) return;
         
         base.Attack();
     }

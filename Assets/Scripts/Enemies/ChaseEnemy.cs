@@ -13,12 +13,14 @@ public class ChaseEnemy : ReactiveBase
     [SerializeField] private float maxJumpAngle = 60f;
     private float _repeatTimer;
     
-    private Path _path;
     private int _currentWaypoint = 0;
     private bool _reachedEndOfPath;
-    private Seeker _seeker;
     private bool _isAttacking;
     private bool _isJumping;
+    
+    private Path _path;
+    private Seeker _seeker;
+    private Shield _shield = new();
 
     protected override void Start()
     {
@@ -167,5 +169,12 @@ public class ChaseEnemy : ReactiveBase
         yield return null;
         
         _isAttacking = false;
+    }
+
+    protected override bool CanBeDamaged(DamageInstance damageInstance)
+    {
+        _shield.ShieldBlock(base.Attack, player, damageInstance);
+        
+        return damageInstance.which == DamageInstance.WhichAttack.CrouchAttack;
     }
 }

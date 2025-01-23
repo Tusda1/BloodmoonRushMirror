@@ -40,7 +40,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected LayerMask enemyAndGroundLayerMask;
     
     protected EnemyAnimationBase enemyAnimationBase;
-    protected PlayerScript Player;
+    protected PlayerScript player;
     
     private GameObject _rubyPrefab;
     private Material _whiteMaterial;
@@ -84,7 +84,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         enemyAndGroundLayerMask = LayerMask.GetMask("Enemy", "Ground");
 
-        Player = ServiceLocator.Get<PlayerScript>();
+        player = ServiceLocator.Get<PlayerScript>();
         _boxCollider = GetComponent<Collider2D>();
         _rubyPrefab = Resources.Load<GameObject>("Prefabs/Ruby");
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
@@ -270,7 +270,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             return;
         }
 
-        if (Player.healthComponent.HasInvincibilityFrames) {
+        if (player.healthComponent.HasInvincibilityFrames) {
             return;
         }
 
@@ -280,13 +280,13 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     protected virtual void Attack() {
-        var playerObject = Player.gameObject;
-        if (Player != null) {
+        var playerObject = player.gameObject;
+        if (player != null) {
             Vector2 directionToPlayer = (playerObject.transform.position - transform.position).normalized;
             Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
 
             enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * enemyDamageInstance.knockbackStrength;
-            Player.TakeDamage(enemyDamageInstance);
+            player.TakeDamage(enemyDamageInstance);
         }
     }
 
