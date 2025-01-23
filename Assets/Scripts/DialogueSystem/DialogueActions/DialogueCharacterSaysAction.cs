@@ -40,8 +40,6 @@ namespace Unity.Behavior {
         #endregion
 
         protected override Status OnStart() {
-            Debug.Log("DialogueCharacter Says started!");
-
             if (FailureCondition()) return Status.Failure;
 
             SetDialogueUIValues(DialogueUI);
@@ -78,7 +76,6 @@ namespace Unity.Behavior {
                     return Status.Success;
                 }
 
-                Debug.Log("Skipped");
                 DialogueUI.dialogueText = dialogue.Value;
                 _textDoneDisplaying = true;
                 _skipped = false;

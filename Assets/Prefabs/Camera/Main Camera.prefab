@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8230563027541626766}
   - component: {fileID: 8976697381197443091}
   - component: {fileID: -7288593912309801597}
+  - component: {fileID: 1451318973726415103}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -144,11 +145,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowDebugText: 0
   ShowCameraFrustum: 1
-  IgnoreTimeScale: 0
+  IgnoreTimeScale: 1
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
   UpdateMethod: 2
-  BlendUpdateMethod: 0
+  BlendUpdateMethod: 1
   LensModeOverride:
     Enabled: 0
     DefaultMode: 2
@@ -176,3 +177,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nonRigidbodyVelocity: 0
   attenuationObject: {fileID: 0}
+--- !u!114 &1451318973726415103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031317797253237212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc87ee369660c784783da4d564c2eca8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
