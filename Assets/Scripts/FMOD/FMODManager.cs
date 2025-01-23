@@ -54,8 +54,11 @@ namespace FMODScripts {
         #region ---EventFunctions---
         private IEnumerator Start() {
             debugLogger.Log("Initializing");
-
+            
+            // RuntimeManager.MuteAllEvents(true);
             yield return new WaitUntil(() => RuntimeManager.IsInitialized);
+            // RuntimeManager.MuteAllEvents(false);
+            
             debugLogger.Log("RuntimeManager is initialized");
 
             _masterBus = RuntimeManager.GetBus(BusPath);
@@ -118,6 +121,7 @@ namespace FMODScripts {
                     throw new ArgumentOutOfRangeException();
             }
         }
+        
         private void HandlePlaySoundEvent(PlaySoundEvent playSoundEvent) {
             switch (playSoundEvent.SoundType) {
                 case SoundType.None:
