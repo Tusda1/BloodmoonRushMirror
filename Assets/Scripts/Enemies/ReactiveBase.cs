@@ -14,10 +14,8 @@ public class ReactiveBase : EnemyBase
     
     protected EnemyState currentState = EnemyState.Scanning;
     
-    protected new void Update()
+    protected override void ComputeVelocity()
     {
-        base.Update();
-
         if (isDead)
         {
             currentState = EnemyState.Scanning;

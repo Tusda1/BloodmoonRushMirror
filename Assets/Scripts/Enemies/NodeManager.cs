@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class NodeManager : MonoBehaviour
 {
     [SerializeField] private int xDistance = 5;
     [SerializeField] private int yDistance = 5;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private bool useWholeNumbersAsTileCenter = true;
     [SerializeField] private bool showOutline = true;
 
     private List<GameObject> emptyObjects = new List<GameObject>();
@@ -32,7 +34,15 @@ public class NodeManager : MonoBehaviour
         {
             for (int x = -xDistance; x <= xDistance; x++)
             {
-                Vector2 tileCenter = new Vector2(transform.position.x + x + 0.5f, transform.position.y + y + 0.5f);
+                Vector2 tileCenter;
+                if (useWholeNumbersAsTileCenter)
+                {
+                    tileCenter = new Vector2(transform.position.x + x, transform.position.y + y);
+                }
+                else
+                {
+                    tileCenter = new Vector2(transform.position.x + x + 0.5f, transform.position.y + y + 0.5f);
+                }
                 Collider2D groundHit = Physics2D.OverlapPoint(tileCenter, groundLayer);
 
                 if (groundHit != null)

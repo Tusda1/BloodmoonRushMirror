@@ -9,6 +9,8 @@ public class ChaseEnemy : ReactiveBase
     [SerializeField] private float repeatRate = 0.5f;
     [SerializeField] private float radius = 0.5f; // Define the radius property
     [SerializeField] private float attackDistance = 1f;
+    [SerializeField] private float minimumJumpAngle = 15f;
+    [SerializeField] private float maxJumpAngle = 60f;
     private float _repeatTimer;
     
     private Path _path;
@@ -16,6 +18,7 @@ public class ChaseEnemy : ReactiveBase
     private bool _reachedEndOfPath;
     private Seeker _seeker;
     private bool _isAttacking;
+    private bool _isJumping;
 
     protected override void Start()
     {
@@ -23,17 +26,38 @@ public class ChaseEnemy : ReactiveBase
 
         _seeker = GetComponent<Seeker>();
     }
+    
+    private void StartPath()
+    {
+        if (targetObject == null) { return; }
+
+        if (!_seeker.IsDone()) { return; }
+
+        // Start the path without NNConstraint
+        _seeker.StartPath(rb2d.position, targetObject.transform.position, OnPathComplete);
+    }
+
+    private void OnPathComplete(Path p)
+    {
+        if (!p.error)
+        {
+            /*// Modify the path to account for the radius
+            for (int i = 0; i < p.vectorPath.Count; i++)
+            {
+                Vector3 direction = (p.vectorPath[i] - (Vector3)rb2d.position).normalized;
+                p.vectorPath[i] += direction * radius;
+            }*/
+
+            _path = p;
+            _currentWaypoint = 0;
+        }
+    }
 
     protected override void Action()
     {
-        if (targetObject == null)
+        if (!targetObject)
         {
             currentState = EnemyState.Scanning;
-            return;
-        }
-
-        if (_isAttacking)
-        {
             return;
         }
 
@@ -49,14 +73,43 @@ public class ChaseEnemy : ReactiveBase
 
         if (_path == null) { return; }
 
-        if (_currentWaypoint >= _path.vectorPath.Count)
+        if (_isAttacking || _isJumping)
         {
             return;
+        }
+        
+        // Check if enemy is close enough to attack
+        if (Vector2.Distance(rb2d.position, targetObject.transform.position) < attackDistance && !_isAttacking)
+        {
+            StartCoroutine(AttackCoroutine());
+        }
+        
+        // Check if the enemy has reached the next waypoint
+        if (Vector2.Distance(rb2d.position, _path.vectorPath[_currentWaypoint]) < nextWaypointDistance && _currentWaypoint < _path.vectorPath.Count - 1)
+        {
+            _currentWaypoint++;
         }
 
         // Determine the direction to the next waypoint
         Vector2 direction = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).normalized;
+        var angle = Vector2.Angle(Vector2.up, direction);
 
+        if (isGrounded && angle > minimumJumpAngle && angle < maxJumpAngle)
+        {
+            StartCoroutine(JumpCoroutine());
+        }
+        else if (angle < minimumJumpAngle)
+        {
+            targetVelocity = facingDirection * moveSpeed;
+        }
+        else
+        {
+            Move(direction);
+        }
+    }
+
+    private void Move(Vector2 direction)
+    {
         // Add a threshold to avoid jittering
         float directionThreshold = 0.1f;
         if (Mathf.Abs(direction.x) > directionThreshold)
@@ -69,44 +122,41 @@ public class ChaseEnemy : ReactiveBase
         {
             targetVelocity = facingDirection * moveSpeed;
         }
+    }
 
-        // Check if the enemy has reached the next waypoint
-        if (Vector2.Distance(rb2d.position, _path.vectorPath[_currentWaypoint]) < nextWaypointDistance)
+    private IEnumerator JumpCoroutine()
+    {
+        _isJumping = true;
+        
+        facingDirection = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).x > 0 ? Vector2.right : Vector2.left;
+        
+        var jumpVelocity = CalculateJump();
+        velocity.y = jumpVelocity.y;
+        
+        while (isGrounded)
         {
-            _currentWaypoint++;
+            targetVelocity.x = jumpVelocity.x;
+            
+            yield return null;
+        }
+
+        while (!isGrounded)
+        {
+            targetVelocity.x = jumpVelocity.x;
+            
+            yield return null;
         }
         
-        // Check if enemy is close enough to attack
-        if (Vector2.Distance(rb2d.position, targetObject.transform.position) < attackDistance && !_isAttacking)
-        {
-            StartCoroutine(AttackCoroutine());
-        }
+        _isJumping = false;
     }
-
-    private void StartPath()
+    
+    private Vector2 CalculateJump()
     {
-        if (targetObject == null) { return; }
-
-        if (!_seeker.IsDone()) { return; }
-
-        // Start the path without NNConstraint
-        _seeker.StartPath(rb2d.position, targetObject.transform.position, OnPathComplete);
-    }
-
-    private void OnPathComplete(Path p)
-    {
-        if (!p.error)
-        {
-            // Modify the path to account for the radius
-            for (int i = 0; i < p.vectorPath.Count; i++)
-            {
-                Vector3 direction = (p.vectorPath[i] - (Vector3)rb2d.position).normalized;
-                p.vectorPath[i] += direction * radius;
-            }
-
-            _path = p;
-            _currentWaypoint = 0;
-        }
+        var height = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).y;
+        var velocityY = Mathf.Sqrt(2 * Mathf.Abs(Physics2D.gravity.y) * height);
+        var jumpTime = velocityY / Mathf.Abs(Physics2D.gravity.y);
+        var velocityX = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).x / jumpTime;
+        return new Vector2(velocityX, velocityY);
     }
     
     private IEnumerator AttackCoroutine()

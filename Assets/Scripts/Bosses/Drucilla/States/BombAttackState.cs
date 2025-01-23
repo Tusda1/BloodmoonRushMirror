@@ -9,18 +9,15 @@ public class BombAttackState : DrucillaState
     [SerializeField] private float bombCooldown = 1f;
     [SerializeField] private float glideSpeed = 4f;
     [SerializeField] private float glideFallVelocity = -1f;
-    [SerializeField] private float groundSlamSpeed = 10f;
-    [SerializeField] private float groundsSlamUpSpeed = 10f;
-    [SerializeField] private float groundSlamUpTime = 0.5f;
     
     private float _bombTimer;
     private int _bombCount;
-    private bool _isGroundSlamming;
     private Vector2 _teleportPosition;
     
     private PlayerScript _player;
     private Pooler _bombPooler;
     private SmoothDampScript _smoothDampScript = new();
+    private GroundSlam _groundSlam;
     
     private enum BombAttackStage
     {
@@ -36,6 +33,7 @@ public class BombAttackState : DrucillaState
         _player = ServiceLocator.Get<PlayerScript>();
         
         _bombPooler = TryGetCommunityPooler.TryGetPooler(bombPrefab);
+        _groundSlam = new GroundSlam(GetComponent<Collider2D>());
     }
 
     private void OnEnable()
@@ -63,7 +61,7 @@ public class BombAttackState : DrucillaState
                 DropBombs();
                 break;
             case BombAttackStage.GroundSlam:
-                GroundSlam();
+                _groundSlam.ExecuteGroundSlam(ref Boss.velocityPublic);
                 break;
         }
     }
@@ -97,30 +95,5 @@ public class BombAttackState : DrucillaState
         var bomb = _bombPooler.GetPooledObject();
         bomb.transform.position = transform.position;
         bomb.SetActive(true);
-    }
-    
-    private void GroundSlam()
-    {
-        if (!_isGroundSlamming)
-        {
-            _isGroundSlamming = true;
-            StartCoroutine(GroundSlamCoroutine());
-        }
-    }
-
-    private IEnumerator GroundSlamCoroutine()
-    {
-        Boss.velocityPublic.y = groundsSlamUpSpeed;
-        
-        yield return new WaitForSeconds(groundSlamUpTime);
-        
-        Boss.velocityPublic.y = -groundSlamSpeed;
-
-        while (!Boss.isGrounded)
-        {
-            yield return null;
-        }
-        
-        
     }
 }
