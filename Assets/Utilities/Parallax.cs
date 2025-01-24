@@ -98,11 +98,13 @@ public class Parallax : MonoBehaviour {
         
         for (var i = 0; i < transform.childCount; i++) {
             var objectTransform = transform.GetChild(i);
+            var spriteRenderer = objectTransform.GetComponent<SpriteRenderer>();
             
             parallaxElements[i] = new ParallaxElement {
                 objectTransform = objectTransform,
                 gameObject = objectTransform.gameObject,
-                spriteRenderer = objectTransform.GetComponent<SpriteRenderer>()
+                spriteRenderer = spriteRenderer,
+                originalSize = spriteRenderer.size
             };
         }
         

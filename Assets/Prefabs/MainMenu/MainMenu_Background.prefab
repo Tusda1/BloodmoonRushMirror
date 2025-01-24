@@ -96,6 +96,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2602228284148263935}
+  - component: {fileID: 8035276125671107948}
   - component: {fileID: 7242753908805751588}
   m_Layer: 0
   m_Name: MainMenu_Background
@@ -117,7 +118,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 955050627837398659}
   - {fileID: 1460247318415019787}
   - {fileID: 1279327546583696481}
   - {fileID: 7867940735035742016}
@@ -127,6 +127,90 @@ Transform:
   - {fileID: 1793473105916236556}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8035276125671107948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140780791884936997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 914715475684af14db52d4672d198c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startEnabled: 1
+  parallaxElements:
+  - gameObject: {fileID: 1850466784992274286}
+    objectTransform: {fileID: 1460247318415019787}
+    spriteRenderer: {fileID: 5423239758540398818}
+    originalSize: {x: 45, y: 27.5}
+    xAxisParallaxEnabled: 1
+    xAxisEffectMultiplier: 0
+    infiniteScrollingXAxis: 0
+    yAxisParallaxEnabled: 1
+    yAxisEffectMultiplier: 0
+    infiniteScrollingYAxis: 0
+  - gameObject: {fileID: 4048683605306557228}
+    objectTransform: {fileID: 1279327546583696481}
+    spriteRenderer: {fileID: 6563277513374756338}
+    originalSize: {x: 45, y: 27.5}
+    xAxisParallaxEnabled: 1
+    xAxisEffectMultiplier: -0.1
+    infiniteScrollingXAxis: 0
+    yAxisParallaxEnabled: 1
+    yAxisEffectMultiplier: -0.1
+    infiniteScrollingYAxis: 0
+  - gameObject: {fileID: 8248212043648566852}
+    objectTransform: {fileID: 7867940735035742016}
+    spriteRenderer: {fileID: 6904311673509069050}
+    originalSize: {x: 45, y: 27.5}
+    xAxisParallaxEnabled: 1
+    xAxisEffectMultiplier: -0.2
+    infiniteScrollingXAxis: 0
+    yAxisParallaxEnabled: 1
+    yAxisEffectMultiplier: -0.2
+    infiniteScrollingYAxis: 0
+  - gameObject: {fileID: 548872440484950199}
+    objectTransform: {fileID: 5605573115796940511}
+    spriteRenderer: {fileID: 8151348307965259845}
+    originalSize: {x: 45, y: 27.5}
+    xAxisParallaxEnabled: 1
+    xAxisEffectMultiplier: -0.4
+    infiniteScrollingXAxis: 0
+    yAxisParallaxEnabled: 1
+    yAxisEffectMultiplier: -0.4
+    infiniteScrollingYAxis: 0
+  - gameObject: {fileID: 3055863657314035906}
+    objectTransform: {fileID: 5399639468642409596}
+    spriteRenderer: {fileID: 1568482106863884520}
+    originalSize: {x: 45, y: 27.5}
+    xAxisParallaxEnabled: 1
+    xAxisEffectMultiplier: -0.6
+    infiniteScrollingXAxis: 0
+    yAxisParallaxEnabled: 1
+    yAxisEffectMultiplier: -0.6
+    infiniteScrollingYAxis: 0
+  - gameObject: {fileID: 3497365266842363583}
+    objectTransform: {fileID: 2085053270147574091}
+    spriteRenderer: {fileID: 648646077857063914}
+    originalSize: {x: 45, y: 27.5}
+    xAxisParallaxEnabled: 1
+    xAxisEffectMultiplier: -0.8
+    infiniteScrollingXAxis: 0
+    yAxisParallaxEnabled: 1
+    yAxisEffectMultiplier: -0.8
+    infiniteScrollingYAxis: 0
+  - gameObject: {fileID: 3447077079194549527}
+    objectTransform: {fileID: 1793473105916236556}
+    spriteRenderer: {fileID: 4342105090072638344}
+    originalSize: {x: 45, y: 27.5}
+    xAxisParallaxEnabled: 1
+    xAxisEffectMultiplier: -1
+    infiniteScrollingXAxis: 0
+    yAxisParallaxEnabled: 1
+    yAxisEffectMultiplier: -1
+    infiniteScrollingYAxis: 0
 --- !u!95 &7242753908805751588
 Animator:
   serializedVersion: 7
@@ -236,122 +320,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &3056198691373180005
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 955050627837398659}
-  - component: {fileID: 192215742564484047}
-  m_Layer: 0
-  m_Name: BackgroundParallax
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &955050627837398659
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3056198691373180005}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2602228284148263935}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &192215742564484047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3056198691373180005}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 914715475684af14db52d4672d198c11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startEnabled: 0
-  parallaxElements:
-  - gameObject: {fileID: 1850466784992274286}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    originalSize: {x: 0, y: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: 0
-    infiniteScrollingXAxis: 0
-    yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: 0
-    infiniteScrollingYAxis: 0
-  - gameObject: {fileID: 4048683605306557228}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    originalSize: {x: 0, y: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: -0.1
-    infiniteScrollingXAxis: 0
-    yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: -0.1
-    infiniteScrollingYAxis: 0
-  - gameObject: {fileID: 8248212043648566852}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    originalSize: {x: 0, y: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: -0.2
-    infiniteScrollingXAxis: 0
-    yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: -0.2
-    infiniteScrollingYAxis: 0
-  - gameObject: {fileID: 548872440484950199}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    originalSize: {x: 0, y: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: -0.4
-    infiniteScrollingXAxis: 0
-    yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: -0.4
-    infiniteScrollingYAxis: 0
-  - gameObject: {fileID: 3055863657314035906}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    originalSize: {x: 0, y: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: -0.6
-    infiniteScrollingXAxis: 0
-    yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: -0.6
-    infiniteScrollingYAxis: 0
-  - gameObject: {fileID: 3497365266842363583}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    originalSize: {x: 0, y: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: -0.8
-    infiniteScrollingXAxis: 0
-    yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: -0.8
-    infiniteScrollingYAxis: 0
-  - gameObject: {fileID: 3447077079194549527}
-    objectTransform: {fileID: 0}
-    spriteRenderer: {fileID: 0}
-    originalSize: {x: 0, y: 0}
-    xAxisParallaxEnabled: 1
-    xAxisEffectMultiplier: -1
-    infiniteScrollingXAxis: 0
-    yAxisParallaxEnabled: 1
-    yAxisEffectMultiplier: -1
-    infiniteScrollingYAxis: 0
 --- !u!1 &3447077079194549527
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,15 +698,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 9fc79db923b82c34691c4a76eeefafd7, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 9fc79db923b82c34691c4a76eeefafd7, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 9fc79db923b82c34691c4a76eeefafd7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 9fc79db923b82c34691c4a76eeefafd7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -765,5 +733,10 @@ Transform:
 --- !u!1 &1850466784992274286 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2253911629886400664, guid: 9fc79db923b82c34691c4a76eeefafd7, type: 3}
+  m_PrefabInstance: {fileID: 8725252505490976774}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &5423239758540398818 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3626916397498700004, guid: 9fc79db923b82c34691c4a76eeefafd7, type: 3}
   m_PrefabInstance: {fileID: 8725252505490976774}
   m_PrefabAsset: {fileID: 0}
