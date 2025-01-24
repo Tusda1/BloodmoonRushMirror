@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3368557791597815033}
   - component: {fileID: 8798351002445025831}
-  - component: {fileID: 3402096621317275113}
+  - component: {fileID: 27065693322632224}
   - component: {fileID: 4012985615332974812}
   m_Layer: 0
   m_Name: CinemachineCamera
@@ -108,7 +108,7 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
---- !u!114 &3402096621317275113
+--- !u!114 &27065693322632224
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,19 +126,19 @@ MonoBehaviour:
     ScreenPosition: {x: 0, y: 0}
     DeadZone:
       Enabled: 1
-      Size: {x: 1, y: 1}
+      Size: {x: 2, y: 2}
     HardLimits:
-      Enabled: 0
-      Size: {x: 1, y: 1}
+      Enabled: 1
+      Size: {x: 2, y: 2}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 0, z: 0}
   Damping: {x: 1, y: 1, z: 1}
   Lookahead:
-    Enabled: 1
-    Time: 0.343
-    Smoothing: 4.8
-    IgnoreY: 1
+    Enabled: 0
+    Time: 0
+    Smoothing: 0
+    IgnoreY: 0
 --- !u!114 &4012985615332974812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
   SlowingDistance: 5
   OversizeWindow:
     Enabled: 0
-    MaxWindowSize: 1.8
+    MaxWindowSize: 11.25
     Padding: 0
   m_LegacyMaxWindowSize: -2
 --- !u!1 &4453278142026536323
@@ -290,6 +290,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isActiveRoom: 0
+  _cameraEffects: {fileID: 0}
 --- !u!60 &5781193630542163248
 PolygonCollider2D:
   m_ObjectHideFlags: 0

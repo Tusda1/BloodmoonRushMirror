@@ -1845,6 +1845,14 @@ PrefabInstance:
       propertyPath: Priority.m_Value
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 641250308848736287, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: Composition.DeadZone.Size.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 641250308848736287, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: Composition.HardLimits.Size.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 985675863673526007, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: Priority.m_Value
       value: 0
@@ -1897,6 +1905,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1478339017224186690, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: Composition.DeadZone.Size.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478339017224186690, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: Composition.HardLimits.Size.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1699100505310681102, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.75
@@ -1928,6 +1944,14 @@ PrefabInstance:
     - target: {fileID: 2859971593566534102, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: Lookahead.Smoothing
       value: 6.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2921514614315591894, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: Composition.DeadZone.Size.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2921514614315591894, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: Composition.HardLimits.Size.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3170221679462302486, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: m_Name
@@ -1973,6 +1997,14 @@ PrefabInstance:
       propertyPath: Priority.m_Value
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6332719512989348971, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: Composition.DeadZone.Size.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332719512989348971, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: Composition.HardLimits.Size.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6644407311746025117, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: Priority.m_Value
       value: 0
@@ -2009,10 +2041,7 @@ PrefabInstance:
     - {fileID: 6484923119082872521, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6069451388055334575, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6323562060024774983}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
 --- !u!4 &2280108560216135251 stripped
 Transform:
@@ -2024,30 +2053,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3170221679462302486, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
   m_PrefabInstance: {fileID: 931849181551136172}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6401182999644349187 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6069451388055334575, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
-  m_PrefabInstance: {fileID: 931849181551136172}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6323562060024774983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6401182999644349187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b617507da6d07e749b7efdb34e1173e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TrackerSettings:
-    BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
-    AngularDampingMode: 0
-    RotationDamping: {x: 1, y: 1, z: 1}
-    QuaternionDamping: 1
-  FollowOffset: {x: 0, y: -1.95, z: -10}
 --- !u!1 &9028961409001683360 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8188607852157957132, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
