@@ -101,6 +101,7 @@ namespace Player {
                 throw new NullReferenceException("SaveLoadSystemManager is null");
             }
         }
+        
         private SaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
         #endregion

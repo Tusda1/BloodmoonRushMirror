@@ -147,6 +147,10 @@ PrefabInstance:
       value: Main Camera
       objectReference: {fileID: 0}
     - target: {fileID: 3152522411470144867, guid: bbf04c52693f8cd4aa90255d50e4f05b, type: 3}
+      propertyPath: orthographic size
+      value: 11.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3152522411470144867, guid: bbf04c52693f8cd4aa90255d50e4f05b, type: 3}
       propertyPath: m_NormalizedViewPortRect.height
       value: 1
       objectReference: {fileID: 0}
@@ -197,6 +201,10 @@ PrefabInstance:
     - target: {fileID: 8976697381197443091, guid: bbf04c52693f8cd4aa90255d50e4f05b, type: 3}
       propertyPath: CustomBlends
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8976697381197443091, guid: bbf04c52693f8cd4aa90255d50e4f05b, type: 3}
+      propertyPath: UpdateMethod
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8976697381197443091, guid: bbf04c52693f8cd4aa90255d50e4f05b, type: 3}
       propertyPath: DefaultBlend.Style
@@ -363,6 +371,10 @@ PrefabInstance:
     - target: {fileID: 17220102405700779, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: Priority.m_Value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 17220102405700779, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: Lens.OrthographicSize
+      value: 11.25
       objectReference: {fileID: 0}
     - target: {fileID: 90992410472471387, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: Priority.Enabled
@@ -7728,6 +7740,14 @@ PrefabInstance:
       propertyPath: Priority.m_Value
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5591171858931093072, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: OversizeWindow.Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5591171858931093072, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      propertyPath: OversizeWindow.MaxWindowSize
+      value: 11.25
+      objectReference: {fileID: 0}
     - target: {fileID: 5826315258112330545, guid: b262850059fdf744e83248ec5f09af84, type: 3}
       propertyPath: Priority.Enabled
       value: 0
@@ -7828,11 +7848,39 @@ PrefabInstance:
       propertyPath: Priority.m_Value
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6129826611316331365, guid: b262850059fdf744e83248ec5f09af84, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6401182999644349187, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2120503639}
   m_SourcePrefab: {fileID: 100100000, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+--- !u!1 &2120503638 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6401182999644349187, guid: b262850059fdf744e83248ec5f09af84, type: 3}
+  m_PrefabInstance: {fileID: 2120503637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2120503639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120503638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b617507da6d07e749b7efdb34e1173e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TrackerSettings:
+    BindingMode: 4
+    PositionDamping: {x: 1, y: 1, z: 1}
+    AngularDampingMode: 0
+    RotationDamping: {x: 1, y: 1, z: 1}
+    QuaternionDamping: 1
+  FollowOffset: {x: 0, y: -1.95, z: -10}
 --- !u!1001 &7700216484890652259
 PrefabInstance:
   m_ObjectHideFlags: 0

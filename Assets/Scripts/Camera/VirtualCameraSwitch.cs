@@ -8,14 +8,14 @@ using Zenject;
 
 public class VirtualCameraSwitch : MonoBehaviour {
     #region ---Fields---
-    [SerializeField, Required] private CinemachineCamera cinemachineCamera;
+    [SerializeField, Required] public CinemachineCamera cinemachineCamera;
     [SerializeField, Required] private GameObject areaGameObjects;
     [SerializeField, Required] private GameObject enemyGameObject;
     
     [Header("TimeSlowTransition")]
     [SerializeField] private bool slowTimeOnTransition = true;
-    [SerializeField] private float timeSlowDuration = 2;
-    [SerializeField] private AnimationCurve timeSlowCurve;
+    [SerializeField] public float timeSlowDuration = 2;
+    [SerializeField] public AnimationCurve timeSlowCurve;
 
     [SerializeField] private UnityEvent onEnable;
     [SerializeField] private UnityEvent onEnableLate;
@@ -23,6 +23,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
     [SerializeField] private UnityEvent onDisableLate;
  
     [HideInInspector] public bool isActiveRoom;
+    public static VirtualCameraSwitch ActiveVirtualCameraSwitch;
 
     private bool _isDeactivating;
     private static int _priority;
@@ -30,11 +31,15 @@ public class VirtualCameraSwitch : MonoBehaviour {
     
     [Inject] private PlayerScript _playerScript;
     [Inject] private CinemachineBrain _cinemachineBrain;
-    [Inject] private CameraEffects _cameraEffects;
+    [Inject] public CameraEffects _cameraEffects;
     #endregion
 
     private void Awake() {
         isActiveRoom = cinemachineCamera.Priority > 0;
+
+        if (isActiveRoom) {
+            ActiveVirtualCameraSwitch = this;
+        }
     }
 
     private void Start() {
@@ -69,6 +74,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
         EnemyActivation();
         
         isActiveRoom = true;
+        ActiveVirtualCameraSwitch = this;
         _isDeactivating = false;
     }
 
