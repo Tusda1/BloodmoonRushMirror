@@ -170,12 +170,18 @@ MonoBehaviour:
     gemsContaining: 0
     position: {x: 0, y: 0, z: 0}
   detectionDistance: 20
+  highAttackCollider: {fileID: 0}
+  lowAttackCollider: {fileID: 0}
+  overheadAttackCollider: {fileID: 0}
   nextWaypointDistance: 1
   repeatRate: 0.5
   radius: 0.5
   attackDistance: 1
   minimumJumpAngle: 15
   maxJumpAngle: 45
+  shield:
+    blocksUntilCounterAttack: 3
+    alwaysCounterAttackOnDash: 1
 --- !u!61 &7390510478339426088
 BoxCollider2D:
   m_ObjectHideFlags: 0

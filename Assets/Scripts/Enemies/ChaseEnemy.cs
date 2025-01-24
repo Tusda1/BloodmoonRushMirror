@@ -1,16 +1,22 @@
 using System.Collections;
 using UnityEngine;
 using Pathfinding;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Seeker))]
 public class ChaseEnemy : ReactiveBase
 {
+    [SerializeField] private float staggerDuration;
+    [SerializeField] private Collider2D highAttackCollider;
+    [SerializeField] private Collider2D lowAttackCollider;
+    [SerializeField] private Collider2D overheadAttackCollider;
     [SerializeField] private float nextWaypointDistance = 0.5f;
     [SerializeField] private float repeatRate = 0.5f;
     [SerializeField] private float radius = 0.5f; // Define the radius property
     [SerializeField] private float attackDistance = 1f;
     [SerializeField] private float minimumJumpAngle = 15f;
     [SerializeField] private float maxJumpAngle = 60f;
+    
     private float _repeatTimer;
     
     private int _currentWaypoint = 0;
@@ -18,9 +24,9 @@ public class ChaseEnemy : ReactiveBase
     private bool _isAttacking;
     private bool _isJumping;
     
+    [SerializeField] private Shield shield = new();
     private Path _path;
     private Seeker _seeker;
-    private Shield _shield = new();
 
     protected override void Start()
     {
@@ -80,10 +86,18 @@ public class ChaseEnemy : ReactiveBase
             return;
         }
         
+        // Use a overlap box to check if the player is within the bound of the overhead attack collider
+        var bounds = overheadAttackCollider.bounds;
+        Collider2D playerCollider = Physics2D.OverlapBox(bounds.center, bounds.size, 0, LayerMask.GetMask("Player"));
+        if (playerCollider != null)
+        {
+            OverHeadAttack();
+        }
+        
         // Check if enemy is close enough to attack
         if (Vector2.Distance(rb2d.position, targetObject.transform.position) < attackDistance && !_isAttacking)
         {
-            StartCoroutine(AttackCoroutine());
+            ExecuteAttack();
         }
         
         // Check if the enemy has reached the next waypoint
@@ -160,21 +174,50 @@ public class ChaseEnemy : ReactiveBase
         var velocityX = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).x / jumpTime;
         return new Vector2(velocityX, velocityY);
     }
-    
-    private IEnumerator AttackCoroutine()
+
+    private void ExecuteAttack()
     {
+        // 50% chance to do high attack or low attack
+        if (Random.value > 0.5f)
+        {
+            HighAttack();
+        }
+        else
+        {
+            LowAttack();
+        }
+    }
+
+    private void HighAttack()
+    {
+        highAttackCollider.enabled = true;
         _isAttacking = true;
+    }
+
+    private void LowAttack()
+    {
+        lowAttackCollider.enabled = true;
+        _isAttacking = true;
+    }
+
+    private void OverHeadAttack()
+    {
         
-        // Attack logic here
-        yield return null;
-        
-        _isAttacking = false;
     }
 
     protected override bool CanBeDamaged(DamageInstance damageInstance)
     {
-        _shield.ShieldBlock(base.Attack, player, damageInstance);
+        shield.ShieldBlock(base.Attack, player, damageInstance);
+        
+        if (damageInstance.which == DamageInstance.WhichAttack.CrouchAttack) StartCoroutine(Stagger());
         
         return damageInstance.which == DamageInstance.WhichAttack.CrouchAttack;
+    }
+
+    private IEnumerator Stagger()
+    {
+        isStunned = true;
+        yield return new WaitForSeconds(staggerDuration);
+        isStunned = false;
     }
 }
