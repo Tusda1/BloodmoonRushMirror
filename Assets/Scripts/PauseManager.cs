@@ -33,5 +33,6 @@ public class PauseManager : IPauseManager {
     }
 
     public void Pause() => Paused = true;
+    
     public void Resume() => Paused = false;
 }

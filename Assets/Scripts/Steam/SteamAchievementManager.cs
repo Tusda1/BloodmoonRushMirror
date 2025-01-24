@@ -1,0 +1,29 @@
+﻿using System;
+using UnityEngine;
+#if STEAM_BUILD
+using Steamworks;
+#endif
+
+public class SteamAchievementManager : IAchievementManager {
+    public event Action<string> OnAchievementUnlocked = delegate { };
+    
+    public void UnlockAchievement(string id) {
+#if STEAM_BUILD
+        if (!SteamManager.Initialized) return;
+
+        SteamUserStats.SetAchievement(id);
+        SteamUserStats.StoreStats();
+        
+        OnAchievementUnlocked.Invoke(id);
+#endif
+    }
+
+    public bool IsAchievementUnlocked(string id) {
+#if STEAM_BUILD
+        SteamUserStats.GetAchievement(id, out var achieved);
+        return achieved;
+#endif
+        Debug.LogWarning("NB! NOT CONNECTED TO STEAM");
+        return false;
+    }
+}
