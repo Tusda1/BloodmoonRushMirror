@@ -1,8 +1,8 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/PlayerUI.uss?fileID=7433441132597879392&amp;guid=9e04902db799f384096cdc67d60b347b&amp;type=3#PlayerUI" />
-    <engine:VisualElement data-source-type="Player.PlayerScript, Assembly-CSharp" style="flex-grow: 1; height: 60px; width: 100%; background-color: rgb(63, 47, 58); position: absolute; flex-direction: row; align-items: center; opacity: 1; display: flex; border-left-color: rgb(26, 17, 26); border-right-color: rgb(26, 17, 26); border-top-color: rgb(26, 17, 26); border-bottom-color: rgb(26, 17, 26); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; min-height: 60px; max-height: 60px; background-image: none;">
+    <engine:VisualElement data-source-type="Player.PlayerScript, Assembly-CSharp" style="flex-grow: 1; height: 60px; width: 100%; position: absolute; flex-direction: row; align-items: center; opacity: 1; display: flex; border-left-color: rgb(26, 17, 26); border-right-color: rgb(26, 17, 26); border-top-color: rgb(26, 17, 26); border-bottom-color: rgb(26, 17, 26); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; min-height: 60px; max-height: 60px; background-image: url(&quot;project://database/Assets/Art/UIArt/UI_Assets_V2.aseprite?fileID=2954359122489180813&amp;guid=0299155ad777c5340abbe1d4a8e7d7dd&amp;type=3#UI_Assets_V2_23&quot;);">
         <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Assets_V2.aseprite?fileID=-2123212497544457699&amp;guid=0299155ad777c5340abbe1d4a8e7d7dd&amp;type=3#UI_Assets_V2_24" />
-        <engine:VisualElement name="Lives" style="flex-grow: 1; position: absolute; top: 35px; left: 117px; flex-direction: row;">
+        <engine:VisualElement name="Lives" style="flex-grow: 1; position: absolute; top: 35px; left: 115px; flex-direction: row;">
             <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Assets_V2.aseprite?fileID=8537482082210009459&amp;guid=0299155ad777c5340abbe1d4a8e7d7dd&amp;type=3#UI_Assets_V2_16" />
             <engine:Label text="x" name="x" class="davidLabel" />
             <engine:Label text="05" class="davidLabel">
@@ -11,7 +11,7 @@
                 </Bindings>
             </engine:Label>
         </engine:VisualElement>
-        <engine:VisualElement name="Gems" style="flex-grow: 1; position: absolute; top: 9px; left: 117px; flex-direction: row;">
+        <engine:VisualElement name="Gems" style="flex-grow: 1; position: absolute; top: 9px; left: 121px; flex-direction: row;">
             <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Assets_V2.aseprite?fileID=-8986572728594136429&amp;guid=0299155ad777c5340abbe1d4a8e7d7dd&amp;type=3#UI_Assets_V2_21" />
             <engine:Label text="x" name="x" class="davidLabel" />
             <engine:Label text="00" class="davidLabel">
@@ -29,6 +29,6 @@
                 </Bindings>
             </engine:Label>
         </engine:VisualElement>
-        <UI_Toolkit.PlayerHearts heart-container="project://database/Assets/Art/UIArt/UI_Assets_V2.aseprite?fileID=-9005547610444725868&amp;guid=0299155ad777c5340abbe1d4a8e7d7dd&amp;type=3#UI_Assets_V2_30" default-heart="project://database/Assets/Art/UIArt/UI_Assets_V2.aseprite?fileID=-7797647120943901884&amp;guid=0299155ad777c5340abbe1d4a8e7d7dd&amp;type=3#UI_Assets_V2_27" temp-heart="project://database/Assets/Art/UIArt/UI_Assets_V2.aseprite?fileID=-8728372004007361840&amp;guid=0299155ad777c5340abbe1d4a8e7d7dd&amp;type=3#UI_Assets_V2_26" heart-container-count="7" default-heart-count="22" temp-heart-count="2" name="PlayerHearts" style="flex-direction: row; position: absolute; top: 36px; left: 188px;" />
+        <UI_Toolkit.PlayerHearts heart-container="project://database/Assets/Art/UIArt/UI_Assets_V2.aseprite?fileID=-9005547610444725868&amp;guid=0299155ad777c5340abbe1d4a8e7d7dd&amp;type=3#UI_Assets_V2_30" default-heart="project://database/Assets/Art/UIArt/UI_Assets_V2.aseprite?fileID=-7797647120943901884&amp;guid=0299155ad777c5340abbe1d4a8e7d7dd&amp;type=3#UI_Assets_V2_27" temp-heart="project://database/Assets/Art/UIArt/UI_Assets_V2.aseprite?fileID=-8728372004007361840&amp;guid=0299155ad777c5340abbe1d4a8e7d7dd&amp;type=3#UI_Assets_V2_26" heart-container-count="7" default-heart-count="22" temp-heart-count="2" name="PlayerHearts" style="flex-direction: row; position: absolute; top: 36px; left: 185px;" />
     </engine:VisualElement>
 </engine:UXML>

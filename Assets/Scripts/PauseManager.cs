@@ -2,8 +2,7 @@ using System;
 using UnityEngine;
 
 public class PauseManager : IPauseManager {
-    public float DefaultTimeScale { get; set; }
-
+    #region ---Fields---
     public bool Paused {
         get => _paused;
         set {
@@ -17,7 +16,7 @@ public class PauseManager : IPauseManager {
             }
             else {
                 OnResume.Invoke();
-                Time.timeScale = DefaultTimeScale;
+                Time.timeScale = _defaultTimeScale;
             }
         }
     }
@@ -25,10 +24,12 @@ public class PauseManager : IPauseManager {
     public event Action OnPause = delegate { };
     public event Action OnResume = delegate { };
 
+    private readonly float _defaultTimeScale;
     private bool _paused;
+    #endregion
 
     public PauseManager(float defaultTimeScale) {
-        DefaultTimeScale = defaultTimeScale;
+        _defaultTimeScale = defaultTimeScale;
     }
 
     public void Pause() => Paused = true;
