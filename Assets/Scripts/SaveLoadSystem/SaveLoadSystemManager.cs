@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using SaveLoadSystem.Data;
 using UnityEngine;
 using Utilities.DataBinding;
 using Zenject;
+using Debug = UnityEngine.Debug;
 
 namespace SaveLoadSystem {
     public class SaveLoadSystemManager : SaveLoadSystemBase<SaveLoadSystemManager, SaveGameData> {
@@ -30,6 +32,8 @@ namespace SaveLoadSystem {
         }
 
         private void LoadSaveSlotData(SaveSlotDataSO saveSlotData) {
+            saveSlotData.Clear();
+            
             var pathToSaveFile = DataService.GetPathToSaveFile(saveSlotData.saveSlotName);
             if (!File.Exists(pathToSaveFile)) {
                 Debug.Log(pathToSaveFile + " does not exist!");
@@ -43,11 +47,6 @@ namespace SaveLoadSystem {
 
         [ContextMenu("Runtime/" + nameof(SaveToFile))]
         public void SaveToFile() {
-// #if UNITY_EDITOR
-//             if (!Application.isPlaying) {
-//                 DataService ??= new FileDataService<SaveGameData>();
-//             }
-// #endif
             SaveGame();
         }
 
@@ -130,6 +129,11 @@ namespace SaveLoadSystem {
                 dataBind.Bind();
                 yield return dataBind;
             }
+        }
+
+        [ContextMenu(nameof(OpenPersistantDataPath))]
+        private void OpenPersistantDataPath() {
+            Process.Start(Application.persistentDataPath);
         }
 #endif
     }

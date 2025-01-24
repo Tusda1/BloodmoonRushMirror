@@ -27,6 +27,7 @@ public class CameraEffects : MonoBehaviour {
 
     private void OnEnable() {
         circleFadeMaterial.SetFloat(Size, FadeCircleDefaultSize);
+        ClearAllRenderTextures();
     }
 
     private void OnDisable() {

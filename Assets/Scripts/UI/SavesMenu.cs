@@ -65,8 +65,12 @@ namespace UI {
 
         private void LoadSave(SaveSlotDataSO saveSlotData) {
             if (saveSlotData.lastTimePlayed == string.Empty) {
-                SaveLoadSystemManager.Instance.NewGame(saveSlotData);
+                _saveLoadSystemManager.NewGame(saveSlotData);
                 saveSlotData.currentSceneCollection = newGameSceneCollection;
+            }
+            else {
+                _saveLoadSystemManager.LoadSave(saveSlotData.saveSlotName);
+                saveSlotData.currentSceneCollection = _saveLoadSystemManager.gameData.CurrentSceneCollection;
             }
 
             Debug.Log(saveSlotData.currentSceneCollection.name);

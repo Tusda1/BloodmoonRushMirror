@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ExtensionMethods;
+using SceneCollections;
 using UnityEngine;
 using Utilities.DataBinding;
 
@@ -10,8 +11,8 @@ namespace SaveLoadSystem.Data {
         [field: SerializeField] public string Name { get; set; }
 
         [SerializeField] public PlayerData playerData = new();
+        [field: SerializeField] public SceneCollectionSO CurrentSceneCollection { get; set; }
 
-        [field: SerializeField] public int CurrentLevel { get; set; }
         [SerializeReference] public List<LevelData> levelDatas = new();
 
         public object Clone() => this.DeepClone();
