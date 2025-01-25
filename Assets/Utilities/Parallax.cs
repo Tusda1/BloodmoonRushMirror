@@ -28,7 +28,7 @@ public class Parallax : MonoBehaviour {
     }
 
     public void Enable() {
-        if (_enabled) return;
+        if (_enabled)   return;
         _enabled = true;
         
         _previousCameraPosition = _mainCameraTransform.position;

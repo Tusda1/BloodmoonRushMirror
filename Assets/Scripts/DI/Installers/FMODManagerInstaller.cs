@@ -10,9 +10,9 @@ public class FMODManagerInstaller : MonoInstaller {
             fmodManagerDebugLogger = ScrubUtils.GetAllScrubsInResourceFolder<DebugLoggerSO>("DebugLoggers")
                 .GetByName("FMODManager");
             
-            Debug.Log(nameof(fmodManagerDebugLogger) + " found manualy");
+            Debug.Log(nameof(fmodManagerDebugLogger) + " found manually");
         }
         
-        Container.Bind<IAudioManager>().FromInstance(new FMODManagerDI(fmodManagerDebugLogger)).AsSingle();
+        Container.Bind<IAudioManager>().FromInstance(new FMODManagerDI(fmodManagerDebugLogger)).AsSingle().NonLazy();
     }
 }
