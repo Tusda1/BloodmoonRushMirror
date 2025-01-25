@@ -208,7 +208,7 @@ namespace FMODScripts {
 
         private bool CheckIfStringIsEmpty(string s) {
             if (!string.IsNullOrWhiteSpace(s)) return false;
-            Debug.LogWarning($"[{_debugLogger.logPrefix}] String received was null or empty");
+            _debugLogger.ForceLogWarning("String received was null or empty");
             return true;
         }
     }
