@@ -203,10 +203,16 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         if (enemyAnimationBase != null) enemyAnimationBase.PlayDefaultAnimation();
     }
 
-    private void Die() {
+    private void Die() 
+    {
         isDead = true;
 
-        if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, () => { gameObject.SetActive(false); });
+        if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, OnDeath);
+    }
+
+    protected virtual void OnDeath()
+    {
+        gameObject.SetActive(false);
     }
 
     private void DropRubies() {
