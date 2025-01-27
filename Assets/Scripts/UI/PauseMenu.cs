@@ -3,22 +3,24 @@ using Consensus;
 using SceneCollections;
 using UI.Settings;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Zenject;
 using Cursor = UnityEngine.Cursor;
 
 namespace UI {
     [RequireComponent(typeof(SettingsMenu), typeof(UITKWorldSpaceInteractive))]
     public class PauseMenu : MonoBehaviour {
         #region ---Fields---
+        #region ***---GetOrAddComponents---***
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
         [GetOrAddComponent, SerializeField, HideInInspector] private SettingsMenu settingsMenu;
-        
+        #endregion
+
         [SerializeField, Required] private SceneCollectionSO mainMenusSceneCollectionSO;
         [SerializeField, Required] private AllInFavourConsensusSO playerCanMove;
-        
+
         [SerializeField, Required] private InputActionReference pauseAction;
 
         #region ***---PrivateFields---***
@@ -30,14 +32,16 @@ namespace UI {
         private Button _mainMenuButton;
         private Button _backButton;
 
-        private bool _paused;
-        
-        private EventSystem _eventSystem;
-
         private readonly ScriptVotePair _currentVote = new();
         #endregion
+
+        #region ***---DI---***
+        [Inject] private IPauseManager _pauseManager;
+        [Inject] private EventSystem _eventSystem;
+        #endregion
         #endregion
 
+        #region ---EventFunctions---
         private void Start() {
             _root = uiDocument.rootVisualElement;
             _pauseMenuRoot = _root.Q<VisualElement>("PauseMenuRoot");
@@ -45,57 +49,53 @@ namespace UI {
             _resumeButton = _pauseMenuRoot.Q<Button>("ResumeButton");
             _settingsButton = _pauseMenuRoot.Q<Button>("SettingsButton");
             _mainMenuButton = _pauseMenuRoot.Q<Button>("MainMenuButton");
-            
+
             pauseAction.action.performed += PauseToggle;
-            
-            _resumeButton.clicked += ResumeGame;
+
+            _resumeButton.clicked += _pauseManager.Resume;
             _settingsButton.clicked += settingsMenu.Activate;
-            _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenusSceneCollectionSO);
-            
+            _mainMenuButton.clicked += () =>
+                _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenusSceneCollectionSO);
+
             settingsMenu.OnMenuActivated += HideMenu;
             settingsMenu.OnMenuDeactivated += ShowMenu;
-            
-            _eventSystem ??= GameObject.FindWithTag("EventSystem").GetComponent<EventSystem>();
-            
-            Assert.IsNotNull(_eventSystem, "EventSystem reference is not set!");
-            
+
+            _pauseManager.OnResume += ResumeGame;
+            _pauseManager.OnPause += PauseGame;
+
             ResumeGame();
         }
-        
-        private void PauseToggle(InputAction.CallbackContext callbackContext) {
-            if (_paused) {
-                ResumeGame();
-            }
-            else {
-                PauseGame();
-            }
+
+        private void OnDestroy() {
+            _pauseManager.OnResume -= ResumeGame;
+            _pauseManager.OnPause -= PauseGame;
+            pauseAction.action.performed -= PauseToggle;
         }
-        
+        #endregion
+
+        private void PauseToggle(InputAction.CallbackContext callbackContext) {
+            _pauseManager.Paused = !_pauseManager.Paused;
+        }
+
         [ContextMenu(nameof(PauseGame))]
         private void PauseGame() {
-            Time.timeScale = 0;
-            _paused = true;
-            
             _root.style.display = DisplayStyle.Flex;
             _root.enabledSelf = true;
             playerCanMove.ChangeVote(_currentVote, false);
-            
+
             _eventSystem.SetSelectedGameObject(gameObject);
             _resumeButton.Focus();
-            
+
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
         }
 
         [ContextMenu(nameof(ResumeGame))]
         private void ResumeGame() {
-            Time.timeScale = 1;
-            _paused = false;
-
             _root.style.display = DisplayStyle.None;
             _root.enabledSelf = false;
             playerCanMove.ChangeVote(_currentVote, true);
-            
+
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }

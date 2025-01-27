@@ -15,7 +15,7 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     public LadderMiddle LadderMiddle {
         get {
             if (_ladderMiddle == null && LadderTop != null && InputVector.y < 0) {
-                _ladderMiddle = LadderTop.ladderMiddle;
+                return LadderTop.ladderMiddle;
             }
 
             return _ladderMiddle;

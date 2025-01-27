@@ -96,7 +96,7 @@ namespace UI_Toolkit {
         }
 
         private void UpdateDefaultHearts(int heartContainerCount) {
-            if (DefaultHeart == null || HeartContainer == null || heartContainerCount == 0) return;
+            if (DefaultHeart == null || HeartContainer == null) return;
             
             for (var i = 0; i < Hearts.Count; i++) {
                 if (i >= heartContainerCount) {
@@ -109,7 +109,7 @@ namespace UI_Toolkit {
         }
         
         private void UpdateTempHearts(int tempHeartCount) {
-            if (TempHeart == null || HeartContainer == null || DefaultHeart == null || tempHeartCount == 0) return;
+            if (TempHeart == null || HeartContainer == null || DefaultHeart == null) return;
             
             for (var i = 0; i < Hearts.Count; i++) {
                 if (i >= tempHeartCount) {

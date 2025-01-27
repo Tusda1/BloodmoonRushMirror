@@ -18,7 +18,7 @@ namespace SaveLoadSystem {
         [field: Header("Data Binding")]
         [field: SerializeField] public string ID { get; set; }
         [field: SerializeField] public SceneCollectionSO SceneCollection { get; set; }
-        
+        [field: SerializeField] public Vector3 LevelStartPoint { get; set; }
         [field: SerializeField] public CheckpointData CurrentCheckpointData { get; set; }
         [SerializeReference] public List<CheckpointData> checkpointDatas = new();
         
@@ -30,7 +30,7 @@ namespace SaveLoadSystem {
             new LevelData {
                 ID = ID,
                 SceneCollection = SceneCollection,
-                LevelStartPoint = PlayerScriptCache.transform.position,
+                LevelStartPoint = LevelStartPoint,
                 enemyDatas = enemyDatas,
                 checkpointDatas = checkpointDatas,
                 CurrentCheckpointData = CurrentCheckpointData,
@@ -112,13 +112,6 @@ namespace SaveLoadSystem {
         }
 
 #if UNITY_EDITOR
-        private void OnValidate() {
-            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
-                ID = Guid.NewGuid().ToString();
-                Debug.Log($"Setting new guid for {nameof(LevelDataManager)}");
-            }
-        }
-        
         [ContextMenu(nameof(SavePlayerLevelStartPoint))]
         public void SavePlayerLevelStartPoint() {
             SaveSystemData.LevelStartPoint = PlayerScriptCache.transform.position;
@@ -135,7 +128,7 @@ namespace SaveLoadSystem {
         [ContextMenu(nameof(SaveBindData))]
         public void SaveBindData() {
             SaveSystemData.enemyDatas = enemyDatas;
-            SaveLoadSystemManager.gameData.CurrentLevel = SaveLoadSystemManager.gameData.levelDatas.FindIndex(x => x.ID == ID);
+            SaveLoadSystemManager.gameData.CurrentSceneCollection = SceneCollection;
 #if UNITY_EDITOR
             if (!Application.isPlaying) {
                 SavePlayerLevelStartPoint();

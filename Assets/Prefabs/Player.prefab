@@ -122,7 +122,7 @@ MonoBehaviour:
     - {fileID: 4896941881637286329}
     - {fileID: 4915913186544905062}
   gameOverScene: {fileID: 11400000, guid: f049946a2b8e33e4c89218cc64a675cc, type: 2}
-  playerLives: 3
+  playerLives: 10
   whatIsInteractable:
     serializedVersion: 2
     m_Bits: 0
@@ -141,9 +141,9 @@ MonoBehaviour:
   gemLostMethod: 0
   gemsLostOnDeath: 0
   gemMultiplierOnDeath: 0.9
-  <ID>k__BackingField: 5adf20f2-0c9e-473e-85dc-83f76abdd5a4
+  <ID>k__BackingField: Player
   <SaveSystemData>k__BackingField:
-    <ID>k__BackingField: 
+    <ID>k__BackingField: Player
     health: 0
     lives: 0
     gems: 0
@@ -854,6 +854,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: LameEmitter
       objectReference: {fileID: 0}
+    - target: {fileID: 7177406083805523056, guid: df70fa22c49510c4fae768ff519c1106, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: -4494859372822343281, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 7177406083805523056, guid: df70fa22c49510c4fae768ff519c1106, type: 3}
+      propertyPath: UVModule.sprites.Array.data[1].sprite
+      value: 
+      objectReference: {fileID: 8305031710987157851, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 7177406083805523056, guid: df70fa22c49510c4fae768ff519c1106, type: 3}
+      propertyPath: UVModule.sprites.Array.data[2].sprite
+      value: 
+      objectReference: {fileID: 8923382585012397945, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 7177406083805523056, guid: df70fa22c49510c4fae768ff519c1106, type: 3}
+      propertyPath: UVModule.sprites.Array.data[3].sprite
+      value: 
+      objectReference: {fileID: 6795161910414017790, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 7177406083805523056, guid: df70fa22c49510c4fae768ff519c1106, type: 3}
+      propertyPath: UVModule.sprites.Array.data[4].sprite
+      value: 
+      objectReference: {fileID: -550596562755234500, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -921,6 +941,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 7544890750923612825, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: UVModule.sprites.Array.data[1].sprite
+      value: 
+      objectReference: {fileID: -8185577291185779659, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: UVModule.sprites.Array.data[2].sprite
+      value: 
+      objectReference: {fileID: 3959261991059404749, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: UVModule.sprites.Array.data[3].sprite
+      value: 
+      objectReference: {fileID: -1190379398613700547, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: UVModule.sprites.Array.data[4].sprite
+      value: 
+      objectReference: {fileID: -3793348308889292902, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: UVModule.sprites.Array.data[5].sprite
+      value: 
+      objectReference: {fileID: 6553613141590663542, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: UVModule.sprites.Array.data[6].sprite
+      value: 
+      objectReference: {fileID: -2922094048499447779, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: UVModule.sprites.Array.data[7].sprite
+      value: 
+      objectReference: {fileID: 5361089028366609541, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: UVModule.sprites.Array.data[8].sprite
+      value: 
+      objectReference: {fileID: 8469182667753274841, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
+    - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
+      propertyPath: UVModule.sprites.Array.data[9].sprite
+      value: 
+      objectReference: {fileID: 7222563705130375724, guid: 0299155ad777c5340abbe1d4a8e7d7dd, type: 3}
     - target: {fileID: 6698871184426562078, guid: 1d5c4c24f18452b439ebd519149adc72, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.atime0
       value: 39707

@@ -16,6 +16,7 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
     
     [Inject] private CameraEffects _cameraEffects;
     [Inject] private PlayerScript _playerScript;
+    [Inject] private SteamSpeedrunTimer _speedrunTimer;
     #endregion
 
     private void Start() {
@@ -29,6 +30,8 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
         DOTween.Kill(transform);
         transform.position = _startPosition;
         
+        _speedrunTimer.StopTimer();
+        
         _playerScript.TakeDamage(drucillaDamageInstance);
         
         _ = _cameraEffects.ShakeCamera(0.6f, 0.4f);
@@ -40,9 +43,9 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
 #if DEMO_BUILD
         _cameraEffects.CircleFadeOut(1, 
             () => _ = SceneCollectionManager.LoadSceneCollectionAsync(endDemoSceneCollection));
-        return;
-#endif
+#else
         _cameraEffects.CircleFadeOut(1, 
             () => _ = SceneCollectionManager.LoadSceneCollectionAsync(nextLevelSceneCollection));
+#endif
     }
 }

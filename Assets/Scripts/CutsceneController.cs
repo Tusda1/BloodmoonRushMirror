@@ -16,15 +16,21 @@ public class CutsceneController : MonoBehaviour {
     [SerializeField] private SceneCollectionSO firstLevelCollection;
     
     public static bool PlayOldCutscene = false;
+    
     [Inject] private CameraEffects _cameraEffects;
     #endregion
 
     private void Start() {
         StartCoroutine(PlayCutscene());
 
-        videoPlayer.loopPointReached += _ => CutsceneEnded();
+        videoPlayer.loopPointReached += CutsceneEnded;
         
         _cameraEffects.ClearAllRenderTextures();
+    }
+
+    private void OnDestroy() {
+        videoPlayer.loopPointReached -= CutsceneEnded;
+        StopAllCoroutines();
     }
 
     private IEnumerator PlayCutscene() {
@@ -38,7 +44,7 @@ public class CutsceneController : MonoBehaviour {
         FMODManager.RaiseEvent(new PlaySoundEvent(soundPath));
     }
 
-    private void CutsceneEnded() {
+    private void CutsceneEnded(VideoPlayer source) {
         _ = SceneCollectionManager.LoadSceneCollectionAsync(firstLevelCollection);
     }
 }
