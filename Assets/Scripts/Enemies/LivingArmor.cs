@@ -106,6 +106,7 @@ public class LivingArmor : ReactiveBase
         // Determine the direction to the next waypoint
         Vector2 direction = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).normalized;
         var angle = Vector2.Angle(Vector2.up, direction);
+        var willWalkOffLedge = false;
         
         // overlappoint to check if the enemy is walking off a ledge
         Collider2D groundHit = Physics2D.OverlapPoint(GetBottomPosition() + direction * 0.5f, LayerMask.GetMask("Ground"));
@@ -115,6 +116,11 @@ public class LivingArmor : ReactiveBase
             if (!nextGroundHit && angle > minimumHorizontalJumpAngle && angle < maxHorizontalJumpAngle)
             {
                 StartCoroutine(JumpCoroutine(CalculateHorizontalJump));
+                return;
+            }
+            if (!nextGroundHit)
+            {
+                willWalkOffLedge = true;
             }
         }
         
@@ -128,6 +134,8 @@ public class LivingArmor : ReactiveBase
         }
         else
         {
+            if (willWalkOffLedge) return;
+            
             // Add a threshold to avoid jittering
             float directionThreshold = 0.1f;
             if (Mathf.Abs(direction.x) > directionThreshold)
@@ -229,6 +237,12 @@ public class LivingArmor : ReactiveBase
 
     private void ExecuteAttack()
     {
+        if (!highAttackCollider || !lowAttackCollider)
+        {
+            Debug.LogError("Missing attack colliders");
+            return;
+        }
+        
         // 50% chance to do high attack or low attack
         if (Random.value > 0.5f)
         {
@@ -244,6 +258,7 @@ public class LivingArmor : ReactiveBase
     {
         highAttackCollider.enabled = true;
         _isAttacking = true;
+        base.Attack();
         _isAttacking = false;
     }
 
@@ -251,6 +266,7 @@ public class LivingArmor : ReactiveBase
     {
         lowAttackCollider.enabled = true;
         _isAttacking = true;
+        base.Attack();
         _isAttacking = false;
     }
 
@@ -258,6 +274,7 @@ public class LivingArmor : ReactiveBase
     {
         overheadAttackCollider.enabled = true;
         _isAttacking = true;
+        base.Attack();
         _isAttacking = false;
     }
 
