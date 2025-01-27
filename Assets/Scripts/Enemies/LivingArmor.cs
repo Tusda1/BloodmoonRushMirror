@@ -15,7 +15,7 @@ public class LivingArmor : ReactiveBase
     [SerializeField] private Collider2D overheadAttackCollider;
     [SerializeField] private float nextWaypointDistance = 0.5f;
     [SerializeField] private float repeatRate = 0.5f;
-    [SerializeField] private float radius = 0.5f; // Define the radius property
+    //[SerializeField] private float radius = 0.5f; // Define the radius property
     [SerializeField] private float attackDistance = 1f;
     [SerializeField] private float minimumVerticalJumpAngle = 15f;
     [SerializeField] private float maxVerticalJumpAngle = 60f;

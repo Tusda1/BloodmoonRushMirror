@@ -35,13 +35,18 @@ public class LaserAttackState : DraculaState
     
     private LaserAttackStage stage;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+    }
+
     private void Start()
     {
         _player = ServiceLocator.Get<PlayerScript>().transform;
         _playerCollider = _player.GetComponent<Collider2D>();
         _trackerPrefab = Resources.Load<GameObject>("Prefabs/LineRenderer");
         _laserPrefab = Resources.Load<GameObject>("Prefabs/BigLaser");
-        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
         
         if (_laserObject == null)
         {
@@ -64,6 +69,14 @@ public class LaserAttackState : DraculaState
         _teleportDestination.y -= 1.5f;
         
         stage = LaserAttackStage.Teleporting;
+    }
+
+    private void OnDisable()
+    {
+        _trackingTimer = 0;
+        waitingTimer = 0;
+        _firingTimer = 0;
+        _hasStartedFiring = false;
     }
 
     private void Update()

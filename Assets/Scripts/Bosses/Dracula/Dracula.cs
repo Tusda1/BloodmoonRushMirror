@@ -6,4 +6,11 @@ public class Dracula : BossBase
     public AnimationClip TeleportEnter => teleportEnter;
     [SerializeField] private AnimationClip teleportExit;
     public AnimationClip TeleportExit => teleportExit;
+
+    protected override void Start()
+    {
+        base.Start();
+        
+        DisableGravity();
+    }
 }

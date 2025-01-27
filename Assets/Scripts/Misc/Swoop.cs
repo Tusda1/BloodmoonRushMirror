@@ -45,7 +45,7 @@ public class Swoop
         {
             t = 1 - Mathf.Pow(2 * (1 - t), easePower) / 2f; // Ease-out
         }
-
+        
         // Calculate the position using the eased t
         Vector2 position = CalculateBezierPoint(t, swoopOrigin, swoopTarget, swoopArcBottom);
         

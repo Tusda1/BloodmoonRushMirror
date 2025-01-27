@@ -26,8 +26,9 @@ public class DanceDash : DraculaState
     
     private DanceDashStage _danceDashStage;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
 

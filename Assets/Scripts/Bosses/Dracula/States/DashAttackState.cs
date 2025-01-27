@@ -25,8 +25,9 @@ public class DashAttackState : DraculaState
     
     private DashState _dashState;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
 

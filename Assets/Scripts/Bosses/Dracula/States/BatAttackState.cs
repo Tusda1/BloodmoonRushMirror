@@ -27,12 +27,17 @@ public class BatAttackState : DraculaState
     
     private AttackPhase _attackPhase;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+        _collider = GetComponent<Collider2D>();
+    }
+    
     private void Start()
     {
-        _collider = GetComponent<Collider2D>();
         _player = ServiceLocator.Get<PlayerScript>().transform;
         _batPooler = TryGetCommunityPooler.TryGetPooler(batPrefab);
-        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
 
     private void OnEnable()
