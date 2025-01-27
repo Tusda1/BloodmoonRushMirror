@@ -103,6 +103,7 @@ namespace Player {
         
         private SaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
+        private LevelDataManager levelDataManager => LevelDataManager.Instance;
         #endregion
 
         #region ***---DataBindingVariables---***
@@ -115,7 +116,7 @@ namespace Player {
                     PlayerData.ID = ID;
                     PlayerData.health = healthComponent.Health;
                     PlayerData.lives = playerLives;
-                    PlayerData.gems = gems;
+                    PlayerData.gems = gems; 
                 }
                 
                 return PlayerData;
@@ -136,11 +137,13 @@ namespace Player {
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
-            
-            Bind();
         }
 
         private void Start() {
+            levelDataManager.LevelStartPoint = transform.position;
+            
+            Bind();
+            
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
             healthComponent.InvulnerabilityTimer.OnBegin +=

@@ -112,13 +112,6 @@ namespace SaveLoadSystem {
         }
 
 #if UNITY_EDITOR
-        private void OnValidate() {
-            if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
-                ID = Guid.NewGuid().ToString();
-                Debug.Log($"Setting new guid for {nameof(LevelDataManager)}");
-            }
-        }
-        
         [ContextMenu(nameof(SavePlayerLevelStartPoint))]
         public void SavePlayerLevelStartPoint() {
             SaveSystemData.LevelStartPoint = PlayerScriptCache.transform.position;
