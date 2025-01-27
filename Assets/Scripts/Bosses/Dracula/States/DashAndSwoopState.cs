@@ -33,8 +33,9 @@ public class DashAndSwoopState : DraculaState
     private Stage _stage;
     private Stage _currentStage;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         _swoop.SetOnSwoopEnd(SwoopEnd);
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }

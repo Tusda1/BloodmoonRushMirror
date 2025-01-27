@@ -12,20 +12,25 @@ public class DraculaBrain : MonoBehaviour
     [SerializeField] private int attackQueueSizeIncreaseFactor = 1;
     
     private BossState[] _states;
-    private List<BossState> _attackQueue = new List<BossState>();
+    private List<BossState> _attackQueue = new();
     private BossState _currentState;
     private int _currentPhase = 1;
     private bool _lastInQueue;
     private bool _isFighting;
+    private PingPongState _pingPongState;
     
     private void Awake()
     {
-        _states = GetComponentsInChildren<DraculaState>();
+        _states = GetComponentsInChildren<BossState>();
 
         foreach (var state in _states)
         {
             state.OnStateEnd += CurrentStateEnded;
         }
+        
+        //remove PingPongState from the list of states to prevent it from being added to the attack queue and set it as a separate variable
+        _pingPongState = _states.First(state => state.GetType() == typeof(PingPongState)) as PingPongState;
+        _states = _states.Where(state => state.GetType() != typeof(PingPongState)).ToArray();
     }
 
     private void Start()
@@ -76,7 +81,7 @@ public class DraculaBrain : MonoBehaviour
         }
         
         // Add PingPongState to the end of the queue
-        _attackQueue.Add(GetStatesByPhase(_currentPhase).First(state => state.GetType() == typeof(PingPongState)));
+        _attackQueue.Add(_pingPongState);
     }
     
     private void MoveToNextState()

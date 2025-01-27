@@ -19,8 +19,9 @@ public class BoomerangState : DraculaState
     
     private BoomerangStage _boomerangStage;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
         _boomerang = Instantiate(boomerangPrefab, transform.position, Quaternion.identity).GetComponent<Boomerang>();
         _boomerang.gameObject.SetActive(false);

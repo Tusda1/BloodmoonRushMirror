@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 public class SwoopAttackState : DraculaState
 {
     [SerializeField] private float shootCooldown = 0.5f;
-    [SerializeField] private float shootDuration = 1f;
+    [SerializeField] private int shootAmount = 3;
     [SerializeField] private int swoopAmount = 3;
     [SerializeField] private GameObject projectilePrefab;
     
@@ -15,10 +15,10 @@ public class SwoopAttackState : DraculaState
     private Vector2 _swoopArcBottom;
     private int swoopCount;
     private float _shootTimer;
-    private float _timeSinceShoot;
+    private float _shotCounter;
     private Vector2 _temporaryPosition;
     
-    private Swoop swoop = new();
+    [SerializeField] private Swoop swoop = new();
     private Transform _player;
     private Pooler _projectilePooler;
     private CornerFinder _cornerFinder;
@@ -27,24 +27,26 @@ public class SwoopAttackState : DraculaState
     {
         Teleporting,
         Swooping,
-        Shooting,
-        Finished
+        Shooting
     }
     
     private SwoopState _swoopState;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+        swoop.SetOnSwoopEnd(SwoopEnd);
+    }
+
     private void Start()
     {
-        swoop.SetOnSwoopEnd(SwoopEnd);
         _player = ServiceLocator.Get<PlayerScript>().transform;
         _projectilePooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab);
-        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
 
     private void OnEnable()
     {
-        swoopCount = 0;
-        
         var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
         leftCorner.x += 1f;
         leftCorner.y -= 2f;
@@ -74,6 +76,12 @@ public class SwoopAttackState : DraculaState
         _swoopState = SwoopState.Teleporting;
     }
 
+    private void OnDisable()
+    {
+        _shotCounter = 0;
+        swoopCount = 0;
+    }
+
     private void Update()
     {
         switch (_swoopState)
@@ -82,13 +90,11 @@ public class SwoopAttackState : DraculaState
                 if (!teleport.IsTeleporting) teleport.TeleportToLocation(_swoopOrigin);
                 break;
             case SwoopState.Swooping:
+                print(_swoopOrigin);
                 transform.position = swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom);
                 break;
             case SwoopState.Shooting:
                 Shoot();
-                break;
-            case SwoopState.Finished:
-                EndState();
                 break;
         }
     }
@@ -102,14 +108,13 @@ public class SwoopAttackState : DraculaState
     {
         _swoopState = SwoopState.Shooting;
         swoopCount++;
-        _timeSinceShoot = Time.time;
         (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
     }
     
     private void Shoot()
     {
         // If the shoot duration has passed, switch to the next swoop
-        if (Time.time - _timeSinceShoot > shootDuration)
+        if (_shotCounter >= shootAmount)
         {
             if (swoopCount >= swoopAmount)
             {
@@ -120,10 +125,12 @@ public class SwoopAttackState : DraculaState
                 _swoopState = SwoopState.Swooping;
             }
         }
+        
         // Shoot a projectile at the player
         else if (Time.time - _shootTimer > shootCooldown)
         {
             _shootTimer = Time.time;
+            _shotCounter++;
             
             // Find a random point in a radius around the player
             Vector2 randomPoint = (Vector2)_player.position + UnityEngine.Random.insideUnitCircle * 2;

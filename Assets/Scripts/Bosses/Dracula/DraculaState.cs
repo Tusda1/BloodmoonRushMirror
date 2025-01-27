@@ -8,7 +8,7 @@ public class DraculaState : BossState
     
     protected Teleport teleport;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         teleport = new Teleport(transform, Boss.AnimancerComponent, DraculaReference.TeleportEnter, DraculaReference.TeleportExit, OnTeleportEnd);
     }

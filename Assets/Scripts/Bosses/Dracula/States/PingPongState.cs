@@ -25,12 +25,17 @@ public class PingPongState : DraculaState
     
     private PingPong _pingPongState;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+    }
+
     private void Start()
     {
         //Initialize variables
         _pingPongCircle = Resources.Load<GameObject>("Prefabs/PingPongCircle");
         _player = ServiceLocator.Get<PlayerScript>().gameObject;
-        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
 
     private void OnEnable()

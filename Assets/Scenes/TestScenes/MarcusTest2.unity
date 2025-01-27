@@ -459,7 +459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654498}
-  statePhase: 1
+  statePhase: 0
 --- !u!114 &172654491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,7 +476,7 @@ MonoBehaviour:
   statePhase: 1
   attackLength: 1
   batSpawnRate: 0.1
-  batPrefab: {fileID: 0}
+  batPrefab: {fileID: 6075747610459885566, guid: 4963866cb476cc542853cdc2e00b1198, type: 3}
 --- !u!114 &172654493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,10 +491,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boss: {fileID: 172654498}
   statePhase: 1
-  shootCooldown: 0.5
+  shootCooldown: 0.2
   shootDuration: 1
   swoopAmount: 3
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 6075747610459885566, guid: 4963866cb476cc542853cdc2e00b1198, type: 3}
+  swoop:
+    easePower: 2
+    swoopDuration: 2
 --- !u!114 &172654494
 MonoBehaviour:
   m_ObjectHideFlags: 0
