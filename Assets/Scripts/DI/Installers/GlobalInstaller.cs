@@ -1,8 +1,9 @@
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
-public class GlobalInstaller : MonoInstaller {
-    public override void InstallBindings() {
-        Container.Bind<IPauseManager>().FromInstance(new PauseManager(1)).AsSingle();
-        Container.Bind<IAchievementManager>().FromInstance(new SteamAchievementManager()).AsSingle();
+public class GlobalInstaller : LifetimeScope {
+    protected override void Configure(IContainerBuilder builder) {
+        builder.RegisterInstance<IPauseManager>(new PauseManager(1));
+        builder.RegisterInstance<IAchievementManager>(new SteamAchievementManager());
     }
 }

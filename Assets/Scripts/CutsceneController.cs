@@ -4,7 +4,7 @@ using FMODScripts;
 using SceneCollections;
 using UnityEngine;
 using UnityEngine.Video;
-using Zenject;
+using VContainer;
 
 public class CutsceneController : MonoBehaviour {
     #region ---Fields---

@@ -12,7 +12,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities.DataBinding;
-using Zenject;
+using VContainer;
 
 namespace Player {
     public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {

@@ -1,8 +1,6 @@
 using Player;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Zenject;
+using VContainer;
 
 public class CrusherScript : GravityObject {
     #region ---Fields---

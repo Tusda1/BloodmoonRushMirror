@@ -2,7 +2,7 @@ using Attributes;
 using SceneCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Zenject;
+using VContainer;
 
 public class EndDemoUI : MonoBehaviour {
     #region ---Fields---

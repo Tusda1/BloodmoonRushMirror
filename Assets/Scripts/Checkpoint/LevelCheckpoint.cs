@@ -6,9 +6,9 @@ using SaveLoadSystem.Data;
 using Triggers;
 using UnityEngine;
 using Utilities.DataBinding;
-using Zenject;
 using Action = System.Action;
 using System;
+using VContainer;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

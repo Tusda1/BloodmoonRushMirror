@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4230143493873993285}
-  - component: {fileID: 4081601674087489889}
+  - component: {fileID: 6761356754440133415}
   m_Layer: 0
   m_Name: ProjectContext
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4081601674087489889
+--- !u!114 &6761356754440133415
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,27 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5432408806812865585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e6589720da476459dc6dd71624b071, type: 3}
+  m_Script: {fileID: 11500000, guid: 76556db21d00dd24cb5012c660eac84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scriptableObjectInstallers:
-  - {fileID: 11400000, guid: 2c4fb7625e71ff44e8cdc78a2b414c06, type: 2}
-  - {fileID: 11400000, guid: 5beb6bb59f875344ebd3c67c920e9338, type: 2}
-  _monoInstallers: []
-  _installerPrefabs:
-  - {fileID: 2753708285641636097, guid: 55066e62c4e95fd42bf82ac3f4b95fb0, type: 3}
-  _findSiblingMonoInstallers: 0
-  _parentNewObjectsUnderContext: 0
-  _editorReflectionBakingCoverageMode: 0
-  _buildsReflectionBakingCoverageMode: 0
-  _settings:
-    _ensureDeterministicDestructionOrderOnApplicationQuit: 0
-    _displayWarningWhenResolvingDuringInstall: 1
-    _validationRootResolveMethod: 0
-    _validationErrorResponse: 0
-    _constructorChoiceStrategy: 0
-    _signalSettings:
-      _defaultSyncMode: 0
-      _missingHandlerDefaultResponse: 2
-      _requireStrictUnsubscribe: 0
-      _defaultAsyncTickPriority: 1
+  parentReference:
+    TypeName: 
+  autoRun: 1
+  autoInjectGameObjects: []

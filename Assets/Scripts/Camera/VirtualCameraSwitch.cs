@@ -4,7 +4,7 @@ using Player;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
-using Zenject;
+using VContainer;
 
 public class VirtualCameraSwitch : MonoBehaviour {
     #region ---Fields---

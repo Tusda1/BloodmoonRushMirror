@@ -1,18 +1,15 @@
-﻿using FMODScripts;
+﻿using Attributes;
+using FMODScripts;
 using UnityEngine;
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
-public class FMODManagerInstaller : MonoInstaller {
-    [SerializeField] private DebugLoggerSO fmodManagerDebugLogger;
-    
-    public override void InstallBindings() {
-        if (fmodManagerDebugLogger == null) {
-            fmodManagerDebugLogger = ScrubUtils.GetAllScrubsInResourceFolder<DebugLoggerSO>("DebugLoggers")
-                .GetByName("FMODManager");
-            
-            Debug.Log(nameof(fmodManagerDebugLogger) + " found manually");
-        }
-        
-        Container.Bind<IAudioManager>().FromInstance(new FMODManagerDI(fmodManagerDebugLogger)).AsSingle().NonLazy();
+public class FMODManagerInstaller : LifetimeScope {
+    [SerializeField, Required] private DebugLoggerSO fmodManagerDebugLogger;
+
+    protected override void Configure(IContainerBuilder builder) {
+        builder.Register<FMODManagerDI>(Lifetime.Transient)
+            .As<IAudioManager>()
+            .WithParameter(fmodManagerDebugLogger);
     }
 }
