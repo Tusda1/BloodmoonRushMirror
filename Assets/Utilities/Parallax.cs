@@ -22,9 +22,11 @@ public class Parallax : MonoBehaviour {
     private IEnumerator Start() {
         _mainCameraTransform = _mainCamera.transform;
         
-        yield return null;
+        // yield return null;
         
         if (startEnabled) Enable();
+        
+        yield return null;
     }
 
     public void Enable() {
