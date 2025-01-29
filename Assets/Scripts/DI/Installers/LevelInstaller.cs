@@ -19,7 +19,7 @@ public class LevelInstaller : LifetimeScope {
         builder.RegisterInstance(cinemachineBrain);
         builder.RegisterInstance(levelDataManager);
 
-        builder.RegisterInstance<ISpeedrunTimer>(new SteamSpeedrunTimer(leaderboardID));
+        builder.RegisterInstance(new SteamSpeedrunTimer(leaderboardID)).As<ISpeedrunTimer>();
     }
 
 #if UNITY_EDITOR
