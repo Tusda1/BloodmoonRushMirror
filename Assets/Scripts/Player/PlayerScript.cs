@@ -137,12 +137,13 @@ namespace Player {
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
-        }
-
-        private void Start() {
+            
             levelDataManager.LevelStartPoint = transform.position;
             
             Bind();
+        }
+
+        private void Start() {
             
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
