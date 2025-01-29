@@ -38,6 +38,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected int currentHealth = 2;
     protected float takeDamageTimer;
     protected LayerMask enemyAndGroundLayerMask;
+    protected Collider2D enemyCollider;
     
     protected EnemyAnimationBase enemyAnimationBase;
     protected PlayerScript player;
@@ -45,7 +46,6 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private GameObject _rubyPrefab;
     private Material _whiteMaterial;
     private Material _defaultMaterial;
-    private Collider2D _boxCollider;
     private Pooler _rubyPooler;
     #endregion
     
@@ -85,7 +85,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         enemyAndGroundLayerMask = LayerMask.GetMask("Enemy", "Ground");
 
         player = ServiceLocator.Get<PlayerScript>();
-        _boxCollider = GetComponent<Collider2D>();
+        enemyCollider = GetComponent<Collider2D>();
         _rubyPrefab = Resources.Load<GameObject>("Prefabs/Ruby");
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
@@ -297,7 +297,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     protected Vector2 GetBottomPosition() {
-        return new Vector2(_boxCollider.bounds.center.x, _boxCollider.bounds.min.y + 0.05f);
+        return new Vector2(enemyCollider.bounds.center.x, enemyCollider.bounds.min.y + 0.05f);
     }
     #endregion
 

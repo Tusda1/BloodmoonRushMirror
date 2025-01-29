@@ -123,6 +123,7 @@ public class SwoopAttackState : DraculaState
             else
             {
                 _swoopState = SwoopState.Swooping;
+                _shotCounter = 0;
             }
         }
         

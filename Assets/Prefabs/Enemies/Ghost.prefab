@@ -10,13 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1842942010747067516}
   - component: {fileID: 2160370680381285407}
-  - component: {fileID: 672505332107517859}
   - component: {fileID: 1225311169531353959}
   - component: {fileID: 7424737010724291516}
   - component: {fileID: 3639957345326562303}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ghost
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,34 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &672505332107517859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9101476482127223980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
-  drawGizmos: 1
-  detailedGizmos: 0
-  startEndModifier:
-    addPoints: 0
-    exactStartPoint: 3
-    exactEndPoint: 3
-    useRaycasting: 0
-    mask:
-      serializedVersion: 2
-      m_Bits: 4294967295
-    useGraphRaycasting: 0
-  traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  graphMask:
-    value: 2
 --- !u!114 &1225311169531353959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +131,7 @@ MonoBehaviour:
   bloodSplatter: {fileID: 0}
   isImmortal: 0
   canTakeKnockback: 1
-  <ID>k__BackingField: 
+  <ID>k__BackingField: 42f16f19-4291-4335-a6f1-d1ff384bc520
   <SaveSystemData>k__BackingField:
     name: 
     <ID>k__BackingField: 
@@ -174,6 +145,7 @@ MonoBehaviour:
   minWithdrawDistance: 3
   smoothDampScript:
     smoothTime: 0.2
+  sucked: 0
 --- !u!50 &7424737010724291516
 Rigidbody2D:
   serializedVersion: 5

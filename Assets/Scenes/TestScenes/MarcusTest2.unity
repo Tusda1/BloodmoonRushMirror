@@ -275,6 +275,8 @@ GameObject:
   - component: {fileID: 172654491}
   - component: {fileID: 172654493}
   - component: {fileID: 172654496}
+  - component: {fileID: 172654501}
+  - component: {fileID: 172654499}
   m_Layer: 0
   m_Name: Dracula
   m_TagString: Untagged
@@ -446,6 +448,7 @@ MonoBehaviour:
   boss: {fileID: 172654498}
   baseAttackQueueSize: 3
   attackQueueSizeIncreaseFactor: 1
+  _currentPhase: 2
 --- !u!114 &172654490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,7 +495,7 @@ MonoBehaviour:
   boss: {fileID: 172654498}
   statePhase: 1
   shootCooldown: 0.2
-  shootDuration: 1
+  shootAmount: 3
   swoopAmount: 3
   projectilePrefab: {fileID: 6075747610459885566, guid: 4963866cb476cc542853cdc2e00b1198, type: 3}
   swoop:
@@ -600,6 +603,43 @@ MonoBehaviour:
   bossCollider: {fileID: 0}
   teleportEnter: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
   teleportExit: {fileID: 1232545601317805009, guid: 4321feb11e10cdf42b0a0a4c0c17b65b, type: 3}
+--- !u!114 &172654499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172654479}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 676e319f5c66e0449b0698950dc6ca76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 172654498}
+  statePhase: 2
+  loopAmount: 5
+  dashSpeed: 10
+  dashProjectileCooldown: 1
+  dashProjectilesPerVolley: 3
+  swoopProjectileCooldown: 1
+  swoopProjectilesPerVolley: 3
+  swoop:
+    easePower: 2
+    swoopDuration: 1
+--- !u!114 &172654501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172654479}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b679369d06d00a45805c06e3665cb48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 172654498}
+  statePhase: 2
 --- !u!1 &252259201
 GameObject:
   m_ObjectHideFlags: 0

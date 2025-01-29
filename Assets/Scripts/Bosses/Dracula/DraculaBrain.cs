@@ -14,7 +14,7 @@ public class DraculaBrain : MonoBehaviour
     private BossState[] _states;
     private List<BossState> _attackQueue = new();
     private BossState _currentState;
-    private int _currentPhase = 1;
+    [SerializeField] private int _currentPhase = 1;
     private bool _lastInQueue;
     private bool _isFighting;
     private PingPongState _pingPongState;

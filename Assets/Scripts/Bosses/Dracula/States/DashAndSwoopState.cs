@@ -1,26 +1,40 @@
 using System;
+using System.Collections;
+using Player;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class DashAndSwoopState : DraculaState
 {
-    private Vector2 bottomRight;
-    private Vector2 bottomLeft;
-    private Vector2 topRight;
-    private Vector2 topLeft;
-    private Vector2 bottomMiddle;
-    private Vector2 teleportLocation;
+    private Vector2 _bottomRight;
+    private Vector2 _bottomLeft;
+    private Vector2 _topRight;
+    private Vector2 _topLeft;
+    private Vector2 _bottomMiddle;
+    private Vector2 _teleportLocation;
+    
+    [SerializeField] private int loopAmount = 5;
+    private int _loopCount;
     
     [SerializeField] private float dashSpeed = 10f;
+    [SerializeField] private float dashProjectileCooldown = 1f;
+    [SerializeField] private int dashProjectilesPerVolley = 3;
     private Vector2 _dashTarget;
     private bool _dashStarted;
     
+    [SerializeField] private float swoopProjectileCooldown = 1f;
+    [SerializeField] private int swoopProjectilesPerVolley = 3;
     private bool _swoopStarted;
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
     
-    private readonly Swoop _swoop = new();
+    private float _shootTimer;
+    
+    [SerializeField] private Swoop swoop = new();
+    private PlayerScript _player;
+    private GameObject _homingProjectile;
     private CornerFinder _cornerFinder;
+    private Pooler _projectilePooler;
     
     private enum Stage
     {
@@ -36,28 +50,40 @@ public class DashAndSwoopState : DraculaState
     protected override void Awake()
     {
         base.Awake();
-        _swoop.SetOnSwoopEnd(SwoopEnd);
+        swoop.SetOnSwoopEnd(SwoopEnd);
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+        _homingProjectile = Resources.Load<GameObject>("Prefabs/HomingProjectile");
     }
-    
+
+    private void Start()
+    {
+        _player = ServiceLocator.Get<PlayerScript>();
+        _projectilePooler = TryGetCommunityPooler.TryGetPooler(_homingProjectile);
+    }
+
     private void OnEnable()
     {
-        topLeft = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
-        topLeft.x += 1f;
-        topLeft.y -= 2f;
-        topRight = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
-        topRight.x -= 1f;
-        topRight.y -= 2f;
-        bottomRight = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
-        bottomRight.x -= 1f;
-        bottomRight.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
-        bottomLeft = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
-        bottomLeft.x += 1f;
-        bottomLeft.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
+        _topLeft = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
+        _topLeft.x += 1f;
+        _topLeft.y -= 2f;
+        _topRight = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
+        _topRight.x -= 1f;
+        _topRight.y -= 2f;
+        _bottomRight = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
+        _bottomRight.x -= 1f;
+        _bottomRight.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
+        _bottomLeft = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
+        _bottomLeft.x += 1f;
+        _bottomLeft.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         
-        bottomMiddle = (bottomRight + bottomLeft) / 2;
+        _bottomMiddle = (_bottomRight + _bottomLeft) / 2;
         
         _currentStage = Stage.Brain;
+    }
+
+    private void OnDisable()
+    {
+        _shootTimer = 0;
     }
 
     private void Update()
@@ -68,7 +94,7 @@ public class DashAndSwoopState : DraculaState
                 Calculate();
                 break;
             case Stage.Teleporting:
-                if(!teleport.IsTeleporting) teleport.TeleportToLocation(teleportLocation);
+                if(!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportLocation);
                 break;
             case Stage.Dashing:
                 Dash();
@@ -86,18 +112,30 @@ public class DashAndSwoopState : DraculaState
 
     private void Calculate()
     {
+        
+        if (_loopCount < loopAmount)
+        {
+            _loopCount++;
+        }
+        else
+        {
+            _loopCount = 0;
+            EndState();
+            return;
+        }
+        
         // 50% chance to do a dash or a swoop
         if (UnityEngine.Random.value > 0.5f)
         {
             _stage = Stage.Dashing;
             // 50% chance to teleport left or right
-            teleportLocation = UnityEngine.Random.value > 0.5f ? bottomRight : bottomLeft;
+            _teleportLocation = UnityEngine.Random.value > 0.5f ? _bottomRight : _bottomLeft;
         }
         else
         {
             _stage = Stage.Swooping;
             // 50% chance to teleport left or right
-            teleportLocation = UnityEngine.Random.value > 0.5f ? topRight : topLeft;
+            _teleportLocation = UnityEngine.Random.value > 0.5f ? _topRight : _topLeft;
         }
         
         _currentStage = Stage.Teleporting;
@@ -109,16 +147,29 @@ public class DashAndSwoopState : DraculaState
         {
             _dashStarted = true;
             Boss.EnableGravity();
-            _dashTarget = teleportLocation == bottomRight ? bottomLeft : bottomRight;
+            _dashTarget = _teleportLocation == _bottomRight ? _bottomLeft : _bottomRight;
         }
         
-        if (Boss.bossGrounded) return;
+        if (!Boss.bossGrounded) return;
         
         transform.position = Vector2.MoveTowards(transform.position, _dashTarget, dashSpeed * Time.deltaTime);
         if (Vector2.Distance(transform.position, _dashTarget) < 0.1f)
         {
             _currentStage = Stage.Brain;
             Boss.DisableGravity();
+            _dashStarted = false;
+        }
+        else
+        {
+            if (_shootTimer > 0)
+            {
+                _shootTimer -= Time.deltaTime;
+            }
+            else
+            {
+                StartCoroutine(Shoot(dashProjectilesPerVolley, Vector2.up));
+                _shootTimer = dashProjectileCooldown;
+            }
         }
     }
     
@@ -126,25 +177,55 @@ public class DashAndSwoopState : DraculaState
     {
         if (!_swoopStarted)
         {
-            if (teleportLocation == topRight)
+            if (_teleportLocation == _topRight)
             {
-                _swoopOrigin = topRight;
-                _swoopTarget = topLeft;
+                _swoopOrigin = _topRight;
+                _swoopTarget = _topLeft;
             }
             else
             {
-                _swoopOrigin = topLeft;
-                _swoopTarget = topRight;
+                _swoopOrigin = _topLeft;
+                _swoopTarget = _topRight;
             }
             
             _swoopStarted = true;
         }
 
-        _swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, bottomMiddle);
+        var newPos = swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _bottomMiddle);
+
+        if (_shootTimer > 0)
+        {
+            _shootTimer -= Time.deltaTime;
+        }
+        else
+        {
+            // Find the normal on the vector between the current position and the new position
+            var directionVector = (newPos - (Vector2) transform.position).normalized;
+            var up = new Vector2(directionVector.y, -directionVector.x);
+            StartCoroutine(Shoot(swoopProjectilesPerVolley, up));
+            _shootTimer = swoopProjectileCooldown;
+        }
+        
+        transform.position = newPos;
     }
     
     private void SwoopEnd()
     {
         _currentStage = Stage.Brain;
+        _swoopStarted = false;
+    }
+
+    private IEnumerator Shoot(int projectilesInVolley, Vector2 initialDirection)
+    {
+        for (int i = 0; i < projectilesInVolley; i++)
+        {
+            var projectile = _projectilePooler.GetPooledObject();
+            projectile.transform.position = transform.position;
+            var script = projectile.GetComponent<HomingProjectile>();
+            script.target = _player.gameObject;
+            script.initialDirection = initialDirection;
+            projectile.SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }

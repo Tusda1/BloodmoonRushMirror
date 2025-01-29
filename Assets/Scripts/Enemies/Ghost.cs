@@ -1,13 +1,18 @@
+using System;
 using UnityEngine;
 using Pathfinding;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(Seeker))]
 public class Ghost : ReactiveBase
 {
     [SerializeField] private float attackDistance;
     [SerializeField] private float maxWithdrawDistance = 5f;
     [SerializeField] private float minWithdrawDistance = 3f;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
+    
+    [HideInInspector] public bool sucked;
+    [HideInInspector] public Vector2 suckVelocity;
     
     private bool _withdrawing;
     private Vector2 _withdrawPosition;
@@ -17,9 +22,29 @@ public class Ghost : ReactiveBase
         base.Start();
         GravityModifier = 0;
     }
-    
+
+    protected override void ComputeVelocity()
+    {
+        base.ComputeVelocity();
+
+        if (sucked)
+        {
+            EscapeSuck();
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (sucked)
+        {
+            sucked = false;
+        }
+    }
+
     protected override void Action()
     {
+        if (sucked) return;
+        
         if (!_withdrawing)
         {
             AttackPlayer();
@@ -28,7 +53,6 @@ public class Ghost : ReactiveBase
         {
             Withdraw();
         }
-        
     }
     
     private void AttackPlayer()
@@ -68,5 +92,15 @@ public class Ghost : ReactiveBase
             _withdrawing = false;
             _withdrawPosition = Vector2.zero;
         }
+    }
+    
+    private void EscapeSuck()
+    {
+       // create an escape vector pointing away from the altar
+       var direction = (-suckVelocity).normalized * moveSpeed;
+       var tempVelocity = Vector2.zero;
+       smoothDampScript.SmoothDampVector2(direction, ref tempVelocity);
+       targetVelocity += tempVelocity;
+       targetVelocity += suckVelocity;
     }
 }

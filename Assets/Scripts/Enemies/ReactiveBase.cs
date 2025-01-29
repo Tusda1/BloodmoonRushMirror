@@ -31,7 +31,6 @@ public class ReactiveBase : EnemyBase
                 break;
 
             case EnemyState.Action:
-                
                 Action();
                 break;
         }
