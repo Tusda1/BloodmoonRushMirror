@@ -21,7 +21,9 @@ public class SteamSpeedrunTimer : ISpeedrunTimer, ITickable {
     public SteamSpeedrunTimer(string leaderboardID) {
         _leaderboardID = leaderboardID;
 
-        StartTimer();
+        if (!string.IsNullOrWhiteSpace(leaderboardID)) {
+            StartTimer();
+        }
     }
 
     public void Tick() {
