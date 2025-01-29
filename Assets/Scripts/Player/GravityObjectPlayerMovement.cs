@@ -351,6 +351,18 @@ namespace Player {
 
         public void OnMove(InputValue inputValue) {
             inputVector = inputValue.Get<Vector2>();
+
+            inputVector.x = inputVector.x switch {
+                > 0.7f or < -0.7f => Mathf.Sign(inputVector.x),
+                < -0.3f or > 0.3f => Mathf.Sign(inputVector.x) * 0.4f,
+                _ => 0
+            };
+
+            inputVector.y = inputVector.y switch {
+                > 0.8f or < -0.8f => Mathf.Sign(inputVector.y),
+                < -0.6f or > 0.6f => Mathf.Sign(inputVector.y) * 0.4f,
+                _ => 0
+            };
         }
 
         public void OnDash(InputValue inputValue) {
