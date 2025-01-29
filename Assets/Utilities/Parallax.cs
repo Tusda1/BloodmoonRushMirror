@@ -81,7 +81,7 @@ public class Parallax : MonoBehaviour {
         }
     }
 
-    private void LateUpdate() {
+    private void Update() {
         if (!enabled) return;
         
         _cameraDeltaMovement = _mainCameraTransform.position - _previousCameraPosition;
