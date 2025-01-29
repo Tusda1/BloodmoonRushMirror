@@ -69,9 +69,3 @@ public class SteamSpeedrunTimer : MonoBehaviour, ISpeedrunTimer {
         return $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}.{timeSpan.Milliseconds:D3}";
     }
 }
-
-public interface ISpeedrunTimer {
-    void StartTimer();
-    void StopTimer();
-    void CancelTimer();
-}

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using SaveLoadSystem.Data;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Utilities.DataBinding;
 using VContainer;
 using Debug = UnityEngine.Debug;
@@ -18,7 +19,9 @@ namespace SaveLoadSystem {
         #endregion
         
         [Inject]
-        public void Init(FileDataService<SaveGameData> dataService) {
+        public void Construct(FileDataService<SaveGameData> dataService, DebugLoggerProvider debugLoggers) {
+            debugLogger = debugLoggers.GetDebugLogger("FMODManager");
+            
             DataService = dataService;
         }
         

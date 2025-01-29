@@ -2,6 +2,7 @@
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
+using VContainer;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace FMODScripts {
@@ -32,8 +33,9 @@ namespace FMODScripts {
         #endregion
 
         #region ---Initialization---
-        public FMODManagerDI(DebugLoggerSO debugLogger) {
-            _debugLogger = debugLogger;
+        [Inject]
+        public FMODManagerDI(DebugLoggerProvider debugLoggers) {
+            _debugLogger = debugLoggers.GetDebugLogger("FMODManager");
             _ = Initialize();
         }
 
