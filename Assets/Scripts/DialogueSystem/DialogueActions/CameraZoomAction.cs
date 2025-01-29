@@ -8,12 +8,13 @@ using Unity.Properties;
 [Serializable, GeneratePropertyBag]
 [NodeDescription(
     name: "CameraZoom", 
-    story: "Zoom Camera To [size] Over [duration] Seconds", 
+    story: "Zoom Camera To [size] Over [duration] Seconds | TimeSlow: [slowTime]", 
     category: "Action",
     id: "5a9f0241d0a338000cc285b297afde42")]
 public partial class CameraZoomAction : Action {
     [SerializeReference] public BlackboardVariable<float> size;
     [SerializeReference] public BlackboardVariable<float> duration;
+    [SerializeReference] public BlackboardVariable<bool> slowTime;
 
     private VirtualCameraSwitch CameraSwitch => VirtualCameraSwitch.ActiveVirtualCameraSwitch;
     private CinemachineCamera Camera => CameraSwitch.cinemachineCamera;
@@ -22,8 +23,11 @@ public partial class CameraZoomAction : Action {
 
     protected override Status OnStart() {
         _zoomTask = Zoom(duration, size);
+
+        if (slowTime) {
+            _ = CameraSwitch._cameraEffects.TimeSlow(duration, CameraSwitch.timeSlowCurve);
+        }
         
-        _ = CameraSwitch._cameraEffects.TimeSlow(duration, CameraSwitch.timeSlowCurve);
         return Status.Running;
     }
 

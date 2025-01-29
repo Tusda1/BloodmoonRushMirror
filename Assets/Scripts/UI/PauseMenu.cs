@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-using Zenject;
+using VContainer;
 using Cursor = UnityEngine.Cursor;
 
 namespace UI {

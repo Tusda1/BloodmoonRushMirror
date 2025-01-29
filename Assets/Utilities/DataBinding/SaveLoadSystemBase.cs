@@ -2,9 +2,7 @@
 using System.IO;
 using System.Linq;
 using ExtensionMethods;
-using SaveLoadSystem.Data;
 using UnityEngine;
-using Zenject;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -20,8 +18,7 @@ namespace Utilities.DataBinding {
         [Header("New Save Default Values")] [SerializeField]
         public GameDataScrubGeneric<TGameData> newGameData;
         
-        [Inject(Id = "SaveLoadSystem")]
-        protected DebugLoggerSO DebugLogger;
+        [SerializeField] protected DebugLoggerSO debugLogger;
 
         public readonly List<IDataBind> GameDataBinds = new();
 
@@ -41,7 +38,7 @@ namespace Utilities.DataBinding {
 
             gameData.Name += saveNumber;
 
-            DebugLogger?.Log($"Creating new game data with name '{gameData.Name}' with values from '{newGameData.gameData.Name}'");
+            debugLogger?.Log($"Creating new game data with name '{gameData.Name}' with values from '{newGameData.gameData.Name}'");
         }
         
         public virtual void NewGame(SaveSlotDataSO saveSlotData) {
@@ -49,7 +46,7 @@ namespace Utilities.DataBinding {
 
             gameData.Name = saveSlotData.saveSlotName;
 
-            DebugLogger?.Log($"Creating new game data with name '{gameData.Name}' with values from '{newGameData.gameData.Name}'");
+            debugLogger?.Log($"Creating new game data with name '{gameData.Name}' with values from '{newGameData.gameData.Name}'");
         }
 
         /// <summary>
@@ -59,7 +56,7 @@ namespace Utilities.DataBinding {
             foreach (var dataBind in GameDataBinds) {
                 dataBind.SaveBindData();
 
-                DebugLogger?.Log("Updating DataBind");
+                debugLogger?.Log("Updating DataBind");
             }
         }
 
@@ -67,7 +64,7 @@ namespace Utilities.DataBinding {
         /// Base "SaveGame" method calls "UpdateAllDataBinds"  and saves the "gameData" using the "DataService".
         /// </summary>
         public virtual void SaveGame() {
-            DebugLogger?.Log($"Saving {typeof(TGameData)}");
+            debugLogger?.Log($"Saving {typeof(TGameData)}");
             
             SaveAllDataBinds();
 
@@ -78,7 +75,7 @@ namespace Utilities.DataBinding {
         /// Base "LoadSave" method loads a save using the "DataService" and sets "gameData" to that save.
         /// </summary>
         public virtual void LoadSave(string saveName) {
-            DebugLogger?.Log($"Loading {typeof(TGameData)} with name '{saveName}'");
+            debugLogger?.Log($"Loading {typeof(TGameData)} with name '{saveName}'");
             
             gameData = DataService.LoadByName(saveName);
         }
@@ -87,7 +84,7 @@ namespace Utilities.DataBinding {
             foreach (var dataBind in GameDataBinds) {
                 dataBind.LoadBindData();
 
-                DebugLogger?.Log("Loading DataBind");
+                debugLogger?.Log("Loading DataBind");
             }
         }
 
@@ -97,12 +94,12 @@ namespace Utilities.DataBinding {
         public void DeleteSave(string saveName) {
             DataService.DeleteByName(saveName);
 
-            DebugLogger?.Log($"Deleting  {typeof(TGameData)} with name '{saveName}'");
+            debugLogger?.Log($"Deleting  {typeof(TGameData)} with name '{saveName}'");
         }
 
 #if UNITY_EDITOR
         protected void WriteToNewGameData() {
-            DebugLogger?.Log($"Writing default {typeof(TGameData)} to {newGameData.name}");
+            debugLogger?.Log($"Writing default {typeof(TGameData)} to {newGameData.name}");
             
             newGameData.gameData = gameData.DeepClone();
             EditorUtility.SetDirty(newGameData);
@@ -126,10 +123,10 @@ namespace Utilities.DataBinding {
         /// </summary>
         public virtual void Bind<TBind, TData>(TBind bind, TData data)
             where TBind : IBind<TData> where TData : ISaveable {
-            DebugLogger?.Log("Binding data parameter 2");
+            debugLogger?.Log("Binding data parameter 2");
             
             if (bind == null || data == null) {
-                DebugLogger?.LogError("Bind or data is null. Binding operation aborted.");
+                debugLogger?.LogError("Bind or data is null. Binding operation aborted.");
                 return;
             }
             
@@ -138,7 +135,7 @@ namespace Utilities.DataBinding {
             }
             bind.SaveSystemData = data;
             bind.LoadBindData();
-            DebugLogger?.Log($"{typeof(TBind)} object bind-ed to {typeof(TData)}");
+            debugLogger?.Log($"{typeof(TBind)} object bind-ed to {typeof(TData)}");
         }
 
         public virtual void UnBind<TBind, TData>(TBind bind, TData data)
@@ -147,7 +144,7 @@ namespace Utilities.DataBinding {
                 GameDataBinds.Remove(bind);
             }
             bind.SaveSystemData = default;
-            DebugLogger?.Log($"{typeof(TBind)} object un-bind-ed from {typeof(TData)}");
+            debugLogger?.Log($"{typeof(TBind)} object un-bind-ed from {typeof(TData)}");
         }
     }
 }

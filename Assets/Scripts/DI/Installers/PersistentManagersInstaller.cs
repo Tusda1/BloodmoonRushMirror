@@ -3,26 +3,24 @@ using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using Serializers;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using Utilities.DataBinding;
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
-public class PersistentManagersInstaller : MonoInstaller {
-    [SerializeField] private SaveLoadSystemManager saveLoadSystemManager;
-    [SerializeField] private CameraEffects cameraEffects;
-    [SerializeField] private EventSystem eventSystem;
+public class PersistentManagersInstaller : LifetimeScope {
+    [SerializeField, Required] private SaveLoadSystemManager saveLoadSystemManager;
+    [SerializeField, Required] private CameraEffects cameraEffects;
+    [SerializeField, Required] private EventSystem eventSystem;
     [SerializeField, Required] private Camera renderTextureCamera;
 
-    public override void InstallBindings() {
-        Assert.IsNotNull(renderTextureCamera);
-        
-        Container.BindFromHierarchyIfNull(saveLoadSystemManager);
-        Container.BindFromHierarchyIfNull(cameraEffects);
-        Container.BindFromHierarchyIfNull(eventSystem);
-        Container.BindInstance(renderTextureCamera);
+    protected override void Configure(IContainerBuilder builder) {
+        builder.RegisterInstance(saveLoadSystemManager);
+        builder.RegisterInstance(cameraEffects);
+        builder.RegisterInstance(eventSystem);
+        builder.RegisterInstance(renderTextureCamera);
 
-        Container.Bind<FileDataService<SaveGameData>>().AsSingle();
-        Container.Bind<ISerializer>().FromInstance(new JSONSerializer()).AsSingle().Lazy();
+        builder.Register<FileDataService<SaveGameData>>(Lifetime.Singleton);
+        builder.Register<JSONSerializer>(Lifetime.Singleton).As<ISerializer>();
     }
 }

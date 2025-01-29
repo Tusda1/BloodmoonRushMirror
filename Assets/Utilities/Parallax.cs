@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using Zenject;
+using VContainer;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -10,8 +10,8 @@ public class Parallax : MonoBehaviour {
     #region ---Fields---
     [SerializeField] private bool startEnabled;
     [SerializeField] private ParallaxElement[] parallaxElements;
-    
-    [Inject(Id = "MainCamera")] private Camera _mainCamera;
+
+    [Inject] private Camera _mainCamera;
     
     private Transform _mainCameraTransform;
     private Vector3 _previousCameraPosition;
@@ -22,9 +22,11 @@ public class Parallax : MonoBehaviour {
     private IEnumerator Start() {
         _mainCameraTransform = _mainCamera.transform;
         
-        yield return null;
+        // yield return null;
         
         if (startEnabled) Enable();
+        
+        yield return null;
     }
 
     public void Enable() {

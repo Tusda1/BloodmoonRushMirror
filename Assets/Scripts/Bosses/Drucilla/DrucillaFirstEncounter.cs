@@ -3,7 +3,7 @@ using DG.Tweening;
 using Player;
 using SceneCollections;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
     #region ---Fields---

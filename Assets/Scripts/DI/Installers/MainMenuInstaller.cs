@@ -1,10 +1,11 @@
 using UnityEngine;
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
-public class MainMenuInstaller : MonoInstaller {
+public class MainMenuInstaller : LifetimeScope {
     [SerializeField] private Camera mainCamera;
     
-    public override void InstallBindings() {
-        Container.BindFromHierarchyIfNull(mainCamera, "MainCamera");
+    protected override void Configure(IContainerBuilder builder) {
+        builder.RegisterInstance(mainCamera);
     }
 }

@@ -133,11 +133,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 315
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.z
@@ -176,12 +176,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21b4133c71a311248ba67b9579271143, type: 3}
---- !u!114 &38061766 stripped
+--- !u!1 &913682976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1016095211261194371, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+  m_PrefabInstance: {fileID: 38061765}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &913682985 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3298925456892397176, guid: 21b4133c71a311248ba67b9579271143, type: 3}
   m_PrefabInstance: {fileID: 38061765}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 913682976}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a34de162bb9e1d641b01ad6758b3d05b, type: 3}
@@ -195,14 +200,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6840896656695637128, guid: 42f29ff6205b8964095e192db20a1db9, type: 3}
-      propertyPath: _parentContractNames.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6840896656695637128, guid: 42f29ff6205b8964095e192db20a1db9, type: 3}
-      propertyPath: '_parentContractNames.Array.data[1]'
-      value: TheDungeonsContext
-      objectReference: {fileID: 0}
     - target: {fileID: 7057345946494523879, guid: 42f29ff6205b8964095e192db20a1db9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -250,7 +247,11 @@ PrefabInstance:
     - target: {fileID: 8377118800284215251, guid: 42f29ff6205b8964095e192db20a1db9, type: 3}
       propertyPath: playerScript
       value: 
-      objectReference: {fileID: 38061766}
+      objectReference: {fileID: 913682985}
+    - target: {fileID: 8377118800284215251, guid: 42f29ff6205b8964095e192db20a1db9, type: 3}
+      propertyPath: 'autoInjectGameObjects.Array.data[0]'
+      value: 
+      objectReference: {fileID: 913682976}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UIElements;
-using Zenject;
+using VContainer;
 
 public class UITKWorldSpaceInteractive : MonoBehaviour {
     #region ---Fields---

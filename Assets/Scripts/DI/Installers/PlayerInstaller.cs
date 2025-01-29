@@ -1,15 +1,14 @@
 using Player;
 using UnityEngine;
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
-public class PlayerInstaller : MonoInstaller {
+public class PlayerInstaller : LifetimeScope {
     [SerializeField] private PlayerScript playerScript;
-    
-    public override void InstallBindings() {
-        playerScript ??= FindFirstObjectByType<PlayerScript>();
-        
-        Container.BindInstance(playerScript);
-        Container.BindInstance(playerScript.playerMovement);
-        Container.BindInstance(playerScript.hitbox);
+
+    protected override void Configure(IContainerBuilder builder) {
+        builder.RegisterInstance(playerScript);
+        builder.RegisterInstance(playerScript.playerMovement);
+        builder.RegisterInstance(playerScript.hitbox);
     }
 }

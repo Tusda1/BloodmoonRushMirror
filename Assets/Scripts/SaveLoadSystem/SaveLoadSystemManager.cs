@@ -5,30 +5,31 @@ using System.IO;
 using System.Linq;
 using SaveLoadSystem.Data;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Utilities.DataBinding;
-using Zenject;
+using VContainer;
 using Debug = UnityEngine.Debug;
 
 namespace SaveLoadSystem {
     public class SaveLoadSystemManager : SaveLoadSystemBase<SaveLoadSystemManager, SaveGameData> {
         #region ---Fields---
         #region ***---DI---***
-        [Inject(Id = "Slot1")] private SaveSlotDataSO _saveSlot1Data;
-        [Inject(Id = "Slot2")] private SaveSlotDataSO _saveSlot2Data;
-        [Inject(Id = "Slot3")] private SaveSlotDataSO _saveSlot3Data;
+        [Inject] private SaveSlots _saveSlots;
         #endregion
         #endregion
         
         [Inject]
-        public void Init(FileDataService<SaveGameData> dataService) {
+        public void Construct(FileDataService<SaveGameData> dataService, DebugLoggerProvider debugLoggers) {
+            debugLogger = debugLoggers.GetDebugLogger("FMODManager");
+            
             DataService = dataService;
         }
         
         #region ---SaveSlots---
         public void UpdateSaveSlotSO() {
-            LoadSaveSlotData(_saveSlot1Data);
-            LoadSaveSlotData(_saveSlot2Data);
-            LoadSaveSlotData(_saveSlot3Data);
+            LoadSaveSlotData(_saveSlots.saveSlot1Data);
+            LoadSaveSlotData(_saveSlots.saveSlot2Data);
+            LoadSaveSlotData(_saveSlots.saveSlot3Data);
         }
 
         private void LoadSaveSlotData(SaveSlotDataSO saveSlotData) {
@@ -115,7 +116,7 @@ namespace SaveLoadSystem {
                     return;
                 }
 
-                DebugLogger.Log($"{dataBinds.Length} data binds saved successfully.");
+                debugLogger.Log($"{dataBinds.Length} data binds saved successfully.");
             }
             catch (Exception ex) {
                 Debug.LogError($"Error while saving data binds: {ex.Message}");

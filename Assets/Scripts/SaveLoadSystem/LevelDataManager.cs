@@ -5,7 +5,7 @@ using SaveLoadSystem.Data;
 using SceneCollections;
 using UnityEngine;
 using Utilities.DataBinding;
-using Zenject;
+using VContainer;
 
 namespace SaveLoadSystem {
     public class LevelDataManager : Singleton<LevelDataManager>, IBind<LevelData> {

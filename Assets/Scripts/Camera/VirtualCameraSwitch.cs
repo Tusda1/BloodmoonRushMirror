@@ -4,7 +4,7 @@ using Player;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
-using Zenject;
+using VContainer;
 
 public class VirtualCameraSwitch : MonoBehaviour {
     #region ---Fields---
@@ -64,7 +64,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
     }
 
     private void ManualActivation() {
-        cinemachineCamera.Priority = 1;
+        cinemachineCamera.Priority = 15;
         
         if (slowTimeOnTransition) {
             _ = _cameraEffects.TimeSlow(timeSlowDuration, timeSlowCurve);
@@ -106,7 +106,6 @@ public class VirtualCameraSwitch : MonoBehaviour {
     }
 
     private void ManualDeactivation() {
-        cinemachineCamera.Priority = 0;
         areaGameObjects.SetActive(false);
         isActiveRoom = false;
     }
@@ -116,6 +115,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
     }
 
     private IEnumerator DelayedDeactivation() {
+        cinemachineCamera.Priority = 0;
         onDisable.Invoke();
         _isDeactivating = true;
         yield return new WaitForSeconds(_cinemachineBrain.DefaultBlend.Time);

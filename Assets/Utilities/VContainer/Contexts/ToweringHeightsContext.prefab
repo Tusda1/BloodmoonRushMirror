@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3351448161025336837
+--- !u!1 &7940037054753066520
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3652929931915499995}
-  - component: {fileID: 9145699619558728079}
+  - component: {fileID: 7057345946494523879}
+  - component: {fileID: 6140800332273132084}
   m_Layer: 0
-  m_Name: SteamSpeedrunTimer
+  m_Name: ToweringHeightsContext
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3652929931915499995
+--- !u!4 &7057345946494523879
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3351448161025336837}
+  m_GameObject: {fileID: 7940037054753066520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.262903, y: 9.4281225, z: -0.021778543}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9145699619558728079
+--- !u!114 &6140800332273132084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3351448161025336837}
+  m_GameObject: {fileID: 7940037054753066520}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cffc382bc5b0e0442ae67447312ab066, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ff5ab81a9acef94c825225ea9b8b189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leaderboardID: EntranceHall_Time
+  parentReference:
+    TypeName: PlayerInstaller
+  autoRun: 1
+  autoInjectGameObjects: []
+  mainCamera: {fileID: 0}
+  cinemachineBrain: {fileID: 0}
+  levelDataManager: {fileID: 0}
+  steamSpeedrunTimer: {fileID: 0}
+  monoBehaviourRegistrationObjects: []

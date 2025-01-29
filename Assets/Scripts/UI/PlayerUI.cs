@@ -2,7 +2,7 @@ using Attributes;
 using UI_Toolkit;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Zenject;
+using VContainer;
 
 namespace Player {
     public class PlayerUI : MonoBehaviour {

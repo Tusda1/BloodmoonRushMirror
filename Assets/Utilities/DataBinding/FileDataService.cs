@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Serializers;
-using Zenject;
+using VContainer;
 using Application = UnityEngine.Device.Application;
 
 namespace Utilities.DataBinding {

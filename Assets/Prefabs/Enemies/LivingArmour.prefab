@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7390510478339426088}
   - component: {fileID: 4262033073353352129}
   m_Layer: 8
-  m_Name: ChaseEnemy
+  m_Name: LivingArmour
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170,6 +170,7 @@ MonoBehaviour:
     gemsContaining: 0
     position: {x: 0, y: 0, z: 0}
   detectionDistance: 20
+  staggerDuration: 0
   highAttackCollider: {fileID: 0}
   lowAttackCollider: {fileID: 0}
   overheadAttackCollider: {fileID: 0}

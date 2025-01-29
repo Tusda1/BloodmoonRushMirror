@@ -6,7 +6,7 @@ using UI.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-using Zenject;
+using VContainer;
 
 namespace UI {
     [RequireComponent(typeof(UITKWorldSpaceInteractive))]
@@ -33,10 +33,7 @@ namespace UI {
         #region ***---DI---***
         [Inject] private CameraEffects _cameraEffects;
         [Inject] private SaveLoadSystemManager _saveLoadSystemManager;
-        
-        [Inject(Id = "Slot1")] private SaveSlotDataSO _saveSlot1Data;
-        [Inject(Id = "Slot2")] private SaveSlotDataSO _saveSlot2Data;
-        [Inject(Id = "Slot3")] private SaveSlotDataSO _saveSlot3Data;
+        [Inject] private SaveSlots _saveSlots;
         #endregion
         #endregion
 
@@ -52,9 +49,9 @@ namespace UI {
         }
 
         private void Start() {
-            _saveSlot1.clicked += () => LoadSave(_saveSlot1Data);
-            _saveSlot2.clicked += () => LoadSave(_saveSlot2Data);
-            _saveSlot3.clicked += () => LoadSave(_saveSlot3Data);
+            _saveSlot1.clicked += () => LoadSave(_saveSlots.saveSlot1Data);
+            _saveSlot2.clicked += () => LoadSave(_saveSlots.saveSlot2Data);
+            _saveSlot3.clicked += () => LoadSave(_saveSlots.saveSlot3Data);
             
             _savesMenuRoot.SetEnabled(false);
         }
