@@ -1,14 +1,14 @@
 using System;
 using UnityEngine;
+using VContainer.Unity;
 #if STEAM_BUILD
 using System.Threading.Tasks;
 using Steamworks;
 #endif
 
-public class SteamSpeedrunTimer : MonoBehaviour, ISpeedrunTimer {
+public class SteamSpeedrunTimer : ISpeedrunTimer, ITickable {
     #region ---Fields---
-    [SerializeField] private string leaderboardID;
-    
+    private string _leaderboardID;
     private float _time;
     private bool _timerIsRunning;
     
@@ -18,11 +18,13 @@ public class SteamSpeedrunTimer : MonoBehaviour, ISpeedrunTimer {
 #endif
     #endregion
 
-    private void Start() {
+    public SteamSpeedrunTimer(string leaderboardID) {
+        _leaderboardID = leaderboardID;
+
         StartTimer();
     }
 
-    private void Update() {
+    public void Tick() {
         if (_timerIsRunning) {
             _time += Time.deltaTime;
         }
