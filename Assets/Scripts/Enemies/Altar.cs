@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Altar : MonoBehaviour 
 {
-     public float maxSuckRange = 25f;
-     public float minSuckSpeed = 5f;
-     public float maxSuckSpeed = 20f;
-     public float executeRange = 1f;
+     [SerializeField] private float maxSuckRange = 25f;
+     [SerializeField] private float minSuckSpeed = 5f;
+     [SerializeField] private float maxSuckSpeed = 20f;
+     [SerializeField] private float executeRange = 1f;
 
      private void Update()
      {

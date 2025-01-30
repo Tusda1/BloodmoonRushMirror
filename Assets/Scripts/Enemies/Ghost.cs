@@ -14,8 +14,7 @@ public class Ghost : ReactiveBase
     
     [HideInInspector] public bool sucked;
     [HideInInspector] public Vector2 suckVelocity;
-
-    private float time;
+    
     private bool _withdrawing;
     private Vector2 _withdrawPosition;
     
@@ -28,7 +27,7 @@ public class Ghost : ReactiveBase
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
-        print(sucked);
+        
         if (sucked)
         {
             EscapeSuck();
@@ -102,7 +101,7 @@ public class Ghost : ReactiveBase
        var direction = (-suckVelocity).normalized * moveSpeed;
        var tempVelocity = Vector2.zero;
        smoothDampScript.SmoothDampVector2(direction, ref tempVelocity);
-       targetVelocity += tempVelocity;
+       //targetVelocity += tempVelocity;
        targetVelocity += suckVelocity;
     }
 }
