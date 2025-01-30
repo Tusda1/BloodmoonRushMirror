@@ -4,6 +4,7 @@ using Pathfinding;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
+[DefaultExecutionOrder(1)]
 public class Ghost : ReactiveBase
 {
     [SerializeField] private float attackDistance;
@@ -13,7 +14,8 @@ public class Ghost : ReactiveBase
     
     [HideInInspector] public bool sucked;
     [HideInInspector] public Vector2 suckVelocity;
-    
+
+    private float time;
     private bool _withdrawing;
     private Vector2 _withdrawPosition;
     
@@ -26,7 +28,7 @@ public class Ghost : ReactiveBase
     protected override void ComputeVelocity()
     {
         base.ComputeVelocity();
-
+        print(sucked);
         if (sucked)
         {
             EscapeSuck();

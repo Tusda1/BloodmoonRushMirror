@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Altar : MonoBehaviour 
 {
-     [SerializeField] private float maxSuckRange = 25f;
-     [SerializeField] private float minSuckSpeed = 5f;
-     [SerializeField] private float maxSuckSpeed = 20f;
-     [SerializeField] private float executeRange = 1f;
+     public float maxSuckRange = 25f;
+     public float minSuckSpeed = 5f;
+     public float maxSuckSpeed = 20f;
+     public float executeRange = 1f;
 
      private void Update()
      {
@@ -14,7 +14,7 @@ public class Altar : MonoBehaviour
           Collider2D[] ghosts = Physics2D.OverlapCircleAll(transform.position, maxSuckRange, LayerMask.GetMask("Enemy"));
           foreach (var ghost in ghosts)
           {
-               if (!ghost || !ghost.TryGetComponent(out Ghost ghostComponent)) return;
+               if (!ghost.TryGetComponent(out Ghost ghostComponent)) continue;
 
                if (Vector2.Distance(transform.position, ghost.transform.position) < executeRange)
                {
