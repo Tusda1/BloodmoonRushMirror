@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using VContainer;
 #if UNITY_EDITOR
@@ -19,22 +18,11 @@ public class Parallax : MonoBehaviour {
     private bool _enabled;
     #endregion
 
-    private IEnumerator Start() {
+    private void Start() {
         _mainCameraTransform = _mainCamera.transform;
         
-        // yield return null;
-        
-        if (startEnabled) Enable();
-        
-        yield return null;
-    }
-
-    public void Enable() {
-        if (_enabled)   return;
-        _enabled = true;
-        
         _previousCameraPosition = _mainCameraTransform.position;
-
+        
         foreach (var parallaxElement in parallaxElements) {
             if (parallaxElement.gameObject == null) {
                 Debug.LogError("Parallax element has no gameObject!", this);
@@ -45,7 +33,7 @@ public class Parallax : MonoBehaviour {
             parallaxElement.spriteRenderer ??= parallaxElement.objectTransform.GetComponent<SpriteRenderer>();
             parallaxElement.originalSize = parallaxElement.spriteRenderer.bounds.size;
 
-            if (parallaxElement.gameObject == null) {
+            if (parallaxElement.spriteRenderer == null) {
                 Debug.LogError("Parallax gameObject has no spriteRenderer!", this);
                 continue;
             }
@@ -69,20 +57,26 @@ public class Parallax : MonoBehaviour {
                 }
             }
         }
+        
+        if (startEnabled) Enable();
+    }
+    
+    
+
+    public void Enable() {
+        if (_enabled)   return;
+        _enabled = true;
+        
+        _previousCameraPosition = _mainCameraTransform.position;
     }
 
     public void Disable() {
         if (!_enabled) return;
         _enabled = false;
-        
-        foreach (var parallaxElement in parallaxElements) {
-            parallaxElement.ResetEffectActions();
-            parallaxElement.spriteRenderer.size = parallaxElement.originalSize;
-        }
     }
 
-    private void Update() {
-        if (!enabled) return;
+    private void LateUpdate() {
+        if (!_enabled) return;
         
         _cameraDeltaMovement = _mainCameraTransform.position - _previousCameraPosition;
 
@@ -96,11 +90,13 @@ public class Parallax : MonoBehaviour {
 #if UNITY_EDITOR
     [ContextMenu(nameof(SetParallaxElementsToChildren))]
     public void SetParallaxElementsToChildren() {
-        parallaxElements = new ParallaxElement[transform.childCount];
+        var children = transform.GetComponentsInChildren<SpriteRenderer>();
         
-        for (var i = 0; i < transform.childCount; i++) {
-            var objectTransform = transform.GetChild(i);
-            var spriteRenderer = objectTransform.GetComponent<SpriteRenderer>();
+        parallaxElements = new ParallaxElement[children.Length];
+        
+        for (var i = 0; i < children.Length; i++) {
+            var spriteRenderer =children[i];
+            var objectTransform = spriteRenderer.transform;
             
             parallaxElements[i] = new ParallaxElement {
                 objectTransform = objectTransform,
@@ -170,9 +166,11 @@ public class Parallax : MonoBehaviour {
     #endregion
 
     [Serializable] public class ParallaxElement {
-        [Header("Parallax Object")] public GameObject gameObject;
-        [HideInInspector] public Transform objectTransform;
-        [HideInInspector] public SpriteRenderer spriteRenderer;
+        [Header("Parallax Object")] 
+        public GameObject gameObject;
+        public Transform objectTransform;
+        public SpriteRenderer spriteRenderer;
+        
         [HideInInspector] public Vector2 originalSize;
 
         [Header("X Axis Parallax")] [Tooltip("Set to 0 to move equal to the camera and -1 to not move in the X axis")]

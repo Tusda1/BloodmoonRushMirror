@@ -8,13 +8,14 @@ using Unity.Properties;
 [Serializable, GeneratePropertyBag]
 [NodeDescription(
     name: "CameraZoom", 
-    story: "Zoom Camera To [size] Over [duration] Seconds | TimeSlow: [slowTime]", 
+    story: "Zoom Camera To [size] Over [duration] Seconds | TimeSlow: [slowTime] | Offset: [offset]", 
     category: "Action",
     id: "5a9f0241d0a338000cc285b297afde42")]
 public partial class CameraZoomAction : Action {
     [SerializeReference] public BlackboardVariable<float> size;
     [SerializeReference] public BlackboardVariable<float> duration;
     [SerializeReference] public BlackboardVariable<bool> slowTime;
+    [SerializeReference] public BlackboardVariable<Vector3> offset;
 
     private VirtualCameraSwitch CameraSwitch => VirtualCameraSwitch.ActiveVirtualCameraSwitch;
     private CinemachineCamera Camera => CameraSwitch.cinemachineCamera;
@@ -44,15 +45,22 @@ public partial class CameraZoomAction : Action {
         
         var startSize = Camera.Lens.OrthographicSize;
         var confiner = Camera.GetComponent<CinemachineConfiner2D>();
+        
+        var composer = Camera.GetComponent<CinemachinePositionComposer>();
+        var startOffset = composer.TargetOffset;
 
         float currentProgress = 0;
         while (currentProgress < seconds) {
             currentProgress += Time.unscaledDeltaTime;
             
-            var orthographicSize = Mathf.Lerp(startSize, targetSize, curve.Evaluate(currentProgress));
+            var evaluatedProgress = curve.Evaluate(currentProgress / seconds);
+            
+            var orthographicSize = Mathf.Lerp(startSize, targetSize, evaluatedProgress);
 
             Camera.Lens.OrthographicSize = orthographicSize;
             confiner.OversizeWindow.MaxWindowSize = orthographicSize;
+            
+            composer.TargetOffset = Vector3.Lerp(startOffset, offset.Value, evaluatedProgress);
             
             await Awaitable.NextFrameAsync();
         }
