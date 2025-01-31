@@ -198,7 +198,7 @@ public class LivingArmor : ReactiveBase
         while (true)
         {
             var timeToReachHeight = Mathf.Sqrt(2 * height / Mathf.Abs(Physics2D.gravity.y));
-            var overshoot = timeToReachHeight * horizontalJumpSpeed - length; ;
+            var overshoot = timeToReachHeight * horizontalJumpSpeed - length;
 
             if (speed < moveSpeed)
             {
@@ -217,7 +217,6 @@ public class LivingArmor : ReactiveBase
 
         var jumpTime = length / speed;
         var velocityY = (height - 0.5f * Physics2D.gravity.y * jumpTime * jumpTime) / jumpTime;
-        print(velocityY);
         
         return new Vector2(speed, velocityY);
     }
