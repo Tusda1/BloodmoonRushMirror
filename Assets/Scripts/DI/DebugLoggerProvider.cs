@@ -1,17 +1,23 @@
 ﻿using System.Collections.Generic;
 
-public class DebugLoggerProvider {
-    private readonly Dictionary<string, DebugLoggerSO> _debugLoggers = new();
+public class DebugLoggerProvider : IProvider<DebugLoggerSO>  {
+    private readonly Dictionary<string, DebugLoggerSO> _services = new();
 
     public DebugLoggerProvider() {
         var debugLoggers = ScrubUtils.GetAllScrubsInResourceFolder<DebugLoggerSO>("DebugLoggers");
         
         foreach (var debugLogger in debugLoggers) {
-            _debugLoggers.Add(debugLogger.name, debugLogger);
+            _services.Add(debugLogger.name, debugLogger);
         }
     }
 
-    public DebugLoggerSO GetDebugLogger(string key) {
-        return _debugLoggers[key];
+    Dictionary<string, DebugLoggerSO> IProvider<DebugLoggerSO>.Services => _services;
+}
+
+public interface IProvider<T> {
+    protected Dictionary<string, T> Services { get; }
+    
+    public T Get(string key) {
+        return Services[key];
     }
 }

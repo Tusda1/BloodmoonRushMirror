@@ -12,9 +12,7 @@ namespace UI.Settings {
         private VisualElement _root;
         private VisualElement _controlsSettingsMenu;
 
-        private Button _controllerSchemeButton;
-        private Button _keyboardMouseSchemeButton;
-        private Button _keyboardSchemeButton;
+        public static string ControlScheme = "KeyboardMouse";
 
         public event Action OnMenuActivated = delegate { };
         public event Action OnMenuDeactivated = delegate { };
@@ -24,35 +22,49 @@ namespace UI.Settings {
             _root = uiDocument.rootVisualElement;
             _controlsSettingsMenu = _root.Q<VisualElement>("ControlsMenu");
             
-            _controllerSchemeButton = _root.Q<Button>("ControllerSchemeButton");
-            _keyboardMouseSchemeButton = _root.Q<Button>("KeyboardMouseSchemeButton");
-            _keyboardSchemeButton = _root.Q<Button>("KeyboardSchemeButton");
+            ControlScheme = PlayerPrefs.GetString("ControlScheme", "KeyboardMouse");
+            
+            var p = _controlsSettingsMenu.Q<RadioButtonGroup>();
 
-            _controllerSchemeButton.clicked += SetControllerScheme;
-            _keyboardMouseSchemeButton.clicked += SetKeyboardMouseScheme;
-            _keyboardSchemeButton.clicked += SetKeyboardScheme;
+            p.RegisterValueChangedCallback(evt => {
+                switch (evt.newValue) {
+                    case 1:
+                        SetControllerScheme();
+                        break;
+                    case 2:
+                        SetKeyboardMouseScheme();
+                        break;
+                    case 3:
+                        SetKeyboardScheme();
+                        break;
+                }
+            });
+
         }
 
         private void SetControllerScheme() {
-            // TODO
-            throw new NotImplementedException();
+            ControlScheme = "Controller";
+            
+            PlayerPrefs.SetString("ControlScheme", ControlScheme);
         }
 
         private void SetKeyboardMouseScheme() {
-            // TODO
-            throw new NotImplementedException();
+            ControlScheme = "KeyboardMouse";
+            
+            PlayerPrefs.SetString("ControlScheme", ControlScheme);
         }
 
         private void SetKeyboardScheme() {
-            // TODO
-            throw new NotImplementedException();
+            ControlScheme = "Keyboard";
+            
+            PlayerPrefs.SetString("ControlScheme", ControlScheme);
         }
 
         public void Activate() {
             _controlsSettingsMenu.SetEnabled(true);
             _controlsSettingsMenu.RemoveFromClassList("left");
             _controlsSettingsMenu.RemoveFromClassList("right");
-            _controllerSchemeButton.Focus();
+            // _controllerSchemeButton.Focus();
             
             OnMenuActivated.Invoke();
         }

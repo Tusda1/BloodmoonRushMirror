@@ -44,6 +44,7 @@ Transform:
   - {fileID: 7601367226041774423}
   - {fileID: 7629819614685621808}
   - {fileID: 1854109826984089214}
+  - {fileID: 3892124713632009612}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7359996412380030738
@@ -122,6 +123,8 @@ MonoBehaviour:
     - {fileID: 4896941881637286329}
     - {fileID: 4915913186544905062}
   gameOverScene: {fileID: 11400000, guid: f049946a2b8e33e4c89218cc64a675cc, type: 2}
+  cameraFollowTransform: {fileID: 3892124713632009612}
+  lookahead: 4
   playerLives: 10
   whatIsInteractable:
     serializedVersion: 2
@@ -592,6 +595,37 @@ MonoBehaviour:
           m_Value1: 9982169200599629012
         Name: LowerAnimator
         m_Value: {fileID: 4915913186544905062}
+--- !u!1 &6077760614362481426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3892124713632009612}
+  m_Layer: 7
+  m_Name: CameraFollow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3892124713632009612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6077760614362481426}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4186889624386442292}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6775485699426690396
 GameObject:
   m_ObjectHideFlags: 0

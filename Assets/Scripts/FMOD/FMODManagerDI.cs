@@ -34,8 +34,8 @@ namespace FMODScripts {
 
         #region ---Initialization---
         [Inject]
-        public FMODManagerDI(DebugLoggerProvider debugLoggers) {
-            _debugLogger = debugLoggers.GetDebugLogger("FMODManager");
+        public FMODManagerDI(IProvider<DebugLoggerSO> debugLoggers) {
+            _debugLogger = debugLoggers.Get("FMODManager");
             _ = Initialize();
         }
 
