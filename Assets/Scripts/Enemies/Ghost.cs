@@ -1,7 +1,4 @@
-using System;
 using UnityEngine;
-using Pathfinding;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [DefaultExecutionOrder(1)]
@@ -64,7 +61,7 @@ public class Ghost : ReactiveBase
         Vector2 direction = (targetObject.position - position).normalized * moveSpeed;
         smoothDampScript.SmoothDampVector2(direction, ref targetVelocity);
         
-        if (Vector2.Distance(position, targetObject.position) < attackDistance)
+        if (Vector2.Distance(position, targetObject.position + Vector3.up) < attackDistance)
         {
             _withdrawing = true;
         }

@@ -74,15 +74,17 @@ public class LivingArmor : ReactiveBase
             return;
         }
 
+        
         if (_repeatTimer > 0)
         {
             _repeatTimer -= Time.deltaTime;
         }
-        else
+        else if(isGrounded)
         {
             _repeatTimer = repeatRate;
             StartPath();
         }
+        
 
         if (_path == null) { return; }
         
@@ -92,7 +94,7 @@ public class LivingArmor : ReactiveBase
             _currentWaypoint++;
         }
         
-        if (_isJumping) return;
+        if (_isJumping || !isGrounded) return;
         
         AttackCheck();
         
@@ -107,9 +109,10 @@ public class LivingArmor : ReactiveBase
         Vector2 direction = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).normalized;
         var angle = Vector2.Angle(Vector2.up, direction);
         var willWalkOffLedge = false;
+        print("angle: " + angle);
         
         // overlappoint to check if the enemy is walking off a ledge
-        Collider2D groundHit = Physics2D.OverlapPoint(GetBottomPosition() + direction * 0.5f, LayerMask.GetMask("Ground"));
+        Collider2D groundHit = Physics2D.OverlapPoint(GetBottomPosition() + facingDirection * 0.8f + Vector2.down * 0.5f, LayerMask.GetMask("Ground"));
         if (!groundHit)
         {
             Collider2D nextGroundHit = Physics2D.OverlapPoint((Vector2)_path.vectorPath[_currentWaypoint] + Vector2.down, LayerMask.GetMask("Ground"));
@@ -118,10 +121,8 @@ public class LivingArmor : ReactiveBase
                 StartCoroutine(JumpCoroutine(CalculateHorizontalJump));
                 return;
             }
-            if (!nextGroundHit)
-            {
-                willWalkOffLedge = true;
-            }
+            
+            willWalkOffLedge = true;
         }
         
         if (isGrounded && angle > minimumVerticalJumpAngle && angle < maxVerticalJumpAngle)
@@ -162,14 +163,14 @@ public class LivingArmor : ReactiveBase
         
         while (isGrounded)
         {
-            targetVelocity.x = jumpVelocity.x;
+            targetVelocity.x = (facingDirection.x > 0 ? 1 : -1) * jumpVelocity.x;
             
             yield return null;
         }
 
         while (!isGrounded)
         {
-            targetVelocity.x = jumpVelocity.x;
+            targetVelocity.x = (facingDirection.x > 0 ? 1 : -1) * jumpVelocity.x;
             
             yield return null;
         }
@@ -179,8 +180,8 @@ public class LivingArmor : ReactiveBase
     
     private Vector2 CalculateVerticalJump()
     {
-        var height = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).y;
-        var length = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).x;
+        var height = Mathf.Abs(((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).y);
+        var length = Mathf.Abs(((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).x);
         var velocityY = Mathf.Sqrt(2 * Mathf.Abs(Physics2D.gravity.y) * height);
         var jumpTime = velocityY / Mathf.Abs(Physics2D.gravity.y);
         var velocityX = length / jumpTime;
@@ -189,18 +190,19 @@ public class LivingArmor : ReactiveBase
 
     private Vector2 CalculateHorizontalJump()
     {
-        var height = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).y;
-        var length = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).x;
+        var height = Mathf.Abs(((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).y);
+        var length = Mathf.Abs(((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).x);
         var speed = horizontalJumpSpeed;
         
         //Calculate if the you will overshoot the target with only gravity on Y axis
         while (true)
         {
-            var timeToReachHeight = Mathf.Sqrt(2 * height) / Mathf.Abs(Physics2D.gravity.y);
-            var overshoot = timeToReachHeight * horizontalJumpSpeed - length;
+            var timeToReachHeight = Mathf.Sqrt(2 * height / Mathf.Abs(Physics2D.gravity.y));
+            var overshoot = timeToReachHeight * horizontalJumpSpeed - length; ;
 
-            if (speed < 1)
+            if (speed < moveSpeed)
             {
+                speed = moveSpeed;
                 break;
             }
             if (overshoot > 0)
@@ -214,7 +216,9 @@ public class LivingArmor : ReactiveBase
         }
 
         var jumpTime = length / speed;
-        var velocityY = (height - 0.5f * Mathf.Abs(Physics2D.gravity.y) * jumpTime * jumpTime) / jumpTime;
+        var velocityY = (height - 0.5f * Physics2D.gravity.y * jumpTime * jumpTime) / jumpTime;
+        print(velocityY);
+        
         return new Vector2(speed, velocityY);
     }
     

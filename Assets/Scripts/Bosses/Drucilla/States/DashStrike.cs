@@ -14,9 +14,11 @@ public class DashStrike : DrucillaState
     private enum DashStrikeStage
     {
         Teleport,
-        Dash,
+        LightningDash,
         Strike
     }
+    
+    private DashStrikeStage _stage;
     
     private void OnEnable()
     {
@@ -40,11 +42,42 @@ public class DashStrike : DrucillaState
                 _teleportLocation = rightCorner;
             }
             
-            
+            _stage = DashStrikeStage.Teleport;
         }
         else
         {
-            
+            _stage = DashStrikeStage.LightningDash;
         }
+    }
+
+    private void Update()
+    {
+        switch (_stage)
+        {
+            case DashStrikeStage.Teleport:
+                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportLocation);
+                break;
+            case DashStrikeStage.LightningDash:
+                LightningDash();
+                break;
+            case DashStrikeStage.Strike:
+                Strike();
+                break;
+        }
+    }
+    
+    protected override void OnTeleportEnd()
+    {
+        _stage = DashStrikeStage.LightningDash;
+    }
+    
+    private void LightningDash()
+    {
+        
+    }
+    
+    private void Strike()
+    {
+        
     }
 }
