@@ -44,7 +44,7 @@ public class CrusherScript : GravityObject {
         }
 
         else {
-            if (IsInsideCircle(startPos, 0.1f, currentPosition))
+            if (IsInsideCircle(startPos, 0.5f, currentPosition))
                 isStill = true;
         }
     }
