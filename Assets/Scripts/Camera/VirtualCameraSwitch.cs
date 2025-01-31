@@ -47,7 +47,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
         enemyGameObject.SetActive(false);
 
         if (cinemachineCamera.Follow == null) {
-            cinemachineCamera.Follow = _playerScript.transform;
+            cinemachineCamera.Follow = _playerScript.cameraFollowTransform;
         }
     }
 
