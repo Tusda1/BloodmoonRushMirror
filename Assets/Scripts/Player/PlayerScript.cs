@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Attributes;
 using Consensus;
+using ExtensionMethods;
 using FMODScripts;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
@@ -27,6 +28,8 @@ namespace Player {
         #region ***---SerializedFields---***
         [SerializeField] public MultipleAnimatorControllers animator;
         [SerializeField] private SceneCollectionSO gameOverScene;
+        public Transform cameraFollowTransform;
+        [SerializeField] private float lookahead = 2;
 
         [Header("Player")] 
         public int playerLives = 5;
@@ -55,6 +58,9 @@ namespace Player {
 
         private bool _isDead;
         private bool _canAttack = true;
+
+        private bool _isLookingUp;
+        private bool _isLookingDown;
 
         private bool PlayerMovementEnabled => playerCanMove.consensus;
         private readonly ScriptVotePair _isAliveVotePair = new();
@@ -103,7 +109,7 @@ namespace Player {
         
         private SaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
-        private LevelDataManager levelDataManager => LevelDataManager.Instance;
+        private static LevelDataManager LevelDataManager => LevelDataManager.Instance;
         #endregion
 
         #region ***---DataBindingVariables---***
@@ -138,13 +144,12 @@ namespace Player {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
             
-            levelDataManager.LevelStartPoint = transform.position;
+            LevelDataManager.LevelStartPoint = transform.position;
             
             Bind();
         }
 
         private void Start() {
-            
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
             healthComponent.InvulnerabilityTimer.OnBegin +=
@@ -160,6 +165,11 @@ namespace Player {
             Cursor.lockState = CursorLockMode.Locked;
 
             StartCoroutine(ResetPlayerInput());
+            
+            playerInput.actions["LookUp"].performed += _ => _isLookingUp = true;
+            playerInput.actions["LookUp"].canceled += _ => _isLookingUp = false;
+            playerInput.actions["LookDown"].performed += _ => _isLookingDown = true;
+            playerInput.actions["LookDown"].canceled += _ => _isLookingDown = false;
         }
 
         private void OnDestroy() {
@@ -168,22 +178,17 @@ namespace Player {
             InputSystem.PauseHaptics();
         }
 
+        private void Update() {
+            var offset = 0f;
+            if (_isLookingUp) offset += lookahead;
+            if (_isLookingDown) offset -= lookahead;
+            cameraFollowTransform.position = transform.position.WithOffset(y: offset);
+        }
+
         #region ***---InputActions---***
         public void OnSkipDialogue(InputValue inputValue) {
             if (!inputValue.isPressed) return;
             DialogueUI.Instance?.TriggerOnSkipDialogue();
-        }
-
-        public void OnInteract(InputValue inputValue) {
-            if (!inputValue.isPressed || !PlayerMovementEnabled) return;
-
-            var interactable = InteractCheck();
-            if (interactable == null) return;
-
-            if (interactable.TryGetComponent<IInteractable>(out var interactableComponent)) {
-                debugLogger.Log("Interact with: " + interactableComponent);
-                interactableComponent.Interact(this);
-            }
         }
 
         public void OnAttack(InputValue inputValue) {
@@ -337,10 +342,6 @@ namespace Player {
         }
         #endregion
         #endregion
-
-        private Collider2D InteractCheck() {
-            return Physics2D.OverlapBox(transform.position, transform.localScale, 0, whatIsInteractable);
-        }
 
         public void GetKey(GameObject key) {
             if (key.GetComponent<KeyScript>().isCollected) return;

@@ -98,6 +98,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LookUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""2088f9fd-e02c-4b1b-a581-4bb92239200b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LookDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""019ab6ed-08df-4d55-a519-9c609f266d29"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -494,6 +512,94 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
                     ""action"": ""Duck"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d1070b75-85fc-4534-8648-34da6f065d63"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""LookUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c042663-31f3-48a1-b6c8-5db553259999"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""LookUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6107712-b2de-4620-9d93-336e91b4bc7f"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LookUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09f2072a-8dc8-4367-9aa5-2e32f62b4da9"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LookUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ebd94b2-ecbd-4244-8fe2-f2f9f867d4a3"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""LookDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b180e95f-cec5-46f2-b2bd-88808fc95e4b"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LookDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f84b622-1904-4a00-b209-b56daca26573"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LookDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb845e02-0370-4184-bc99-050f95e6f129"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""LookDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -992,6 +1098,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_SkipDialogue = m_Player.FindAction("SkipDialogue", throwIfNotFound: true);
         m_Player_Duck = m_Player.FindAction("Duck", throwIfNotFound: true);
+        m_Player_LookUp = m_Player.FindAction("LookUp", throwIfNotFound: true);
+        m_Player_LookDown = m_Player.FindAction("LookDown", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1078,6 +1186,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_SkipDialogue;
     private readonly InputAction m_Player_Duck;
+    private readonly InputAction m_Player_LookUp;
+    private readonly InputAction m_Player_LookDown;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1090,6 +1200,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @SkipDialogue => m_Wrapper.m_Player_SkipDialogue;
         public InputAction @Duck => m_Wrapper.m_Player_Duck;
+        public InputAction @LookUp => m_Wrapper.m_Player_LookUp;
+        public InputAction @LookDown => m_Wrapper.m_Player_LookDown;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1123,6 +1235,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Duck.started += instance.OnDuck;
             @Duck.performed += instance.OnDuck;
             @Duck.canceled += instance.OnDuck;
+            @LookUp.started += instance.OnLookUp;
+            @LookUp.performed += instance.OnLookUp;
+            @LookUp.canceled += instance.OnLookUp;
+            @LookDown.started += instance.OnLookDown;
+            @LookDown.performed += instance.OnLookDown;
+            @LookDown.canceled += instance.OnLookDown;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1151,6 +1269,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Duck.started -= instance.OnDuck;
             @Duck.performed -= instance.OnDuck;
             @Duck.canceled -= instance.OnDuck;
+            @LookUp.started -= instance.OnLookUp;
+            @LookUp.performed -= instance.OnLookUp;
+            @LookUp.canceled -= instance.OnLookUp;
+            @LookDown.started -= instance.OnLookDown;
+            @LookDown.performed -= instance.OnLookDown;
+            @LookDown.canceled -= instance.OnLookDown;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1315,6 +1439,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnSkipDialogue(InputAction.CallbackContext context);
         void OnDuck(InputAction.CallbackContext context);
+        void OnLookUp(InputAction.CallbackContext context);
+        void OnLookDown(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

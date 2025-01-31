@@ -286,9 +286,7 @@ namespace Player {
             if (isGrounded) {
                 if (!isDashing) canDash = true;
                 
-                if (killCharges != 0) {
-                    killCharges = 0;
-                }
+                killCharges = 0;
 
                 if (!isJumping) {
                     player.animator.SetBool(AnimatorJumpBool, false);
@@ -302,24 +300,6 @@ namespace Player {
 
             wasGroundedLastFrame = isActuallyGrounded;
         }
-
-        /*private bool IsValidSpawnPoint() {
-            var quantizedPosition =
-                new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y) - .3f);
-            var hitColliders = Physics.OverlapBox(quantizedPosition, transform.localScale,
-                Quaternion.identity, whatIsInvalidSpawnPoint);
-            var i = 0;
-            while (i < hitColliders.Length) {
-                if (hitColliders[i].CompareTag("Hazard")) {
-                    return false;
-                }
-
-                i++;
-            }
-
-            var hit = Physics2D.Raycast(quantizedPosition, Vector2.down, .5f);
-            return hit.collider != null && !hit.collider.CompareTag("Hazard") && hit.collider.CompareTag("Ground");
-        }*/
 
         #region ---EventFunctions---
         public void OnJump(InputValue inputValue) {
@@ -414,7 +394,7 @@ namespace Player {
         private void EnterDuck() {
             playerMovementDebugLogger.Log("entering duck");
 
-            if (PlayerLadderLogic.TryGetLadderTop(out var ladderTop)) return;
+            if (PlayerLadderLogic.TryGetLadderTop(out _)) return;
             
             isDucking = true;
             player.animator.SetBool(AnimatorCrouchBool, true);
