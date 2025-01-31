@@ -10,7 +10,7 @@ public class GlobalInstaller : LifetimeScope {
         builder.RegisterInstance<IPauseManager>(new PauseManager(1));
         builder.RegisterInstance(saveSlots);
         
-        builder.Register<DebugLoggerProvider>(Lifetime.Singleton);
+        builder.Register<IProvider<DebugLoggerSO>, DebugLoggerProvider>(Lifetime.Singleton);
         
         builder.Register<IAchievementManager, SteamAchievementManager>(Lifetime.Singleton);
         builder.Register<IAudioManager, FMODManagerDI>(Lifetime.Singleton);

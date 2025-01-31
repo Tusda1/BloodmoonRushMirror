@@ -10,6 +10,7 @@ using SaveLoadSystem.Data;
 using SceneCollections;
 using TetraCreations.Attributes;
 using UI;
+using UI.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities.DataBinding;
@@ -163,6 +164,8 @@ namespace Player {
             
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+
+            PlayerInput.all[0].SwitchCurrentControlScheme(PlayerPrefs.GetString("ControlScheme", "KeyboardMouse"));
 
             StartCoroutine(ResetPlayerInput());
             

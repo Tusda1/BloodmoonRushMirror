@@ -44,11 +44,11 @@ namespace UI {
             _saveSlot1 = _savesMenuRoot.Q<Button>("SaveSlot1");
             _saveSlot2 = _savesMenuRoot.Q<Button>("SaveSlot2");
             _saveSlot3 = _savesMenuRoot.Q<Button>("SaveSlot3");
-
-            _saveLoadSystemManager.UpdateSaveSlotSO();
         }
 
         private void Start() {
+            _saveLoadSystemManager.UpdateSaveSlotSO();
+            
             _saveSlot1.clicked += () => LoadSave(_saveSlots.saveSlot1Data);
             _saveSlot2.clicked += () => LoadSave(_saveSlots.saveSlot2Data);
             _saveSlot3.clicked += () => LoadSave(_saveSlots.saveSlot3Data);
