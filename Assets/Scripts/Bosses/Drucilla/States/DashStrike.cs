@@ -8,9 +8,11 @@ public class DashStrike : DrucillaState
     [SerializeField] private float tooCloseDistance = 4f;
     
     private Vector2 _teleportLocation;
+    private bool _lightningDashStarted;
     
     private PlayerScript _player;
     private CornerFinder _cornerFinder;
+    private LightningManager _lightningManager = new();
     
     private enum DashStrikeStage
     {
@@ -74,12 +76,11 @@ public class DashStrike : DrucillaState
     
     private void LightningDash()
     {
-        
-    }
-
-    private IEnumerator LightningDashCoroutine()
-    {
-        yield return null;
+        if (!_lightningDashStarted)
+        {
+            _lightningDashStarted = true;
+            _lightningManager.CreateLightning(transform.position, _player.transform.position);
+        }
     }
     
     private void Strike()

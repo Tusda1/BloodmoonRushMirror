@@ -14,7 +14,17 @@ public class LightningManager
     {
         _lightningPooler ??= TryGetCommunityPooler.TryGetPooler(lightningPrefab);
         
-        var lightning = _lightningPooler.GetPooledObject();
-        var length = lightning.GetComponent<Collider2D>().bounds.size.x;
+        var length = lightningPrefab.GetComponent<Collider2D>().bounds.size.y;
+        
+        // Determine how many lightning bolts are needed to reach the target
+        var distance = Vector2.Distance(position, targetPosition);
+        var lightningCount = Mathf.CeilToInt(distance / length);
+
+        for (int i = 0; i < lightningCount; i++)
+        {
+            var lightning = _lightningPooler.GetPooledObject();
+            lightning.transform.position = Vector2.Lerp(position, targetPosition, i / (float) lightningCount);
+            lightning.SetActive(true);
+        }
     }
 }

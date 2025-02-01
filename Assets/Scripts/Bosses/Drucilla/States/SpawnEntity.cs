@@ -5,8 +5,6 @@ public class SpawnEntity : DrucillaState
 {
     [SerializeField] private GameObject entityPrefab;
     [SerializeField] private int entityCount = 2;
-    [SerializeField] private CornerFinder.CornerType firstCorner; // A line is draw between these two corners and the entities are spawned on that line
-    [SerializeField] private CornerFinder.CornerType secondCorner;
     
     private Pooler _pooler;
     private CornerFinder _cornerFinder;
