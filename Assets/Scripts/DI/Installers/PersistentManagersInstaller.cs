@@ -6,9 +6,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Utilities.DataBinding;
 using VContainer;
-using VContainer.Unity;
 
-public class PersistentManagersInstaller : LifetimeScope {
+public class PersistentManagersInstaller : AutoInjectInstaller {
     [SerializeField, Required] private SaveLoadSystemManager saveLoadSystemManager;
     [SerializeField, Required] private CameraEffects cameraEffects;
     [SerializeField, Required] private EventSystem eventSystem;
@@ -23,4 +22,14 @@ public class PersistentManagersInstaller : LifetimeScope {
         builder.Register<FileDataService<SaveGameData>>(Lifetime.Singleton);
         builder.Register<JSONSerializer>(Lifetime.Singleton).As<ISerializer>();
     }
+
+#if UNITY_EDITOR
+    [ContextMenu(nameof(TrySetReferences))]
+    public void TrySetReferences() {
+        SetReferenceFromSceneIfNull(ref saveLoadSystemManager);
+        SetReferenceFromSceneIfNull(ref cameraEffects);
+        SetReferenceFromSceneIfNull(ref eventSystem);
+        SetReferenceFromSceneIfNull(ref renderTextureCamera);
+    }
+#endif
 }
