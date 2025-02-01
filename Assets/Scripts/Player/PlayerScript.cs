@@ -10,7 +10,6 @@ using SaveLoadSystem.Data;
 using SceneCollections;
 using TetraCreations.Attributes;
 using UI;
-using UI.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities.DataBinding;
@@ -165,14 +164,14 @@ namespace Player {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            PlayerInput.all[0].SwitchCurrentControlScheme(PlayerPrefs.GetString("ControlScheme", "KeyboardMouse"));
-
             StartCoroutine(ResetPlayerInput());
             
             playerInput.actions["LookUp"].performed += _ => _isLookingUp = true;
             playerInput.actions["LookUp"].canceled += _ => _isLookingUp = false;
             playerInput.actions["LookDown"].performed += _ => _isLookingDown = true;
             playerInput.actions["LookDown"].canceled += _ => _isLookingDown = false;
+
+            // PlayerInput.all[0].SwitchCurrentControlScheme(PlayerPrefs.GetString("ControlScheme", "KeyboardMouse"));
         }
 
         private void OnDestroy() {
