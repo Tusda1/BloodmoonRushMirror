@@ -1,9 +1,8 @@
 using Player;
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 
-public class PlayerInstaller : LifetimeScope {
+public class PlayerInstaller : AutoInjectInstaller {
     [SerializeField] private PlayerScript playerScript;
 
     protected override void Configure(IContainerBuilder builder) {
@@ -11,4 +10,11 @@ public class PlayerInstaller : LifetimeScope {
         builder.RegisterInstance(playerScript.playerMovement);
         builder.RegisterInstance(playerScript.hitbox);
     }
+
+#if UNITY_EDITOR
+    [ContextMenu(nameof(TrySetReferences))]
+    public void TrySetReferences() {
+        SetReferenceFromSceneIfNull(ref playerScript);
+    }
+#endif
 }
