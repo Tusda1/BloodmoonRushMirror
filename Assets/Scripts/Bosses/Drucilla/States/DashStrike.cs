@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Player;
 using UnityEngine;
 
@@ -26,19 +27,19 @@ public class DashStrike : DrucillaState
 
         if (Vector2.Distance(transform.position, _player.transform.position) < tooCloseDistance)
         {
-            var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
-            var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
+            var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
+            var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
 
             if (Vector2.Distance(leftCorner, _player.transform.position) < Vector2.Distance(rightCorner, _player.transform.position))
             {
                 leftCorner.x += 1;
-                leftCorner.y -= 2;
+                leftCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
                 _teleportLocation = leftCorner;
             }
             else
             {
                 rightCorner.x -= 1;
-                rightCorner.y -= 2;
+                rightCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
                 _teleportLocation = rightCorner;
             }
             
@@ -74,6 +75,11 @@ public class DashStrike : DrucillaState
     private void LightningDash()
     {
         
+    }
+
+    private IEnumerator LightningDashCoroutine()
+    {
+        yield return null;
     }
     
     private void Strike()
