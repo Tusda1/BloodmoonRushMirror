@@ -36,7 +36,7 @@ public class CrusherScript : GravityObject {
         targetVelocity = targetPosition.normalized * speed;
 
         if (goingDown) {
-            if (IsInsideCircle(endPos, 0.1f, currentPosition)) {
+            if (IsInsideCircle(endPos, 0.5f, currentPosition)) {
                 isStill = true;
                 triggerCollider2D.isTrigger = false;
                 _cameraEffects?.ShakeCamera(0.2f, 0.2f);
