@@ -1,18 +1,17 @@
-using System;
-using System.Collections;
 using Player;
 using UnityEngine;
 
 public class DashStrike : DrucillaState
 {
     [SerializeField] private float tooCloseDistance = 4f;
+    [SerializeField] private float lightningOriginHeight = 15f;
     
     private Vector2 _teleportLocation;
     private bool _lightningDashStarted;
     
+    [SerializeField] private LightningManager lightningManager = new();
     private PlayerScript _player;
     private CornerFinder _cornerFinder;
-    private LightningManager _lightningManager = new();
     
     private enum DashStrikeStage
     {
@@ -79,8 +78,21 @@ public class DashStrike : DrucillaState
         if (!_lightningDashStarted)
         {
             _lightningDashStarted = true;
-            _lightningManager.CreateLightning(transform.position, _player.transform.position);
+            var position = transform.position;
+            lightningManager.CreateLightning(position + Vector3.up * lightningOriginHeight, position,
+                () =>
+                {
+                    lightningManager.CreateLightning(position, _player.transform.position, OnLightningEnd);
+                });
         }
+    }
+    
+    private void OnLightningEnd()
+    {
+        var playerPosition = _player.transform.position;
+        var tempTransform = transform;
+        tempTransform.position = playerPosition + (tempTransform.position - playerPosition).normalized * 1.5f;
+        _stage = DashStrikeStage.Strike;
     }
     
     private void Strike()

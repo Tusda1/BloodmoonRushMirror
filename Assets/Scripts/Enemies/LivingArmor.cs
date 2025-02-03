@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using Pathfinding;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Seeker))]
@@ -24,7 +23,7 @@ public class LivingArmor : ReactiveBase
     
     private float _repeatTimer;
     
-    private int _currentWaypoint = 0;
+    private int _currentWaypoint;
     private bool _reachedEndOfPath;
     private bool _isAttacking;
     private bool _isJumping;
@@ -45,8 +44,7 @@ public class LivingArmor : ReactiveBase
         if (targetObject == null) { return; }
 
         if (!_seeker.IsDone()) { return; }
-
-        // Start the path without NNConstraint
+        
         _seeker.StartPath(rb2d.position, targetObject.transform.position, OnPathComplete);
     }
 
@@ -109,7 +107,6 @@ public class LivingArmor : ReactiveBase
         Vector2 direction = ((Vector2)_path.vectorPath[_currentWaypoint] - rb2d.position).normalized;
         var angle = Vector2.Angle(Vector2.up, direction);
         var willWalkOffLedge = false;
-        print("angle: " + angle);
         
         // overlappoint to check if the enemy is walking off a ledge
         Collider2D groundHit = Physics2D.OverlapPoint(GetBottomPosition() + facingDirection * 0.8f + Vector2.down * 0.5f, LayerMask.GetMask("Ground"));
@@ -295,5 +292,18 @@ public class LivingArmor : ReactiveBase
         isStunned = true;
         yield return new WaitForSeconds(staggerDuration);
         isStunned = false;
+    }
+
+    protected override void OnDeath()
+    {
+        StartCoroutine(Reconstruct());
+    }
+    
+    private IEnumerator Reconstruct()
+    {
+        yield return new WaitForSeconds(2);
+        currentState = EnemyState.Scanning;
+        isDead = false;
+        currentHealth = maxHealth;
     }
 }
