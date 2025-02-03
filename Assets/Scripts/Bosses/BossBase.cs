@@ -18,6 +18,7 @@ public class BossBase : GravityObject
     public int CurrentHealth {get; private set;}
     
     public event Action OnBattleStart;
+    public event Action OnBattleEnd;
     
     [HideInInspector] public Vector2 targetVelocityPublic;
     [HideInInspector] public Vector2 velocityPublic;
