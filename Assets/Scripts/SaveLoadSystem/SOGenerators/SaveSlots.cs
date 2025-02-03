@@ -2,7 +2,7 @@
 
 [CreateAssetMenu(
     fileName = nameof(SaveSlots), 
-    menuName = "ScriptableObjects/" + nameof(SaveSlots))]
+    menuName = "Scriptable Objects/" + nameof(SaveSlots))]
 public class SaveSlots : ScriptableObject {
     public SaveSlotDataSO saveSlot1Data;
     public SaveSlotDataSO saveSlot2Data;

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7057345946494523879}
-  - component: {fileID: 6140800332273132084}
+  - component: {fileID: -962373182210320563}
   m_Layer: 0
-  m_Name: ToweringHeightsContext
+  m_Name: LevelUI_Installer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6140800332273132084
+--- !u!114 &-962373182210320563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,15 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7940037054753066520}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ff5ab81a9acef94c825225ea9b8b189, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f46a66f81e548e5bd30f3d4058a383d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
     TypeName: PlayerInstaller
   autoRun: 1
   autoInjectGameObjects: []
-  mainCamera: {fileID: 0}
-  cinemachineBrain: {fileID: 0}
-  levelDataManager: {fileID: 0}
-  steamSpeedrunTimer: {fileID: 0}
-  monoBehaviourRegistrationObjects: []

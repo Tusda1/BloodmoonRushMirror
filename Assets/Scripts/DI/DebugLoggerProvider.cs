@@ -13,11 +13,3 @@ public class DebugLoggerProvider : IProvider<DebugLoggerSO>  {
 
     Dictionary<string, DebugLoggerSO> IProvider<DebugLoggerSO>.Services => _services;
 }
-
-public interface IProvider<T> {
-    protected Dictionary<string, T> Services { get; }
-    
-    public T Get(string key) {
-        return Services[key];
-    }
-}
