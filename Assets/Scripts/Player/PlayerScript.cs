@@ -109,6 +109,7 @@ namespace Player {
         
         private SaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
+        private IControlSchemeChanger _controlSchemeChanger;
         private static LevelDataManager LevelDataManager => LevelDataManager.Instance;
         #endregion
 
@@ -134,9 +135,10 @@ namespace Player {
         #endregion
         
         [Inject]
-        public void Init(SaveLoadSystemManager saveLoadSystemManager, CameraEffects cameraEffects) {
-            _saveLoadSystemManager = saveLoadSystemManager;
-            _cameraEffects = cameraEffects;
+        public void Construct(IObjectResolver container) {
+            _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
+            _cameraEffects = container.Resolve<CameraEffects>();
+            _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
         }
 
         #region ---EventFunctions---
@@ -164,14 +166,15 @@ namespace Player {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            StartCoroutine(ResetPlayerInput());
+            // StartCoroutine(ResetPlayerInput());
             
             playerInput.actions["LookUp"].performed += _ => _isLookingUp = true;
             playerInput.actions["LookUp"].canceled += _ => _isLookingUp = false;
             playerInput.actions["LookDown"].performed += _ => _isLookingDown = true;
             playerInput.actions["LookDown"].canceled += _ => _isLookingDown = false;
-
-            // PlayerInput.all[0].SwitchCurrentControlScheme(PlayerPrefs.GetString("ControlScheme", "KeyboardMouse"));
+            
+            _controlSchemeChanger.OnControlSchemeChanged += data => playerInput.SwitchCurrentControlScheme(data.Name, data.Devices);
+            playerInput.SwitchCurrentControlScheme(_controlSchemeChanger.CurrentControlSchemeName, InputSystem.devices.ToArray());
         }
 
         private void OnDestroy() {

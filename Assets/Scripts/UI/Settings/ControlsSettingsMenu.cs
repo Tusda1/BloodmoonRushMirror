@@ -2,6 +2,7 @@ using System;
 using Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
+using VContainer;
 
 namespace UI.Settings {
     public class ControlsSettingsMenu : MonoBehaviour, IMenu {
@@ -11,11 +12,14 @@ namespace UI.Settings {
         
         private VisualElement _root;
         private VisualElement _controlsSettingsMenu;
+        private RadioButtonGroup _radioButtonGroup;
 
-        public static string ControlScheme = "KeyboardMouse";
+        public static string ControlScheme = "Keyboard";
 
         public event Action OnMenuActivated = delegate { };
         public event Action OnMenuDeactivated = delegate { };
+        
+        [Inject] private IControlSchemeChanger _controlSchemeChanger;
         #endregion
 
         private void Awake() {
@@ -24,9 +28,9 @@ namespace UI.Settings {
             
             ControlScheme = PlayerPrefs.GetString("ControlScheme", "KeyboardMouse");
             
-            var p = _controlsSettingsMenu.Q<RadioButtonGroup>();
+            _radioButtonGroup = _controlsSettingsMenu.Q<RadioButtonGroup>();
 
-            p.RegisterValueChangedCallback(evt => {
+            _radioButtonGroup.RegisterValueChangedCallback(evt => {
                 switch (evt.newValue) {
                     case 1:
                         SetControllerScheme();
@@ -39,32 +43,39 @@ namespace UI.Settings {
                         break;
                 }
             });
-
         }
 
-        private void SetControllerScheme() {
-            ControlScheme = "Controller";
+        [ContextMenu(nameof(SetControllerScheme))]
+        public void SetControllerScheme() {
+            ControlScheme = "Gamepad";
             
-            PlayerPrefs.SetString("ControlScheme", ControlScheme);
+            SetControlScheme(in ControlScheme);
         }
 
-        private void SetKeyboardMouseScheme() {
+        [ContextMenu(nameof(SetKeyboardMouseScheme))]
+        public void SetKeyboardMouseScheme() {
             ControlScheme = "KeyboardMouse";
             
-            PlayerPrefs.SetString("ControlScheme", ControlScheme);
+            SetControlScheme(in ControlScheme);
         }
 
-        private void SetKeyboardScheme() {
+        [ContextMenu(nameof(SetKeyboardScheme))]
+        public void SetKeyboardScheme() {
             ControlScheme = "Keyboard";
             
-            PlayerPrefs.SetString("ControlScheme", ControlScheme);
+            SetControlScheme(in ControlScheme);
+        }
+
+        private void SetControlScheme(in string newScheme) {
+            _controlSchemeChanger.ChangeSchemeByName(newScheme);
+            PlayerPrefs.SetString("ControlScheme", newScheme);
         }
 
         public void Activate() {
             _controlsSettingsMenu.SetEnabled(true);
             _controlsSettingsMenu.RemoveFromClassList("left");
             _controlsSettingsMenu.RemoveFromClassList("right");
-            // _controllerSchemeButton.Focus();
+            _radioButtonGroup.Focus();
             
             OnMenuActivated.Invoke();
         }

@@ -1,0 +1,151 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.DualShock;
+using UnityEngine.InputSystem.Switch;
+using UnityEngine.InputSystem.Utilities;
+using UnityEngine.InputSystem.XInput;
+
+public class ControllerRecognizer {
+    #region ---Fields---
+    public string CurrentDeviceID { get; private set; }
+    public InputDevice CurrentDevice { get; private set; }
+
+    public event Action<string, InputDevice> OnDeviceChanged = delegate { };
+
+    private readonly Dictionary<string, InputDevice> _currentDevices = new();
+
+    #region ***---Consts---***
+    public const string PlaystationDeviceID = "PLAYSTATION";
+    public const string XboxDeviceID = "XBOX";
+    public const string NintendoDeviceID = "NINTENDO";
+
+    public const string DefaultGamepadControlsID = XboxDeviceID;
+    #endregion
+    #endregion
+
+    #region ---Construction---
+    public ControllerRecognizer() {
+        InputSystem.onDeviceChange += OnDeviceChangeAutomatic;
+        GetAllControllersManually();
+
+        InputSystem.onAnyButtonPress.Call(OnAnyButtonPress);
+    }
+
+    ~ControllerRecognizer() {
+        InputSystem.onDeviceChange -= OnDeviceChangeAutomatic;
+    }
+    #endregion
+
+    #region ---SetCurrentDevice---
+    private void SetCurrentDevice(string id, InputDevice device) {
+        CurrentDeviceID = id;
+        CurrentDevice = device;
+
+        OnDeviceChanged.Invoke(CurrentDeviceID, CurrentDevice);
+    }
+
+    private void SetCurrentDevice(InputDevice inputDevice) {
+        SetCurrentDevice(InputDeviceToID(inputDevice), inputDevice);
+    }
+    #endregion
+
+    #region ---PrivateMethods---
+    private void OnAnyButtonPress(InputControl inputControl) {
+        var inputDevice = inputControl.device;
+        if (inputDevice is not (Gamepad or Joystick)) return;
+
+        if (inputDevice != CurrentDevice) {
+            SetCurrentDevice(inputDevice);
+        }
+    }
+
+    private void OnDeviceChangeAutomatic(InputDevice inputDevice, InputDeviceChange inputDeviceChange) {
+        if (inputDevice is not (Gamepad or Joystick)) return;
+
+        switch (inputDeviceChange) {
+            case InputDeviceChange.Added: {
+                var connectedControllers = GetAllConnectedControllers();
+                if (PlaystationDualInputDeviceFix(inputDevice, connectedControllers)) break;
+
+                AddDevice(inputDevice);
+                break;
+            }
+            case InputDeviceChange.Removed: {
+                RemoveDevice(inputDevice);
+                break;
+            }
+        }
+    }
+
+    private bool PlaystationDualInputDeviceFix(InputDevice inputDevice, InputDevice[] connectedControllers) {
+        return inputDevice is DualShockGamepad &&
+               (_currentDevices.ContainsKey(PlaystationDeviceID) ||
+                connectedControllers.Count(x => x is DualShockGamepad) > 1);
+    }
+    #endregion
+
+    #region ---PublicMethods---
+    public static InputDevice[] GetAllConnectedControllers() {
+        return InputSystem.devices.Where(x => x is Gamepad or Joystick).ToArray();
+    }
+
+    public void GetAllControllersManually() {
+        var connectedControllers = GetAllConnectedControllers();
+
+        foreach (var inputDevice in connectedControllers) {
+            if (PlaystationDualInputDeviceFix(inputDevice, connectedControllers)) continue;
+
+            _currentDevices.Add(InputDeviceToID(inputDevice), inputDevice);
+        }
+
+        if (_currentDevices.Count <= 0) return;
+
+        var device = _currentDevices.First();
+        SetCurrentDevice(device.Key, device.Value);
+    }
+
+    public void AddDevice(InputDevice inputDevice) {
+        if (inputDevice is not (Gamepad or Joystick)) return;
+
+        var id = InputDeviceToID(inputDevice);
+
+        if (!_currentDevices.TryAdd(id, inputDevice)) return;
+
+        SetCurrentDevice(id, inputDevice);
+    }
+
+    public void RemoveDevice(InputDevice inputDevice) {
+        if (inputDevice is not (Gamepad or Joystick)) return;
+
+        var id = InputDeviceToID(inputDevice);
+
+        if (!_currentDevices.ContainsKey(id)) return;
+
+        _currentDevices.Remove(id);
+
+        if (CurrentDeviceID != id) return;
+        var newID = _currentDevices.FirstOrDefault();
+
+        if (newID.Key != null) {
+            CurrentDeviceID = newID.Key;
+
+            CurrentDevice = inputDevice;
+        }
+    }
+
+    public static string InputDeviceToID(InputDevice inputDevice) {
+        if (inputDevice is not (Gamepad or Joystick)) {
+            throw new ArgumentException("Input Device is not a Gamepad or Joystick");
+        }
+
+        return inputDevice switch {
+            XInputController => XboxDeviceID,
+            DualShockGamepad => PlaystationDeviceID,
+            SwitchProControllerHID or Joystick => NintendoDeviceID,
+            _ => DefaultGamepadControlsID,
+        };
+    }
+    #endregion
+}
