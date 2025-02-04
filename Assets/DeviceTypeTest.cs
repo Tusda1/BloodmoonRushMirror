@@ -26,7 +26,7 @@ public class DeviceTypeTest : MonoBehaviour {
     }
     #endregion
 
-    private void OnControlSchemeChanged(ControlSchemeData controlSchemeData) {
+    private void OnControlSchemeChanged(IControlSchemeChanger.ControlSchemeData controlSchemeData) {
         textMesh.text = controlSchemeData.ID;
     }
 }

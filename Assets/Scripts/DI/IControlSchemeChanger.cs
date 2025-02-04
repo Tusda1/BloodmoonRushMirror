@@ -5,7 +5,7 @@ public interface IControlSchemeChanger {
     string CurrentControlSchemeName { get; set; }
     string CurrentControlSchemeID { get; set; }
     
-    InputLocalizationData CurrentControlSchemeData { get; }
+    ControlSchemeDataSO CurrentControlSchemeDataSO { get; }
 
     ControlSchemeData CurrentControlSchemeInfo { get; }
     
@@ -17,13 +17,13 @@ public interface IControlSchemeChanger {
     public struct ControlSchemeData {
         public string Name;
         public string ID;
-        public InputLocalizationData Data;
+        public ControlSchemeDataSO DataSO;
         public InputDevice[] Devices;
         
-        public ControlSchemeData(InputLocalizationData data, InputDevice[] devices, string name = null, string id = null) {
-            Name = name ?? data.controlScheme;
-            ID = id ?? data.id;
-            Data = data;
+        public ControlSchemeData(ControlSchemeDataSO dataSO, InputDevice[] devices, string name = null, string id = null) {
+            Name = name ?? dataSO.controlScheme;
+            ID = id ?? dataSO.id;
+            DataSO = dataSO;
             Devices = devices;
         }
     }

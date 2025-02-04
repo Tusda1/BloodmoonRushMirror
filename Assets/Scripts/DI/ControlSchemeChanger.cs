@@ -5,23 +5,22 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
 using static ControllerRecognizer;
-using static IControlSchemeChanger;
 
 public class ControlSchemeChanger : IControlSchemeChanger {
     #region ---Fields---
-    public ControlSchemeData CurrentControlSchemeInfo { get; private set; }
+    public IControlSchemeChanger.ControlSchemeData CurrentControlSchemeInfo { get; private set; }
 
-    public event Action<ControlSchemeData> OnControlSchemeChanged = delegate { };
+    public event Action<IControlSchemeChanger.ControlSchemeData> OnControlSchemeChanged = delegate { };
 
     private readonly ControllerRecognizer _controllerRecognizer;
-    private readonly Dictionary<string, InputLocalizationData> _inputLocalizationDatas = new();
+    private readonly Dictionary<string, ControlSchemeDataSO> _inputLocalizationDatas = new();
 
     private InputDevice _currentControllerDevice;
 
     #region ***---PropertyBackingFields---***
     private string _currentControlSchemeName;
     private string _currentControlSchemeID;
-    private InputLocalizationData _currentControlSchemeData;
+    private ControlSchemeDataSO _currentControlSchemeDataSO;
     #endregion
 
     #region ***---SchemeNames---***
@@ -77,7 +76,7 @@ public class ControlSchemeChanger : IControlSchemeChanger {
             _currentControlSchemeName = value;
             _currentControlSchemeID = NameToID(CurrentControlSchemeName);
             
-            CurrentControlSchemeData = _inputLocalizationDatas[CurrentControlSchemeID];
+            CurrentControlSchemeDataSO = _inputLocalizationDatas[CurrentControlSchemeID];
         }
     }
 
@@ -87,14 +86,14 @@ public class ControlSchemeChanger : IControlSchemeChanger {
             _currentControlSchemeID = value;
             _currentControlSchemeName = IDToName(CurrentControlSchemeID);
             
-            CurrentControlSchemeData = _inputLocalizationDatas[CurrentControlSchemeID];
+            CurrentControlSchemeDataSO = _inputLocalizationDatas[CurrentControlSchemeID];
         }
     }
 
-    public InputLocalizationData CurrentControlSchemeData {
-        get => _currentControlSchemeData;
+    public ControlSchemeDataSO CurrentControlSchemeDataSO {
+        get => _currentControlSchemeDataSO;
         private set {
-            _currentControlSchemeData = value;
+            _currentControlSchemeDataSO = value;
 
             var currentDevices = new List<InputDevice>();
 
@@ -105,7 +104,7 @@ public class ControlSchemeChanger : IControlSchemeChanger {
                 currentDevices.AddRange(InputSystem.devices.Where(x => x is Keyboard or Mouse));
             }
 
-            CurrentControlSchemeInfo = new ControlSchemeData(_currentControlSchemeData, currentDevices.ToArray());
+            CurrentControlSchemeInfo = new IControlSchemeChanger.ControlSchemeData(_currentControlSchemeDataSO, currentDevices.ToArray());
 
             OnControlSchemeChanged.Invoke(CurrentControlSchemeInfo);
 
@@ -116,7 +115,7 @@ public class ControlSchemeChanger : IControlSchemeChanger {
 
     #region ---PrivateMethods---
     private void InitializeInputLocalizationDatas() {
-        var data = ScrubUtils.GetAllScrubsInResourceFolder<InputLocalizationData>("InputLocalizationData");
+        var data = ScrubUtils.GetAllScrubsInResourceFolder<ControlSchemeDataSO>(ControlSchemeDataSO.FolderName);
 
         foreach (var localizationData in data) {
             _inputLocalizationDatas.Add(localizationData.id, localizationData);
