@@ -11,52 +11,76 @@ public class IceRain : DrucillaState
     
     private float _timer;
     private float _cooldownTimer;
+    private bool _hasTeleported;
+    private Vector2 cornerOne;
+    private Vector2 cornerTwo;
     
     private Pooler _pooler;
     private CornerFinder _cornerFinder;
-    
+
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+    }
+
     private void Start()
     {
         _pooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab);
-        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
     
     private void OnEnable()
     {
-        var cornerOne = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
-        var cornerTwo = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
-        
-        EndState();
+        cornerOne = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
+        cornerTwo = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
+    }
+
+    private void OnDisable()
+    {
+        _hasTeleported = false;
     }
 
     private void Update()
     {
-        if (_timer > duration)
+        if (!_hasTeleported)
         {
-            _timer = 0;
-            EndState();
-            return;
+            if (!teleport.IsTeleporting) teleport.TeleportToLocation(new Vector2(Random.Range(cornerOne.x + 1, cornerTwo.x - 1), cornerOne.y - 2));
         }
-        
-        _timer += Time.deltaTime;
-        
-        if (_cooldownTimer < cooldown)
+        else
         {
-            _cooldownTimer += Time.deltaTime;
-            return;
+            if (_timer > duration)
+            {
+                _timer = 0;
+                EndState();
+                return;
+            }
+
+            _timer += Time.deltaTime;
+
+            if (_cooldownTimer < cooldown)
+            {
+                _cooldownTimer += Time.deltaTime;
+                return;
+            }
+
+            cornerOne = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
+            cornerTwo = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
+
+            for (int i = 0; i < projectileSpawnAmount; i++)
+            {
+                var position = new Vector2(Random.Range(cornerOne.x, cornerTwo.x), cornerOne.y);
+                var projectile = _pooler.GetPooledObject();
+                projectile.transform.position = position;
+                projectile.SetActive(true);
+            }
+
+            _cooldownTimer = 0;
         }
-        
-        var cornerOne = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
-        var cornerTwo = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
-        
-        for (int i = 0; i < projectileSpawnAmount; i++)
-        {
-            var position = new Vector2(Random.Range(cornerOne.x, cornerTwo.x), cornerOne.y);
-            var projectile = _pooler.GetPooledObject();
-            projectile.transform.position = position;
-            projectile.SetActive(true);
-        }
-        
-        _cooldownTimer = 0;
+    }
+    
+    protected override void OnTeleportEnd()
+    {
+        _hasTeleported = true;
     }
 }

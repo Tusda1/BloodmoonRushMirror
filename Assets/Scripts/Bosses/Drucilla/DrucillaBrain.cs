@@ -36,6 +36,7 @@ public class DrucillaBrain : MonoBehaviour
         // pick a random state from the list of states
         var nextState = _states[UnityEngine.Random.Range(0, _states.Length)];
         boss.StateMachine.ForceSetState(nextState);
+        print(boss.StateMachine.CurrentState);
     }
     
 #if UNITY_EDITOR

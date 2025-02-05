@@ -10,6 +10,7 @@ public class MachineGunState : DrucillaState
     
     private Vector2 _teleportPosition;
     private float _shootTimer;
+    private int _bulletCount;
     private PlayerScript _player;
     
     private Pooler _pooler;
@@ -23,11 +24,17 @@ public class MachineGunState : DrucillaState
     
     private MachineGunStage _stage;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+    }
+
     private void Start()
     {
         _player = ServiceLocator.Get<PlayerScript>();
         _pooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab);
-        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
 
     private void OnEnable()
@@ -39,8 +46,14 @@ public class MachineGunState : DrucillaState
         leftCorner.x += 1;
         leftCorner.y -= 2;
         
-        var middle = (leftCorner + rightCorner) / 2; // Find top middle of room
+        var middle = new Vector2((leftCorner.x + rightCorner.x) / 2, leftCorner.y); // Find top middle of room
         _teleportPosition = middle;
+    }
+
+    private void OnDisable()
+    {
+        _bulletCount = 0;
+        _shootTimer = 0;
     }
 
     private void Update()
@@ -57,7 +70,12 @@ public class MachineGunState : DrucillaState
                 throw new ArgumentOutOfRangeException();
         }
     }
-    
+
+    protected override void OnTeleportEnd()
+    {
+        _stage = MachineGunStage.Shoot;
+    }
+
     private void Firing()
     {
         if (_shootTimer > 0)
@@ -66,8 +84,14 @@ public class MachineGunState : DrucillaState
         }
         else
         {
+            _bulletCount++;
             Shoot();
             _shootTimer = shootCooldown;
+        }
+        
+        if (_bulletCount >= projectileCount)
+        {
+            EndState();
         }
     }
     

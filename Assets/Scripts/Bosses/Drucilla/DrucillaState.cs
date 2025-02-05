@@ -6,7 +6,7 @@ public class DrucillaState : BossState
     
     protected Teleport teleport;
     
-    private void Awake()
+    protected virtual void Awake()
     {
         teleport = new Teleport(transform, Boss.AnimancerComponent, DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit, OnTeleportEnd);
     }

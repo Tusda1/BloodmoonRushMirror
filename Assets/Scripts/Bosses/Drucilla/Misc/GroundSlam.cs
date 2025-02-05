@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using PlayerLoopTimer;
 using UnityEngine;
@@ -5,9 +6,10 @@ using UnityEngine;
 public class GroundSlam 
 {
     private int _groundSlamStage;
-    private const float UpSpeed = 10f;
-    private const float UpTime = 0.3f;
-    private const float DownSpeed = 10f;
+    private const float UpSpeed = 20f;
+    private const float UpTime = 0.1f;
+    private const float DownWaitTime = 0.3f;
+    private const float DownSpeed = 15f;
     private float _timer;
     
     private readonly Collider2D _collider;
@@ -17,9 +19,8 @@ public class GroundSlam
         _collider = externalCollider;
     }
 
-    public void ExecuteGroundSlam(ref Vector2 velocityReference)
+    public void ExecuteGroundSlam(ref Vector2 velocityReference, Action onGroundSlamEnd = null)
     {
-
         switch (_groundSlamStage)
         {
             case 0:
@@ -34,20 +35,30 @@ public class GroundSlam
                     _timer = 0;
                 }
                 break;
+            
             case 1:
-                if (_collider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+                _timer += Time.deltaTime;
+                if (_timer > DownWaitTime)
                 {
-                    velocityReference.y = 0;
-                    _groundSlamStage++;
-                }
-                else
-                {
-                    velocityReference.y = -DownSpeed;
+                    if (_collider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+                    {
+                        velocityReference.y = 0;
+                        _groundSlamStage++;
+                        _timer = 0;
+                    }
+                    else
+                    {
+                        velocityReference.y = -DownSpeed;
+                    }
                 }
                 break;
+            
             case 2:
                 // TODO : Add explosion type thing when slamming
+                onGroundSlamEnd?.Invoke();
+                _groundSlamStage = 0;
                 break;
+            
             default:
                 Debug.LogError("GroundSlamStage is out of bounds");
                 break;

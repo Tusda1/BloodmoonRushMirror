@@ -1,3 +1,4 @@
+using System;
 using Player;
 using UnityEngine;
 
@@ -52,6 +53,11 @@ public class DashStrike : DrucillaState
         }
     }
 
+    private void OnDisable()
+    {
+        _lightningDashStarted = false;
+    }
+
     private void Update()
     {
         switch (_stage)
@@ -97,6 +103,6 @@ public class DashStrike : DrucillaState
     
     private void Strike()
     {
-        
+        EndState();
     }
 }

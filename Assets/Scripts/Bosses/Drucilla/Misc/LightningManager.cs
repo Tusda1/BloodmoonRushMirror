@@ -15,7 +15,10 @@ public class LightningManager
     {
         _lightningPooler ??= TryGetCommunityPooler.TryGetPooler(lightningPrefab);
         
-        var length = lightningPrefab.GetComponent<Collider2D>().bounds.size.y;
+        var exampleLightning = _lightningPooler.GetPooledObject();
+        exampleLightning.SetActive(true);
+        var length = exampleLightning.GetComponent<Collider2D>().bounds.size.y;
+        exampleLightning.SetActive(false);
         
         // Determine how many lightning bolts are needed to reach the target
         var distance = Vector2.Distance(position, targetPosition);
@@ -26,13 +29,15 @@ public class LightningManager
         {
             var lightning = _lightningPooler.GetPooledObject();
             lightning.transform.position = position + direction * (length * i);
-            lightning.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, direction));
+            lightning.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.down, direction));
             lightning.SetActive(true);
 
             var p = i;
-            lightning.GetComponent<AnimancerComponent>().Play(lightningAnimation).Events(this).OnEnd ??= () =>
+            var lightningAnimancer = lightning.GetComponent<AnimancerComponent>().Play(lightningAnimation);
+            lightningAnimancer.Events(this).OnEnd ??= () =>
             {
                 if (lightningCount - 1 == p) onLightningEnd?.Invoke();
+                lightningAnimancer.Events(this).OnEnd = null;
                 lightning.SetActive(false);
             };
         }
