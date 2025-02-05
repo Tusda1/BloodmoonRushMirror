@@ -40,7 +40,6 @@ public class ControlSchemeChanger : IControlSchemeChanger {
     #endregion
 
     #region ---Construction---
-    [Inject]
     public ControlSchemeChanger(ControllerRecognizer controllerRecognizer) {
         _controllerRecognizer = controllerRecognizer;
 

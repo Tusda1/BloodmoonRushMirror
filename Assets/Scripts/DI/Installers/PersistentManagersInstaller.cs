@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Utilities.DataBinding;
 using VContainer;
+using static CameraInstanceDI;
 
 public class PersistentManagersInstaller : AutoInjectInstaller {
     [SerializeField, Required] private SaveLoadSystemManager saveLoadSystemManager;
@@ -17,7 +18,7 @@ public class PersistentManagersInstaller : AutoInjectInstaller {
         builder.RegisterInstance(saveLoadSystemManager);
         builder.RegisterInstance(cameraEffects);
         builder.RegisterInstance(eventSystem);
-        builder.RegisterInstance(renderTextureCamera);
+        builder.RegisterInstance(new CameraInstanceDI(RenderTextureCameraID, renderTextureCamera));
 
         builder.Register<FileDataService<SaveGameData>>(Lifetime.Singleton);
         builder.Register<JSONSerializer>(Lifetime.Singleton).As<ISerializer>();

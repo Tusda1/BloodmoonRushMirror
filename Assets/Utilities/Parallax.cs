@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using VContainer;
+using static CameraInstanceDI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -10,13 +13,17 @@ public class Parallax : MonoBehaviour {
     [SerializeField] private bool startEnabled;
     [SerializeField] private ParallaxElement[] parallaxElements;
 
-    [Inject] private Camera _mainCamera;
-    
+    private Camera _mainCamera;
     private Transform _mainCameraTransform;
     private Vector3 _previousCameraPosition;
     private Vector3 _cameraDeltaMovement;
     private bool _enabled;
     #endregion
+    
+    [Inject]
+    public void Construct(IEnumerable<CameraInstanceDI> cameras) {
+        _mainCamera = cameras.Single(x => x.ID == MainCameraID).Instance;
+    }
 
     private void Start() {
         _mainCameraTransform = _mainCamera.transform;

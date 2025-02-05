@@ -6,4 +6,8 @@ public interface IProvider<T> {
     public T Get(string key) {
         return Services[key];
     }
+    
+    public void Add(string key, T service) {
+        Services.Add(key, service);
+    }
 }

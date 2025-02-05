@@ -1,13 +1,21 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using VContainer;
+using static CameraInstanceDI;
 
 public class UITKWorldSpaceInteractive : MonoBehaviour {
     #region ---Fields---
     [SerializeField] private UIDocument uiDocument;
-    
-    [Inject] private Camera _renderTextureCamera;
+
+    private Camera _renderTextureCamera;
     #endregion
+
+    [Inject]
+    public void Construct(IEnumerable<CameraInstanceDI> cameras) {
+        _renderTextureCamera = cameras.Single(x => x.ID == RenderTextureCameraID).Instance;
+    }
 
     private void Start() {
         uiDocument.panelSettings.SetScreenToPanelSpaceFunction(_ => {
@@ -30,6 +38,5 @@ public class UITKWorldSpaceInteractive : MonoBehaviour {
 
             return pixelUV;
         });
-
     }
 }
