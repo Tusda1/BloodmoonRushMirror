@@ -20,6 +20,8 @@ namespace FMODScripts {
 
         private readonly DebugLoggerSO _debugLogger;
         private readonly AudioDictionarySO _audioDictionary;
+        
+        private string _currentMusicID;
 
         #region ***---Consts---***
         private const string BusPath = "bus:/";
@@ -44,10 +46,12 @@ namespace FMODScripts {
 
         private async Task Initialize() {
             _debugLogger.Log("Initializing");
-
+            
+            RuntimeManager.MuteAllEvents(true);
             while (!RuntimeManager.IsInitialized) {
-                await Task.Delay(100);
+                await Task.Delay(1);
             }
+            RuntimeManager.MuteAllEvents(false);
 
             _debugLogger.Log("RuntimeManager initialized");
 
@@ -119,6 +123,8 @@ namespace FMODScripts {
                 _currentMusic = RuntimeManager.CreateInstance(path);
                 RuntimeManager.DetachInstanceFromGameObject(_currentMusic);
                 _currentMusic.start();
+                _currentMusicID = id;
+                
                 _debugLogger.Log("Playing music: " + id);
             }
 
@@ -138,6 +144,7 @@ namespace FMODScripts {
                 _currentMusic = RuntimeManager.CreateInstance(id);
                 RuntimeManager.AttachInstanceToGameObject(_currentMusic, gameObject);
                 _currentMusic.start();
+                _currentMusicID = id;
 
                 _debugLogger.Log("Playing music: " + id);
             }
@@ -156,15 +163,15 @@ namespace FMODScripts {
             _sfxBus.stopAllEvents(STOP_MODE.ALLOWFADEOUT);
         }
 
-        /// <summary>
-        /// NB! NotImplemented
-        /// </summary>
         public void StopMusic(string name) {
-            throw new System.NotImplementedException();
+            if (_currentMusicID.Equals(name)) {
+                StopAllMusic();
+            }
         }
 
         public void StopAllMusic() {
             _currentMusic.stop(STOP_MODE.ALLOWFADEOUT);
+            _currentMusicID = "";
 
             _debugLogger.Log("Stopped all music");
         }
@@ -177,12 +184,23 @@ namespace FMODScripts {
         #endregion
 
         #region ---SetVolume---
+        public float MasterVolume {
+            get => _masterVolume;
+            set {
+                _masterVolume = Mathf.Clamp01(value);
+                
+                _masterBus.setVolume(MasterVolume);
+                PlayerPrefs.SetFloat(MasterPlayerPrefsKey, MasterVolume);
+            }
+        }
+        
         public float SFXVolume {
             get => _sfxVolume;
             set {
                 _sfxVolume = Mathf.Clamp01(value);
 
-                PlayerPrefs.SetFloat(SFXPlayerPrefsKey, _sfxVolume);
+                _sfxBus.setVolume(SFXVolume);
+                PlayerPrefs.SetFloat(SFXPlayerPrefsKey, SFXVolume);
             }
         }
 
@@ -191,30 +209,16 @@ namespace FMODScripts {
             set {
                 _musicVolume = Mathf.Clamp01(value);
 
-                PlayerPrefs.SetFloat(MusicPlayerPrefsKey, _musicVolume);
+                _musicBus.setVolume(MusicVolume);
+                PlayerPrefs.SetFloat(MusicPlayerPrefsKey, MusicVolume);
             }
         }
 
-        public float MasterVolume {
-            get => _masterVolume;
-            set {
-                _masterVolume = Mathf.Clamp01(value);
+        public void SetSFXVolume(float volume) => SFXVolume = volume;
 
-                PlayerPrefs.SetFloat(MasterPlayerPrefsKey, _masterVolume);
-            }
-        }
+        public void SetMusicVolume(float volume) => MusicVolume = volume;
 
-        public void SetSFXVolume(float volume) {
-            SFXVolume = volume;
-        }
-
-        public void SetMusicVolume(float volume) {
-            MusicVolume = volume;
-        }
-
-        public void SetMasterVolume(float volume) {
-            MasterVolume = volume;
-        }
+        public void SetMasterVolume(float volume) => MasterVolume = volume;
 
         public void SetVolume(string id, float volume) {
             throw new System.NotImplementedException();
@@ -233,11 +237,8 @@ namespace FMODScripts {
             return _currentMusic.GetPlaybackState() == PLAYBACK_STATE.PLAYING;
         }
 
-        /// <summary>
-        /// NB! NotImplemented
-        /// </summary>
         public bool IsMusicPlaying(string id) {
-            throw new System.NotImplementedException();
+            return _currentMusicID.Equals(id);
         }
         #endregion
 
