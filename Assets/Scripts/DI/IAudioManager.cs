@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public interface IAudioManager {
-    public const string LevelProgressionParameter = "levelMusicProgression";
+    public const string CalmnessParameter = "levelMusicProgression";
     
     #region ---Play---
     void PlaySFX(string id);
