@@ -5,7 +5,7 @@ public class MainMenuInstaller : AutoInjectInstaller {
     [SerializeField] private Camera mainCamera;
     
     protected override void Configure(IContainerBuilder builder) {
-        builder.RegisterInstance(mainCamera);
+        builder.RegisterInstanceID(mainCamera, LevelInstaller.MainCameraID);
     }
 
 #if UNITY_EDITOR

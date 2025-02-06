@@ -1,8 +1,8 @@
-using FMODScripts;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using UnityEngine;
 using Utilities.DataBinding;
+using VContainer;
 #if UNITY_EDITOR
 using System;
 #endif
@@ -10,7 +10,7 @@ using System;
 namespace Triggers {
     public class MusicTrigger : TriggerBox, IBind<TriggerData> {
         #region ---Fields---
-        [SerializeField] private string musicName;
+        [SerializeField] private string musicID;
         [SerializeField] private int musicStage;
     
         #region ***---GameManagers---***
@@ -30,6 +30,8 @@ namespace Triggers {
             hasBeenTriggered = hasBeenTriggered
         });
         #endregion
+        
+        [Inject] public IAudioManager AudioManager;
         #endregion
         
         #region ---EventFunctions---
@@ -39,7 +41,8 @@ namespace Triggers {
         #endregion
 
         protected override void TriggeredAction(Collider2D other) {
-            FMODManager.RaiseMusicEvent(musicName, "levelMusicProgression", musicStage);
+            AudioManager.PlayMusic(musicID);
+            AudioManager.SetParameterValue(IAudioManager.LevelProgressionParameter, musicStage);
         }
         
         #region ---DataBindingMethods---

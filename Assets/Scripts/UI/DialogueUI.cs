@@ -4,15 +4,15 @@ using Consensus;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
+using VContainer;
 
 namespace UI {
     public class DialogueUI : Singleton<DialogueUI> {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector] 
-        private UIDocument uiDocument;
-        
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+
+        #region ****---Inspector---***
         [SerializeField] public AllInFavourConsensusSO playerCanMove;
-        public event Action OnSkipDialogue = delegate { };
 
         [Header("DialogueUI Settings")]
         public bool uiDocumentVisible;
@@ -22,9 +22,14 @@ namespace UI {
         public FontAsset dialogueFont;
         public float textSize;
         public Color dialogueColor;
+        #endregion
 
         private VisualElement _root;
+        
         [HideInInspector] public ScriptVotePair scriptVotePair = new();
+        public event Action OnSkipDialogue = delegate { };
+        
+        [Inject] public IAudioManager AudioManager;
         #endregion
         
         protected override void Awake() {

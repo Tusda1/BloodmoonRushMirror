@@ -74,6 +74,8 @@ public class ControlSchemeChanger : IControlSchemeChanger {
         set {
             _currentControlSchemeName = value;
             _currentControlSchemeID = NameToID(CurrentControlSchemeName);
+
+            if (_currentControlSchemeID == null) return;
             
             CurrentControlSchemeDataSO = _inputLocalizationDatas[CurrentControlSchemeID];
         }
@@ -136,7 +138,7 @@ public class ControlSchemeChanger : IControlSchemeChanger {
             KeyboardMouseScheme => KeyboardMouseSchemeID,
             GamepadScheme => _currentGamepadSchemeID,
             JoystickScheme => NintendoDeviceID,
-            _ => throw new ArgumentOutOfRangeException(nameof(name))
+            _ => null
         };
     }
 

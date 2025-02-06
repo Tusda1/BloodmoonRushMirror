@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 
 public interface IAudioManager {
+    public const string LevelProgressionParameter = "levelMusicProgression";
+    
     #region ---Play---
-    void PlaySFX(string name);
-    void PlaySFXAttached(string name, GameObject gameObject);
+    void PlaySFX(string id);
+    void PlaySFXAttached(string id, GameObject gameObject);
 
-    void PlayMusic(string name);
-    void PlayMusicAttached(string name, GameObject gameObject);
+    void PlayMusic(string id);
+    void PlayMusicAttached(string id, GameObject gameObject);
     #endregion
 
     #region ---Stop---
@@ -20,9 +22,9 @@ public interface IAudioManager {
     #endregion
 
     #region ---Volume---
+    float MasterVolume { get; set; }
     float SFXVolume { get; set; }
     float MusicVolume { get; set; }
-    float MasterVolume { get; set; }
 
     void SetSFXVolume(float volume);
     void SetMusicVolume(float volume);
@@ -32,9 +34,11 @@ public interface IAudioManager {
     #endregion
 
     #region ---Query---
-    bool IsSFXPlaying(string name);
+    bool IsSFXPlaying(string id);
 
     bool IsMusicPlaying();
-    bool IsMusicPlaying(string name);
+    bool IsMusicPlaying(string id);
     #endregion
+
+    void SetParameterValue(string parameter, float value, bool ignoreSeekSpeed = false);
 }

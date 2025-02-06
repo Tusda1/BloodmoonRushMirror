@@ -10,7 +10,7 @@ public class DialogueCharacterSO : ScriptableObject {
     public float textSize = 8;
     public float textSpeed = 16;
     public Color dialogueColor = Color.black;
-    public string textAudioSoundEventPath = "Talk/";
+    public string talkSoundID;
     public WhenIsSfxPlayed whenIsSfxPlayed;
 
     [Serializable, Flags] public enum WhenIsSfxPlayed : byte {

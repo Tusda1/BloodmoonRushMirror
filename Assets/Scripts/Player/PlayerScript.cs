@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Attributes;
 using Consensus;
 using ExtensionMethods;
-using FMODScripts;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using SceneCollections;
@@ -110,6 +109,7 @@ namespace Player {
         private SaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
         private IControlSchemeChanger _controlSchemeChanger;
+        private IAudioManager _audioManager;
         private static LevelDataManager LevelDataManager => LevelDataManager.Instance;
         #endregion
 
@@ -132,6 +132,10 @@ namespace Player {
         
         private static PlayerData PlayerData => SaveLoadSystemManager.Instance.gameData.playerData;
         #endregion
+
+        public const string PlayerSlashSFX_ID = "Player_Slash";
+        public const string PlayerDeathSFX_ID = "Player_Death";
+        public const string PlayerRespawnSFX_ID = "Player_Respawn";
         #endregion
         
         [Inject]
@@ -139,6 +143,7 @@ namespace Player {
             _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
             _cameraEffects = container.Resolve<CameraEffects>();
             _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
+            _audioManager = container.Resolve<IAudioManager>();
         }
 
         #region ---EventFunctions---
@@ -225,7 +230,7 @@ namespace Player {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
             
-            FMODManager.RaiseSFXEvent("Player/Player_slash");
+            _audioManager.PlaySFX(PlayerSlashSFX_ID);
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -236,7 +241,7 @@ namespace Player {
             debugLogger.Log("DuckAttack");
 
             animator.SetTrigger(AnimatorDuckAttackTrigger);
-            FMODManager.RaiseSFXEvent("Player/Player_slash");
+            _audioManager.PlaySFX(PlayerSlashSFX_ID);
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -287,8 +292,8 @@ namespace Player {
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
-            FMODManager.RaiseStopSoundEvent(StopSoundType.All);
-            FMODManager.RaiseSFXEvent("Player/Player_death");
+            _audioManager.StopAllSound();
+            _audioManager.PlaySFX(PlayerDeathSFX_ID);
 
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");

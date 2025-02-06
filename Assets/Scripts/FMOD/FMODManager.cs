@@ -177,8 +177,7 @@ namespace FMODScripts {
             EventBus<IFMODEvent>.Raise(new PlaySoundEvent(SoundType.Music, soundName, soundObject));
         }
 
-        public static void RaiseMusicEvent(string soundName, string parameter, float value,
-            bool ignoreSeekSpeed = false) {
+        public static void RaiseMusicEvent(string soundName, string parameter, float value, bool ignoreSeekSpeed = false) {
             if (Instance == null || !Instance.IsMusicPlaying()) {
                 RaiseMusicEvent(soundName);
             }

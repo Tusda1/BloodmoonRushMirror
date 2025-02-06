@@ -1,11 +1,11 @@
 using System;
 using Attributes;
 using Consensus;
-using FMODScripts;
 using SceneCollections;
 using UI.Settings;
 using UnityEngine;
 using UnityEngine.UIElements;
+using VContainer;
 using Cursor = UnityEngine.Cursor;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,9 +15,13 @@ namespace UI {
     [RequireComponent(typeof(UIDocument), typeof(SettingsMenu), typeof(SavesMenu))]
     public class MainMenu : MonoBehaviour {
         #region ---Fields---
+        #region ***---GetOrAddComponents---***
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+
         [GetOrAddComponent, SerializeField, HideInInspector] private SettingsMenu settingsMenu;
+
         [GetOrAddComponent, SerializeField, HideInInspector] private SavesMenu savesMenu;
+        #endregion
 
         [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
         [SerializeField, Required] private Animator backgroundAnimator;
@@ -33,9 +37,13 @@ namespace UI {
         private Button _settingsButton;
         private Button _quitButton;
         private Button _creditsButton;
-        
+
         private Action _updateActions = delegate { };
         #endregion
+
+        [Inject] private IAudioManager _audioManager;
+
+        private const string MusicID = "Music_MainMenu";
         #endregion
 
         private void Awake() {
@@ -51,7 +59,7 @@ namespace UI {
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-            
+
             Time.timeScale = 1;
             playerCanMove.Clear();
 
@@ -61,23 +69,23 @@ namespace UI {
         }
 
         private void Start() {
-            FMODManager.RaiseSetParameterEvent("levelMusicProgression", 0);
-            FMODManager.RaiseMusicEvent("Music_level1");
-            
+            _audioManager.PlayMusic(MusicID);
+            _audioManager.SetParameterValue(IAudioManager.LevelProgressionParameter, 0);
+
             _startButton.clicked += savesMenu.Activate;
             savesMenu.OnMenuActivated += HideMenu;
             savesMenu.OnMenuDeactivated += ShowMenu;
-            
+
             _settingsButton.clicked += settingsMenu.Activate;
             settingsMenu.OnMenuActivated += HideMenu;
             settingsMenu.OnMenuDeactivated += ShowMenu;
-            
+
             _quitButton.clicked += QuitButtonClicked;
-            
+
             _startButton.RegisterCallback<NavigationMoveEvent>(TriggerFocusCreditsButton);
             _settingsButton.RegisterCallback<NavigationMoveEvent>(TriggerFocusCreditsButton);
             _quitButton.RegisterCallback<NavigationMoveEvent>(TriggerFocusCreditsButton);
-            
+
             _creditsButton.RegisterCallback<NavigationMoveEvent>(evt => {
                 if (evt.direction == NavigationMoveEvent.Direction.Down) {
                     _startButton.focusController.IgnoreEvent(evt);
@@ -104,18 +112,18 @@ namespace UI {
             _mainMenuRoot.AddToClassList("down");
             _mainMenuRoot.SetEnabled(false);
         }
-        
+
         [ContextMenu(nameof(ShowMenu))]
         private void ShowMenu() {
             _mainMenuRoot.SetEnabled(true);
             _mainMenuRoot.RemoveFromClassList("down");
-            
+
             _startButton.Focus();
         }
 
         private static void QuitButtonClicked() {
             Debug.Log("QuitButtonClicked");
-            
+
             Application.Quit();
 #if UNITY_EDITOR
             EditorApplication.isPlaying = false;
@@ -124,7 +132,7 @@ namespace UI {
 
         private async Awaitable AnyKeyPressed() {
             _updateActions = delegate { };
-            
+
             backgroundAnimator.Play("MenuZoom");
 
             for (var i = 0; i < 10; i++) {

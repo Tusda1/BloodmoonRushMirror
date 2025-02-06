@@ -12,4 +12,8 @@ public static class DIExtensions {
             .Single(x => x.ID == id)
             .Instance;
     }
+
+    public static T ResolveProviderID<T>(this IObjectResolver resolver, string id) {
+        return resolver.Resolve<IProvider<T>>().Get(id);
+    }
 }

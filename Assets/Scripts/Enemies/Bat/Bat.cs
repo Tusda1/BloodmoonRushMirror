@@ -1,9 +1,9 @@
 using System.Collections;
 using DG.Tweening;
-using FMODScripts;
 using Player;
 using UnityEngine;
 using UnityEngine.Splines;
+using VContainer;
 
 namespace Bat {
     public class Bat : MonoBehaviour, IDamageable {
@@ -23,9 +23,11 @@ namespace Bat {
             damage = 1
         };
 
-        [SerializeField] private string takeDamageSfx = "Misc/Generic_impact";
+        [SerializeField] private string takeDamageSFX_ID = "Impact_Generic";
 
         [HideInInspector] public BatSpawner batSpawner;
+    
+        [Inject] private IAudioManager _audioManager;
         #endregion
 
         private void OnEnable() {
@@ -71,8 +73,9 @@ namespace Bat {
         public void TakeDamage(DamageInstance damageInstance) {
             if (currentHealth == 0) return;
             damageInstance.TriggerOnHitAction();
-
-            FMODManager.RaiseMusicEvent(takeDamageSfx);
+            
+            _audioManager.PlaySFX(takeDamageSFX_ID);
+            
             currentHealth -= damageInstance.damage;
             if (currentHealth > 0) return;
             damageInstance.TriggerOnKillAction();

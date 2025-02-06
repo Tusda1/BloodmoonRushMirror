@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace FMODScripts {
         private Bus _masterBus;
 
         private readonly DebugLoggerSO _debugLogger;
+        private readonly AudioDictionarySO _audioDictionary;
 
         #region ***---Consts---***
         private const string BusPath = "bus:/";
@@ -34,8 +36,9 @@ namespace FMODScripts {
 
         #region ---Initialization---
         [Inject]
-        public FMODManagerDI(IProvider<DebugLoggerSO> debugLoggers) {
-            _debugLogger = debugLoggers.Get("FMODManager");
+        public FMODManagerDI(IObjectResolver container) {
+            _audioDictionary = container.Resolve<AudioDictionarySO>();
+            _debugLogger = container.ResolveProviderID<DebugLoggerSO>("FMODManager");
             _ = Initialize();
         }
 
@@ -72,42 +75,72 @@ namespace FMODScripts {
         #endregion
 
         #region ---Play---
-        public void PlaySFX(string name) {
-            if (CheckIfStringIsEmpty(name)) return;
+        public void PlaySFX(string id) {
+            if (CheckIfStringIsEmpty(id)) return;
 
-            RuntimeManager.PlayOneShot(name);
+            var path = IDToPath(id);
 
-            _debugLogger.Log($"Playing SFX: {name} global");
+            if (path.Equals(string.Empty)) {
+                _debugLogger.ForceLogWarning("NO SFX BY GIVEN ID: " + id);
+            }
+            else {
+                RuntimeManager.PlayOneShot(path);
+
+                _debugLogger.Log($"Playing SFX: {id} global");
+            }
         }
 
-        public void PlaySFXAttached(string name, GameObject gameObject) {
-            if (CheckIfStringIsEmpty(name)) return;
+        public void PlaySFXAttached(string id, GameObject gameObject) {
+            if (CheckIfStringIsEmpty(id)) return;
 
-            RuntimeManager.PlayOneShotAttached(name, gameObject);
+            var path = IDToPath(id);
 
-            _debugLogger.Log($"Playing SFX: {name} attached to {gameObject.name}");
+            if (path.Equals(string.Empty)) {
+                _debugLogger.ForceLogWarning("NO SFX BY GIVEN ID: " + id);
+            }
+            else {
+                RuntimeManager.PlayOneShotAttached(path, gameObject);
+
+                _debugLogger.Log($"Playing SFX: {id} attached to {gameObject.name}");
+            }
         }
 
-        public void PlayMusic(string name) {
-            if (CheckIfStringIsEmpty(name)) return;
+        public void PlayMusic(string id) {
+            if (CheckIfStringIsEmpty(id)) return;
+            
+            var path = IDToPath(id);
 
             _currentMusic.stop(STOP_MODE.ALLOWFADEOUT);
-            _currentMusic = RuntimeManager.CreateInstance(name);
-            RuntimeManager.DetachInstanceFromGameObject(_currentMusic);
-            _currentMusic.start();
 
-            _debugLogger.Log("Playing music: " + name);
+            if (path.Equals(string.Empty)) {
+                _debugLogger.ForceLogWarning("NO MUSIC BY GIVEN ID! | " + id);
+            }
+            else {
+                _currentMusic = RuntimeManager.CreateInstance(path);
+                RuntimeManager.DetachInstanceFromGameObject(_currentMusic);
+                _currentMusic.start();
+                _debugLogger.Log("Playing music: " + id);
+            }
+
         }
 
-        public void PlayMusicAttached(string name, GameObject gameObject) {
-            if (CheckIfStringIsEmpty(name)) return;
+        public void PlayMusicAttached(string id, GameObject gameObject) {
+            if (CheckIfStringIsEmpty(id)) return;
+            
+            var path = IDToPath(id);
 
             _currentMusic.stop(STOP_MODE.ALLOWFADEOUT);
-            _currentMusic = RuntimeManager.CreateInstance(name);
-            RuntimeManager.AttachInstanceToGameObject(_currentMusic, gameObject);
-            _currentMusic.start();
+            
+            if (path.Equals(string.Empty)) {
+                _debugLogger.ForceLogWarning("NO MUSIC BY GIVEN ID! | " + id);
+            }
+            else {
+                _currentMusic = RuntimeManager.CreateInstance(id);
+                RuntimeManager.AttachInstanceToGameObject(_currentMusic, gameObject);
+                _currentMusic.start();
 
-            _debugLogger.Log("Playing music: " + name);
+                _debugLogger.Log("Playing music: " + id);
+            }
         }
         #endregion
 
@@ -192,7 +225,7 @@ namespace FMODScripts {
         /// <summary>
         /// NB! NotImplemented
         /// </summary>
-        public bool IsSFXPlaying(string name) {
+        public bool IsSFXPlaying(string id) {
             throw new System.NotImplementedException();
         }
 
@@ -203,15 +236,32 @@ namespace FMODScripts {
         /// <summary>
         /// NB! NotImplemented
         /// </summary>
-        public bool IsMusicPlaying(string name) {
+        public bool IsMusicPlaying(string id) {
             throw new System.NotImplementedException();
         }
         #endregion
+
+        public void SetParameterValue(string parameter, float value, bool ignoreSeekSpeed = false) {
+            if (CheckIfStringIsEmpty(parameter)) return;
+
+            _currentMusic.setParameterByName(parameter, value, ignoreSeekSpeed);
+
+            _debugLogger.Log($"Parameter {parameter} set to {value}");
+        }
 
         private bool CheckIfStringIsEmpty(string s) {
             if (!string.IsNullOrWhiteSpace(s)) return false;
             _debugLogger.ForceLogWarning("String received was null or empty");
             return true;
+        }
+
+        private string IDToPath(string id) {
+            try {
+                return _audioDictionary.dictionary[id];
+            }
+            catch (KeyNotFoundException) {
+                throw new KeyNotFoundException($"ID: '{id}' not found in AudioDictionary!");
+            }
         }
     }
 }
