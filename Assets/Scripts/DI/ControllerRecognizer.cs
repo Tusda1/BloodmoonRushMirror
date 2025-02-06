@@ -130,11 +130,7 @@ public class ControllerRecognizer {
         if (CurrentDeviceID != id) return;
         var newID = _currentDevices.FirstOrDefault();
 
-        if (newID.Key != null) {
-            CurrentDeviceID = newID.Key;
-
-            CurrentDevice = inputDevice;
-        }
+        SetCurrentDevice(newID.Key, newID.Value);
     }
 
     public static string InputDeviceToID(InputDevice inputDevice) {

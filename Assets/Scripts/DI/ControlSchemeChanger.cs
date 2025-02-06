@@ -128,7 +128,12 @@ public class ControlSchemeChanger : IControlSchemeChanger {
         _currentGamepadSchemeID = controllerID;
         _currentControllerDevice = inputDevice;
 
-        if (CurrentControlSchemeName is GamepadScheme or JoystickScheme) {
+        if (CurrentControlSchemeName is not (GamepadScheme or JoystickScheme)) return;
+        
+        if (_currentControllerDevice == null) {
+            ChangeSchemeByName(DefaultScheme);
+        }
+        else {
             ChangeSchemeByID(_currentGamepadSchemeID);
         }
     }
