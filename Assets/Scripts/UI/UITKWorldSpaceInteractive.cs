@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using VContainer;
-using static CameraInstanceDI;
 
 public class UITKWorldSpaceInteractive : MonoBehaviour {
     #region ---Fields---
@@ -11,10 +8,10 @@ public class UITKWorldSpaceInteractive : MonoBehaviour {
 
     private Camera _renderTextureCamera;
     #endregion
-
+    
     [Inject]
-    public void Construct(IEnumerable<CameraInstanceDI> cameras) {
-        _renderTextureCamera = cameras.Single(x => x.ID == RenderTextureCameraID).Instance;
+    public void Construct(IObjectResolver container) {
+        _renderTextureCamera = container.ResolveInstanceID<Camera>(PersistentManagersInstaller.RenderTextureCameraID);
     }
 
     private void Start() {
@@ -26,7 +23,6 @@ public class UITKWorldSpaceInteractive : MonoBehaviour {
             Debug.DrawRay(cameraRay.origin, cameraRay.direction * 100f, Color.magenta);
 
             if (!Physics.Raycast(cameraRay, out var hit, 100f, LayerMask.GetMask("RenderTextures"))) {
-                // Debug.Log("invalid position");
                 return invalidPosition;
             }
 

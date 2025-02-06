@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using VContainer;
-using static CameraInstanceDI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -21,8 +18,8 @@ public class Parallax : MonoBehaviour {
     #endregion
     
     [Inject]
-    public void Construct(IEnumerable<CameraInstanceDI> cameras) {
-        _mainCamera = cameras.Single(x => x.ID == MainCameraID).Instance;
+    public void Construct(IObjectResolver container) {
+        _mainCamera = container.ResolveInstanceID<Camera>(LevelInstaller.MainCameraID);
     }
 
     private void Start() {

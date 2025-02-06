@@ -1,8 +1,8 @@
-﻿public abstract class InstanceDI<T> {
-    public string ID;
-    public T Instance;
-    
-    protected InstanceDI(string id, T instance) {
+﻿public class InstanceDI<T> {
+    public readonly string ID;
+    public readonly T Instance;
+
+    public InstanceDI(string id, T instance) {
         ID = id;
         Instance = instance;
     }

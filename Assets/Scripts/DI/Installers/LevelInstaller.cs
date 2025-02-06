@@ -2,19 +2,19 @@ using SaveLoadSystem;
 using Unity.Cinemachine;
 using UnityEngine;
 using VContainer;
-using static CameraInstanceDI;
 
 public class LevelInstaller : AutoInjectInstaller {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private CinemachineBrain cinemachineBrain;
     [SerializeField] private LevelDataManager levelDataManager;
     [SerializeField] private string leaderboardID;
+    
+    public const string MainCameraID = "MainCamera";
 
     protected override void Configure(IContainerBuilder builder) {
-        builder.RegisterInstance(new CameraInstanceDI(MainCameraID, mainCamera));
+        builder.RegisterInstanceID(mainCamera, MainCameraID);
         builder.RegisterInstance(cinemachineBrain);
         builder.RegisterInstance(levelDataManager);
-
         builder.RegisterInstance(new SteamSpeedrunTimer(leaderboardID)).As<ISpeedrunTimer>();
     }
 
