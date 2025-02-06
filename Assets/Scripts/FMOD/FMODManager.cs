@@ -1,283 +1,268 @@
-using System;
-using System.Collections;
-using Attributes;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
-using Utilities.EventBus;
+using VContainer;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace FMODScripts {
-    public class FMODManager : Singleton<FMODManager> {
+    public class FMODManager : IAudioManager {
         #region ---Fields---
-        [Header("DebugLogger")] [SerializeField, Required]
-        private DebugLoggerSO debugLogger;
-
-        public static float MasterVolume {
-            get {
-                if (PlayerPrefs.HasKey("MasterVolume")) return PlayerPrefs.GetFloat("MasterVolume");
-                
-                PlayerPrefs.SetFloat("MasterVolume", 1);
-                return 1;
-            }
-        }
-
-        public static float MusicVolume {
-            get {
-                if (PlayerPrefs.HasKey("SFXVolume")) return PlayerPrefs.GetFloat("SFXVolume");
-                
-                PlayerPrefs.SetFloat("SFXVolume", 1);
-                return 1;
-            }
-        }
-
-        public static float SfxVolume {
-            get {
-                if (PlayerPrefs.HasKey("MusicVolume")) return PlayerPrefs.GetFloat("MusicVolume");
-                
-                PlayerPrefs.SetFloat("MusicVolume", 1);
-                return 1;
-            }
-        }
+        private float _sfxVolume;
+        private float _musicVolume;
+        private float _masterVolume;
 
         private EventInstance _currentMusic;
         private Bus _musicBus;
         private Bus _sfxBus;
         private Bus _masterBus;
 
-        private static string BusPath => "bus:/";
-        public static string SFXPath => "event:/Sfx/";
-        public static string MusicPath => "event:/Music/";
+        private readonly DebugLoggerSO _debugLogger;
+        private readonly AudioDictionarySO _audioDictionary;
+        
+        private string _currentMusicID;
 
-        private EventBinding<IFMODEvent> _eventBinding;
+        #region ***---Consts---***
+        private const string BusPath = "bus:/";
+        private const string SFXBusPath = BusPath + "Sfx Bus";
+        private const string MusicBusPath = BusPath + "Music Bus";
+
+        private const string MasterPlayerPrefsKey = "MasterVolume";
+        private const string SFXPlayerPrefsKey = "SFXVolume";
+        private const string MusicPlayerPrefsKey = "MusicVolume";
+
+        private const float DefaultVolume = 1.0f;
+        #endregion
         #endregion
 
-        #region ---EventFunctions---
-        private IEnumerator Start() {
-            debugLogger.Log("Initializing");
+        #region ---Initialization---
+        [Inject]
+        public FMODManager(IObjectResolver container) {
+            _audioDictionary = container.Resolve<AudioDictionarySO>();
+            _debugLogger = container.ResolveProviderID<DebugLoggerSO>("FMODManager");
+            _ = Initialize();
+        }
+
+        private async Task Initialize() {
+            _debugLogger.Log("Initializing");
             
-            // RuntimeManager.MuteAllEvents(true);
-            yield return new WaitUntil(() => RuntimeManager.IsInitialized);
-            // RuntimeManager.MuteAllEvents(false);
-            
-            debugLogger.Log("RuntimeManager is initialized");
+            RuntimeManager.MuteAllEvents(true);
+            while (!RuntimeManager.IsInitialized) {
+                await Task.Delay(1);
+            }
+            RuntimeManager.MuteAllEvents(false);
+
+            _debugLogger.Log("RuntimeManager initialized");
 
             _masterBus = RuntimeManager.GetBus(BusPath);
-            _musicBus = RuntimeManager.GetBus(BusPath + "Music Bus");
-            _sfxBus = RuntimeManager.GetBus(BusPath + "Sfx Bus");
+            _sfxBus = RuntimeManager.GetBus(SFXBusPath);
+            _musicBus = RuntimeManager.GetBus(MusicBusPath);
 
             if (_masterBus.Equals(default) || _sfxBus.Equals(default) || _musicBus.Equals(default)) {
-                debugLogger.Log("Busses are not valid");
+                _debugLogger.Log("Busses are not valid");
             }
+
+            MasterVolume = GetVolumeFromPlayerPrefs(MasterPlayerPrefsKey);
+            SFXVolume = GetVolumeFromPlayerPrefs(SFXPlayerPrefsKey);
+            MusicVolume = GetVolumeFromPlayerPrefs(MusicPlayerPrefsKey);
+        }
+
+        private static float GetVolumeFromPlayerPrefs(string name) {
+            if (PlayerPrefs.HasKey(name)) {
+                return PlayerPrefs.GetFloat(name);
+            }
+
+            PlayerPrefs.SetFloat(name, DefaultVolume);
+            return DefaultVolume;
+        }
+        #endregion
+
+        #region ---Play---
+        public void PlaySFX(string id) {
+            if (CheckIfStringIsEmpty(id)) return;
+
+            var path = IDToPath(id);
+
+            if (path.Equals(string.Empty)) {
+                _debugLogger.ForceLogWarning("NO SFX BY GIVEN ID: " + id);
+            }
+            else {
+                RuntimeManager.PlayOneShot(path);
+
+                _debugLogger.Log($"Playing SFX: {id} global");
+            }
+        }
+
+        public void PlaySFXAttached(string id, GameObject gameObject) {
+            if (CheckIfStringIsEmpty(id)) return;
+
+            var path = IDToPath(id);
+
+            if (path.Equals(string.Empty)) {
+                _debugLogger.ForceLogWarning("NO SFX BY GIVEN ID: " + id);
+            }
+            else {
+                RuntimeManager.PlayOneShotAttached(path, gameObject);
+
+                _debugLogger.Log($"Playing SFX: {id} attached to {gameObject.name}");
+            }
+        }
+
+        public void PlayMusic(string id) {
+            if (CheckIfStringIsEmpty(id)) return;
             
-            SetMasterVolume(MasterVolume);
-            SetMusicVolume(MusicVolume);
-            SetSfxVolume(SfxVolume);
-        }
-        #endregion
+            var path = IDToPath(id);
 
-        #region ---EventBus---
-        private void OnEnable() {
-            _eventBinding = new EventBinding<IFMODEvent>(HandleEvent);
+            _currentMusic.stop(STOP_MODE.ALLOWFADEOUT);
 
-            EventBus<IFMODEvent>.Register(_eventBinding);
-        }
-
-        private void OnDisable() {
-            EventBus<IFMODEvent>.Deregister(_eventBinding);
-        }
-
-        private void HandleEvent(IFMODEvent fmodEvent) {
-            switch (fmodEvent) {
-                case PlaySoundEvent playSoundEvent:
-                    HandlePlaySoundEvent(playSoundEvent);
-                    break;
-                case SetParameterEvent setParameterEvent:
-                    HandleSetParameterEvent(setParameterEvent);
-                    break;
-                case SetVolumeEvent setVolumeEvent:
-                    HandleSetVolumeEvent(setVolumeEvent);
-                    break;
-                case StopSoundEvent stopSoundEvent:
-                    HandleStopSoundEvent(stopSoundEvent);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(fmodEvent));
+            if (path.Equals(string.Empty)) {
+                _debugLogger.ForceLogWarning("NO MUSIC BY GIVEN ID! | " + id);
             }
+            else {
+                _currentMusic = RuntimeManager.CreateInstance(path);
+                RuntimeManager.DetachInstanceFromGameObject(_currentMusic);
+                _currentMusic.start();
+                _currentMusicID = id;
+                
+                _debugLogger.Log("Playing music: " + id);
+            }
+
         }
 
-        #region ***---HandleEvents---***
-        private void HandleSetVolumeEvent(SetVolumeEvent setVolumeEvent) {
-            switch (setVolumeEvent.VolumeChanel) {
-                case VolumeChanel.Master:
-                    SetMasterVolume(setVolumeEvent.Volume);
-                    break;
-                case VolumeChanel.SFX:
-                    SetSfxVolume(setVolumeEvent.Volume);
-                    break;
-                case VolumeChanel.Music:
-                    SetMusicVolume(setVolumeEvent.Volume);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        
-        private void HandlePlaySoundEvent(PlaySoundEvent playSoundEvent) {
-            switch (playSoundEvent.SoundType) {
-                case SoundType.None:
-                case SoundType.SFX:
-                    if (playSoundEvent.SoundObject != null) {
-                        PlayOneShotAttached(playSoundEvent.SoundPath, playSoundEvent.SoundObject);
-                    }
-                    else {
-                        PlayOneShot(playSoundEvent.SoundPath);
-                    }
+        public void PlayMusicAttached(string id, GameObject gameObject) {
+            if (CheckIfStringIsEmpty(id)) return;
+            
+            var path = IDToPath(id);
 
-                    break;
-                case SoundType.Music:
-                    PlayMusic(playSoundEvent.SoundPath);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+            _currentMusic.stop(STOP_MODE.ALLOWFADEOUT);
+            
+            if (path.Equals(string.Empty)) {
+                _debugLogger.ForceLogWarning("NO MUSIC BY GIVEN ID! | " + id);
             }
-        }
-        
-        private void HandleSetParameterEvent(SetParameterEvent setParameterEvent) {
-            SetParameterValue(setParameterEvent.Parameter, setParameterEvent.Value, setParameterEvent.IgnoreSeekSpeed);
-        }
-        
-        private void HandleStopSoundEvent(StopSoundEvent stopSoundEvent) {
-            switch (stopSoundEvent.SoundType) {
-                case StopSoundType.Music:
-                    StopMusic();
-                    break;
-                case StopSoundType.All:
-                    StopAllSound();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+            else {
+                _currentMusic = RuntimeManager.CreateInstance(id);
+                RuntimeManager.AttachInstanceToGameObject(_currentMusic, gameObject);
+                _currentMusic.start();
+                _currentMusicID = id;
+
+                _debugLogger.Log("Playing music: " + id);
             }
         }
         #endregion
 
-        #region ***---RaiseEvents---***
-        public static void RaiseEvent(IFMODEvent fmodEvent) {
-            EventBus<IFMODEvent>.Raise(fmodEvent);
-        }
-        
-        public static void RaiseSetVolumeEvent(VolumeChanel volumeChanel, float volume) {
-            EventBus<IFMODEvent>.Raise(new SetVolumeEvent(volumeChanel, volume));
-        }
-
-        public static void RaiseSFXEvent(string soundName, GameObject soundObject = null) {
-            EventBus<IFMODEvent>.Raise(new PlaySoundEvent(SoundType.SFX, soundName, soundObject));
+        #region ---Stop---
+        /// <summary>
+        /// NB! NotImplemented
+        /// </summary>
+        public void StopSFX(string name) {
+            throw new System.NotImplementedException();
         }
 
-        public static void RaiseMusicEvent(string soundName, GameObject soundObject = null) {
-            EventBus<IFMODEvent>.Raise(new PlaySoundEvent(SoundType.Music, soundName, soundObject));
+        public void StopAllSFX() {
+            _sfxBus.stopAllEvents(STOP_MODE.ALLOWFADEOUT);
         }
 
-        public static void RaiseMusicEvent(string soundName, string parameter, float value, bool ignoreSeekSpeed = false) {
-            if (Instance == null || !Instance.IsMusicPlaying()) {
-                RaiseMusicEvent(soundName);
+        public void StopMusic(string name) {
+            if (_currentMusicID.Equals(name)) {
+                StopAllMusic();
             }
-
-            RaiseSetParameterEvent(parameter, value, ignoreSeekSpeed);
         }
 
-        public static void RaiseSetParameterEvent(string parameter, float value, bool ignoreSeekSpeed = false) {
-            EventBus<IFMODEvent>.Raise(new SetParameterEvent(parameter, value, ignoreSeekSpeed));
+        public void StopAllMusic() {
+            _currentMusic.stop(STOP_MODE.ALLOWFADEOUT);
+            _currentMusicID = "";
+
+            _debugLogger.Log("Stopped all music");
         }
 
-        public static void RaiseStopSoundEvent(StopSoundType soundType) {
-            EventBus<IFMODEvent>.Raise(new StopSoundEvent(soundType));
+        public void StopAllSound() {
+            _masterBus.stopAllEvents(STOP_MODE.ALLOWFADEOUT);
+
+            _debugLogger.Log("Stopped all sound");
         }
-        #endregion
         #endregion
 
         #region ---SetVolume---
-        private void SetMasterVolume(float volume) {
-            _masterBus.setVolume(volume);
-            PlayerPrefs.SetFloat("MasterVolume", volume);
+        public float MasterVolume {
+            get => _masterVolume;
+            set {
+                _masterVolume = Mathf.Clamp01(value);
+                
+                _masterBus.setVolume(MasterVolume);
+                PlayerPrefs.SetFloat(MasterPlayerPrefsKey, MasterVolume);
+            }
+        }
+        
+        public float SFXVolume {
+            get => _sfxVolume;
+            set {
+                _sfxVolume = Mathf.Clamp01(value);
 
-            debugLogger.Log("Master volume set to: " + volume);
+                _sfxBus.setVolume(SFXVolume);
+                PlayerPrefs.SetFloat(SFXPlayerPrefsKey, SFXVolume);
+            }
         }
 
-        private void SetSfxVolume(float volume) {
-            _sfxBus.setVolume(volume);
-            PlayerPrefs.SetFloat("SFXVolume", volume);
+        public float MusicVolume {
+            get => _musicVolume;
+            set {
+                _musicVolume = Mathf.Clamp01(value);
 
-            debugLogger.Log("SFX volume set to: " + volume);
+                _musicBus.setVolume(MusicVolume);
+                PlayerPrefs.SetFloat(MusicPlayerPrefsKey, MusicVolume);
+            }
         }
 
-        private void SetMusicVolume(float volume) {
-            _musicBus.setVolume(volume);
-            PlayerPrefs.SetFloat("MusicVolume", volume);
+        public void SetSFXVolume(float volume) => SFXVolume = volume;
 
-            debugLogger.Log("Music volume set to: " + volume);
-        }
-        #endregion
+        public void SetMusicVolume(float volume) => MusicVolume = volume;
 
-        #region ---PlaySound---
-        private void PlayOneShotAttached(string path, GameObject emitter) {
-            if (CheckIfStringIsEmpty(path)) return;
+        public void SetMasterVolume(float volume) => MasterVolume = volume;
 
-            RuntimeManager.PlayOneShotAttached(path, emitter);
-
-            debugLogger.Log($"Playing one shot attached to {emitter.name}");
-        }
-
-        private void PlayOneShot(string path) {
-            if (CheckIfStringIsEmpty(path)) return;
-
-            RuntimeManager.PlayOneShot(path);
-
-            debugLogger.Log("Playing one shot global");
-        }
-
-        private void PlayMusic(string path) {
-            if (CheckIfStringIsEmpty(path)) return;
-
-            _currentMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            _currentMusic = RuntimeManager.CreateInstance(path);
-            _currentMusic.start();
-
-            debugLogger.Log("Playing new music");
+        public void SetVolume(string id, float volume) {
+            throw new System.NotImplementedException();
         }
         #endregion
 
-        #region ---SetParameter---
-        private void SetParameterValue(string parameter, float value, bool ignoreSeekSpeed = false) {
+        #region ---Query---
+        /// <summary>
+        /// NB! NotImplemented
+        /// </summary>
+        public bool IsSFXPlaying(string id) {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsMusicPlaying() {
+            return _currentMusic.GetPlaybackState() == PLAYBACK_STATE.PLAYING;
+        }
+
+        public bool IsMusicPlaying(string id) {
+            return _currentMusicID.Equals(id);
+        }
+        #endregion
+
+        public void SetParameterValue(string parameter, float value, bool ignoreSeekSpeed = false) {
             if (CheckIfStringIsEmpty(parameter)) return;
 
             _currentMusic.setParameterByName(parameter, value, ignoreSeekSpeed);
 
-            debugLogger.Log($"Parameter {parameter} set to {value}");
-        }
-        #endregion
-
-        #region ---StopSound---
-        private void StopMusic() {
-            _currentMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-
-            debugLogger.Log("Stopped music");
-        }
-
-        private void StopAllSound() {
-            _masterBus.stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-
-            debugLogger.Log("Stopped all sound");
-        }
-        #endregion
-
-        private bool IsMusicPlaying() {
-            return _currentMusic.GetPlaybackState() == PLAYBACK_STATE.PLAYING;
+            _debugLogger.Log($"Parameter {parameter} set to {value}");
         }
 
         private bool CheckIfStringIsEmpty(string s) {
             if (!string.IsNullOrWhiteSpace(s)) return false;
-            Debug.LogWarning($"[{debugLogger.logPrefix}] String received is null or empty");
+            _debugLogger.ForceLogWarning("String received was null or empty");
             return true;
+        }
+
+        private string IDToPath(string id) {
+            try {
+                return _audioDictionary.dictionary[id];
+            }
+            catch (KeyNotFoundException) {
+                throw new KeyNotFoundException($"ID: '{id}' not found in AudioDictionary!");
+            }
         }
     }
 }

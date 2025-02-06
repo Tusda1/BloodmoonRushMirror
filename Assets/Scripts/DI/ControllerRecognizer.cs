@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Switch;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.XInput;
+using VContainer;
 
 public class ControllerRecognizer {
     #region ---Fields---
@@ -26,6 +27,7 @@ public class ControllerRecognizer {
     #endregion
 
     #region ---Construction---
+    [Inject]
     public ControllerRecognizer() {
         InputSystem.onDeviceChange += OnDeviceChangeAutomatic;
         GetAllControllersManually();

@@ -18,7 +18,7 @@ public class GlobalInstaller : LifetimeScope {
         builder.Register<IAchievementManager, SteamAchievementManager>(Lifetime.Singleton);
 
         builder.RegisterInstance(audioDictionary);
-        builder.Register<IAudioManager, FMODManagerDI>(Lifetime.Singleton);
+        builder.Register<IAudioManager, FMODManager>(Lifetime.Singleton);
 
         builder.Register<ControllerRecognizer>(Lifetime.Singleton);
         builder.Register<IControlSchemeChanger, ControlSchemeChanger>(Lifetime.Singleton);
