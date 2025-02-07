@@ -107,7 +107,7 @@ namespace Player {
         private SaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
         private IControlSchemeChanger _controlSchemeChanger;
-        private IAudioManager _audioManager;
+        public IAudioManager AudioManager;
         private static LevelDataManager LevelDataManager => LevelDataManager.Instance;
         #endregion
 
@@ -134,9 +134,11 @@ namespace Player {
         private static PlayerData PlayerData => SaveLoadSystemManager.Instance.gameData.playerData;
         #endregion
 
-        public const string PlayerSlashSFX_ID = "Player_Slash";
-        public const string PlayerDeathSFX_ID = "Player_Death";
-        public const string PlayerRespawnSFX_ID = "Player_Respawn";
+        public const string PlayerSlashSoundID = "Player_Slash";
+        public const string PlayerDeathSoundD = "Player_Death";
+        public const string PlayerRespawnSoundID = "Player_Respawn";
+        public const string PlayerHurtSoundID = "Player_Hurt";
+        public const string PlayerGunJumpSoundID = "GunJump";
         #endregion
 
         [Inject]
@@ -144,7 +146,7 @@ namespace Player {
             _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
             _cameraEffects = container.Resolve<CameraEffects>();
             _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
-            _audioManager = container.Resolve<IAudioManager>();
+            AudioManager = container.Resolve<IAudioManager>();
         }
 
         #region ---EventFunctions---
@@ -233,7 +235,7 @@ namespace Player {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
 
-            _audioManager.PlaySFX(PlayerSlashSFX_ID);
+            AudioManager.PlaySFX(PlayerSlashSoundID);
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -244,7 +246,7 @@ namespace Player {
             debugLogger.Log("DuckAttack");
 
             animator.SetTrigger(AnimatorDuckAttackTrigger);
-            _audioManager.PlaySFX(PlayerSlashSFX_ID);
+            AudioManager.PlaySFX(PlayerSlashSoundID);
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -264,6 +266,9 @@ namespace Player {
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
 
             damageInstance.TriggerOnHitAction();
+            
+            AudioManager.PlaySFX(PlayerHurtSoundID);
+            
             playerMovement.DashTimer.StopTimer();
             playerMovement.Knockback(damageInstance.knockback);
             animator.SetTrigger(AnimatorTakeDamageTrigger);
@@ -295,8 +300,8 @@ namespace Player {
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
-            _audioManager.StopAllSound();
-            _audioManager.PlaySFX(PlayerDeathSFX_ID);
+            AudioManager.StopAllSound();
+            AudioManager.PlaySFX(PlayerDeathSoundD);
 
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");

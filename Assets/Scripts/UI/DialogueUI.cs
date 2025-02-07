@@ -31,7 +31,7 @@ namespace UI {
         
         [Inject] public IAudioManager AudioManager;
         #endregion
-        
+
         protected override void Awake() {
             base.Awake();
 

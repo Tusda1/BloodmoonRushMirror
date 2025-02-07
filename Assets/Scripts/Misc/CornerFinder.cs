@@ -44,8 +44,6 @@ public class CornerFinder
 
         if (horizontalHit.collider != null && verticalHit.collider != null)
         {
-            Debug.DrawRay(_transform.position, horizontalDirection * horizontalHit.distance, Color.red, 5f);
-            Debug.DrawRay(_transform.position, verticalDirection * verticalHit.distance, Color.red, 5f);
             return new Vector2(horizontalHit.point.x, verticalHit.point.y);
         }
         else
