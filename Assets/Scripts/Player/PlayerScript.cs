@@ -135,7 +135,9 @@ namespace Player {
         #endregion
 
         public const string PlayerSlashSoundID = "Player_Slash";
+        public const string PlayerDashSoundID = "Player_Dash";
         public const string PlayerDeathSoundD = "Player_Death";
+        public const string PlayerStepSoundID = "Player_Step";
         public const string PlayerRespawnSoundID = "Player_Respawn";
         public const string PlayerHurtSoundID = "Player_Hurt";
         public const string PlayerGunJumpSoundID = "GunJump";
@@ -414,6 +416,10 @@ namespace Player {
             if (playerLives == 1) {
                 playerLives++;
             }
+        }
+
+        public void PlayStepSound() {
+            AudioManager.PlaySFX(PlayerStepSoundID);
         }
 
         #region ---DataBindingMethods---

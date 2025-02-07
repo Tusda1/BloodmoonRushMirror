@@ -298,7 +298,12 @@ namespace Player {
             else if (_smoothMovement.x < -0.1f)
                 isFacingRight = false;
 
+            if (!wasGroundedLastFrame && isActuallyGrounded) {
+                player.AudioManager.PlaySFX(PlayerScript.PlayerStepSoundID);
+            }
+
             wasGroundedLastFrame = isActuallyGrounded;
+            
         }
 
         #region ---EventFunctions---
@@ -365,6 +370,7 @@ namespace Player {
             PlayerLadderLogic.ExitLadder();
             ForceExitDuck();
             isDashing = true;
+            player.AudioManager.PlaySFX(PlayerScript.PlayerDashSoundID);
             canDash = false;
             lockToAxis = Axis.XAxis;
             DashTimer.StartTimer();

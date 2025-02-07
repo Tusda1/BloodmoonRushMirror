@@ -127,6 +127,98 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].eventName
+      value: step1
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[3].eventName
+      value: step2
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[3].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[3].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 913682985}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 913682985}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[3].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 913682985}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[3].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayStepSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: AttackFinished
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[3].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayStepSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Player.PlayerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Player.PlayerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[3].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Player.PlayerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[2].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 423831354456312567, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: animationEvents.Array.data[3].OnAnimationEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1016095211261194371, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_Name
       value: Player
@@ -137,7 +229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.z
