@@ -32,13 +32,13 @@ namespace UI.Settings {
 
             _radioButtonGroup.RegisterValueChangedCallback(evt => {
                 switch (evt.newValue) {
-                    case 1:
+                    case 0:
                         SetControllerScheme();
                         break;
-                    case 2:
+                    case 1:
                         SetKeyboardMouseScheme();
                         break;
-                    case 3:
+                    case 2:
                         SetKeyboardScheme();
                         break;
                 }

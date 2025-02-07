@@ -14,6 +14,7 @@ using UnityEditor;
 
 public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     #region ---Fields---
+    [Header(nameof(LevelCheckpoint))]
     [SerializeField] private string soundID = "Checkpoint_Reached";
     [SerializeField] private AnimationClip inactiveIdle;
     [SerializeField] private AnimationClip activeIdle;

@@ -1,6 +1,7 @@
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utilities.DataBinding;
 using VContainer;
 #if UNITY_EDITOR
@@ -10,9 +11,10 @@ using System;
 namespace Triggers {
     public class MusicTrigger : TriggerBox, IBind<TriggerData> {
         #region ---Fields---
+        [Header(nameof(MusicTrigger))]
         [SerializeField] private string musicID;
-        [SerializeField] private int musicStage;
-    
+        [SerializeField] private int calmness;
+
         #region ***---GameManagers---***
         private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
         private static LevelDataManager LevelDataManager => LevelDataManager.LevelDataManagerCache;
@@ -20,20 +22,22 @@ namespace Triggers {
 
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
-        [field: SerializeField] public string ID { get; set; }
+        [field: SerializeField]
+        public string ID { get; set; }
 
         [field: SerializeField] public TriggerData SaveSystemData { get; set; }
 
-        public TriggerData DataInGameData => LevelDataManager.DataInGameData.triggerDatas.GetOrAddByIdInList(ID, new TriggerData {
-            name = name,
-            ID = ID,
-            hasBeenTriggered = hasBeenTriggered
-        });
+        public TriggerData DataInGameData => LevelDataManager.DataInGameData.triggerDatas.GetOrAddByIdInList(ID,
+            new TriggerData {
+                name = name,
+                ID = ID,
+                hasBeenTriggered = hasBeenTriggered
+            });
         #endregion
-        
-        [Inject] public IAudioManager AudioManager;
+
+        [Inject] private IAudioManager _audioManager;
         #endregion
-        
+
         #region ---EventFunctions---
         private void Start() {
             Bind();
@@ -41,10 +45,10 @@ namespace Triggers {
         #endregion
 
         protected override void TriggeredAction(Collider2D other) {
-            AudioManager.PlayMusic(musicID);
-            AudioManager.SetParameterValue(IAudioManager.LevelProgressionParameter, musicStage);
+            _audioManager.PlayMusic(musicID);
+            _audioManager.SetParameterValue(IAudioManager.CalmnessParameter, calmness);
         }
-        
+
         #region ---DataBindingMethods---
         public void Bind() {
             if (SaveLoadSystemManager != null || !Application.isPlaying) {

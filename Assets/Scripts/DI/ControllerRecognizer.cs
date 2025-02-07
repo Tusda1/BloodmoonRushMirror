@@ -13,13 +13,19 @@ public class ControllerRecognizer {
     public string CurrentDeviceID { get; private set; }
     public InputDevice CurrentDevice { get; private set; }
 
+    #region ***---Events---***
     public event Action<string, InputDevice> OnDeviceChanged = delegate { };
+    public event Action<InputDevice> ControllerInputDetected = delegate { };
+    public event Action<InputDevice> KeyboardInputDetected = delegate { };
+    #endregion
 
     private readonly Dictionary<string, InputDevice> _currentDevices = new();
 
+    private readonly IDisposable _onAnyButtonPressDisposable; 
+
     #region ***---Consts---***
-    public const string PlaystationDeviceID = "PLAYSTATION";
     public const string XboxDeviceID = "XBOX";
+    public const string PlaystationDeviceID = "PLAYSTATION";
     public const string NintendoDeviceID = "NINTENDO";
 
     public const string DefaultGamepadControlsID = XboxDeviceID;
@@ -30,13 +36,14 @@ public class ControllerRecognizer {
     [Inject]
     public ControllerRecognizer() {
         InputSystem.onDeviceChange += OnDeviceChangeAutomatic;
+        _onAnyButtonPressDisposable = InputSystem.onAnyButtonPress.Call(OnAnyButtonPress);
+        
         GetAllControllersManually();
-
-        InputSystem.onAnyButtonPress.Call(OnAnyButtonPress);
     }
 
     ~ControllerRecognizer() {
         InputSystem.onDeviceChange -= OnDeviceChangeAutomatic;
+        _onAnyButtonPressDisposable.Dispose();
     }
     #endregion
 
@@ -56,11 +63,15 @@ public class ControllerRecognizer {
     #region ---PrivateMethods---
     private void OnAnyButtonPress(InputControl inputControl) {
         var inputDevice = inputControl.device;
+        if (inputDevice is Keyboard) KeyboardInputDetected.Invoke(inputDevice);
         if (inputDevice is not (Gamepad or Joystick)) return;
-
+        
         if (inputDevice != CurrentDevice) {
             SetCurrentDevice(inputDevice);
         }
+        
+        ControllerInputDetected.Invoke(inputDevice);
+
     }
 
     private void OnDeviceChangeAutomatic(InputDevice inputDevice, InputDeviceChange inputDeviceChange) {
@@ -130,11 +141,7 @@ public class ControllerRecognizer {
         if (CurrentDeviceID != id) return;
         var newID = _currentDevices.FirstOrDefault();
 
-        if (newID.Key != null) {
-            CurrentDeviceID = newID.Key;
-
-            CurrentDevice = inputDevice;
-        }
+        SetCurrentDevice(newID.Key, newID.Value);
     }
 
     public static string InputDeviceToID(InputDevice inputDevice) {
