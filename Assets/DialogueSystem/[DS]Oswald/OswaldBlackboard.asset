@@ -12,25 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: OswaldBlackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 638744520557395707
+  VersionTimestamp: 638745272290835367
   AssetID:
     m_Value0: 1465934021941519809
     m_Value1: 10228809807368344090
   m_Blackboard:
     m_Variables:
-    - rid: 1653115881780151256
-    - rid: 1653115881780151257
-    - rid: 1653115881780151258
-    - rid: 1653115881780151259
-    - rid: 1653115881780151260
-    - rid: 1653115881780151261
-    - rid: 1653115881780151262
-    - rid: 1653115881780151263
+    - rid: 1653115901481845673
+    - rid: 1653115901481845674
+    - rid: 1653115901481845675
+    - rid: 1653115901481845676
+    - rid: 1653115901481845677
+    - rid: 1653115901481845678
+    - rid: 1653115901481845679
+    - rid: 1653115901481845680
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
     RefIds:
-    - rid: 1653115881780151256
+    - rid: 1653115901481845673
       type: {class: 'BlackboardVariable`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -38,7 +38,7 @@ MonoBehaviour:
           m_Value1: 13801873091532337908
         Name: OswaldCall
         m_Value: {fileID: -6601854684063276967, guid: 54ac675515541ab4eb4585509194276d, type: 2}
-    - rid: 1653115881780151257
+    - rid: 1653115901481845674
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -46,7 +46,7 @@ MonoBehaviour:
           m_Value1: 6640665219687666383
         Name: PhoneRingingSoundID
         m_Value: Misc_PhoneRinging
-    - rid: 1653115881780151258
+    - rid: 1653115901481845675
       type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -54,7 +54,7 @@ MonoBehaviour:
           m_Value1: 16153468599997760587
         Name: PlayerAnimator
         m_Value: {fileID: 0}
-    - rid: 1653115881780151259
+    - rid: 1653115901481845676
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -62,7 +62,7 @@ MonoBehaviour:
           m_Value1: 13281932717457269531
         Name: PlayerCallAnimationTrigger
         m_Value: CallPickUp
-    - rid: 1653115881780151260
+    - rid: 1653115901481845677
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -70,7 +70,7 @@ MonoBehaviour:
           m_Value1: 3396716631637883174
         Name: PlayerEndCallTrigger
         m_Value: EndCall
-    - rid: 1653115881780151261
+    - rid: 1653115901481845678
       type: {class: 'BlackboardVariable`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -78,7 +78,7 @@ MonoBehaviour:
           m_Value1: 2832812162107957177
         Name: DefaultPortrait
         m_Value: {fileID: 690025863, guid: 2c554f9faf4726c46a90b1004eaf3476, type: 3}
-    - rid: 1653115881780151262
+    - rid: 1653115901481845679
       type: {class: 'BlackboardVariable`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -86,14 +86,14 @@ MonoBehaviour:
           m_Value1: 4576738841707081772
         Name: DroolPortrait
         m_Value: {fileID: -887197242, guid: fdbfa856cfa3b2f46be17788d2e47bc4, type: 3}
-    - rid: 1653115881780151263
+    - rid: 1653115901481845680
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 6920003537976786824
           m_Value1: 5876722838762752895
         Name: CalmnessParameter
-        m_Value: 
+        m_Value: is_chill
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
   - rid: 2814022216904606525
   - rid: 2814022218085564518
   - rid: 1653115881780150906
-  m_VersionTimestamp: 638744520557395707
+  m_VersionTimestamp: 638745272290835367
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: -6830447404565283916}
@@ -144,7 +144,7 @@ MonoBehaviour:
         Name: CalmnessParameter
         IsExposed: 1
         m_IsShared: 0
-        m_Value: 
+        m_Value: is_chill
     - rid: 2814022148084990676
       type: {class: 'TypedVariableModel`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:

@@ -174379,13 +174379,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7940037054753066520, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1812957099}
   m_SourcePrefab: {fileID: 100100000, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
 --- !u!1 &1742538729 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1426341417276213809, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
   m_PrefabInstance: {fileID: 1302212553}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1812957096 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7940037054753066520, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
+  m_PrefabInstance: {fileID: 1665568866}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1812957099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812957096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6260b7ad3b39105458deec62f1a92dbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicID: Music_EntranceHall
+  musicStage: 0
 --- !u!1 &1839055800 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5858559836885815387, guid: b262850059fdf744e83248ec5f09af84, type: 3}

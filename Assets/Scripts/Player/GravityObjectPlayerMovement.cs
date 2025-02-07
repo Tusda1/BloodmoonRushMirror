@@ -321,6 +321,9 @@ namespace Player {
                     doubleJumping = true;
                     killCharges--;
                     player.animator.SetTrigger(AnimatorGunJumpTrigger);
+                    
+                    player.AudioManager.PlaySFX(PlayerScript.PlayerGunJumpSoundID);
+                    
                     coolParticles.Play();
                 }
             }
