@@ -5,12 +5,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
 using static ControllerRecognizer;
+using static IControlSchemeChanger;
 
 public class ControlSchemeChanger : IControlSchemeChanger {
     #region ---Fields---
-    public IControlSchemeChanger.ControlSchemeData CurrentControlSchemeInfo { get; private set; }
+    public bool ControlSchemeIsController { get; private set; }
 
-    public event Action<IControlSchemeChanger.ControlSchemeData> OnControlSchemeChanged = delegate { };
+    public ControlSchemeData CurrentControlSchemeInfo { get; private set; }
+
+    public event Action<ControlSchemeData> OnControlSchemeChanged = delegate { };
 
     private readonly ControllerRecognizer _controllerRecognizer;
     private readonly Dictionary<string, ControlSchemeDataSO> _inputLocalizationDatas = new();
@@ -28,38 +31,49 @@ public class ControlSchemeChanger : IControlSchemeChanger {
     private const string JoystickScheme = "Joystick";
     private const string KeyboardScheme = "Keyboard";
     private const string KeyboardMouseScheme = "KeyboardMouse";
-    
-    private const string DefaultScheme = KeyboardScheme;
     #endregion
 
     #region ***---SchemeID---***
     private string _currentGamepadSchemeID;
+    private string _currentKeyboardSchemeID;
+    
     private const string KeyboardSchemeID = "KEYBOARD";
     private const string KeyboardMouseSchemeID = "KEYBOARDMOUSE";
+    
+    private const string DefaultKeyboardSchemeID = KeyboardMouseSchemeID;
     #endregion
+
+    private const string PlayerPrefsKeyboardSchemeIDKey = "KeyboardSchemeID";
+    private const string PlayerPrefsGamepadSchemeIDKey = "GamepadSchemeID";
     #endregion
 
     #region ---Construction---
     [Inject]
     public ControlSchemeChanger(ControllerRecognizer controllerRecognizer) {
         _controllerRecognizer = controllerRecognizer;
+        
+        _currentKeyboardSchemeID = PlayerPrefs.GetString(PlayerPrefsKeyboardSchemeIDKey, DefaultKeyboardSchemeID);
+        _currentGamepadSchemeID = PlayerPrefs.GetString(PlayerPrefsGamepadSchemeIDKey, DefaultGamepadControlsID);
 
         InitializeInputLocalizationDatas();
 
-        _controllerRecognizer.OnDeviceChanged += OnNewController;
+        _controllerRecognizer.OnDeviceChanged += OnControllerDeviceChanged;
+        _controllerRecognizer.KeyboardInputDetected += KeyboardInputDetected;
+        _controllerRecognizer.ControllerInputDetected += ControllerInputDetected;
 
         _currentControllerDevice = _controllerRecognizer.CurrentDevice;
 
         if (_currentControllerDevice != null) {
-            ChangeSchemeByID(_controllerRecognizer.CurrentDeviceID);
+            _currentGamepadSchemeID = _controllerRecognizer.CurrentDeviceID;
+            ChangeSchemeByID(_currentGamepadSchemeID);
         }
         else {
-            ChangeSchemeByName(DefaultScheme);
+            ChangeSchemeByID(_currentKeyboardSchemeID);
         }
     }
 
     ~ControlSchemeChanger() {
-        _controllerRecognizer.OnDeviceChanged -= OnNewController;
+        _controllerRecognizer.OnDeviceChanged -= OnControllerDeviceChanged;
     }
     #endregion
 
@@ -100,13 +114,21 @@ public class ControlSchemeChanger : IControlSchemeChanger {
             var currentDevices = new List<InputDevice>();
 
             if (_currentControlSchemeName is GamepadScheme or JoystickScheme) {
+                PlayerPrefs.SetString(PlayerPrefsGamepadSchemeIDKey, _currentGamepadSchemeID);
                 currentDevices.Add(_currentControllerDevice);
+                ControlSchemeIsController = true;
+            }
+            else if (_currentControlSchemeName is KeyboardScheme or KeyboardMouseScheme)  {
+                _currentKeyboardSchemeID = _currentControlSchemeID;
+                PlayerPrefs.SetString(PlayerPrefsKeyboardSchemeIDKey, _currentKeyboardSchemeID);
+                currentDevices.AddRange(InputSystem.devices.Where(x => x is Keyboard or Mouse));
+                ControlSchemeIsController = false;
             }
             else {
-                currentDevices.AddRange(InputSystem.devices.Where(x => x is Keyboard or Mouse));
+                throw new ArgumentOutOfRangeException(_currentControlSchemeName, "Invalid control scheme name");
             }
 
-            CurrentControlSchemeInfo = new IControlSchemeChanger.ControlSchemeData(_currentControlSchemeDataSO, currentDevices.ToArray());
+            CurrentControlSchemeInfo = new ControlSchemeData(_currentControlSchemeDataSO, currentDevices.ToArray());
 
             OnControlSchemeChanged.Invoke(CurrentControlSchemeInfo);
 
@@ -124,18 +146,17 @@ public class ControlSchemeChanger : IControlSchemeChanger {
         }
     }
 
-    private void OnNewController(string controllerID, InputDevice inputDevice) {
+    private void OnControllerDeviceChanged(string controllerID, InputDevice inputDevice) {
         _currentGamepadSchemeID = controllerID;
         _currentControllerDevice = inputDevice;
+    }
 
-        if (CurrentControlSchemeName is not (GamepadScheme or JoystickScheme)) return;
-        
-        if (_currentControllerDevice == null) {
-            ChangeSchemeByName(DefaultScheme);
-        }
-        else {
-            ChangeSchemeByID(_currentGamepadSchemeID);
-        }
+    private void KeyboardInputDetected(InputDevice inputDevice) {
+        ChangeSchemeByID(_currentKeyboardSchemeID);
+    }
+
+    private void ControllerInputDetected(InputDevice inputDevice) {
+        ChangeSchemeByID(_currentGamepadSchemeID);
     }
 
     private string NameToID(string name) {
@@ -148,7 +169,7 @@ public class ControlSchemeChanger : IControlSchemeChanger {
         };
     }
 
-    private string IDToName(string id) {
+    private static string IDToName(string id) {
         return id switch {
             KeyboardSchemeID => KeyboardScheme,
             KeyboardMouseSchemeID => KeyboardMouseScheme,

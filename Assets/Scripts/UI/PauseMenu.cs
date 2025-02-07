@@ -38,6 +38,7 @@ namespace UI {
         #region ***---DI---***
         [Inject] private IPauseManager _pauseManager;
         [Inject] private EventSystem _eventSystem;
+        [Inject] private IControlSchemeChanger _controlSchemeChanger;
         #endregion
         #endregion
 
@@ -86,8 +87,10 @@ namespace UI {
             _eventSystem.SetSelectedGameObject(gameObject);
             _resumeButton.Focus();
 
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined;
+            if (!_controlSchemeChanger.ControlSchemeIsController) {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
         }
 
         [ContextMenu(nameof(ResumeGame))]
