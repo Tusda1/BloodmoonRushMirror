@@ -30,29 +30,27 @@ namespace Player {
         public Transform cameraFollowTransform;
         [SerializeField] private float lookahead = 2;
 
-        [Header("Player")] 
-        public int playerLives = 5;
+        [Header("Player")] public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         public PlayerHitbox hitbox;
         [SerializeField] private ParticleSystem bloodSplatter;
 
-        [Header("Taking Damage")] 
-        [SerializeField] private float alphaWhenTakingDamage = 0.2f;
+        [Header("Taking Damage")] [SerializeField]
+        private float alphaWhenTakingDamage = 0.2f;
 
         [SerializeField] private float takeDamageScreenShakeIntensity = 0.2f;
         [SerializeField] private float takeDamageScreenShakeDuration = 0.2f;
         [SerializeField] private float takeDamageTimeSlowDuration = 0.5f;
 
-        [Header("Keys")] 
-        public int keyAmount;
+        [Header("Keys")] public int keyAmount;
         public List<GameObject> keyObjects = new();
 
-        [Header("Player Can Move")] 
-        [SerializeField, Attributes.Required] private AllInFavourConsensusSO playerCanMove;
+        [Header("Player Can Move")] [SerializeField, Attributes.Required]
+        private AllInFavourConsensusSO playerCanMove;
 
-        [Header("Debug Logger")] 
-        [SerializeField, Attributes.Required] public DebugLoggerSO debugLogger;
+        [Header("Debug Logger")] [SerializeField, Attributes.Required]
+        public DebugLoggerSO debugLogger;
         #endregion
 
         private bool _isDead;
@@ -96,16 +94,16 @@ namespace Player {
                 if (_saveLoadSystemManager != null) {
                     return _saveLoadSystemManager;
                 }
-                
+
                 if (SaveLoadSystemManager.HasInstance) {
                     _saveLoadSystemManager = SaveLoadSystemManager.Instance;
                     return _saveLoadSystemManager;
                 }
-                
+
                 throw new NullReferenceException("SaveLoadSystemManager is null");
             }
         }
-        
+
         private SaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
         private IControlSchemeChanger _controlSchemeChanger;
@@ -115,21 +113,24 @@ namespace Player {
 
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
-        [field: SerializeField] public string ID { get; set; } = "Player";
+        [field: SerializeField]
+        public string ID { get; set; } = "Player";
+
         [field: SerializeField] public PlayerData SaveSystemData { get; set; }
+
         public PlayerData DataInGameData {
             get {
                 if (string.IsNullOrEmpty(PlayerData.ID)) {
                     PlayerData.ID = ID;
                     PlayerData.health = healthComponent.Health;
                     PlayerData.lives = playerLives;
-                    PlayerData.gems = gems; 
+                    PlayerData.gems = gems;
                 }
-                
+
                 return PlayerData;
             }
         }
-        
+
         private static PlayerData PlayerData => SaveLoadSystemManager.Instance.gameData.playerData;
         #endregion
 
@@ -137,7 +138,7 @@ namespace Player {
         public const string PlayerDeathSFX_ID = "Player_Death";
         public const string PlayerRespawnSFX_ID = "Player_Respawn";
         #endregion
-        
+
         [Inject]
         public void Construct(IObjectResolver container) {
             _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
@@ -150,9 +151,9 @@ namespace Player {
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
-            
+
             LevelDataManager.LevelStartPoint = transform.position;
-            
+
             Bind();
         }
 
@@ -164,22 +165,24 @@ namespace Player {
             healthComponent.InvulnerabilityTimer.OnComplete += () => spriteRenderer.color = new Color(1, 1, 1, 1);
 
             SetStateBehavioursReferences();
-            
+
             Gamepad.current?.SetMotorSpeeds(0.123f, 0.234f);
             InputSystem.PauseHaptics();
-            
+
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
             // StartCoroutine(ResetPlayerInput());
-            
+
             playerInput.actions["LookUp"].performed += _ => _isLookingUp = true;
             playerInput.actions["LookUp"].canceled += _ => _isLookingUp = false;
             playerInput.actions["LookDown"].performed += _ => _isLookingDown = true;
             playerInput.actions["LookDown"].canceled += _ => _isLookingDown = false;
-            
-            _controlSchemeChanger.OnControlSchemeChanged += data => playerInput.SwitchCurrentControlScheme(data.Name, data.Devices);
-            playerInput.SwitchCurrentControlScheme(_controlSchemeChanger.CurrentControlSchemeName, InputSystem.devices.ToArray());
+
+            _controlSchemeChanger.OnControlSchemeChanged +=
+                data => playerInput.SwitchCurrentControlScheme(data.Name, data.Devices);
+            playerInput.SwitchCurrentControlScheme(_controlSchemeChanger.CurrentControlSchemeName,
+                _controlSchemeChanger.CurrentControlSchemeInfo.Devices);
         }
 
         private void OnDestroy() {
@@ -214,7 +217,7 @@ namespace Player {
             else {
                 transform.localScale = playerMovement.isFacingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
             }
-            
+
             if (playerMovement.isDucking) {
                 DuckAttack();
             }
@@ -229,7 +232,7 @@ namespace Player {
         private void Attack() {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
-            
+
             _audioManager.PlaySFX(PlayerSlashSFX_ID);
             _canAttack = false;
             isAttacking = true;
@@ -268,7 +271,7 @@ namespace Player {
 
             _ = _cameraEffects.ShakeCamera(takeDamageScreenShakeIntensity, takeDamageScreenShakeDuration);
             _ = _cameraEffects.TimeSlow(takeDamageTimeSlowDuration);
-            
+
             playerMovement.lameParticles.Play();
 
             PlayBloodSplatter();
@@ -298,7 +301,7 @@ namespace Player {
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");
             animator.SetTrigger(AnimatorDeathTrigger);
-            
+
             _cameraEffects.CircleFadeOut(2);
 
             yield return new WaitUntil(() => animator.GetCurrentAnimationClip().name == "[DVD]Death");
@@ -308,12 +311,12 @@ namespace Player {
 
             if (playerLives < 0) {
                 debugLogger.Log("Ran out of lives");
-                _ = SceneCollectionManager.LoadSceneCollectionAsync(gameOverScene, 
+                _ = SceneCollectionManager.LoadSceneCollectionAsync(gameOverScene,
                     () => _cameraEffects.CircleFadeIn(0.5f));
             }
             else {
                 Respawn();
-            
+
                 yield return new WaitForSeconds(0.5f);
                 _cameraEffects.CircleFadeIn(0.5f);
             }
@@ -321,19 +324,19 @@ namespace Player {
 
         private void Respawn() {
             debugLogger.Log("Respawning");
-            
+
             OnRespawn.Invoke();
-            
+
             playerCanMove.ChangeVote(_isAliveVotePair, true);
 
             _isDead = false;
-            
+
             animator.SetBool(AnimatorIsDeadBool, false);
-            
+
             healthComponent.Health = healthComponent.maxHealth;
-            
+
             LoseGems();
-            
+
             animator.ResetTrigger(AnimatorDeathTrigger);
             animator.SetTrigger(AnimatorRespawnTrigger);
         }

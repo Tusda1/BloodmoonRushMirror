@@ -5,6 +5,8 @@ public interface IControlSchemeChanger {
     string CurrentControlSchemeName { get; set; }
     string CurrentControlSchemeID { get; set; }
     
+    bool ControlSchemeIsController { get; }
+    
     ControlSchemeDataSO CurrentControlSchemeDataSO { get; }
 
     ControlSchemeData CurrentControlSchemeInfo { get; }
