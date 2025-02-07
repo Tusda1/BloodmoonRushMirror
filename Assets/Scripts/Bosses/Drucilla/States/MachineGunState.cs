@@ -41,10 +41,10 @@ public class MachineGunState : DrucillaState
     {
         var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
         rightCorner.x -= 1;
-        rightCorner.y -= 2;
+        rightCorner.y -= 4;
         var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
         leftCorner.x += 1;
-        leftCorner.y -= 2;
+        leftCorner.y -= 4;
         
         var middle = new Vector2((leftCorner.x + rightCorner.x) / 2, leftCorner.y); // Find top middle of room
         _teleportPosition = middle;
