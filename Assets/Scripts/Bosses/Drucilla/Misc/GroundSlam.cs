@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using PlayerLoopTimer;
 using UnityEngine;
 
 public class GroundSlam 

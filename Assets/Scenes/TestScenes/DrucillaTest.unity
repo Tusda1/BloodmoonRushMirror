@@ -406,7 +406,6 @@ GameObject:
   - component: {fileID: 255729813}
   - component: {fileID: 255729812}
   - component: {fileID: 255729811}
-  - component: {fileID: 255729810}
   - component: {fileID: 255729809}
   - component: {fileID: 255729816}
   - component: {fileID: 255729815}
@@ -579,22 +578,6 @@ MonoBehaviour:
   boss: {fileID: 255729806}
   statePhase: 1
   vines: []
---- !u!114 &255729810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 255729803}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 064b02b3e8071374ea0146747dd38c94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boss: {fileID: 255729806}
-  statePhase: 1
-  entityPrefab: {fileID: 901654968}
-  entityCount: 2
 --- !u!114 &255729811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -831,7 +814,7 @@ Transform:
   m_GameObject: {fileID: 901654968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.06, y: 4.72, z: 0}
+  m_LocalPosition: {x: 24.41, y: 5.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

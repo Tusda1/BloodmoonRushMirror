@@ -17,6 +17,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     private AnimancerComponent _animancerComponent;
     private Rigidbody2D rb2d;
     private bool _isDeflected;
+    private GameObject _spawnRoom;
 
     private float _colliderRadius;
     private CircleCollider2D _circleCollider2D;
@@ -34,6 +35,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
+        _spawnRoom = VirtualCameraSwitch.ActiveVirtualCameraSwitch.gameObject;
         _circleCollider2D.enabled = false;
         
         _animancerComponent.Play(baseAnimation);
@@ -50,6 +52,14 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         StopAllCoroutines();
         
         _isDeflected = false;
+    }
+
+    private void Update()
+    {
+        if (_spawnRoom != VirtualCameraSwitch.ActiveVirtualCameraSwitch.gameObject)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private IEnumerator EnableCollider()
