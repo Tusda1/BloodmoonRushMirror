@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c8a12acac9a4ab293b72e7dd300eb8a, type: 3}
+  m_Name: FMOD_AudioDictionary
+  m_EditorClassIdentifier: 
+  dictionary:
+    _serializedList:
+    - Key: Player_Slash
+      Value: event:/Sfx/Player/Player_slash
+    - Key: Player_Death
+      Value: event:/Sfx/Player/Player_death
+    - Key: Player_Respawn
+      Value: event:/Sfx/Player/SpawnPlayer
+    - Key: Checkpoint_Reached
+      Value: event:/Sfx/Misc/Checkpoint_reached
+    - Key: Impact_Generic
+      Value: event:/Sfx/Misc/Generic_impact
+    - Key: 'Cutscene_Intro[Old]'
+      Value: event:/Sfx/Misc/Cutscene_demo_audio
+    - Key: Cutscene_Intro
+      Value: event:/Music/Music_level1
+    - Key: Music_MainMenu
+      Value: event:/Music/Music_level1
+    - Key: Music_EntranceHall
+      Value: 
+    - Key: Music_DucillaTheme
+      Value: event:/Music/Drusilla_theme_basic
+    - Key: Talk_Oswald
+      Value: event:/Sfx/Talk/Wizard_talk
+    - Key: Talk_Drucilla
+      Value: event:/Sfx/Talk/Drusilla_talk
+    - Key: Talk_Drucilla_Laugh
+      Value: event:/Sfx/Talk/Drusilla_laugh
+    - Key: Talk_David
+      Value: 
+    - Key: Talk_Dracula
+      Value: 
+    - Key: Misc_PhoneRinging
+      Value: event:/Sfx/Misc/Phone_ringing

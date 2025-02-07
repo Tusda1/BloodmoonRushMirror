@@ -75,6 +75,8 @@ public class ControlSchemeChanger : IControlSchemeChanger {
         set {
             _currentControlSchemeName = value;
             _currentControlSchemeID = NameToID(CurrentControlSchemeName);
+
+            if (_currentControlSchemeID == null) return;
             
             CurrentControlSchemeDataSO = _inputLocalizationDatas[CurrentControlSchemeID];
         }
@@ -126,7 +128,12 @@ public class ControlSchemeChanger : IControlSchemeChanger {
         _currentGamepadSchemeID = controllerID;
         _currentControllerDevice = inputDevice;
 
-        if (CurrentControlSchemeName is GamepadScheme or JoystickScheme) {
+        if (CurrentControlSchemeName is not (GamepadScheme or JoystickScheme)) return;
+        
+        if (_currentControllerDevice == null) {
+            ChangeSchemeByName(DefaultScheme);
+        }
+        else {
             ChangeSchemeByID(_currentGamepadSchemeID);
         }
     }
@@ -137,7 +144,7 @@ public class ControlSchemeChanger : IControlSchemeChanger {
             KeyboardMouseScheme => KeyboardMouseSchemeID,
             GamepadScheme => _currentGamepadSchemeID,
             JoystickScheme => NintendoDeviceID,
-            _ => throw new ArgumentOutOfRangeException(nameof(name))
+            _ => null
         };
     }
 

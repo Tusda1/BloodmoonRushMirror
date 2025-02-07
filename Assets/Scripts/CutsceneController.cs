@@ -1,6 +1,5 @@
 using System.Collections;
 using Attributes;
-using FMODScripts;
 using SceneCollections;
 using UnityEngine;
 using UnityEngine.Video;
@@ -10,14 +9,20 @@ public class CutsceneController : MonoBehaviour {
     #region ---Fields---
     [GetOrAddComponent, SerializeField, HideInInspector] private VideoPlayer videoPlayer;
     
-    [SerializeField] private VideoClip oldCutscene;
-    [SerializeField] private VideoClip newCutscene;
-    [SerializeField] private string soundPath = "event:/Sfx/Misc/Cutscene_demo_audio";
     [SerializeField] private SceneCollectionSO firstLevelCollection;
+    
+    [Header("Cutscene")]
+    [SerializeField] private VideoClip newCutscene;
+    [SerializeField] private string introSoundID = "Cutscene_Intro";
+    
+    [Header("Old Cutscene")]
+    [SerializeField] private VideoClip oldCutscene;
+    [SerializeField] private string oldIntroSoundID = "Cutscene_Intro[Old]";
     
     public static bool PlayOldCutscene = false;
     
     [Inject] private CameraEffects _cameraEffects;
+    [Inject] private IAudioManager _audioManager;
     #endregion
 
     private void Start() {
@@ -34,14 +39,16 @@ public class CutsceneController : MonoBehaviour {
     }
 
     private IEnumerator PlayCutscene() {
-        videoPlayer.clip = PlayOldCutscene || newCutscene == null ? oldCutscene : newCutscene;
+        var playOldCutscene = PlayOldCutscene || newCutscene == null;
+        
+        videoPlayer.clip = playOldCutscene ? oldCutscene : newCutscene;
         videoPlayer.Prepare();
 
         yield return new WaitUntil(() => videoPlayer.isPrepared);
 
         videoPlayer.Play();
-        FMODManager.RaiseStopSoundEvent(StopSoundType.All);
-        FMODManager.RaiseEvent(new PlaySoundEvent(soundPath));
+        _audioManager.StopAllSound();
+        _audioManager.PlaySFX(playOldCutscene ? oldIntroSoundID : introSoundID);
     }
 
     private void CutsceneEnded(VideoPlayer source) {

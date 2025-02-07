@@ -1,5 +1,4 @@
 using Animancer;
-using FMODScripts;
 using Player;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
@@ -15,8 +14,8 @@ using UnityEditor;
 
 public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     #region ---Fields---
-    
-    [SerializeField] private string raiseSoundEventPath = "event:/Sfx/Misc/Checkpoint_reached";
+    [Header(nameof(LevelCheckpoint))]
+    [SerializeField] private string soundID = "Checkpoint_Reached";
     [SerializeField] private AnimationClip inactiveIdle;
     [SerializeField] private AnimationClip activeIdle;
     [SerializeField] private AnimationClip activeStart;
@@ -56,6 +55,8 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
             Position = transform.position
         });
     #endregion
+    
+    [Inject] private IAudioManager _audioManager;
     #endregion
 
     private void Start() {
@@ -66,9 +67,7 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     }
 
     protected override void TriggeredAction(Collider2D other) {
-        if (raiseSoundEventPath != string.Empty) {
-            FMODManager.RaiseEvent(new PlaySoundEvent(raiseSoundEventPath));
-        }
+        _audioManager.PlaySFX(soundID);
 
         CheckpointReached.Invoke();
 

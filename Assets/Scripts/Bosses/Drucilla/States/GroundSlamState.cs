@@ -20,6 +20,11 @@ public class GroundSlamState : DrucillaState
         _groundSlam = new GroundSlam(_collider);
     }
 
+    private void OnDisable()
+    {
+        _hasTeleported = false;
+    }
+
     private void Update()
     {
         if (!_hasTeleported)
@@ -30,7 +35,17 @@ public class GroundSlamState : DrucillaState
         }
         else
         {
-            _groundSlam.ExecuteGroundSlam(ref Boss.targetVelocity);
+            _groundSlam.ExecuteGroundSlam(ref Boss.targetVelocity, GroundSlamEnd);
         }
+    }
+    
+    private void GroundSlamEnd()
+    {
+        EndState();
+    }
+    
+    protected override void OnTeleportEnd()
+    {
+        _hasTeleported = true;
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class SpawnEntity : DrucillaState
 {
@@ -14,8 +16,8 @@ public class SpawnEntity : DrucillaState
         _pooler = TryGetCommunityPooler.TryGetPooler(entityPrefab);
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
     }
-    
-    private void OnEnable()
+
+    private void Update()
     {
         var cornerOne = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
         var cornerTwo = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);

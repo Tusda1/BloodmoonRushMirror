@@ -1,26 +1,33 @@
 using Attributes;
-using FMODScripts;
+using SceneCollections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using VContainer;
 
 namespace UI {
     public class DeathScreenController : MonoBehaviour {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        
+        [SerializeField, Required] private SceneCollectionSO mainMenuSceneCollection;
+        
+        private Button _retryButton;
+        private Button _mainMenuButton;
+        
+        [Inject] private IAudioManager _audioManager;
         #endregion
         
         private void Start() {
-            // TODO
-            FMODManager.RaiseStopSoundEvent(StopSoundType.Music);
+            _audioManager.StopAllMusic();
 
             var root = uiDocument.rootVisualElement;
             
-            var yesButton = root.Q<Button>("YesButton");
-            yesButton.clicked += () => { SceneManager.LoadScene("Level 1 test"); };
-
-            var noButton = root.Q<Button>("NoButton");
-            noButton.clicked += () => { SceneManager.LoadScene("MainMenu"); };
+            _retryButton = root.Q<Button>("YesButton");
+            _mainMenuButton = root.Q<Button>("NoButton");
+            
+            // TODO: 
+            // _retryButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollectionAsync();
+            _mainMenuButton.clicked += () => _ = SceneCollectionManager.LoadSceneCollectionAsync(mainMenuSceneCollection);
         }
     }
 }

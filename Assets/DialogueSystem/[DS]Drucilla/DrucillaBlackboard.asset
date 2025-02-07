@@ -12,48 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: DrucillaBlackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 638698896716053325
+  VersionTimestamp: 638744467701361895
   AssetID:
     m_Value0: 4944896706078454662
     m_Value1: 8713339101728911770
   m_Blackboard:
     m_Variables:
-    - rid: 2814022248038925230
-    - rid: 2814022248038925231
-    - rid: 2814022248038925232
-    - rid: 2814022248038925233
-    - rid: 2814022248038925234
-    - rid: 2814022248038925235
-    - rid: 2814022248038925236
+    - rid: 1653115880401535149
+    - rid: 1653115880401535150
+    - rid: 1653115880401535151
+    - rid: 1653115880401535152
+    - rid: 1653115880401535153
+    - rid: 1653115880401535154
+    - rid: 1653115880401535155
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
     RefIds:
-    - rid: 2814022248038925230
-      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 7456374676149723218
-          m_Value1: 11093767988059105249
-        Name: LaughSFXPath
-        m_Value: Talk/Drusilla_laugh
-    - rid: 2814022248038925231
-      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 14354650347657143494
-          m_Value1: 8725196837871845085
-        Name: MusicThemePath
-        m_Value: Drusilla_theme_basic
-    - rid: 2814022248038925232
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 2547419228468632051
-          m_Value1: 15405140386796512659
-        Name: LaughPortrait
-        m_Value: {fileID: -1587205731444698363, guid: 5620f4f64f5a9cc40be14fa5fdcc6b54, type: 3}
-    - rid: 2814022248038925233
+    - rid: 1653115880401535149
       type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -61,7 +37,31 @@ MonoBehaviour:
           m_Value1: 17800598956414840659
         Name: DrucillaAnimator
         m_Value: {fileID: 0}
-    - rid: 2814022248038925234
+    - rid: 1653115880401535150
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 14354650347657143494
+          m_Value1: 8725196837871845085
+        Name: MusicThemeID
+        m_Value: Music_DucillaTheme
+    - rid: 1653115880401535151
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7456374676149723218
+          m_Value1: 11093767988059105249
+        Name: LaughSoundID
+        m_Value: Talk_Drucilla_Laugh
+    - rid: 1653115880401535152
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 2547419228468632051
+          m_Value1: 15405140386796512659
+        Name: LaughPortrait
+        m_Value: {fileID: -1587205731444698363, guid: 5620f4f64f5a9cc40be14fa5fdcc6b54, type: 3}
+    - rid: 1653115880401535153
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -69,7 +69,7 @@ MonoBehaviour:
           m_Value1: 1698377730960077904
         Name: TransformTrigger
         m_Value: Transform
-    - rid: 2814022248038925235
+    - rid: 1653115880401535154
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -77,7 +77,7 @@ MonoBehaviour:
           m_Value1: 17484214280055335588
         Name: ShootFloorTrigger
         m_Value: Shoot
-    - rid: 2814022248038925236
+    - rid: 1653115880401535155
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -108,7 +108,7 @@ MonoBehaviour:
   - rid: 2814022245187846359
   - rid: 2814022245187847003
   - rid: 2814022248038925229
-  m_VersionTimestamp: 638698896716053325
+  m_VersionTimestamp: 638744467701361895
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: -6314824275859076673}
@@ -121,10 +121,10 @@ MonoBehaviour:
         ID:
           m_Value0: 7456374676149723218
           m_Value1: 11093767988059105249
-        Name: LaughSFXPath
+        Name: LaughSoundID
         IsExposed: 1
         m_IsShared: 0
-        m_Value: Talk/Drusilla_laugh
+        m_Value: Talk_Drucilla_Laugh
     - rid: 74644064412107713
       type: {class: 'TypedVariableModel`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
@@ -141,10 +141,10 @@ MonoBehaviour:
         ID:
           m_Value0: 14354650347657143494
           m_Value1: 8725196837871845085
-        Name: MusicThemePath
+        Name: MusicThemeID
         IsExposed: 1
         m_IsShared: 0
-        m_Value: Drusilla_theme_basic
+        m_Value: Music_DucillaTheme
     - rid: 2814022244822941939
       type: {class: 'TypedVariableModel`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:

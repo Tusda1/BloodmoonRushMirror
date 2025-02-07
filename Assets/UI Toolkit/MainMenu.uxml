@@ -7,9 +7,9 @@
         <engine:Label text="Press Any Key" name="PressAnyKeyLabel" style="-unity-text-align: upper-center; font-size: 16px; color: rgb(255, 255, 255); top: 388px; position: absolute; align-self: center;" />
         <engine:Instance template="SettingsMenu" name="SettingsMenu" style="width: 100%; height: 100%; position: absolute;" />
         <engine:Instance template="SavesMenu" name="SavesMenu" style="transition-duration: 2s; transition-timing-function: ease-out-bounce; transition-property: translate; width: 0; height: 0;" />
-        <engine:VisualElement name="MainMenuRoot" class="down" style="flex-grow: 1; transition-duration: 1s; transition-property: all; width: 100%; height: 100%; position: absolute;">
-            <engine:Button name="CreditsButton" class="Button" style="position: absolute; transition-duration: 1187ms; transition-timing-function: ease-in-bounce; transition-delay: 53ms; right: 10px; top: 27px;" />
-            <engine:VisualElement name="Buttons" style="flex-grow: 1; flex-direction: row; justify-content: space-around; transition-duration: 1s; transition-property: all; height: 79px; max-height: 79px; min-height: 79px; align-content: center; align-items: center; bottom: 0; top: 270px;">
+        <engine:VisualElement name="MainMenuRoot" class="down" style="flex-grow: 1; transition-duration: 1s; transition-property: all; width: 100%; height: 100%; position: absolute; flex-direction: column-reverse;">
+            <engine:Button name="CreditsButton" class="Button" style="position: absolute; transition-duration: 1187ms; transition-timing-function: ease-in-bounce; transition-delay: 53ms; top: 72px; left: 638px;" />
+            <engine:VisualElement name="Buttons" style="flex-grow: 1; flex-direction: row; justify-content: space-around; transition-duration: 1s; transition-property: all; height: 79px; max-height: 79px; min-height: 79px; align-content: center; align-items: center;">
                 <engine:Button name="StartButton" class="Button" />
                 <engine:Button name="SettingsButton" class="Button" />
                 <engine:Button name="QuitButton" class="Button" />

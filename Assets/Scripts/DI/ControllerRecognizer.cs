@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Switch;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.XInput;
+using VContainer;
 
 public class ControllerRecognizer {
     #region ---Fields---
@@ -26,6 +27,7 @@ public class ControllerRecognizer {
     #endregion
 
     #region ---Construction---
+    [Inject]
     public ControllerRecognizer() {
         InputSystem.onDeviceChange += OnDeviceChangeAutomatic;
         GetAllControllersManually();
@@ -128,11 +130,7 @@ public class ControllerRecognizer {
         if (CurrentDeviceID != id) return;
         var newID = _currentDevices.FirstOrDefault();
 
-        if (newID.Key != null) {
-            CurrentDeviceID = newID.Key;
-
-            CurrentDevice = inputDevice;
-        }
+        SetCurrentDevice(newID.Key, newID.Value);
     }
 
     public static string InputDeviceToID(InputDevice inputDevice) {

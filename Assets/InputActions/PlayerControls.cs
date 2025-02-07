@@ -1162,7 +1162,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": "";Keyboard&Mouse;Keyboard"",
                     ""action"": ""TabNavigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1173,7 +1173,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": "";Keyboard&Mouse;Keyboard"",
                     ""action"": ""TabNavigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true

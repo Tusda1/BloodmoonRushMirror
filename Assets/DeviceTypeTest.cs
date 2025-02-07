@@ -11,8 +11,8 @@ public class DeviceTypeTest : MonoBehaviour {
     #endregion
 
     [Inject]
-    public void Construct(IControlSchemeChanger controlSchemeChanger) {
-        _controlSchemeChanger = controlSchemeChanger;
+    public void Construct(IObjectResolver container) {
+        _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
     }
 
     #region ---EventFunctions---
@@ -26,7 +26,7 @@ public class DeviceTypeTest : MonoBehaviour {
     }
     #endregion
 
-    private void OnControlSchemeChanged(IControlSchemeChanger.ControlSchemeData controlSchemeData) {
+    private void OnControlSchemeChanged(ControlSchemeData controlSchemeData) {
         textMesh.text = controlSchemeData.ID;
     }
 }

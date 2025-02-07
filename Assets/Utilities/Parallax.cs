@@ -10,13 +10,17 @@ public class Parallax : MonoBehaviour {
     [SerializeField] private bool startEnabled;
     [SerializeField] private ParallaxElement[] parallaxElements;
 
-    [Inject] private Camera _mainCamera;
-    
+    private Camera _mainCamera;
     private Transform _mainCameraTransform;
     private Vector3 _previousCameraPosition;
     private Vector3 _cameraDeltaMovement;
     private bool _enabled;
     #endregion
+    
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _mainCamera = container.ResolveInstanceID<Camera>(LevelInstaller.MainCameraID);
+    }
 
     private void Start() {
         _mainCameraTransform = _mainCamera.transform;

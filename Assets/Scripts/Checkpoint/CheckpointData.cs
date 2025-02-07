@@ -1,6 +1,6 @@
-using FMODScripts;
 using Player;
 using UnityEngine;
+using VContainer;
 
 namespace Checkpoint {
     public class CheckpointData : MonoBehaviour {
@@ -8,6 +8,8 @@ namespace Checkpoint {
         private Vector2 _playerRespawnPos;
         private float _playerPivotToGroundDistance;
         [HideInInspector] public LevelCheckpoint[] combatCheckpoints;
+        
+        [Inject] private IAudioManager _audioManager;
 
         public void Initialize() {
             _playerScript = ServiceLocator.Get<PlayerScript>();
@@ -34,7 +36,7 @@ namespace Checkpoint {
         }
 
         private void Respawn() {
-            FMODManager.RaiseSFXEvent("Player/SpawnPlayer");
+            _audioManager.PlaySFX(PlayerScript.PlayerRespawnSFX_ID);
             _playerScript.gameObject.transform.position = _playerRespawnPos;
         }
     }

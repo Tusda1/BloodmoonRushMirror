@@ -5,9 +5,14 @@ using VContainer;
 public class UITKWorldSpaceInteractive : MonoBehaviour {
     #region ---Fields---
     [SerializeField] private UIDocument uiDocument;
-    
-    [Inject] private Camera _renderTextureCamera;
+
+    private Camera _renderTextureCamera;
     #endregion
+    
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _renderTextureCamera = container.ResolveInstanceID<Camera>(PersistentManagersInstaller.RenderTextureCameraID);
+    }
 
     private void Start() {
         uiDocument.panelSettings.SetScreenToPanelSpaceFunction(_ => {
@@ -18,7 +23,6 @@ public class UITKWorldSpaceInteractive : MonoBehaviour {
             Debug.DrawRay(cameraRay.origin, cameraRay.direction * 100f, Color.magenta);
 
             if (!Physics.Raycast(cameraRay, out var hit, 100f, LayerMask.GetMask("RenderTextures"))) {
-                // Debug.Log("invalid position");
                 return invalidPosition;
             }
 
@@ -30,6 +34,5 @@ public class UITKWorldSpaceInteractive : MonoBehaviour {
 
             return pixelUV;
         });
-
     }
 }

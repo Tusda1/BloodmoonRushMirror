@@ -12,7 +12,7 @@ public class AnimationFromControlScheme : MonoBehaviour {
 
     [SerializeField] private string fieldNameInSO;
 
-    [Inject] private ControlSchemeChanger _controlSchemeChanger;
+    [Inject] private IControlSchemeChanger _controlSchemeChanger;
     #endregion
 
     #region ---EventFunctions---

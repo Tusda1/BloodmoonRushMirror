@@ -1,5 +1,4 @@
 using System;
-using FMODScripts;
 using UI;
 using Unity.Properties;
 using UnityEngine;
@@ -120,7 +119,7 @@ namespace Unity.Behavior {
         }
 
         private void PlayTextAudio() {
-            FMODManager.RaiseSFXEvent(dialogueCharacter.Value.textAudioSoundEventPath);
+            DialogueUI.AudioManager.PlaySFX(dialogueCharacter.Value.talkSoundID);
         }
     }
 }
