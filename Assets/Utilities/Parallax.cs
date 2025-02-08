@@ -123,7 +123,8 @@ public class Parallax : MonoBehaviour {
 
     private void ApplyInfiniteScrollingMovementXAxis(ParallaxElement parallaxElement) {
         var parallaxElementSprite = parallaxElement.spriteRenderer.sprite;
-        var width = parallaxElementSprite.texture.width / parallaxElementSprite.pixelsPerUnit;
+        var width = parallaxElementSprite.rect.width / parallaxElementSprite.pixelsPerUnit;
+        // var width = parallaxElementSprite.texture.width / parallaxElementSprite.pixelsPerUnit;
 
         if (_mainCameraTransform.position.x - parallaxElement.objectTransform.position.x >= width) {
             parallaxElement.objectTransform.position += new Vector3(width, 0, 0);
@@ -151,7 +152,8 @@ public class Parallax : MonoBehaviour {
 
     private void ApplyInfiniteScrollingMovementYAxis(ParallaxElement parallaxElement) {
         var parallaxElementSprite = parallaxElement.spriteRenderer.sprite;
-        var height = parallaxElementSprite.texture.height / parallaxElementSprite.pixelsPerUnit;
+        var height = parallaxElementSprite.rect.height / parallaxElementSprite.pixelsPerUnit;
+        // var height = parallaxElementSprite.texture.height / parallaxElementSprite.pixelsPerUnit;
 
         if (_mainCameraTransform.position.y - parallaxElement.objectTransform.position.y >= height) {
             parallaxElement.objectTransform.position += new Vector3(0, height, 0);

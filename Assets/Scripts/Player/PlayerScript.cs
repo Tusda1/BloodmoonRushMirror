@@ -140,7 +140,7 @@ namespace Player {
         public const string PlayerStepSoundID = "Player_Step";
         public const string PlayerRespawnSoundID = "Player_Respawn";
         public const string PlayerHurtSoundID = "Player_Hurt";
-        public const string PlayerGunJumpSoundID = "GunJump";
+        public const string PlayerGunJumpSoundID = "Player_GunJump";
         #endregion
 
         [Inject]
@@ -219,9 +219,7 @@ namespace Player {
                 transform.localScale = new Vector3(u, 1, 1);
             }
             else {
-                var u = playerMovement.inputVector.x >= 0 ? 1 : -1;
-                transform.localScale = new Vector3(u, 1, 1);
-                //transform.localScale = playerMovement.isFacingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
+                transform.localScale = playerMovement.isFacingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
             }
 
             if (playerMovement.isDucking) {
