@@ -22,6 +22,7 @@ namespace Player {
             if (other.CompareTag("Player") || !other.TryGetComponent<IDamageable>(out var damageable)) return;
 
             if (other.CompareTag("Enemy") && !playerScript.playerMovement.wasGroundedLastFrame) {
+                playerScript.playerMovement.DashCooldownTimer.StopTimer();
                 playerScript.playerMovement.killCharges++;
                 coolParticles.Play();
             }
