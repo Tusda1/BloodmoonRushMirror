@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GenericSlam : MonoBehaviour {
-    #region ---Fields---
-    #endregion
+public class GenericSlam : MonoBehaviour 
+{
+    
 }

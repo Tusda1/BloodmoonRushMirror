@@ -54,7 +54,7 @@ public class JumpEnemy : ReactiveBase
             
             var position = transform.position;
             transform.position = new Vector2(position.x, position.y + yDifference * jumpModifier);
-            yield return new WaitForFixedUpdate();
+            yield return null;
         }
         
         _isJumping = false;
