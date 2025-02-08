@@ -36,7 +36,7 @@ namespace Checkpoint {
         }
 
         private void Respawn() {
-            _audioManager.PlaySFX(PlayerScript.PlayerRespawnSFX_ID);
+            _audioManager.PlaySFX(PlayerScript.PlayerRespawnSoundID);
             _playerScript.gameObject.transform.position = _playerRespawnPos;
         }
     }
