@@ -32,6 +32,7 @@ namespace Player {
         [Header("Dash")] [ReadOnly] public bool isDashing;
         [ReadOnly] public bool canDash;
         [SerializeField] private float dashTime;
+        [SerializeField] private float dashCooldown;
         [SerializeField] private float dashForce;
 
         [Header("Jump / Fall")] [ReadOnly] public bool isJumping;
@@ -67,6 +68,7 @@ namespace Player {
 
         #region ***---PrivateFields---***
         public CountdownTimer DashTimer;
+        public CountdownTimer DashCooldownTimer;
         private CountdownTimer _minJumpTimer;
         private CountdownTimer _jumpBufferTimer;
         private CountdownTimer _knockbackTimer;
@@ -110,6 +112,8 @@ namespace Player {
         #region ---TimerInitialization---
         private void InitializeTimers() {
             InitializeDashTimer();
+            
+            InitializeDashCooldownTimer();
 
             InitializeMinJumpTimer();
 
@@ -138,6 +142,10 @@ namespace Player {
                     player.animator.SetBool(AnimatorDashBool, false);
                 })
                 .Finish();
+        }
+
+        private void InitializeDashCooldownTimer() {
+            DashCooldownTimer = CountdownTimerBuilder.Start(dashCooldown).Finish();
         }
 
         private void InitializeMinJumpTimer() {
@@ -356,6 +364,10 @@ namespace Player {
         public void OnDash(InputValue inputValue) {
             if (!inputValue.isPressed) return;
             if (player.isAttacking) return;
+            if (DashCooldownTimer.IsRunning) {
+                //Play sfx here indicating dash timer not out maybe?
+                return;
+            }
             if (isDashing || !canDash) {
                 _coyoteTimer.StopTimer();
 
@@ -370,6 +382,7 @@ namespace Player {
             PlayerLadderLogic.ExitLadder();
             ForceExitDuck();
             isDashing = true;
+            DashCooldownTimer.StartTimer();
             player.AudioManager.PlaySFX(PlayerScript.PlayerDashSoundID);
             canDash = false;
             lockToAxis = Axis.XAxis;
