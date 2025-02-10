@@ -219,7 +219,17 @@ namespace Player {
                 transform.localScale = new Vector3(u, 1, 1);
             }
             else {
+<<<<<<< Updated upstream
                 transform.localScale = playerMovement.isFacingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
+=======
+                if (playerMovement.inputVector.x == 0) {
+                    transform.localScale = playerMovement.isFacingRight ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);
+                }
+                else {
+                    var u = playerMovement.inputVector.x >= 0 ? 1 : -1;
+                    transform.localScale = new Vector3(u, 1, 1);
+                }
+>>>>>>> Stashed changes
             }
 
             if (playerMovement.isDucking) {
