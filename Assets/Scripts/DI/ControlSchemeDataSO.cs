@@ -17,10 +17,11 @@ public class ControlSchemeDataSO : ScriptableObject {
     #endregion
 
     #region ---WizardText---
-    [Header("WizardText")] 
-    public AnimationClip jumpButtonAnimation;
-    public AnimationClip attackButtonAnimation;
-    public AnimationClip dashButtonAnimation;
+    [Header("WizardText")]
+    public AnimationClip move_InputAnimation;
+    public AnimationClip jump_InputAnimation;
+    public AnimationClip attack_InputAnimation;
+    public AnimationClip dash_InputAnimation;
     #endregion
 
     #region ---UI---
