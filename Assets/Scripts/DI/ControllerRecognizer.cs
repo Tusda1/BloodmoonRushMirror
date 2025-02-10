@@ -63,15 +63,19 @@ public class ControllerRecognizer {
     #region ---PrivateMethods---
     private void OnAnyButtonPress(InputControl inputControl) {
         var inputDevice = inputControl.device;
-        if (inputDevice is Keyboard) KeyboardInputDetected.Invoke(inputDevice);
-        if (inputDevice is not (Gamepad or Joystick)) return;
         
-        if (inputDevice != CurrentDevice) {
-            SetCurrentDevice(inputDevice);
-        }
-        
-        ControllerInputDetected.Invoke(inputDevice);
+        if (inputDevice == CurrentDevice) return;
 
+        switch (inputDevice) {
+            case Keyboard:
+                CurrentDevice = inputDevice;
+                KeyboardInputDetected.Invoke(inputDevice);
+                break;
+            case Gamepad or Joystick:
+                SetCurrentDevice(inputDevice);
+                ControllerInputDetected.Invoke(inputDevice);
+                break;
+        }
     }
 
     private void OnDeviceChangeAutomatic(InputDevice inputDevice, InputDeviceChange inputDeviceChange) {
