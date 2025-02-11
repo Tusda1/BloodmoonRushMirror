@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.XInput;
 using VContainer;
 
-public class ControllerRecognizer {
+public class ControllerRecognizer : IDisposable {
     #region ---Fields---
     public string CurrentDeviceID { get; private set; }
     public InputDevice CurrentDevice { get; private set; }
@@ -41,7 +41,7 @@ public class ControllerRecognizer {
         GetAllControllersManually();
     }
 
-    ~ControllerRecognizer() {
+    public void Dispose() {
         InputSystem.onDeviceChange -= OnDeviceChangeAutomatic;
         _onAnyButtonPressDisposable.Dispose();
     }

@@ -27,6 +27,7 @@ public class AnimationFromControlScheme : MonoBehaviour {
         _output = AnimationPlayableOutput.Create(_graph, "Animation", animator);
         
         _controlSchemeChanger.OnControlSchemeChanged += OnControlSchemeChanged;
+        OnControlSchemeChanged(_controlSchemeChanger.CurrentControlSchemeInfo);
     }
 
     private void OnDestroy() {

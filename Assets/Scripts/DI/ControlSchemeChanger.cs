@@ -63,7 +63,7 @@ public class ControlSchemeChanger : IControlSchemeChanger {
 
         _currentControllerDevice = _controllerRecognizer.CurrentDevice;
 
-        if (_currentControllerDevice is not Keyboard) {
+        if (_currentControllerDevice is Gamepad or Joystick) {
             _currentGamepadSchemeID = _controllerRecognizer.CurrentDeviceID;
             ChangeSchemeByID(_currentGamepadSchemeID);
         }
