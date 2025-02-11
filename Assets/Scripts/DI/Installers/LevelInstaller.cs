@@ -7,6 +7,7 @@ public class LevelInstaller : AutoInjectInstaller {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private CinemachineBrain cinemachineBrain;
     [SerializeField] private LevelDataManager levelDataManager;
+    [SerializeField] private LevelMusicManager levelMusicManager;
     [SerializeField] private string leaderboardID;
     
     public const string MainCameraID = "MainCamera";
@@ -15,6 +16,7 @@ public class LevelInstaller : AutoInjectInstaller {
         builder.RegisterInstanceID(mainCamera, MainCameraID);
         builder.RegisterInstance(cinemachineBrain);
         builder.RegisterInstance(levelDataManager);
+        builder.RegisterInstance(levelMusicManager);
         builder.RegisterInstance(new SteamSpeedrunTimer(leaderboardID)).As<ISpeedrunTimer>();
     }
 
@@ -24,6 +26,7 @@ public class LevelInstaller : AutoInjectInstaller {
         SetReferenceFromSceneIfNull(ref mainCamera);
         SetReferenceFromSceneIfNull(ref cinemachineBrain);
         SetReferenceFromSceneIfNull(ref levelDataManager);
+        SetReferenceFromSceneIfNull(ref levelMusicManager);
     }
 #endif
 }

@@ -157,9 +157,11 @@ namespace Player {
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
-
-            LevelDataManager.LevelStartPoint = transform.position;
-
+#if UNITY_EDITOR
+            if (SceneCollectionManager.CurrentSceneCollection == null) {
+                LevelDataManager.LevelStartPoint = transform.position;
+            }
+#endif
             Bind();
         }
 
@@ -177,8 +179,6 @@ namespace Player {
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-
-            // StartCoroutine(ResetPlayerInput());
 
             playerInput.actions["LookUp"].performed += _ => _isLookingUp = true;
             playerInput.actions["LookUp"].canceled += _ => _isLookingUp = false;
