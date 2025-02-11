@@ -6,8 +6,13 @@ using Random = UnityEngine.Random;
 
 public class PingPongState : DraculaState
 {
+    [SerializeField] private AnimationClip pingPongAnimation;
+    [SerializeField] private AnimationClip receiveWindupAnimation;
+    [SerializeField] private AnimationClip receiveAnimation;
     [SerializeField] private float pingPongStartSpeed = 5f;
+    [SerializeField] private int pingPongsBeforeFailure = 3;
     
+    private bool _readyToPingPong;
     private GameObject _pingPongCircle;
     private GameObject _player;
     private int _pingPongHitCount;
@@ -87,6 +92,21 @@ public class PingPongState : DraculaState
     
     private void SpawnPingPongCircle()
     {
+        if (!_readyToPingPong)
+        {
+            if (!Boss.AnimancerComponent.IsPlaying(pingPongAnimation))
+            {
+                var state = Boss.AnimancerComponent.Play(pingPongAnimation);
+                state.Events(this).OnEnd = () =>
+                {
+                    _readyToPingPong = true;
+                    state.Destroy();
+                };
+            }
+            
+            return;
+        }
+        
         // Spawn ping pong circle and send it to the player
         var position = transform.position;
         GameObject pingPongCircle = Instantiate(_pingPongCircle, position, Quaternion.identity);
@@ -110,11 +130,32 @@ public class PingPongState : DraculaState
             }
             
             // Hit the circle back
+            ReceivePingPong();
             DamageInstance damageInstance = new DamageInstance();
             damageInstance.knockback = _directionToPingPong;
             
             hit.collider.GetComponent<IDamageable>().TakeDamage(damageInstance);
         }
+    }
+    
+    private void ReceivePingPong()
+    {
+        if (_pingPongHitCount <= pingPongsBeforeFailure)
+        {
+            var state = Boss.AnimancerComponent.Play(receiveWindupAnimation);
+            state.Events(this).OnEnd = () =>
+            {
+                state.Destroy();
+                Boss.AnimancerComponent.Play(receiveAnimation);
+                
+            };
+        }
+        else
+        {
+            EndState();
+        }
+        
+        _pingPongHitCount++;
     }
     
     private void OnDisable()

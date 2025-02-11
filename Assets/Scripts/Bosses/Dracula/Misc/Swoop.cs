@@ -27,6 +27,7 @@ public class Swoop
     
     public void ExecuteSwoop(Vector2 swoopOrigin, Vector2 swoopTarget, Vector2 swoopArcBottom)
     {
+        Debug.Log("swoop is starting");
         if (!_swoopStarted)
         {
             // Set the localscale of the external transform to face the direction it is moving
@@ -45,6 +46,7 @@ public class Swoop
             _swoopStarted = false;
             _externalBoss.transform.position = swoopTarget;
             ResetSwoop();
+            return;
         }
 
         // Apply easing using easePower

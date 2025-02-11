@@ -111,9 +111,9 @@ public class DashAttackState : DraculaState
             Boss.AnimancerComponent.Play(dashAnimation);
         }
         
-        Boss.targetVelocity = (_dashTarget - (Vector2) transform.position).normalized * dashSpeed;
-        // Check if the boss crossed the finish line
         var direction = _dashTarget.x > _dashOrigin.x ? Vector2.right : Vector2.left;
+        Boss.targetVelocity = direction * dashSpeed;
+        // Check if the boss crossed the finish line
         if (transform.position.x * direction.x > _dashTarget.x * direction.x)
         {
             _dashCount++;

@@ -54,7 +54,6 @@ public class BossBase : GravityObject
     {
         bossGrounded = isGrounded;
         
-        print(targetVelocity);
         if (targetVelocity.x != 0) facingDirection = targetVelocity.x > 0 ? Vector2.right : Vector2.left;
         
         transform.localScale = new Vector3(-facingDirection.x, 1, 1);
