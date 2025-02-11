@@ -107,6 +107,7 @@ namespace Player {
         private SaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
         private IControlSchemeChanger _controlSchemeChanger;
+        private IPauseManager _pauseManager;
         public IAudioManager AudioManager;
         private static LevelDataManager LevelDataManager => LevelDataManager.Instance;
         #endregion
@@ -148,6 +149,7 @@ namespace Player {
             _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
             _cameraEffects = container.Resolve<CameraEffects>();
             _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
+            _pauseManager = container.Resolve<IPauseManager>();
             AudioManager = container.Resolve<IAudioManager>();
         }
 
@@ -187,12 +189,17 @@ namespace Player {
                 data => playerInput.SwitchCurrentControlScheme(data.Name, data.Devices);
             playerInput.SwitchCurrentControlScheme(_controlSchemeChanger.CurrentControlSchemeName,
                 _controlSchemeChanger.CurrentControlSchemeInfo.Devices);
+            
+            _pauseManager.OnPause += OnPaused;
+            _pauseManager.OnResume += OnResumed;
         }
 
         private void OnDestroy() {
             ServiceLocator.Unregister<PlayerScript>();
             playerCanMove.Clear();
             InputSystem.PauseHaptics();
+            _pauseManager.OnPause -= OnPaused;
+            _pauseManager.OnResume -= OnResumed;
         }
 
         private void Update() {
@@ -427,6 +434,16 @@ namespace Player {
         public void PlayStepSound() {
             AudioManager.PlaySFX(PlayerStepSoundID);
         }
+        
+        #region ---Pause---
+        private void OnPaused() {
+            playerInput.actions.actionMaps[0].Disable();
+        }
+        
+        private void OnResumed() {
+            playerInput.actions.actionMaps[0].Enable();
+        }
+        #endregion
 
         #region ---DataBindingMethods---
         public void Bind() {
