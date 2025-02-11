@@ -35,7 +35,7 @@ namespace Triggers {
             });
         #endregion
 
-        [Inject] private IAudioManager _audioManager;
+        [Inject] private LevelMusicManager _levelMusicManager;
         #endregion
 
         #region ---EventFunctions---
@@ -45,8 +45,8 @@ namespace Triggers {
         #endregion
 
         protected override void TriggeredAction(Collider2D other) {
-            _audioManager.PlayMusic(musicID);
-            _audioManager.SetParameterValue(IAudioManager.CalmnessParameter, calmness);
+            _levelMusicManager.SetCalmnessParameter(calmness);
+            _levelMusicManager.PlayMusic(musicID);
         }
 
         #region ---DataBindingMethods---
