@@ -140,7 +140,7 @@ namespace Player {
         public const string PlayerStepSoundID = "Player_Step";
         public const string PlayerRespawnSoundID = "Player_Respawn";
         public const string PlayerHurtSoundID = "Player_Hurt";
-        public const string PlayerGunJumpSoundID = "GunJump";
+        public const string PlayerGunJumpSoundID = "Player_GunJump";
         #endregion
 
         [Inject]

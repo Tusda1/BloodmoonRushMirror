@@ -14,15 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: XBOX
   controlScheme: Gamepad
-  jumpButton: {fileID: 872531804, guid: f52bf8542b8b3194bbb75e12bbf3745c, type: 3}
-  jumpButtonAnimation:
-    secondsPerFrame: 0.2
-    frames: []
-  attackButton: {fileID: -1669024197, guid: f52bf8542b8b3194bbb75e12bbf3745c, type: 3}
-  attackButtonAnimation:
-    secondsPerFrame: 0.2
-    frames: []
-  dashButton: {fileID: 1843879339, guid: f52bf8542b8b3194bbb75e12bbf3745c, type: 3}
-  dashButtonAnimation:
+  move_InputAnimation: {fileID: -6661943993196218868, guid: d6646f656f95522428385e20ed464796, type: 3}
+  jump_InputAnimation: {fileID: 2335041878856244096, guid: bf2ce31948c92ea44ba4edb2b5bc6c8e, type: 3}
+  attack_InputAnimation: {fileID: 5732531439047856393, guid: 0a21e1a8aecf0884c89897592d904bc2, type: 3}
+  dash_InputAnimation: {fileID: 4375132406451848702, guid: c3cd013c995e2214d987acdf59afbd9f, type: 3}
+  controllerSettingPanel: {fileID: 0}
+  skipDialogueButtonAnimation:
+    autoSetTexture: {fileID: 0}
     secondsPerFrame: 0.2
     frames: []

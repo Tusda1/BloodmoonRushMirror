@@ -14,15 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: KEYBOARDMOUSE
   controlScheme: KeyboardMouse
-  jumpButton: {fileID: 0}
-  jumpButtonAnimation:
-    secondsPerFrame: 0.2
-    frames: []
-  attackButton: {fileID: 0}
-  attackButtonAnimation:
-    secondsPerFrame: 0.2
-    frames: []
-  dashButton: {fileID: 0}
-  dashButtonAnimation:
+  move_InputAnimation: {fileID: 3845257913049359616, guid: c0227ae93b32228479ceff93eb3ba57d, type: 3}
+  jump_InputAnimation: {fileID: 8627813556281199117, guid: ce9fa931ca4c2274496c08a327433565, type: 3}
+  attack_InputAnimation: {fileID: 8700243840194484129, guid: a5bae901af0357742b30b74185b200c6, type: 3}
+  dash_InputAnimation: {fileID: 7421795645326022426, guid: fe393cfa52ce64f4595e45db590b5e65, type: 3}
+  controllerSettingPanel: {fileID: 0}
+  skipDialogueButtonAnimation:
+    autoSetTexture: {fileID: 0}
     secondsPerFrame: 0.2
     frames: []
