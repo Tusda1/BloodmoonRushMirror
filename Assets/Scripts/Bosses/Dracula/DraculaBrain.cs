@@ -36,6 +36,7 @@ public class DraculaBrain : MonoBehaviour
     private void Start()
     {
         boss.OnBattleStart += StartFighting;
+        boss.DisableGravity();
     }
     
     private void StartFighting()

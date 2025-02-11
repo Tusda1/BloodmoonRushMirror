@@ -4,21 +4,19 @@ using Player;
 
 public class LaserAttackState : DraculaState
 {
+    [SerializeField] private AnimationClip laserAttackAnimation;
     [SerializeField] private float trackingTime;
-    [SerializeField] private float waitingTime;
     [SerializeField] private float firingTime;
     
     private Vector2 _teleportDestination;
     private Vector2 _firePosition;
     private Transform _player;
     private Collider2D _playerCollider;
-    private float _trackingTimer;
     private GameObject _trackerPrefab;
     private GameObject _trackerObject;
     private LineRenderer _lineRenderer;
-    private float waitingTimer;
     private GameObject _laserPrefab;
-    private float _firingTimer;
+    private float _timer;
     private GameObject _laserObject;
     
     private bool _hasStartedFiring;
@@ -73,9 +71,7 @@ public class LaserAttackState : DraculaState
 
     private void OnDisable()
     {
-        _trackingTimer = 0;
-        waitingTimer = 0;
-        _firingTimer = 0;
+        _timer = 0;
         _hasStartedFiring = false;
     }
 
@@ -84,7 +80,11 @@ public class LaserAttackState : DraculaState
         switch (stage)
         {
             case LaserAttackStage.Teleporting:
-                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportDestination);
+                if (!teleport.IsTeleporting)
+                {
+                    var teleportEnter = Boss.bossGrounded ? teleportEnterGround : teleportEnterAir;
+                    teleport.TeleportToLocation(_teleportDestination, teleportEnter, teleportExit);
+                }
                 break;
             case LaserAttackStage.Tracking:
                 Tracking();
@@ -100,13 +100,14 @@ public class LaserAttackState : DraculaState
     
     protected override void OnTeleportEnd()
     {
+        Boss.AnimancerComponent.Play(idleAnimation);
         stage = LaserAttackStage.Tracking;
     }
     
     private void Tracking()
     {
-        _trackingTimer += Time.deltaTime;
-        if (_trackingTimer <= trackingTime)
+        _timer += Time.deltaTime;
+        if (_timer <= trackingTime)
         {
             _firePosition = _playerCollider.bounds.center;
             
@@ -123,16 +124,17 @@ public class LaserAttackState : DraculaState
         {
             Destroy(_trackerObject);
             stage = LaserAttackStage.Waiting;
+            _timer = 0;
         }
     }
 
     private void WaitBeforeFire()
     {
-        waitingTimer += Time.deltaTime;
-        if (waitingTimer >= waitingTime)
+        var state = Boss.AnimancerComponent.Play(laserAttackAnimation);
+        state.Events(this).OnEnd = () =>
         {
             stage = LaserAttackStage.Firing;
-        }
+        };
     }
     
     private void Fire()
@@ -153,11 +155,12 @@ public class LaserAttackState : DraculaState
             _hasStartedFiring = true;
         }
         
-        _firingTimer += Time.deltaTime;
-        if (_firingTimer >= firingTime)
+        _timer += Time.deltaTime;
+        if (_timer >= firingTime)
         {
             _laserObject.SetActive(false);
             EndState();
+            _timer = 0;
         }
     }
 }

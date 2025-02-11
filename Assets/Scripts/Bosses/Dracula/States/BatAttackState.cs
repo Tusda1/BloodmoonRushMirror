@@ -5,10 +5,14 @@ using Random = UnityEngine.Random;
 
 public class BatAttackState : DraculaState
 {
+    [SerializeField] private AnimationClip batAttackStart;
+    [SerializeField] private AnimationClip batAttack;
     [SerializeField] private float attackLength = 0.5f;
     [SerializeField] private float batSpawnRate = 0.1f;
     [SerializeField] private GameObject batPrefab;
     
+    private bool _batAttackStarted;
+    private bool _startPlayed;
     private float _timeSinceAttackStart;
     private float _timeSinceLastBatSpawn;
     private Vector2 _teleportLocation;
@@ -56,7 +60,11 @@ public class BatAttackState : DraculaState
         switch (_attackPhase)
         {
             case AttackPhase.Teleporting:
-                if(!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportLocation);
+                if (!teleport.IsTeleporting)
+                {
+                    var teleportEnter = Boss.isGrounded ? teleportEnterGround : teleportEnterAir;
+                    teleport.TeleportToLocation(_teleportLocation, teleportEnter, teleportExit);
+                }
                 break;
             case AttackPhase.SpawningBats:
                 Bats();
@@ -73,6 +81,16 @@ public class BatAttackState : DraculaState
 
     private void Bats()
     {
+        if (!_batAttackStarted)
+        {
+            var state = Boss.AnimancerComponent.Play(batAttackStart);
+            state.Events(this).OnEnd = () =>
+            {
+                Boss.AnimancerComponent.Play(batAttack);
+            };
+            _batAttackStarted = true;
+        }
+        
         // If the attack has been going on for 5 seconds, switch to the next state
         if (Time.time - _timeSinceAttackStart > attackLength)
         {

@@ -20,8 +20,6 @@ public class BossBase : GravityObject
     public event Action OnBattleStart;
     public event Action OnBattleEnd;
     
-    [HideInInspector] public Vector2 targetVelocityPublic;
-    [HideInInspector] public Vector2 velocityPublic;
     [HideInInspector] public Vector2 facingDirection;
     [HideInInspector] public bool bossGrounded;
     [HideInInspector] public Collider2D bossCollider;
@@ -34,6 +32,7 @@ public class BossBase : GravityObject
         _stateMachine.InitializeAfterDeserialize();
         
         CurrentHealth = maxHealth;
+        facingDirection = Vector2.left;
     }
     
     protected override void Start()
@@ -51,13 +50,14 @@ public class BossBase : GravityObject
         StartBattle();
     }
 
-    protected override void ComputeVelocity()
+    protected void LateUpdate()
     {
-        targetVelocity = targetVelocityPublic;
-        velocity = velocityPublic;
         bossGrounded = isGrounded;
         
-        facingDirection = targetVelocity.x > 0 ? Vector2.right : Vector2.left;
+        print(targetVelocity);
+        if (targetVelocity.x != 0) facingDirection = targetVelocity.x > 0 ? Vector2.right : Vector2.left;
+        
+        transform.localScale = new Vector3(-facingDirection.x, 1, 1);
     }
     
     public void StartBattle()
@@ -74,4 +74,11 @@ public class BossBase : GravityObject
     {
         GravityModifier = 0f;
     }
+    
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        gameObject.GetComponentInParentOrChildren(ref animancer);
+    }
+#endif
 }

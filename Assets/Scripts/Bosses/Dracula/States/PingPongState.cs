@@ -65,7 +65,11 @@ public class PingPongState : DraculaState
         switch (_pingPongState)
         {
             case PingPong.Teleport:
-                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportPosition);
+                if (!teleport.IsTeleporting)
+                {
+                    var teleportEnter = Boss.isGrounded ? teleportEnterGround : teleportEnterAir;
+                    teleport.TeleportToLocation(_teleportPosition, teleportEnter, teleportExit);
+                }
                 break;
             case PingPong.Spawn:
                 SpawnPingPongCircle();

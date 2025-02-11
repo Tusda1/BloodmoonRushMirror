@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DashAttackState : DraculaState
 {
+    [SerializeField] private AnimationClip dashAnimation;
     [SerializeField] private int dashAmount = 5;
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashCooldown = 1f;
@@ -12,6 +13,7 @@ public class DashAttackState : DraculaState
     private Vector2 _dashTarget;
     private int _dashCount;
     private float _cooldownStartTime;
+    private bool _isDashing;
     
     private CornerFinder _cornerFinder;
 
@@ -34,10 +36,10 @@ public class DashAttackState : DraculaState
     private void OnEnable()
     {
         var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
-        rightCorner.x -= 1f;
+        rightCorner.x -= 2f;
         rightCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
-        leftCorner.x += 1f;
+        leftCorner.x += 2f;
         leftCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         
         // 50% chance to go left or right
@@ -66,7 +68,11 @@ public class DashAttackState : DraculaState
         switch (_dashState)
         {
             case DashState.Teleporting:
-                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_dashOrigin);
+                if (!teleport.IsTeleporting)
+                {
+                    var teleportEnter = Boss.isGrounded ? teleportEnterGround : teleportEnterAir;
+                    teleport.TeleportToLocation(_dashOrigin, teleportEnter, teleportExit);
+                }
                 break;
             case DashState.PreparingDash:
                 PrepareDash();
@@ -83,6 +89,7 @@ public class DashAttackState : DraculaState
     protected override void OnTeleportEnd()
     {
         _dashState = DashState.PreparingDash;
+        Boss.AnimancerComponent.Play(idleAnimation);
         Boss.EnableGravity();
     }
 
@@ -98,12 +105,22 @@ public class DashAttackState : DraculaState
     
     private void Dash()
     {
-        transform.position = Vector2.MoveTowards(transform.position, _dashTarget, dashSpeed * Time.deltaTime);
-        if (Vector2.Distance(transform.position, _dashTarget) < 0.1f)
+        if (!_isDashing)
+        {
+            _isDashing = true;
+            Boss.AnimancerComponent.Play(dashAnimation);
+        }
+        
+        Boss.targetVelocity = (_dashTarget - (Vector2) transform.position).normalized * dashSpeed;
+        // Check if the boss crossed the finish line
+        var direction = _dashTarget.x > _dashOrigin.x ? Vector2.right : Vector2.left;
+        if (transform.position.x * direction.x > _dashTarget.x * direction.x)
         {
             _dashCount++;
             _dashState = DashState.Cooldown;
             _cooldownStartTime = Time.time;
+            _isDashing = false;
+            Boss.AnimancerComponent.Play(idleAnimation);
         }
     }
     

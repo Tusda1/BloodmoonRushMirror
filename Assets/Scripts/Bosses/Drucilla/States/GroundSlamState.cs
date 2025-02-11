@@ -31,7 +31,7 @@ public class GroundSlamState : DrucillaState
         {
             if (teleport.IsTeleporting) return;
             
-            teleport.TeleportToLocation(_player.transform.position + Vector3.up * teleportDistance);
+            teleport.TeleportToLocation(_player.transform.position + Vector3.up * teleportDistance, DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit);
         }
         else
         {

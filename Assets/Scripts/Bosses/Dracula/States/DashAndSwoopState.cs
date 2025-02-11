@@ -15,13 +15,21 @@ public class DashAndSwoopState : DraculaState
     
     [SerializeField] private int loopAmount = 5;
     private int _loopCount;
-    
+    private bool _isFirstLoop;
+    private AnimationClip _currentTeleportEnter;
+    private AnimationClip _currentTeleportExit;
+
+    [SerializeField] private AnimationClip dashTeleportEnter;
+    [SerializeField] private AnimationClip dashTeleportExit;
+    [SerializeField] private AnimationClip dashAnimation;
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashProjectileCooldown = 1f;
     [SerializeField] private int dashProjectilesPerVolley = 3;
     private Vector2 _dashTarget;
     private bool _dashStarted;
     
+    [SerializeField] private AnimationClip swoopTeleportEnter;
+    [SerializeField] private AnimationClip swoopTeleportExit;
     [SerializeField] private float swoopProjectileCooldown = 1f;
     [SerializeField] private int swoopProjectilesPerVolley = 3;
     private bool _swoopStarted;
@@ -50,7 +58,7 @@ public class DashAndSwoopState : DraculaState
     protected override void Awake()
     {
         base.Awake();
-        swoop.SetOnSwoopEnd(SwoopEnd);
+        swoop.InitializeSwoop(SwoopEnd, Boss.AnimancerComponent, Boss);
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
         _homingProjectile = Resources.Load<GameObject>("Prefabs/HomingProjectile");
     }
@@ -78,6 +86,8 @@ public class DashAndSwoopState : DraculaState
         
         _bottomMiddle = (_bottomRight + _bottomLeft) / 2;
         
+        _isFirstLoop = true;
+        
         _currentStage = Stage.Brain;
     }
 
@@ -94,7 +104,7 @@ public class DashAndSwoopState : DraculaState
                 Calculate();
                 break;
             case Stage.Teleporting:
-                if(!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportLocation);
+                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportLocation, _currentTeleportEnter, _currentTeleportExit);
                 break;
             case Stage.Dashing:
                 Dash();
@@ -137,6 +147,18 @@ public class DashAndSwoopState : DraculaState
             // 50% chance to teleport left or right
             _teleportLocation = UnityEngine.Random.value > 0.5f ? _topRight : _topLeft;
         }
+
+        if (_isFirstLoop)
+        {
+            _isFirstLoop = false;
+            _currentTeleportEnter = Boss.isGrounded ? teleportEnterGround : teleportEnterAir;
+            _currentTeleportExit = _stage == Stage.Dashing ? dashTeleportExit : swoopTeleportExit;
+        }
+        else
+        {
+            _currentTeleportEnter = _stage == Stage.Dashing ? dashTeleportEnter : swoopTeleportEnter;
+            _currentTeleportExit = _stage == Stage.Dashing ? dashTeleportExit : swoopTeleportExit;
+        }
         
         _currentStage = Stage.Teleporting;
     }
@@ -148,6 +170,7 @@ public class DashAndSwoopState : DraculaState
             _dashStarted = true;
             Boss.EnableGravity();
             _dashTarget = _teleportLocation == _bottomRight ? _bottomLeft : _bottomRight;
+            Boss.AnimancerComponent.Play(dashAnimation);
         }
         
         if (!Boss.bossGrounded) return;
@@ -191,7 +214,8 @@ public class DashAndSwoopState : DraculaState
             _swoopStarted = true;
         }
 
-        var newPos = swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _bottomMiddle);
+        var oldPos = transform.position;
+        swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _bottomMiddle);
 
         if (_shootTimer > 0)
         {
@@ -200,13 +224,11 @@ public class DashAndSwoopState : DraculaState
         else
         {
             // Find the normal on the vector between the current position and the new position
-            var directionVector = (newPos - (Vector2) transform.position).normalized;
+            var directionVector = (transform.position - oldPos).normalized;
             var up = new Vector2(directionVector.y, -directionVector.x);
             StartCoroutine(Shoot(swoopProjectilesPerVolley, up));
             _shootTimer = swoopProjectileCooldown;
         }
-        
-        transform.position = newPos;
     }
     
     private void SwoopEnd()
