@@ -40,13 +40,15 @@ namespace UI.Settings {
         private const string GenericMenuSound_SoundID = "UI_GenericMenuSound";
         #endregion
 
-        #region ---EventFunctions---
+        #region ---Initialization---
         private void Awake() {
             _root = uiDocument.rootVisualElement;
             _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
             _leftBat = _settingsMenuRoot.Q<BatArrow>("LeftBat");
             _rightBat = _settingsMenuRoot.Q<BatArrow>("RightBat");
+        }
 
+        private void Start() {
             var menus = new IMenu[] { audioSettingsMenu, videoSettingsMenu, controlsSettingsMenu };
             _menus = new IndexedArray<IMenu>(menus);
 

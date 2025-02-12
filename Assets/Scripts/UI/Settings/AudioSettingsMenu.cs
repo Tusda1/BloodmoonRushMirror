@@ -7,8 +7,7 @@ using VContainer;
 namespace UI.Settings {
     public class AudioSettingsMenu : MonoBehaviour, IMenu {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector]
-        private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
         #region ---PrivateFields---
         private VisualElement _root;
@@ -33,6 +32,7 @@ namespace UI.Settings {
         #endregion
         #endregion
 
+        #region ---Initialization---
         private void Awake() {
             _root = uiDocument.rootVisualElement;
             _audioSettingsMenu = _root.Q<VisualElement>("AudioSettingsMenu");
@@ -71,6 +71,7 @@ namespace UI.Settings {
                     : ButtonDownMusicBus_SoundID);
             });
         }
+        #endregion
 
         public void Activate() {
             _audioSettingsMenu.SetEnabled(true);
