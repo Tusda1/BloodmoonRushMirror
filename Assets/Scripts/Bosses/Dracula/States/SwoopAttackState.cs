@@ -38,7 +38,7 @@ public class SwoopAttackState : DraculaState
     {
         base.Awake();
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
-        swoop.InitializeSwoop(SwoopEnd, Boss.AnimancerComponent, Boss);
+        swoop.InitializeSwoop(SwoopEnd, Boss);
     }
 
     private void Start()
