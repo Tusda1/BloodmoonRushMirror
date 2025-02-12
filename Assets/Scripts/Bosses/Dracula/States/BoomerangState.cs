@@ -43,13 +43,11 @@ public class BoomerangState : DraculaState
         if (Random.Range(0, 2) == 0)
         {
             _rightCorner.x -= 1;
-            _rightCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
             _teleportPosition = _rightCorner;
         }
         else
         {
             _leftCorner.x += 1;
-            _leftCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
             _teleportPosition = _leftCorner;
         }
         

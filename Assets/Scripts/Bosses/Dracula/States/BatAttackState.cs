@@ -51,7 +51,7 @@ public class BatAttackState : DraculaState
         var leftWall = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
         
         var randomX = Random.Range(leftWall.x + 1, rightWall.x - 1);
-        _teleportLocation = new Vector2(randomX, rightWall.y + Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y));
+        _teleportLocation = new Vector2(randomX, rightWall.y);
         
         _attackPhase = AttackPhase.Teleporting;
     }

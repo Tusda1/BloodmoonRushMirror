@@ -5,11 +5,13 @@ public class CornerFinder
 {
     private Transform _transform;
     private LayerMask _groundLayer;
+    private Collider2D _collider;
 
     public CornerFinder(Transform externalTransform, LayerMask groundLayer)
     {
         _transform = externalTransform;
         _groundLayer = groundLayer;
+        _collider = _transform.GetComponent<Collider2D>();
     }
 
     public Vector2 GetCorner(CornerType cornerType)
@@ -41,10 +43,12 @@ public class CornerFinder
 
         RaycastHit2D horizontalHit = Physics2D.Raycast(_transform.position, horizontalDirection, Mathf.Infinity, _groundLayer);
         RaycastHit2D verticalHit = Physics2D.Raycast(_transform.position, verticalDirection, Mathf.Infinity, _groundLayer);
+        
+        var offset = new Vector2(_collider.bounds.extents.x * -horizontalDirection.x - _collider.offset.x,_collider.bounds.extents.y  * -verticalDirection.y - _collider.offset.y);
 
         if (horizontalHit.collider != null && verticalHit.collider != null)
         {
-            return new Vector2(horizontalHit.point.x, verticalHit.point.y);
+            return new Vector2(horizontalHit.point.x + offset.x, verticalHit.point.y + offset.y);
         }
         else
         {

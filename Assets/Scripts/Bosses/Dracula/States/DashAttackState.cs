@@ -37,10 +37,9 @@ public class DashAttackState : DraculaState
     {
         var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
         rightCorner.x -= 2f;
-        rightCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
         leftCorner.x += 2f;
-        leftCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
+        Debug.Log(Boss.bossCollider.bounds.extents.y);
         
         // 50% chance to go left or right
         if (UnityEngine.Random.Range(0, 2) == 0)
