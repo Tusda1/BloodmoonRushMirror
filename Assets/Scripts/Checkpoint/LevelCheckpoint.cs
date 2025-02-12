@@ -67,7 +67,7 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     }
 
     protected override void TriggeredAction(Collider2D other) {
-        _audioManager.PlaySFX(soundID);
+        _audioManager.PlayOneShot(soundID);
 
         CheckpointReached.Invoke();
 

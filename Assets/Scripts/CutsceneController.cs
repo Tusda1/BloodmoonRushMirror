@@ -48,7 +48,7 @@ public class CutsceneController : MonoBehaviour {
 
         videoPlayer.Play();
         _audioManager.StopAllSound();
-        _audioManager.PlaySFX(playOldCutscene ? oldIntroSoundID : introSoundID);
+        _audioManager.PlayOneShot(playOldCutscene ? oldIntroSoundID : introSoundID);
     }
 
     private void CutsceneEnded(VideoPlayer source) {

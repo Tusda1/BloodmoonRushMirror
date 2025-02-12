@@ -119,7 +119,7 @@ namespace Unity.Behavior {
         }
 
         private void PlayTextAudio() {
-            DialogueUI.AudioManager.PlaySFX(dialogueCharacter.Value.talkSoundID);
+            DialogueUI.AudioManager.PlayOneShot(dialogueCharacter.Value.talkSoundID);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace Bat {
             if (currentHealth == 0) return;
             damageInstance.TriggerOnHitAction();
             
-            _audioManager.PlaySFX(takeDamageSFX_ID);
+            _audioManager.PlayOneShot(takeDamageSFX_ID);
             
             currentHealth -= damageInstance.damage;
             if (currentHealth > 0) return;

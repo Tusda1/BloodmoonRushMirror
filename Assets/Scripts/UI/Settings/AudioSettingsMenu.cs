@@ -22,6 +22,15 @@ namespace UI.Settings {
         public event Action OnMenuDeactivated = delegate { };
 
         [Inject] private IAudioManager _audioManager;
+        
+        #region ***---SoundID---***
+        private const string ButtonDownMasterBus_SoundID = "UI_ButtonDown[MasterBus]";
+        private const string ButtonUpMasterBus_SoundID = "UI_ButtonUp[MasterBus]";
+        private const string ButtonDownMusicBus_SoundID = "UI_ButtonDown[MusicBus]";
+        private const string ButtonUpMusicBus_SoundID = "UI_ButtonUp[MusicBus]";
+        private const string ButtonDownSFXBus_SoundID = "UI_ButtonDown[SFXBus]";
+        private const string ButtonUpSFXBus_SoundID = "UI_ButtonUp[SFXBus]";
+        #endregion
         #endregion
 
         private void Awake() {
@@ -38,11 +47,29 @@ namespace UI.Settings {
             _sfxVolumeSlider.value = _audioManager.SFXVolume;
             _musicVolumeSlider.value = _audioManager.MusicVolume;
 
-            _masterVolumeSlider.RegisterValueChangedCallback(evt => _audioManager.SetMasterVolume(evt.newValue));
+            _masterVolumeSlider.RegisterValueChangedCallback(evt => {
+                _audioManager.SetMasterVolume(evt.newValue);
 
-            _sfxVolumeSlider.RegisterValueChangedCallback(evt => _audioManager.SetSFXVolume(evt.newValue));
+                _audioManager.PlayOneShot(evt.newValue > evt.previousValue
+                    ? ButtonUpMasterBus_SoundID
+                    : ButtonDownMasterBus_SoundID);
+            });
 
-            _musicVolumeSlider.RegisterValueChangedCallback(evt => _audioManager.SetMusicVolume(evt.newValue));
+            _sfxVolumeSlider.RegisterValueChangedCallback(evt => {
+                _audioManager.SetSFXVolume(evt.newValue);
+
+                _audioManager.PlayOneShot(evt.newValue > evt.previousValue
+                    ? ButtonUpSFXBus_SoundID
+                    : ButtonDownSFXBus_SoundID);
+            });
+
+            _musicVolumeSlider.RegisterValueChangedCallback(evt => {
+                _audioManager.SetMusicVolume(evt.newValue);
+
+                _audioManager.PlayOneShot(evt.newValue > evt.previousValue
+                    ? ButtonUpMusicBus_SoundID
+                    : ButtonDownMusicBus_SoundID);
+            });
         }
 
         public void Activate() {

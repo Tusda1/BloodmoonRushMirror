@@ -250,7 +250,7 @@ namespace Player {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
 
-            AudioManager.PlaySFX(PlayerSlashSoundID);
+            AudioManager.PlayOneShot(PlayerSlashSoundID);
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -261,7 +261,7 @@ namespace Player {
             debugLogger.Log("DuckAttack");
 
             animator.SetTrigger(AnimatorDuckAttackTrigger);
-            AudioManager.PlaySFX(PlayerSlashSoundID);
+            AudioManager.PlayOneShot(PlayerSlashSoundID);
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -282,7 +282,7 @@ namespace Player {
 
             damageInstance.TriggerOnHitAction();
             
-            AudioManager.PlaySFX(PlayerHurtSoundID);
+            AudioManager.PlayOneShot(PlayerHurtSoundID);
             
             playerMovement.DashTimer.StopTimer();
             playerMovement.Knockback(damageInstance.knockback);
@@ -316,7 +316,7 @@ namespace Player {
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
             AudioManager.StopAllSound();
-            AudioManager.PlaySFX(PlayerDeathSoundD);
+            AudioManager.PlayOneShot(PlayerDeathSoundD);
 
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");
@@ -432,7 +432,7 @@ namespace Player {
         }
 
         public void PlayStepSound() {
-            AudioManager.PlaySFX(PlayerStepSoundID);
+            AudioManager.PlayOneShot(PlayerStepSoundID);
         }
         
         #region ---Pause---

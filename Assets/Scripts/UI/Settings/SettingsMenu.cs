@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using Utilities;
+using VContainer;
 
 namespace UI.Settings {
     [RequireComponent(typeof(VideoSettingsMenu), typeof(AudioSettingsMenu), typeof(ControlsSettingsMenu))]
@@ -33,6 +34,10 @@ namespace UI.Settings {
         private BatArrow _leftBat;
         private BatArrow _rightBat;
         #endregion
+        
+        [Inject] private IAudioManager _audioManager;
+        
+        private const string GenericMenuSound_SoundID = "UI_GenericMenuSound";
         #endregion
 
         #region ---EventFunctions---
@@ -100,9 +105,11 @@ namespace UI.Settings {
             }
         }
 
-        private static void SetActiveMenu(IMenu currentMenu, IMenu previousMenu, bool indexIncreased) {
+        private void SetActiveMenu(IMenu currentMenu, IMenu previousMenu, bool indexIncreased) {
             previousMenu.Deactivate(indexIncreased ? "left" : "right");
             currentMenu.Activate();
+            
+            _audioManager.PlayOneShot(GenericMenuSound_SoundID);
         }
     }
 }

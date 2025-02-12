@@ -27,7 +27,7 @@ namespace UI {
         [SerializeField, Required] private Animator backgroundAnimator;
         [SerializeField] private AllInFavourConsensusSO playerCanMove;
 
-        #region ---PrivateFields---
+        #region ***---PrivateFields---***
         private VisualElement _rootElement;
         private VisualElement _mainMenuRoot;
 
@@ -38,13 +38,29 @@ namespace UI {
         private Button _quitButton;
         private Button _creditsButton;
 
+        private IAudioManager _audioManager;
+        private DebugLoggerSO _debugLoggerSO;
+
         private Action _updateActions = delegate { };
         #endregion
 
-        [Inject] private IAudioManager _audioManager;
-
-        private const string MusicID = "Music_MainMenu";
+        #region ***---SoundID---***
+        private const string MainMenuMusic_SoundID = "Music_MainMenu";
+        private const string ShowCredits_SoundID = "UI_ShowCredits";
+        private const string GenericMenuSound_SoundID = "UI_GenericMenuSound";
+        
+        private const string ButtonDownSFXBus_SoundID = "UI_ButtonDown[SFXBus]";
+        private const string ButtonUpSFXBus_SoundID = "UI_ButtonUp[SFXBus]";
+        
+        private const string AnyKeyPressed_SoundID = "Player_Respawn";
         #endregion
+        #endregion
+
+        [Inject]
+        public void Construct(IObjectResolver container) {
+            _audioManager = container.Resolve<IAudioManager>();
+            _debugLoggerSO = container.ResolveProviderID<DebugLoggerSO>("UI");
+        }
 
         private void Awake() {
             _rootElement = uiDocument.rootVisualElement;
@@ -69,7 +85,7 @@ namespace UI {
         }
 
         private void Start() {
-            _audioManager.PlayMusic(MusicID);
+            _audioManager.PlayMusic(MainMenuMusic_SoundID);
 
             _startButton.clicked += savesMenu.Activate;
             savesMenu.OnMenuActivated += HideMenu;
@@ -87,18 +103,27 @@ namespace UI {
 
             _creditsButton.RegisterCallback<NavigationMoveEvent>(evt => {
                 if (evt.direction == NavigationMoveEvent.Direction.Down) {
+                    _debugLoggerSO.Log("Navigate Away From Credits Button");
+                    
                     _startButton.focusController.IgnoreEvent(evt);
                     evt.StopPropagation();
+                    
                     _startButton.Focus();
+                    _audioManager.PlayMusic(MainMenuMusic_SoundID);
                 }
             });
         }
 
         private void TriggerFocusCreditsButton(NavigationMoveEvent evt) {
             if (evt.direction == NavigationMoveEvent.Direction.Up) {
+                _debugLoggerSO.Log("Navigate To Credits Button");
+                
                 _startButton.focusController.IgnoreEvent(evt);
                 evt.StopPropagation();
                 _creditsButton.Focus();
+                
+                _audioManager.StopAllMusic();
+                _audioManager.PlayOneShot(ShowCredits_SoundID);
             }
         }
 
@@ -110,18 +135,22 @@ namespace UI {
         private void HideMenu() {
             _mainMenuRoot.AddToClassList("down");
             _mainMenuRoot.SetEnabled(false);
+            _debugLoggerSO.Log("Hide MainMenu");
+            
+            _audioManager.PlayOneShot(ButtonDownSFXBus_SoundID);
         }
 
         [ContextMenu(nameof(ShowMenu))]
         private void ShowMenu() {
             _mainMenuRoot.SetEnabled(true);
             _mainMenuRoot.RemoveFromClassList("down");
+            _debugLoggerSO.Log("Show MainMenu");
 
             _startButton.Focus();
         }
 
-        private static void QuitButtonClicked() {
-            Debug.Log("QuitButtonClicked");
+        private void QuitButtonClicked() {
+            _debugLoggerSO.Log("QuitButtonClicked");
 
             Application.Quit();
 #if UNITY_EDITOR
@@ -131,8 +160,11 @@ namespace UI {
 
         private async Awaitable AnyKeyPressed() {
             _updateActions = delegate { };
+            
+            _debugLoggerSO.Log("Any Key Pressed");
 
             backgroundAnimator.Play("MenuZoom");
+            _audioManager.PlayOneShot(AnyKeyPressed_SoundID);
 
             for (var i = 0; i < 10; i++) {
                 _pressAnyKeyLabel.style.color = new StyleColor(new Color(1, 1, 1, 0.5f));
