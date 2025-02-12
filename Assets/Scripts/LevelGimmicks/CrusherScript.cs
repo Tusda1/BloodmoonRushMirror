@@ -8,6 +8,8 @@ public class CrusherScript : GravityObject {
     [HideInInspector] public float downSpeed;
     [HideInInspector] public Vector2 targetPosition;
     
+    [SerializeField] private DamageInstance damageInstance = new();
+    
     public Collider2D triggerCollider2D;
     public bool goingDown = false;
     public bool isStill = true;
@@ -58,11 +60,18 @@ public class CrusherScript : GravityObject {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.CompareTag("Player")) {
-            //var playerScript = other.gameObject.GetComponent<PlayerScript>();
-            //playerScript.TakeDamage(spikeDamageInstance);
-            var gravityObjectPlayerMovement = other.gameObject.GetComponent<GravityObjectPlayerMovement>();
-            gravityObjectPlayerMovement.SpikeReset();
+        if (!other.transform.TryGetComponent<IDamageable>(out var damageable)) return;
+                
+                switch (damageable) {
+                    case PlayerScript playerScript:
+                        playerScript.TakeDamage(damageInstance);
+                        playerScript.playerMovement.SpikeReset();
+                        break;
+                    case EnemyBase enemyBase:
+                        damageInstance.damage = 99;
+                        enemyBase.TakeDamage(damageInstance);
+                        damageInstance.damage = 1;
+                        break;
         }
     }
 }
