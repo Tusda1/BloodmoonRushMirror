@@ -18,7 +18,6 @@ public class SwoopAttackState : DraculaState
     private float _shotCounter;
     private Vector2 _temporaryPosition;
     private Vector2 _lastFramePosition;
-    private bool _swoopStartPlayed;
     
     [SerializeField] private Swoop swoop = new();
     private Transform _player;
@@ -114,7 +113,6 @@ public class SwoopAttackState : DraculaState
         _swoopState = SwoopState.Shooting;
         swoopCount++;
         (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
-        _swoopStartPlayed = false;
         Boss.AnimancerComponent.Play(idleAnimation);
     }
     

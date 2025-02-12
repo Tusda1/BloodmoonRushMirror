@@ -79,10 +79,8 @@ public class DashAndSwoopState : DraculaState
         _topRight.y -= 2f;
         _bottomRight = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
         _bottomRight.x -= 1f;
-        _bottomRight.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         _bottomLeft = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
         _bottomLeft.x += 1f;
-        _bottomLeft.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
         
         _bottomMiddle = (_bottomRight + _bottomLeft) / 2;
         
