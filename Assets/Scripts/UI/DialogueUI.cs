@@ -2,6 +2,7 @@ using System;
 using Attributes;
 using Consensus;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 using VContainer;

@@ -10,11 +10,12 @@ public class BatAttackState : DraculaState
     [SerializeField] private float attackLength = 0.5f;
     [SerializeField] private float batSpawnRate = 0.1f;
     [SerializeField] private GameObject batPrefab;
-    
+
+    private bool _batAnimationPlayed;
     private bool _batAttackStarted;
+    private float _attackTimer;
+    private float _batTimer;
     private bool _startPlayed;
-    private float _timeSinceAttackStart;
-    private float _timeSinceLastBatSpawn;
     private Vector2 _teleportLocation;
     private Transform _player;
     private Vector2 _attackDirection;
@@ -75,7 +76,6 @@ public class BatAttackState : DraculaState
     protected override void OnTeleportEnd()
     {
         _attackPhase = AttackPhase.SpawningBats;
-        _timeSinceAttackStart = Time.time;
         _attackDirection = (_player.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
     }
 
@@ -83,27 +83,40 @@ public class BatAttackState : DraculaState
     {
         if (!_batAttackStarted)
         {
+            Boss.facingDirection = _attackDirection;
             var state = Boss.AnimancerComponent.Play(batAttackStart);
             state.Events(this).OnEnd = () =>
             {
                 Boss.AnimancerComponent.Play(batAttack);
+                _batAnimationPlayed = true;
+                state.Destroy();
             };
             _batAttackStarted = true;
         }
         
+        if (!_batAnimationPlayed) return;
+        
         // If the attack has been going on for 5 seconds, switch to the next state
-        if (Time.time - _timeSinceAttackStart > attackLength)
+        _attackTimer += Time.deltaTime;
+        if (_attackTimer > attackLength)
         {
+            _attackTimer = 0;
+            _batAnimationPlayed = false;
+            _batAttackStarted = false;
             EndState();
             return;
         }
         
         // Spawn a bat every 0.5 seconds randomly on the attack side of the collider
-        if (Time.time - _timeSinceLastBatSpawn > batSpawnRate)
+        _batTimer += Time.deltaTime;
+        if (_batTimer > batSpawnRate)
         {
-            _timeSinceLastBatSpawn = Time.time;
-            var position = _attackDirection == Vector2.left ? _collider.bounds.min : _collider.bounds.max;
-            position.y += Random.Range(0, _collider.bounds.size.y);
+            _batTimer = 0;
+            var bounds = _collider.bounds;
+            var draculaPosition = transform.position;
+            var position = Vector3.zero;
+            position.x = _attackDirection == Vector2.left ? draculaPosition.x - 0.2f : draculaPosition.x + 0.2f;
+            position.y = Random.Range(bounds.min.y + 0.5f, bounds.max.y - 0.5f);
             var bat = _batPooler.GetPooledObject();
             bat.transform.position = position;
             bat.GetComponent<DraculaBatScript>().targetVector = _attackDirection;

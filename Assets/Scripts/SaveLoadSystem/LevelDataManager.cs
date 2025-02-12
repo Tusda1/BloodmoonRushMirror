@@ -98,16 +98,14 @@ namespace SaveLoadSystem {
 
         private void Start() {
             Bind();
+            
+            LoadBindData();
+            PlayerScriptCache.LoadBindData();
         }
 
         #region ---DataBindingMethods---
         public void Bind() {
-            if (SaveLoadSystemManager.HasInstance || !Application.isPlaying) {
-                SaveLoadSystemManager.Bind(this, DataInGameData);
-            }
-            else {
-                Debug.LogWarning("No SaveLoadSystemManager found", this);
-            }
+            SaveLoadSystemManager.Bind(this, DataInGameData);
         }
 
 #if UNITY_EDITOR

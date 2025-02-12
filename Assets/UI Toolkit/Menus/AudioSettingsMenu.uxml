@@ -1,27 +1,33 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/Menus/Menu.uss?fileID=7433441132597879392&amp;guid=8efd6ee9dc2ccf147b85dff9f56810bf&amp;type=3#Menu" />
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/Menu.uss?fileID=7433441132597879392&amp;guid=8efd6ee9dc2ccf147b85dff9f56810bf&amp;type=3#Menu" />
     <Style src="project://database/Assets/UI%20Toolkit/SpriteElements/Sliders.uss?fileID=7433441132597879392&amp;guid=b70346ab9f72e4db4ab4ec16f1b1c16f&amp;type=3#Sliders" />
     <engine:VisualElement name="AudioSettingsMenu" template="AudioSettingsMenuVisualTree" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgb(108, 108, 108); border-right-color: rgb(108, 108, 108); border-top-color: rgb(108, 108, 108); border-bottom-color: rgb(108, 108, 108); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; justify-content: space-evenly; align-items: center;">
-        <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=829382371&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_37" name="AudioSettingsHeader" class="MenuHeader" />
-        <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-268682328&amp;guid=fc3565351fa61854ebeb34f6159db6f4&amp;type=3#UI_Asset_Sheet_50" name="AudioSettingsContainer" class="Container">
-            <engine:Label text="Master" name="MasterVolumeLabel" />
-            <engine:Slider value="0" high-value="1" name="MasterVolumeSlider" fill="true" class="settingsText">
-                <Bindings>
-                    <engine:DataBinding property="value" data-source-path="masterVolume" binding-mode="TwoWay" />
-                </Bindings>
-            </engine:Slider>
-            <engine:Label text="SFX" name="SFXVolumeLabel" />
-            <engine:Slider value="0" high-value="1" name="SFXVolumeSlider" fill="true" class="settingsText">
-                <Bindings>
-                    <engine:DataBinding property="value" data-source-path="sfxVolume" binding-mode="TwoWay" />
-                </Bindings>
-            </engine:Slider>
-            <engine:Label text="Music" name="MusicVolumeLabel" />
-            <engine:Slider value="0" high-value="1" name="MusicVolumeSlider" fill="true" class="settingsText">
-                <Bindings>
-                    <engine:DataBinding property="value" data-source-path="musicVolume" binding-mode="TwoWay" />
-                </Bindings>
-            </engine:Slider>
-        </UI_Toolkit.SpriteElement>
+        <engine:VisualElement sprite="project://database/Assets/Art/UI/Settings_Assets.png?fileID=-1774358607&amp;guid=8669abad7bb91734b9c5d76592cafacc&amp;type=3#SundeerStudios_LogoIcon_0" name="AudioSettingsContainer" class="Container">
+            <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UI/Settings_Assets.png?fileID=881503191&amp;guid=8669abad7bb91734b9c5d76592cafacc&amp;type=3#Settings_Assets_15" name="AudioSettingsHeader" class="MenuHeader" />
+            <engine:VisualElement name="MasterVolume" class="volume">
+                <engine:Label text="Master" name="MasterVolumeLabel" />
+                <engine:Slider value="0" high-value="1" name="MasterVolumeSlider" fill="true" class="settingsText">
+                    <Bindings>
+                        <engine:DataBinding property="value" data-source-path="masterVolume" binding-mode="TwoWay" />
+                    </Bindings>
+                </engine:Slider>
+            </engine:VisualElement>
+            <engine:VisualElement name="SFXVolume" class="volume" style="flex-grow: 1;">
+                <engine:Label text="SFX" name="SFXVolumeLabel" />
+                <engine:Slider value="0" high-value="1" name="SFXVolumeSlider" fill="true" class="settingsText">
+                    <Bindings>
+                        <engine:DataBinding property="value" data-source-path="sfxVolume" binding-mode="TwoWay" />
+                    </Bindings>
+                </engine:Slider>
+            </engine:VisualElement>
+            <engine:VisualElement name="MusicVolume" class="volume" style="flex-grow: 1;">
+                <engine:Label text="Music" name="MusicVolumeLabel" />
+                <engine:Slider value="0" high-value="1" name="MusicVolumeSlider" fill="true" class="settingsText">
+                    <Bindings>
+                        <engine:DataBinding property="value" data-source-path="musicVolume" binding-mode="TwoWay" />
+                    </Bindings>
+                </engine:Slider>
+            </engine:VisualElement>
+        </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

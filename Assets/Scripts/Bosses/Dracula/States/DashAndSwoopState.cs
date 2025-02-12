@@ -58,7 +58,7 @@ public class DashAndSwoopState : DraculaState
     protected override void Awake()
     {
         base.Awake();
-        swoop.InitializeSwoop(SwoopEnd, Boss.AnimancerComponent, Boss);
+        swoop.InitializeSwoop(SwoopEnd, Boss);
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
         _homingProjectile = Resources.Load<GameObject>("Prefabs/HomingProjectile");
     }

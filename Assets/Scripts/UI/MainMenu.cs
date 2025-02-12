@@ -70,7 +70,6 @@ namespace UI {
 
         private void Start() {
             _audioManager.PlayMusic(MusicID);
-            _audioManager.SetParameterValue(IAudioManager.CalmnessParameter, 0);
 
             _startButton.clicked += savesMenu.Activate;
             savesMenu.OnMenuActivated += HideMenu;

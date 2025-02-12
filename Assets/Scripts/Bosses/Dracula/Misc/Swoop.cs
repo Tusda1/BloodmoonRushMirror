@@ -11,17 +11,16 @@ public class Swoop
     [SerializeField] private AnimationClip swoopStartAnimation;
     [SerializeField] private AnimationClip swoopAnimation;
     
-    private AnimancerComponent _animancer;
     private BossBase _externalBoss;
     private bool _swoopStarted;
     private float _swoopStartTime;
     private Action _onSwoopEnd;
     private bool _swoopStartPlayed;
+    private float _timer;
     
-    public void InitializeSwoop(Action onSwoopEnd, AnimancerComponent animancer, BossBase boss)
+    public void InitializeSwoop(Action onSwoopEnd, BossBase boss)
     {
         _onSwoopEnd = onSwoopEnd;
-        _animancer = animancer;
         _externalBoss = boss;
     }
     
@@ -45,6 +44,7 @@ public class Swoop
             _swoopStarted = false;
             _externalBoss.transform.position = swoopTarget;
             ResetSwoop();
+            return;
         }
 
         // Apply easing using easePower
@@ -59,24 +59,40 @@ public class Swoop
         
         // Calculate the position using the eased t
         Vector2 position = CalculateBezierPoint(t, swoopOrigin, swoopTarget, swoopArcBottom);
-        
-        // Play the swoop start animation once
-        if (!_swoopStartPlayed && !_animancer.IsPlaying(swoopStartAnimation))
+
+        if (!_swoopStartPlayed)
         {
-            var state = _animancer.Play(swoopStartAnimation);
-            state.Events(this).OnEnd += () =>
+            if (!_externalBoss.AnimancerComponent.IsPlaying(swoopStartAnimation))
             {
-                Debug.Log("Swoop start animation ended");
-                state.Destroy();
-                _animancer.Play(swoopAnimation);
+                var state = _externalBoss.AnimancerComponent.Play(swoopStartAnimation);
+                state.Events(this).OnEnd += () =>
+                {
+                    state.Destroy();
+                    _externalBoss.AnimancerComponent.Play(swoopAnimation);
+                };
+            }
+            
+            // Gradually lerp the rotation of the external transform to face the direction it is moving
+            _swoopStartTime = Time.time;
+            float animationDuration = swoopStartAnimation.length / 2;
+            Debug.Log("swoop start animation is playing");
+        
+            _externalBoss.transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(0, Vector2.SignedAngle(Vector2.up, position - (Vector2)_externalBoss.transform.position), _timer / animationDuration));
+        
+            _timer += Time.deltaTime;
+
+            if (_timer > animationDuration)
+            {
                 _swoopStartPlayed = true;
-            };
+                _timer = 0;
+            }
+            else
+            {
+                return;
+            }
         }
-        else
-        {
-            // Rotate the external transform to face the direction it is moving
-            _externalBoss.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(_externalBoss.facingDirection, position - (Vector2)_externalBoss.transform.position));
-        }
+        
+        _externalBoss.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, position - (Vector2)_externalBoss.transform.position));
         
         _externalBoss.transform.position = position;
     }

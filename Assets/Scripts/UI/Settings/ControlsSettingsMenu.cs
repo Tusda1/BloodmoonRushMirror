@@ -1,5 +1,6 @@
 using System;
 using Attributes;
+using UI_Toolkit;
 using UnityEngine;
 using UnityEngine.UIElements;
 using VContainer;
@@ -7,14 +8,14 @@ using VContainer;
 namespace UI.Settings {
     public class ControlsSettingsMenu : MonoBehaviour, IMenu {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector]
-        private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
         
         private VisualElement _root;
         private VisualElement _controlsSettingsMenu;
-        private RadioButtonGroup _radioButtonGroup;
+        private SpriteElement _controlsLayout;
+        private DropdownField _controlsLayoutDropdown;
 
-        public static string ControlScheme = "Keyboard";
+        public static string ControlScheme;
 
         public event Action OnMenuActivated = delegate { };
         public event Action OnMenuDeactivated = delegate { };
@@ -25,26 +26,36 @@ namespace UI.Settings {
         private void Awake() {
             _root = uiDocument.rootVisualElement;
             _controlsSettingsMenu = _root.Q<VisualElement>("ControlsMenu");
-            
-            ControlScheme = PlayerPrefs.GetString("ControlScheme", "KeyboardMouse");
-            
-            _radioButtonGroup = _controlsSettingsMenu.Q<RadioButtonGroup>();
+            _controlsLayout = _controlsSettingsMenu.Q<SpriteElement>("ControlsLayout");
+            _controlsLayoutDropdown = _controlsSettingsMenu.Q<DropdownField>("LayoutDropdown");
+        }
 
-            _radioButtonGroup.RegisterValueChangedCallback(evt => {
+        private void Start() {
+            _controlsLayoutDropdown.RegisterValueChangedCallback(evt => {
                 switch (evt.newValue) {
-                    case 0:
-                        SetControllerScheme();
-                        break;
-                    case 1:
+                    case "Keyboard + Mouse":
                         SetKeyboardMouseScheme();
                         break;
-                    case 2:
+                    case "Keyboard":
                         SetKeyboardScheme();
+                        break;
+                    case "Controller":
+                        SetControllerScheme();
                         break;
                 }
             });
+            
+            ControlScheme = _controlSchemeChanger.CurrentControlSchemeName;
+            
+            _controlSchemeChanger.OnControlSchemeChanged += SetControlsLayoutImage;
+            SetControlsLayoutImage(_controlSchemeChanger.CurrentControlSchemeData);
         }
 
+        private void SetControlsLayoutImage(IControlSchemeChanger.ControlSchemeData controlSchemeData) {
+            _controlsLayout.Sprite = controlSchemeData.DataSO.controlsLayout;
+        }
+
+        #region ---SetScheme---
         [ContextMenu(nameof(SetControllerScheme))]
         public void SetControllerScheme() {
             ControlScheme = "Gamepad";
@@ -65,17 +76,17 @@ namespace UI.Settings {
             
             SetControlScheme(in ControlScheme);
         }
+        #endregion
 
         private void SetControlScheme(in string newScheme) {
             _controlSchemeChanger.ChangeSchemeByName(newScheme);
-            PlayerPrefs.SetString("ControlScheme", newScheme);
         }
 
         public void Activate() {
             _controlsSettingsMenu.SetEnabled(true);
             _controlsSettingsMenu.RemoveFromClassList("left");
             _controlsSettingsMenu.RemoveFromClassList("right");
-            _radioButtonGroup.Focus();
+            _controlsLayoutDropdown.Focus();
             
             OnMenuActivated.Invoke();
         }

@@ -1,19 +1,24 @@
 using System;
+using Animancer;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class DraculaBatScript : GravityObject
 {
+    [SerializeField] private AnimationClip batAnimationEmerge;
+    [SerializeField] private AnimationClip batAnimation;
     [SerializeField] private DamageInstance damageInstance;
     [SerializeField] private float moveSpeed = 5f;
 
     [HideInInspector] public Vector2 targetVector = Vector2.zero;
 
-    protected override void Start()
+    private AnimancerComponent _animancerComponent;
+    
+    protected new void Awake()
     {
-        base.Start();
+        base.Awake();
         
         GravityModifier = 0;
+        _animancerComponent = GetComponent<AnimancerComponent>();
     }
 
     private void OnEnable()
@@ -21,7 +26,15 @@ public class DraculaBatScript : GravityObject
         if (targetVector == Vector2.zero)
         {
             gameObject.SetActive(false);
+            return;
         }
+        
+        var state = _animancerComponent.Play(batAnimationEmerge);
+        state.Events(this).OnEnd = () =>
+        {
+            state.Destroy();
+            _animancerComponent.Play(batAnimation);
+        };
     }
 
     private void OnDisable()
