@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 9213825567472531080}
   - component: {fileID: 4984263123611723116}
   - component: {fileID: 4182027687405503801}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Crusher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,6 +630,13 @@ MonoBehaviour:
   upSpeed: 5
   downSpeed: 16
   targetPosition: {x: 0, y: 0}
+  damageInstance:
+    damage: 1
+    knockback: {x: 0, y: 0}
+    knockbackStrength: 0
+    staggerStrength: 0
+    ignoreInvincibility: 1
+    which: 1
   triggerCollider2D: {fileID: 7622899955081910804}
   goingDown: 0
   isStill: 1
