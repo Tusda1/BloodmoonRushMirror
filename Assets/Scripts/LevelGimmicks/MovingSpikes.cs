@@ -38,7 +38,6 @@ public class MovingSpikes : MonoBehaviour {
         _upTimer.OnComplete += () => {_downTimer.StartTimer();};
         _downTimer.OnComplete += Up;
         _downTimer.OnComplete += () => {_upTimer.StartTimer();};
-        _bufferTimer.OnComplete += () => {_downTimer.StartTimer();};
 
         if (startDown) {
             transform.position = _downPosition;
