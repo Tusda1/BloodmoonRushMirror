@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using System.Linq;
 using ExtensionMethods;
@@ -25,8 +26,8 @@ public class ControlSchemeDataSO : ScriptableObject {
     #endregion
 
     #region ---UI---
-    [Header("UI")] 
-    public Sprite controllerSettingPanel;
+    [FormerlySerializedAs("controllerSettingPanel")] [Header("UI")] 
+    public Sprite controlsLayout;
     public SpriteAnimation skipDialogueButtonAnimation;
     #endregion
 

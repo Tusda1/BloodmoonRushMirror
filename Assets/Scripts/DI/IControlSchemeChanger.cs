@@ -9,7 +9,7 @@ public interface IControlSchemeChanger {
     
     ControlSchemeDataSO CurrentControlSchemeDataSO { get; }
 
-    ControlSchemeData CurrentControlSchemeInfo { get; }
+    ControlSchemeData CurrentControlSchemeData { get; }
     
     event Action<ControlSchemeData> OnControlSchemeChanged;
     

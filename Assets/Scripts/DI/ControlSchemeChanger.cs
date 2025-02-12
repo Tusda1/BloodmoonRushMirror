@@ -11,7 +11,7 @@ public class ControlSchemeChanger : IControlSchemeChanger {
     #region ---Fields---
     public bool ControlSchemeIsController { get; private set; }
 
-    public ControlSchemeData CurrentControlSchemeInfo { get; private set; }
+    public ControlSchemeData CurrentControlSchemeData { get; private set; }
 
     public event Action<ControlSchemeData> OnControlSchemeChanged = delegate { };
 
@@ -128,9 +128,9 @@ public class ControlSchemeChanger : IControlSchemeChanger {
                 throw new ArgumentOutOfRangeException(_currentControlSchemeName, "Invalid control scheme name");
             }
 
-            CurrentControlSchemeInfo = new ControlSchemeData(_currentControlSchemeDataSO, currentDevices.ToArray());
+            CurrentControlSchemeData = new ControlSchemeData(_currentControlSchemeDataSO, currentDevices.ToArray());
 
-            OnControlSchemeChanged.Invoke(CurrentControlSchemeInfo);
+            OnControlSchemeChanged.Invoke(CurrentControlSchemeData);
 
             PlayerPrefs.SetString("ControlScheme", _currentControlSchemeName);
         }

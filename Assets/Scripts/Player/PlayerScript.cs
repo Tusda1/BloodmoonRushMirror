@@ -188,7 +188,7 @@ namespace Player {
             _controlSchemeChanger.OnControlSchemeChanged +=
                 data => playerInput.SwitchCurrentControlScheme(data.Name, data.Devices);
             playerInput.SwitchCurrentControlScheme(_controlSchemeChanger.CurrentControlSchemeName,
-                _controlSchemeChanger.CurrentControlSchemeInfo.Devices);
+                _controlSchemeChanger.CurrentControlSchemeData.Devices);
             
             _pauseManager.OnPause += OnPaused;
             _pauseManager.OnResume += OnResumed;
