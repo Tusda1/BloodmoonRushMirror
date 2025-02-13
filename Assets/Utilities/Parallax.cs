@@ -65,8 +65,6 @@ public class Parallax : MonoBehaviour {
         if (startEnabled) Enable();
     }
     
-    
-
     public void Enable() {
         if (_enabled)   return;
         _enabled = true;

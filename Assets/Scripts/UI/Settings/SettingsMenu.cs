@@ -66,6 +66,7 @@ namespace UI.Settings {
         }
         #endregion
 
+        #region ---IMenu---
         public void Activate() {
             _settingsMenuRoot.SetEnabled(true);
             _settingsMenuRoot.RemoveFromClassList("down");
@@ -88,7 +89,9 @@ namespace UI.Settings {
 
             OnMenuDeactivated.Invoke();
         }
+        #endregion
 
+        #region ---PrivateMethods---
         private void Deactivate(InputAction.CallbackContext obj) {
             Deactivate();
         }
@@ -113,5 +116,6 @@ namespace UI.Settings {
             
             _audioManager.PlayOneShot(GenericMenuSound_SoundID);
         }
+        #endregion
     }
 }

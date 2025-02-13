@@ -21,7 +21,7 @@ namespace UI.Settings {
         public event Action OnMenuDeactivated = delegate { };
 
         [Inject] private IAudioManager _audioManager;
-        
+
         #region ***---SoundID---***
         private const string ButtonDownMasterBus_SoundID = "UI_ButtonDown[MasterBus]";
         private const string ButtonUpMasterBus_SoundID = "UI_ButtonUp[MasterBus]";
@@ -73,6 +73,7 @@ namespace UI.Settings {
         }
         #endregion
 
+        #region ---IMenu---
         public void Activate() {
             _audioSettingsMenu.SetEnabled(true);
             _audioSettingsMenu.RemoveFromClassList("left");
@@ -91,5 +92,6 @@ namespace UI.Settings {
 
             OnMenuDeactivated.Invoke();
         }
+        #endregion
     }
 }

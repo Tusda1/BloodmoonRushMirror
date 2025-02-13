@@ -56,6 +56,7 @@ namespace UI {
         #endregion
         #endregion
 
+        #region ---Initialization---
         [Inject]
         public void Construct(IObjectResolver container) {
             _audioManager = container.Resolve<IAudioManager>();
@@ -113,6 +114,11 @@ namespace UI {
                 }
             });
         }
+        #endregion
+
+        private void Update() {
+            _updateActions.Invoke();
+        }
 
         private void TriggerFocusCreditsButton(NavigationMoveEvent evt) {
             if (evt.direction == NavigationMoveEvent.Direction.Up) {
@@ -125,10 +131,6 @@ namespace UI {
                 _audioManager.StopAllMusic();
                 _audioManager.PlayOneShot(ShowCredits_SoundID);
             }
-        }
-
-        private void Update() {
-            _updateActions.Invoke();
         }
 
         [ContextMenu(nameof(HideMenu))]

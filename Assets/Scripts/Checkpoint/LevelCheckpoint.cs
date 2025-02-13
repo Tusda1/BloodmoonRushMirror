@@ -7,6 +7,7 @@ using UnityEngine;
 using Utilities.DataBinding;
 using Action = System.Action;
 using System;
+using Attributes;
 using VContainer;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,40 +15,21 @@ using UnityEditor;
 
 public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     #region ---Fields---
-    [Header(nameof(LevelCheckpoint))]
-    [SerializeField] private string soundID = "Checkpoint_Reached";
+    #region ***---GetOrAddComponents---****
+    [GetOrAddComponent, SerializeField, HideInInspector] private AnimancerComponent animancerComponent;
+    #endregion
+    
+    [Header("Animations")]
     [SerializeField] private AnimationClip inactiveIdle;
     [SerializeField] private AnimationClip activeIdle;
     [SerializeField] private AnimationClip activeStart;
-
-    public event Action CheckpointReached = delegate { };
-    private AnimancerComponent _animancerComponent;
-
-    #region ***---GameManagers---***
-    private SaveLoadSystemManager SaveLoadSystemManager {
-        get {
-            if (_saveLoadSystemManager != null) {
-                return _saveLoadSystemManager;
-            }
-                
-            if (SaveLoadSystemManager.HasInstance) {
-                _saveLoadSystemManager = SaveLoadSystemManager.Instance;
-                return _saveLoadSystemManager;
-            }
-                
-            throw new NullReferenceException("SaveLoadSystemManager is null");
-        }
-    }
-    [Inject] private SaveLoadSystemManager _saveLoadSystemManager;
-    private static LevelDataManager LevelDataManager => LevelDataManager.LevelDataManagerCache;
-    #endregion
 
     #region ***---DataBindingVariables---***
     [field: Header("Data Binding")]
     [field: SerializeField] public string ID { get; set; }
     [field: SerializeField] public CheckpointData SaveSystemData { get; set; }
 
-    public CheckpointData DataInGameData => LevelDataManager.DataInGameData.checkpointDatas.GetOrAddByIdInList(ID,
+    public CheckpointData DataInGameData => _levelDataManager.DataInGameData.checkpointDatas.GetOrAddByIdInList(ID,
         new CheckpointData {
             name = name,
             ID = ID,
@@ -55,40 +37,61 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
             Position = transform.position
         });
     #endregion
+
+    public event Action CheckpointReached = delegate { };
     
-    [Inject] private IAudioManager _audioManager;
+    private SaveLoadSystemManager _saveLoadSystemManager;
+    private LevelDataManager _levelDataManager;
+    private IAudioManager _audioManager;
+    private PlayerScript _playerScript;
+    
+    #region ***---SoundID---***
+    private const string CheckpointReached_SoundID = "Checkpoint_Reached";
+    private const string CheckpointOnIdle_SoundID = "Checkpoint_OnIdle";
     #endregion
+    #endregion
+
+    #region ---Initialization---
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
+        _levelDataManager = container.Resolve<LevelDataManager>();
+        _audioManager = container.Resolve<IAudioManager>();
+        _playerScript = container.Resolve<PlayerScript>();
+    }
+
+    private void Awake() {
+        animancerComponent ??= GetComponent<AnimancerComponent>();
+    }
 
     private void Start() {
         Bind();
         
-        _animancerComponent = GetComponent<AnimancerComponent>();
-        _animancerComponent.Play(hasBeenTriggered ? activeIdle : inactiveIdle);
+        animancerComponent.Play(hasBeenTriggered ? activeIdle : inactiveIdle);
     }
+    #endregion
 
     protected override void TriggeredAction(Collider2D other) {
-        _audioManager.PlayOneShot(soundID);
+        _audioManager.PlayOneShot(CheckpointReached_SoundID);
+        _audioManager.PlayOneShotAttached(CheckpointOnIdle_SoundID, gameObject);
 
         CheckpointReached.Invoke();
 
-        var state = _animancerComponent.Play(activeStart);
-        state.Events(this).OnEnd = () => _animancerComponent.Play(activeIdle);
+        var state = animancerComponent.Play(activeStart);
+        state.Events(this).OnEnd = () => animancerComponent.Play(activeIdle);
 
-        other.GetComponent<PlayerScript>().CheckpointHealing();
-        
-        LevelDataManager.CurrentCheckpointData.ID = ID;
-        LevelDataManager.CurrentCheckpointData.Position = transform.position;
-        SaveLoadSystemManager?.SaveBindings();
+        _playerScript.CheckpointHealing();
+
+        SaveBindData();
+    }
+
+    public void StopOnIdle() {
+        _audioManager.StopAllSFX();
     }
 
     #region ---DataBindingMethods---
     public void Bind() {
-        if (SaveLoadSystemManager != null || !Application.isPlaying) {
-            SaveLoadSystemManager.Bind(this, DataInGameData);
-        }
-        else {
-            Debug.LogWarning("No SaveLoadSystemManager found", this);
-        }
+        _saveLoadSystemManager.Bind(this, DataInGameData);
     }
 
 #if UNITY_EDITOR
