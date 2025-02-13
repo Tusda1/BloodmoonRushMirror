@@ -268700,7 +268700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onEnable.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -268719,6 +268719,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1201592632}
     - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onEnable.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -268731,8 +268735,16 @@ PrefabInstance:
       value: Enable
       objectReference: {fileID: 0}
     - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1201592632}
+    - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onDisable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: StopOnIdle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TryStartOnIdle
       objectReference: {fileID: 0}
     - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onEnable.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -268743,11 +268755,23 @@ PrefabInstance:
       value: LevelCheckpoint, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LevelCheckpoint, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onEnable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onDisable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327803999860358239, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1389929220714175487, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
@@ -269855,6 +269879,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onDisable.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -269863,19 +269891,47 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1201592631}
     - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onDisable.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1201592631}
+    - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onDisable.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: StopOnIdle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: TryStartOnIdle
       objectReference: {fileID: 0}
     - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onDisable.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: LevelCheckpoint, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: LevelCheckpoint, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
       propertyPath: onDisable.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6771290549475237334, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
+      propertyPath: onEnableLate.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6805518125227087008, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}

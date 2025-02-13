@@ -73,7 +73,6 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
 
     protected override void TriggeredAction(Collider2D other) {
         _audioManager.PlayOneShot(CheckpointReached_SoundID);
-        _audioManager.PlayOneShotAttached(CheckpointOnIdle_SoundID, gameObject);
 
         CheckpointReached.Invoke();
 
@@ -83,6 +82,12 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
         _playerScript.CheckpointHealing();
 
         SaveBindData();
+    }
+    
+    public void TryStartOnIdle() {
+        if (hasBeenTriggered) {
+            _audioManager.PlayOneShotAttached(CheckpointOnIdle_SoundID, gameObject);
+        }
     }
 
     public void StopOnIdle() {
