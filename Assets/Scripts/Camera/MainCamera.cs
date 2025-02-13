@@ -1,20 +1,18 @@
-using ExtensionMethods;
+using FMODUnity;
 using Player;
-using Unity.Cinemachine;
 using UnityEngine;
+using VContainer;
 
 public class MainCamera : MonoBehaviour {
-    private PlayerScript _playerScript;
+    #region ---Fields---
+    [SerializeField] private StudioListener listener;
+    
+    private PlayerScript _player;
+    #endregion
 
-    [ContextMenu(nameof(SetAllCameraPositions))]
-    public void SetAllCameraPositions() {
-        _playerScript ??= FindAnyObjectByType<PlayerScript>();
-        
-        var cinemachineCameras = FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
-        var newPos = _playerScript.transform.position.WithOffset(y: 2);
-
-        foreach (var cinemachineCamera in cinemachineCameras) {
-            cinemachineCamera.ForceCameraPosition(newPos, Quaternion.identity);
-        }
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _player = container.Resolve<PlayerScript>();
+        listener.attenuationObject = _player.gameObject;
     }
 }

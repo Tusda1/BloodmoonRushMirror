@@ -17,6 +17,7 @@ public class SwoopAttackState : DraculaState
     private float _shootTimer;
     private float _shotCounter;
     private Vector2 _temporaryPosition;
+    private Vector2 _lastFramePosition;
     
     [SerializeField] private Swoop swoop = new();
     private Transform _player;
@@ -36,7 +37,7 @@ public class SwoopAttackState : DraculaState
     {
         base.Awake();
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
-        swoop.SetOnSwoopEnd(SwoopEnd);
+        swoop.InitializeSwoop(SwoopEnd, Boss);
     }
 
     private void Start()
@@ -87,11 +88,14 @@ public class SwoopAttackState : DraculaState
         switch (_swoopState)
         {
             case SwoopState.Teleporting:
-                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_swoopOrigin);
+                if (!teleport.IsTeleporting)
+                {
+                    var teleportEnter = Boss.isGrounded ? teleportEnterGround : teleportEnterAir;
+                    teleport.TeleportToLocation(_swoopOrigin, teleportEnter, teleportExit);
+                }
                 break;
             case SwoopState.Swooping:
-                print(_swoopOrigin);
-                transform.position = swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom);
+                swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom);
                 break;
             case SwoopState.Shooting:
                 Shoot();
@@ -103,12 +107,13 @@ public class SwoopAttackState : DraculaState
     {
         _swoopState = SwoopState.Swooping;
     }
-
+    
     private void SwoopEnd()
     {
         _swoopState = SwoopState.Shooting;
         swoopCount++;
         (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
+        Boss.AnimancerComponent.Play(idleAnimation);
     }
     
     private void Shoot()

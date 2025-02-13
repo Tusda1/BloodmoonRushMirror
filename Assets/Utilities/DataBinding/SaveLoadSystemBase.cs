@@ -134,7 +134,7 @@ namespace Utilities.DataBinding {
                 GameDataBinds.Add(bind);
             }
             bind.SaveSystemData = data;
-            bind.LoadBindData();
+            // bind.LoadBindData();
             debugLogger?.Log($"{typeof(TBind)} object bind-ed to {typeof(TData)}");
         }
 

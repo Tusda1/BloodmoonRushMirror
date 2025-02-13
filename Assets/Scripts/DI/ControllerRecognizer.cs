@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.XInput;
 using VContainer;
 
-public class ControllerRecognizer {
+public class ControllerRecognizer : IDisposable {
     #region ---Fields---
     public string CurrentDeviceID { get; private set; }
     public InputDevice CurrentDevice { get; private set; }
@@ -41,7 +41,7 @@ public class ControllerRecognizer {
         GetAllControllersManually();
     }
 
-    ~ControllerRecognizer() {
+    public void Dispose() {
         InputSystem.onDeviceChange -= OnDeviceChangeAutomatic;
         _onAnyButtonPressDisposable.Dispose();
     }
@@ -63,15 +63,19 @@ public class ControllerRecognizer {
     #region ---PrivateMethods---
     private void OnAnyButtonPress(InputControl inputControl) {
         var inputDevice = inputControl.device;
-        if (inputDevice is Keyboard) KeyboardInputDetected.Invoke(inputDevice);
-        if (inputDevice is not (Gamepad or Joystick)) return;
         
-        if (inputDevice != CurrentDevice) {
-            SetCurrentDevice(inputDevice);
-        }
-        
-        ControllerInputDetected.Invoke(inputDevice);
+        if (inputDevice == CurrentDevice) return;
 
+        switch (inputDevice) {
+            case Keyboard:
+                CurrentDevice = inputDevice;
+                KeyboardInputDetected.Invoke(inputDevice);
+                break;
+            case Gamepad or Joystick:
+                SetCurrentDevice(inputDevice);
+                ControllerInputDetected.Invoke(inputDevice);
+                break;
+        }
     }
 
     private void OnDeviceChangeAutomatic(InputDevice inputDevice, InputDeviceChange inputDeviceChange) {

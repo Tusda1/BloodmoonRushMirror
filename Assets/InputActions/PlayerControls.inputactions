@@ -42,15 +42,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pause",
-                    "type": "Button",
-                    "id": "b806aac5-0797-416d-b771-3581d9621ee5",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "SkipDialogue",
                     "type": "Button",
                     "id": "9c0d8fe3-adf2-433d-8243-7b4241059808",
@@ -431,39 +422,6 @@
                 },
                 {
                     "name": "",
-                    "id": "4bd06942-d343-4164-b3b9-4835e223e35d",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard;KeyboardMouse",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "127dbd51-71b1-46ca-8fd6-f4916d097dd6",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fb0323c0-100b-4d6c-a0e4-d27245314fa8",
-                    "path": "<HID::Nintendo Wireless Gamepad>/button10",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Joystick",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "ccf33fa2-a4f9-48c2-9038-ea01d2f33083",
                     "path": "<Keyboard>/enter",
                     "interactions": "",
@@ -727,6 +685,15 @@
                     "id": "c95b2375-e6d9-4b88-9c4c-c5e76515df4b",
                     "expectedControlType": "Vector2",
                     "processors": "CardinalDirectionsVector2",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "8f089b89-ec71-4958-9981-732e411cea68",
+                    "expectedControlType": "",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
@@ -1012,6 +979,39 @@
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "72e5d91d-533e-4c86-81fb-40d5e4133094",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard;KeyboardMouse",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6097ae30-4d68-4fbc-b49d-56547dd2c1cf",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d7d3b9d3-b704-45e2-8191-5c547a41f58e",
+                    "path": "<HID::Nintendo Wireless Gamepad>/button10",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Joystick",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",

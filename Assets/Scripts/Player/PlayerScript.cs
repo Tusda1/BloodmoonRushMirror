@@ -107,6 +107,7 @@ namespace Player {
         private SaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
         private IControlSchemeChanger _controlSchemeChanger;
+        private IPauseManager _pauseManager;
         public IAudioManager AudioManager;
         private static LevelDataManager LevelDataManager => LevelDataManager.Instance;
         #endregion
@@ -148,6 +149,7 @@ namespace Player {
             _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
             _cameraEffects = container.Resolve<CameraEffects>();
             _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
+            _pauseManager = container.Resolve<IPauseManager>();
             AudioManager = container.Resolve<IAudioManager>();
         }
 
@@ -155,9 +157,11 @@ namespace Player {
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
-
-            LevelDataManager.LevelStartPoint = transform.position;
-
+#if UNITY_EDITOR
+            if (SceneCollectionManager.CurrentSceneCollection == null) {
+                LevelDataManager.LevelStartPoint = transform.position;
+            }
+#endif
             Bind();
         }
 
@@ -176,8 +180,6 @@ namespace Player {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            // StartCoroutine(ResetPlayerInput());
-
             playerInput.actions["LookUp"].performed += _ => _isLookingUp = true;
             playerInput.actions["LookUp"].canceled += _ => _isLookingUp = false;
             playerInput.actions["LookDown"].performed += _ => _isLookingDown = true;
@@ -186,13 +188,18 @@ namespace Player {
             _controlSchemeChanger.OnControlSchemeChanged +=
                 data => playerInput.SwitchCurrentControlScheme(data.Name, data.Devices);
             playerInput.SwitchCurrentControlScheme(_controlSchemeChanger.CurrentControlSchemeName,
-                _controlSchemeChanger.CurrentControlSchemeInfo.Devices);
+                _controlSchemeChanger.CurrentControlSchemeData.Devices);
+            
+            _pauseManager.OnPause += OnPaused;
+            _pauseManager.OnResume += OnResumed;
         }
 
         private void OnDestroy() {
             ServiceLocator.Unregister<PlayerScript>();
             playerCanMove.Clear();
             InputSystem.PauseHaptics();
+            _pauseManager.OnPause -= OnPaused;
+            _pauseManager.OnResume -= OnResumed;
         }
 
         private void Update() {
@@ -243,7 +250,7 @@ namespace Player {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
 
-            AudioManager.PlaySFX(PlayerSlashSoundID);
+            AudioManager.PlayOneShot(PlayerSlashSoundID);
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -254,7 +261,7 @@ namespace Player {
             debugLogger.Log("DuckAttack");
 
             animator.SetTrigger(AnimatorDuckAttackTrigger);
-            AudioManager.PlaySFX(PlayerSlashSoundID);
+            AudioManager.PlayOneShot(PlayerSlashSoundID);
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -275,7 +282,7 @@ namespace Player {
 
             damageInstance.TriggerOnHitAction();
             
-            AudioManager.PlaySFX(PlayerHurtSoundID);
+            AudioManager.PlayOneShot(PlayerHurtSoundID);
             
             playerMovement.DashTimer.StopTimer();
             playerMovement.Knockback(damageInstance.knockback);
@@ -309,7 +316,7 @@ namespace Player {
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
             AudioManager.StopAllSound();
-            AudioManager.PlaySFX(PlayerDeathSoundD);
+            AudioManager.PlayOneShot(PlayerDeathSoundD);
 
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");
@@ -425,8 +432,18 @@ namespace Player {
         }
 
         public void PlayStepSound() {
-            AudioManager.PlaySFX(PlayerStepSoundID);
+            AudioManager.PlayOneShot(PlayerStepSoundID);
         }
+        
+        #region ---Pause---
+        private void OnPaused() {
+            playerInput.actions.actionMaps[0].Disable();
+        }
+        
+        private void OnResumed() {
+            playerInput.actions.actionMaps[0].Enable();
+        }
+        #endregion
 
         #region ---DataBindingMethods---
         public void Bind() {

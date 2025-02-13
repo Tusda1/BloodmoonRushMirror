@@ -9,28 +9,43 @@ public class MovingSpikes : MonoBehaviour {
     [SerializeField] private float downSpeed;
     [SerializeField] private float upWait;
     [SerializeField] private float downWait;
+    [SerializeField] private bool startDown;
     private float _step;
     private Vector2 _targetPos;
     private Vector2 _downPosition;
     private Vector2 _startPosition;
     private CountdownTimer _upTimer;
     private CountdownTimer _downTimer;
+    private CountdownTimer _bufferTimer;
 
     #endregion
 
     private void Start() {
         _downPosition = new Vector2(transform.position.x, transform.position.y - 1); ;
         _startPosition = new Vector2(transform.position.x, transform.position.y);
+
+        if (!startDown) {
+            _upTimer = new CountdownTimer(upWait);
+            _downTimer = new CountdownTimer(downWait);
+        }
+        else {
+            _upTimer = new CountdownTimer(downWait);
+            _downTimer = new CountdownTimer(upWait);
+        }
         
-        _upTimer = new CountdownTimer(upWait);
-        _downTimer = new CountdownTimer(downWait);
 
         _upTimer.OnComplete += Down;
         _upTimer.OnComplete += () => {_downTimer.StartTimer();};
         _downTimer.OnComplete += Up;
         _downTimer.OnComplete += () => {_upTimer.StartTimer();};
-        
-        _upTimer.StartTimer();
+
+        if (startDown) {
+            transform.position = _downPosition;
+            _downTimer.StartTimer();
+        }
+        else {
+            _upTimer.StartTimer();
+        }
     }
 
     private void Update() {

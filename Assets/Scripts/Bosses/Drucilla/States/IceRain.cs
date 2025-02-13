@@ -45,7 +45,7 @@ public class IceRain : DrucillaState
     {
         if (!_hasTeleported)
         {
-            if (!teleport.IsTeleporting) teleport.TeleportToLocation(new Vector2(Random.Range(cornerOne.x + 1, cornerTwo.x - 1), cornerOne.y - 2));
+            if (!teleport.IsTeleporting) teleport.TeleportToLocation(new Vector2(Random.Range(cornerOne.x + 1, cornerTwo.x - 1), cornerOne.y - 2), DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit);
         }
         else
         {

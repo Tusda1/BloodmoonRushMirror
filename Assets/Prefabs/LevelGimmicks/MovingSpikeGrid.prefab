@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 3339010975542820833}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -422,11 +422,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageInstance:
-    damage: 0
+    damage: 1
     knockback: {x: 0, y: 0}
     knockbackStrength: 0
     staggerStrength: 0
-    ignoreInvincibility: 0
+    ignoreInvincibility: 1
+    which: 1
 --- !u!114 &799112508764154394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,3 +444,4 @@ MonoBehaviour:
   downSpeed: 10
   upWait: 2
   downWait: 2
+  startDown: 0

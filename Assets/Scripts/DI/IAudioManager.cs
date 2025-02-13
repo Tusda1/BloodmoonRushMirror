@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 
 public interface IAudioManager {
-    public const string CalmnessParameter = "is_chill";
-
     #region ---Play---
-    void PlaySFX(string id);
-    void PlaySFXAttached(string id, GameObject gameObject);
+    void PlayOneShot(string id);
+    void PlayOneShotAttached(string id, GameObject gameObject);
 
     void PlayMusic(string id);
     void PlayMusicAttached(string id, GameObject gameObject);

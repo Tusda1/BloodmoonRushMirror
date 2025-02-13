@@ -63,7 +63,7 @@ public class DashStrike : DrucillaState
         switch (_stage)
         {
             case DashStrikeStage.Teleport:
-                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportLocation);
+                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportLocation, DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit);
                 break;
             case DashStrikeStage.LightningDash:
                 LightningDash();

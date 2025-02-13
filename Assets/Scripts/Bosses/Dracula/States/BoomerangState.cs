@@ -4,6 +4,9 @@ using Random = UnityEngine.Random;
 
 public class BoomerangState : DraculaState
 {
+    [SerializeField] private AnimationClip boomerangThrow;
+    [SerializeField] private AnimationClip boomerangCatch;
+    
     private GameObject _boomerangPrefab;
     private bool _boomerangThrown;
     
@@ -40,13 +43,11 @@ public class BoomerangState : DraculaState
         if (Random.Range(0, 2) == 0)
         {
             _rightCorner.x -= 1;
-            _rightCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
             _teleportPosition = _rightCorner;
         }
         else
         {
             _leftCorner.x += 1;
-            _leftCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
             _teleportPosition = _leftCorner;
         }
         
@@ -58,7 +59,11 @@ public class BoomerangState : DraculaState
         switch (_boomerangStage)
         {
             case BoomerangStage.Teleport:
-                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportPosition);
+                if (!teleport.IsTeleporting)
+                {
+                    var teleportEnter = Boss.bossGrounded ? teleportEnterGround : teleportEnterAir;
+                    teleport.TeleportToLocation(_teleportPosition, teleportEnter, teleportExit);
+                }
                 break;
             case BoomerangStage.Boomerang:
                 Boomerang();
@@ -82,6 +87,7 @@ public class BoomerangState : DraculaState
             _boomerang.direction = _teleportPosition == _rightCorner ? Vector2.left : Vector2.right;
             _boomerang.gameObject.SetActive(true);
             _boomerangThrown = true;
+            Boss.AnimancerComponent.Play(boomerangThrow);
         }
         
         _boomerangStage = BoomerangStage.Wait;
@@ -91,8 +97,12 @@ public class BoomerangState : DraculaState
     {
         if (_boomerang.returned)
         {
-            _boomerangThrown = false;
-            EndState();
+            var state = Boss.AnimancerComponent.Play(boomerangCatch);
+            state.Events(this).OnEnd = () =>
+            {
+                _boomerangThrown = false;
+                EndState();
+            };
         }
     }
 }

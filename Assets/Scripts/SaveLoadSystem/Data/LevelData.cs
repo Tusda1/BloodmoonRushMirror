@@ -14,5 +14,7 @@ namespace SaveLoadSystem.Data {
         [SerializeReference] public List<TriggerData> triggerDatas = new();
         
         [SerializeReference] public List<EnemyData> enemyDatas = new();
+        
+        [field: SerializeField] public MusicData MusicData { get; set; }
     }
 }

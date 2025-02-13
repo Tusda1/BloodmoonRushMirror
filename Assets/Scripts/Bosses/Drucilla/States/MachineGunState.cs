@@ -61,7 +61,7 @@ public class MachineGunState : DrucillaState
         switch (_stage)
         {
             case MachineGunStage.Teleport:
-                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportPosition);
+                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportPosition, DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit);
                 break;
             case MachineGunStage.Shoot:
                 Firing();

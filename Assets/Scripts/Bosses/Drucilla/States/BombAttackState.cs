@@ -55,7 +55,7 @@ public class BombAttackState : DrucillaState
                 {
                     var hit = Physics2D.Raycast(_player.transform.position, Vector2.up, 100f, LayerMask.GetMask("Ground"));
                     _teleportPosition = hit.point + Vector2.down * 2.5f;
-                    teleport.TeleportToLocation(_teleportPosition);
+                    teleport.TeleportToLocation(_teleportPosition, DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit);
                 }
                 break;
             case BombAttackStage.DropBombs:

@@ -15,7 +15,7 @@ namespace Unity.Behavior {
         private static DialogueUI DialogueUI => DialogueUI.Instance;
 
         protected override Status OnStart() {
-            DialogueUI.AudioManager.PlaySFX(sfxID.Value);
+            DialogueUI.AudioManager.PlayOneShot(sfxID.Value);
 
             return Status.Success;
         }

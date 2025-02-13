@@ -20,7 +20,6 @@ namespace UI {
 
         [SerializeField, Required] private SceneCollectionSO mainMenusSceneCollectionSO;
         [SerializeField, Required] private AllInFavourConsensusSO playerCanMove;
-
         [SerializeField, Required] private InputActionReference pauseAction;
 
         #region ***---PrivateFields---***
@@ -36,11 +35,18 @@ namespace UI {
         #endregion
 
         #region ***---DI---***
-        [Inject] private IPauseManager _pauseManager;
-        [Inject] private EventSystem _eventSystem;
-        [Inject] private IControlSchemeChanger _controlSchemeChanger;
+        private IPauseManager _pauseManager;
+        private EventSystem _eventSystem;
+        private IControlSchemeChanger _controlSchemeChanger;
         #endregion
         #endregion
+        
+        [Inject]
+        public void Construct(IObjectResolver container) {
+            _pauseManager = container.Resolve<IPauseManager>();
+            _eventSystem = container.Resolve<EventSystem>();
+            _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
+        }
 
         #region ---EventFunctions---
         private void Start() {
@@ -63,7 +69,8 @@ namespace UI {
 
             _pauseManager.OnResume += ResumeGame;
             _pauseManager.OnPause += PauseGame;
-
+            
+            _pauseManager.Resume();
             ResumeGame();
         }
 
