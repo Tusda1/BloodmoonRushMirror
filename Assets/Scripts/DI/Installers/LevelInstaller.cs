@@ -1,4 +1,3 @@
-using FMODUnity;
 using SaveLoadSystem;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -10,9 +9,6 @@ public class LevelInstaller : AutoInjectInstaller {
     [SerializeField] private LevelDataManager levelDataManager;
     [SerializeField] private LevelMusicManager levelMusicManager;
     [SerializeField] private string leaderboardID;
-    
-    
-    [SerializeField] private StudioListener studioListener; 
     
     public const string MainCameraID = "MainCamera";
 

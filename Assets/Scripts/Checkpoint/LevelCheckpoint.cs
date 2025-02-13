@@ -72,7 +72,7 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     #endregion
 
     protected override void TriggeredAction(Collider2D other) {
-        _audioManager.PlayOneShot(CheckpointReached_SoundID);
+        _audioManager.PlayOneShotAttached(CheckpointReached_SoundID, gameObject);
 
         CheckpointReached.Invoke();
 
