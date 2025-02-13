@@ -17,7 +17,7 @@ public class Teleport
         _onTeleportEnd = externalOnTeleportEnd;
     }
     
-    public void TeleportToLocation(Vector2 destination, AnimationClip teleportEnter, AnimationClip teleportExit)
+    public void TeleportToLocation(Vector2 destination, AnimationClip teleportEnter, AnimationClip teleportExit, Action midTeleportAction = null)
     {
         if (Vector2.Distance(_transform.position, destination) < 0.1f)
         {
@@ -33,6 +33,7 @@ public class Teleport
         {
             _transform.position = destination;
             AnimancerState exitState = _animancerComponent.Play(teleportExit);
+            midTeleportAction?.Invoke();
             exitState.Time = 0;
             exitState.Events(this).OnEnd = () =>
             {

@@ -24,4 +24,12 @@ public class OpeningDialogue : MonoBehaviour {
             openingInteractionChannel.SendEventMessage();
         }
     }
+
+    public void BatSwarm() {
+        
+    }
+
+    public void DraculaTeleport() {
+        
+    }
 }
