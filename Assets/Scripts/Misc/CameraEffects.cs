@@ -91,18 +91,45 @@ public class CameraEffects : MonoBehaviour {
         
         callback?.Invoke();
     }
+    
+    public async Awaitable MoveCamera(float duration, AnimationCurve curve, Vector3 offset, [Optional] Action callback) {
+        float currentProgress = 0;
 
-    [ContextMenu(nameof(CircleFadeIn))]
+        offset.z = -10;
+
+        while (currentProgress < duration) {
+            currentProgress += Time.unscaledDeltaTime;
+            
+            var progressValue = curve.Evaluate(currentProgress / duration);
+            transform.position = Vector3.Lerp(transform.position, offset, progressValue);
+
+            await Awaitable.NextFrameAsync();
+        }
+        
+        transform.position = offset;
+        
+        callback?.Invoke();
+    }
+
     public void CircleFadeIn(float duration, [Optional] Action callback) {
         _ = CircleFade(duration, circleFadeInCurve, callback);
     }
-
-    [ContextMenu(nameof(CircleFadeOut))]
+    
     public void CircleFadeOut(float duration, [Optional] Action callback) {
         _ = CircleFade(duration, circleFadeOutCurve, callback);
     }
 
+    public void TriggerMoveCamera(float duration, Vector3 offset, [Optional] Action callback) {
+        var curve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        _ = MoveCamera(duration, curve, offset, callback);
+    }
+
 #if UNITY_EDITOR
+    [ContextMenu(nameof(TestMoveCamera))]
+    private void TestMoveCamera() {
+        TriggerMoveCamera(2, Vector3.down * 2);
+    }
+    
     [ContextMenu(nameof(TestShakeCamera))]
     private void TestShakeCamera() {
         _ = ShakeCamera(0.2f, 0.2f);

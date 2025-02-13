@@ -47,5 +47,4 @@ namespace Utilities.Editor {
         }
     }
 }
-
 #endif

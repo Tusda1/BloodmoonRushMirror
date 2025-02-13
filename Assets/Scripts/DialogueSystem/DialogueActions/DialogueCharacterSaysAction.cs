@@ -131,7 +131,7 @@ namespace Unity.Behavior {
         }
 
         private void PlayTextAudio() {
-            DialogueUI.AudioManager.PlaySFX(DialogueCharacter.talkSoundID);
+            DialogueUI.AudioManager.PlayOneShot(DialogueCharacter.talkSoundID);
         }
 
         private bool FailureCondition() {

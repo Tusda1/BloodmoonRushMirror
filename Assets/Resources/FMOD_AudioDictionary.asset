@@ -27,11 +27,11 @@ MonoBehaviour:
     - Key: Player_Death
       Value: event:/Sfx/Player/Player_death
     - Key: Player_Respawn
-      Value: event:/Sfx/Player/SpawnPlayer
+      Value: event:/Sfx/Player/Spawn_player
     - Key: Checkpoint_Reached
       Value: event:/Sfx/Player/Player_checkpoint
-    - Key: Impact_Generic
-      Value: event:/Sfx/Misc/Hit
+    - Key: Checkpoint_OnIdle
+      Value: event:/Sfx/Player/Player_checkpoint_loop
     - Key: 'Cutscene_Intro[Old]'
       Value: event:/Sfx/Misc/Cutscene_demo_audio
     - Key: Cutscene_Intro
@@ -52,23 +52,35 @@ MonoBehaviour:
       Value: 
     - Key: Talk_Dracula
       Value: 
-    - Key: UI_
-      Value: 
     - Key: Misc_PhoneRinging
       Value: event:/Sfx/Misc/Phone_ringing
-    - Key: UI_Button_Down_Master
+    - Key: 'UI_ButtonDown[MasterBus]'
       Value: event:/Sfx/Menu/Button_down_master
-    - Key: UI_Button_Up_Master
+    - Key: 'UI_ButtonUp[MasterBus]'
       Value: event:/Sfx/Menu/Button_up_master
-    - Key: UI_Button_Down_Music
+    - Key: 'UI_ButtonDown[MusicBus]'
       Value: event:/Sfx/Menu/Button_down_music
-    - Key: UI_Button_Up_Music
+    - Key: 'UI_ButtonUp[MusicBus]'
       Value: event:/Sfx/Menu/Button_up_music
-    - Key: UI_Button_Down_Sfx
+    - Key: 'UI_ButtonDown[SFXBus]'
       Value: event:/Sfx/Menu/Button_down_sfx
-    - Key: UI_Button_Up_Sfx
+    - Key: 'UI_ButtonUp[SFXBus]'
       Value: event:/Sfx/Menu/Button_up_sfx
-    - Key: UI_Generic_Menu_Sound
+    - Key: UI_GenericMenuSound
       Value: event:/Sfx/Menu/Generic_menu_sound
-    - Key: UI_Show_Credits
+    - Key: UI_ShowCredits
       Value: event:/Sfx/Menu/Show_credits
+    - Key: Enemy_Generic_Hit
+      Value: event:/Sfx/Enemies/Generic_enemy_hit
+    - Key: Enemy_Spider_Hit
+      Value: event:/Sfx/Enemies/Bug_enemy_hit
+    - Key: Enemy_Die
+      Value: event:/Sfx/Misc/Generic_explosion
+    - Key: Enemy_Hawk
+      Value: event:/Sfx/Enemies/Hawk
+    - Key: Enemy_Tuah
+      Value: event:/Sfx/Enemies/Tuah
+    - Key: Misc_Gem_Get
+      Value: event:/Sfx/Misc/Gem_get
+    - Key: Misc_Floor_Explosion
+      Value: event:/Sfx/Misc/Floor_explosion

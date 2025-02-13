@@ -7,8 +7,7 @@ using VContainer;
 namespace UI.Settings {
     public class AudioSettingsMenu : MonoBehaviour, IMenu {
         #region ---Fields---
-        [GetOrAddComponent, SerializeField, HideInInspector]
-        private UIDocument uiDocument;
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
         #region ---PrivateFields---
         private VisualElement _root;
@@ -22,8 +21,18 @@ namespace UI.Settings {
         public event Action OnMenuDeactivated = delegate { };
 
         [Inject] private IAudioManager _audioManager;
+
+        #region ***---SoundID---***
+        private const string ButtonDownMasterBus_SoundID = "UI_ButtonDown[MasterBus]";
+        private const string ButtonUpMasterBus_SoundID = "UI_ButtonUp[MasterBus]";
+        private const string ButtonDownMusicBus_SoundID = "UI_ButtonDown[MusicBus]";
+        private const string ButtonUpMusicBus_SoundID = "UI_ButtonUp[MusicBus]";
+        private const string ButtonDownSFXBus_SoundID = "UI_ButtonDown[SFXBus]";
+        private const string ButtonUpSFXBus_SoundID = "UI_ButtonUp[SFXBus]";
+        #endregion
         #endregion
 
+        #region ---Initialization---
         private void Awake() {
             _root = uiDocument.rootVisualElement;
             _audioSettingsMenu = _root.Q<VisualElement>("AudioSettingsMenu");
@@ -38,13 +47,33 @@ namespace UI.Settings {
             _sfxVolumeSlider.value = _audioManager.SFXVolume;
             _musicVolumeSlider.value = _audioManager.MusicVolume;
 
-            _masterVolumeSlider.RegisterValueChangedCallback(evt => _audioManager.SetMasterVolume(evt.newValue));
+            _masterVolumeSlider.RegisterValueChangedCallback(evt => {
+                _audioManager.SetMasterVolume(evt.newValue);
 
-            _sfxVolumeSlider.RegisterValueChangedCallback(evt => _audioManager.SetSFXVolume(evt.newValue));
+                _audioManager.PlayOneShot(evt.newValue > evt.previousValue
+                    ? ButtonUpMasterBus_SoundID
+                    : ButtonDownMasterBus_SoundID);
+            });
 
-            _musicVolumeSlider.RegisterValueChangedCallback(evt => _audioManager.SetMusicVolume(evt.newValue));
+            _sfxVolumeSlider.RegisterValueChangedCallback(evt => {
+                _audioManager.SetSFXVolume(evt.newValue);
+
+                _audioManager.PlayOneShot(evt.newValue > evt.previousValue
+                    ? ButtonUpSFXBus_SoundID
+                    : ButtonDownSFXBus_SoundID);
+            });
+
+            _musicVolumeSlider.RegisterValueChangedCallback(evt => {
+                _audioManager.SetMusicVolume(evt.newValue);
+
+                _audioManager.PlayOneShot(evt.newValue > evt.previousValue
+                    ? ButtonUpMusicBus_SoundID
+                    : ButtonDownMusicBus_SoundID);
+            });
         }
+        #endregion
 
+        #region ---IMenu---
         public void Activate() {
             _audioSettingsMenu.SetEnabled(true);
             _audioSettingsMenu.RemoveFromClassList("left");
@@ -63,5 +92,6 @@ namespace UI.Settings {
 
             OnMenuDeactivated.Invoke();
         }
+        #endregion
     }
 }

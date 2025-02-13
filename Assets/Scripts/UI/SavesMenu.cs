@@ -37,6 +37,7 @@ namespace UI {
         #endregion
         #endregion
 
+        #region ---EventFunctions---
         private void Awake() {
             _root = uiDocument.rootVisualElement;
             _savesMenuRoot = _root.Q<VisualElement>("SavesMenuRoot");
@@ -59,24 +60,9 @@ namespace UI {
         private void OnDisable() {
             backAction.action.performed -= Deactivate;
         }
-
-        private void LoadSave(SaveSlotDataSO saveSlotData) {
-            if (saveSlotData.lastTimePlayed == string.Empty) {
-                _saveLoadSystemManager.NewGame(saveSlotData);
-                saveSlotData.currentSceneCollection = newGameSceneCollection;
-            }
-            else {
-                _saveLoadSystemManager.LoadSave(saveSlotData.saveSlotName);
-                saveSlotData.currentSceneCollection = _saveLoadSystemManager.gameData.CurrentSceneCollection;
-            }
-
-            Debug.Log(saveSlotData.currentSceneCollection.name);
-            
-            _cameraEffects.CircleFadeOut(1,
-                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(saveSlotData.currentSceneCollection,
-                    () => _cameraEffects.CircleFadeIn(1)));
-        }
-
+        #endregion
+        
+        #region ---IMenu---
         public void Activate() {
             _saveSlot1.Focus();
             _savesMenuRoot.SetEnabled(true);
@@ -96,9 +82,29 @@ namespace UI {
             
             OnMenuDeactivated.Invoke();
         }
+        #endregion
 
+        #region ---PrivateMethods---
         private void Deactivate(InputAction.CallbackContext obj) {
             Deactivate();
         }
+        
+        private void LoadSave(SaveSlotDataSO saveSlotData) {
+            if (saveSlotData.lastTimePlayed == string.Empty) {
+                _saveLoadSystemManager.NewGame(saveSlotData);
+                saveSlotData.currentSceneCollection = newGameSceneCollection;
+            }
+            else {
+                _saveLoadSystemManager.LoadSave(saveSlotData.saveSlotName);
+                saveSlotData.currentSceneCollection = _saveLoadSystemManager.gameData.CurrentSceneCollection;
+            }
+
+            Debug.Log(saveSlotData.currentSceneCollection.name);
+            
+            _cameraEffects.CircleFadeOut(1,
+                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(saveSlotData.currentSceneCollection,
+                    () => _cameraEffects.CircleFadeIn(1)));
+        }
+        #endregion
     }
 }

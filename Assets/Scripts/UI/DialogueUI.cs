@@ -31,6 +31,7 @@ namespace UI {
         public event Action OnSkipDialogue = delegate { };
         
         [Inject] public IAudioManager AudioManager;
+        [Inject] public CameraEffects CameraEffects;
         #endregion
 
         protected override void Awake() {

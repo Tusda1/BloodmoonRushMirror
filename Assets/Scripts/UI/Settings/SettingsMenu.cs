@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using Utilities;
+using VContainer;
 
 namespace UI.Settings {
     [RequireComponent(typeof(VideoSettingsMenu), typeof(AudioSettingsMenu), typeof(ControlsSettingsMenu))]
@@ -33,15 +34,21 @@ namespace UI.Settings {
         private BatArrow _leftBat;
         private BatArrow _rightBat;
         #endregion
+        
+        [Inject] private IAudioManager _audioManager;
+        
+        private const string GenericMenuSound_SoundID = "UI_GenericMenuSound";
         #endregion
 
-        #region ---EventFunctions---
+        #region ---Initialization---
         private void Awake() {
             _root = uiDocument.rootVisualElement;
             _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
             _leftBat = _settingsMenuRoot.Q<BatArrow>("LeftBat");
             _rightBat = _settingsMenuRoot.Q<BatArrow>("RightBat");
+        }
 
+        private void Start() {
             var menus = new IMenu[] { audioSettingsMenu, videoSettingsMenu, controlsSettingsMenu };
             _menus = new IndexedArray<IMenu>(menus);
 
@@ -59,6 +66,7 @@ namespace UI.Settings {
         }
         #endregion
 
+        #region ---IMenu---
         public void Activate() {
             _settingsMenuRoot.SetEnabled(true);
             _settingsMenuRoot.RemoveFromClassList("down");
@@ -81,7 +89,9 @@ namespace UI.Settings {
 
             OnMenuDeactivated.Invoke();
         }
+        #endregion
 
+        #region ---PrivateMethods---
         private void Deactivate(InputAction.CallbackContext obj) {
             Deactivate();
         }
@@ -100,9 +110,12 @@ namespace UI.Settings {
             }
         }
 
-        private static void SetActiveMenu(IMenu currentMenu, IMenu previousMenu, bool indexIncreased) {
+        private void SetActiveMenu(IMenu currentMenu, IMenu previousMenu, bool indexIncreased) {
             previousMenu.Deactivate(indexIncreased ? "left" : "right");
             currentMenu.Activate();
+            
+            _audioManager.PlayOneShot(GenericMenuSound_SoundID);
         }
+        #endregion
     }
 }

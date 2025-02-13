@@ -41,6 +41,7 @@ namespace FMODScripts {
         public FMODManager(IObjectResolver container) {
             _audioDictionary = container.Resolve<AudioDictionarySO>();
             _debugLogger = container.ResolveProviderID<DebugLoggerSO>("FMODManager");
+            
             _ = Initialize();
         }
 
@@ -79,7 +80,7 @@ namespace FMODScripts {
         #endregion
 
         #region ---Play---
-        public void PlaySFX(string id) {
+        public void PlayOneShot(string id) {
             if (CheckIfStringIsEmpty(id)) return;
 
             var path = IDToPath(id);
@@ -94,7 +95,7 @@ namespace FMODScripts {
             }
         }
 
-        public void PlaySFXAttached(string id, GameObject gameObject) {
+        public void PlayOneShotAttached(string id, GameObject gameObject) {
             if (CheckIfStringIsEmpty(id)) return;
 
             var path = IDToPath(id);
@@ -257,12 +258,16 @@ namespace FMODScripts {
         }
 
         private string IDToPath(string id) {
+#if UNITY_EDITOR
             try {
+#endif
                 return _audioDictionary.dictionary[id];
+#if UNITY_EDITOR
             }
             catch (KeyNotFoundException) {
                 throw new KeyNotFoundException($"ID: '{id}' not found in AudioDictionary!");
             }
+#endif
         }
     }
 }

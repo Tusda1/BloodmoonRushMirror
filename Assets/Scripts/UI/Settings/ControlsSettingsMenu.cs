@@ -53,6 +53,8 @@ namespace UI.Settings {
 
         private void SetControlsLayoutImage(IControlSchemeChanger.ControlSchemeData controlSchemeData) {
             _controlsLayout.Sprite = controlSchemeData.DataSO.controlsLayout;
+            
+            _controlsLayoutDropdown.SetValueWithoutNotify(NameToDropdown(controlSchemeData.Name));
         }
 
         #region ---SetScheme---
@@ -80,6 +82,15 @@ namespace UI.Settings {
 
         private void SetControlScheme(in string newScheme) {
             _controlSchemeChanger.ChangeSchemeByName(newScheme);
+        }
+
+        private static string NameToDropdown(string name) {
+            return name switch {
+                "Keyboard" => "Keyboard",
+                "KeyboardMouse" => "Keyboard + Mouse",
+                "Gamepad" or "Joystick" => "Controller",
+                _ => throw new ArgumentOutOfRangeException(nameof(name), name, null)
+            };
         }
 
         public void Activate() {
