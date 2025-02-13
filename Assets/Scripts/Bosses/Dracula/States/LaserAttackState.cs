@@ -7,6 +7,7 @@ public class LaserAttackState : DraculaState
     [SerializeField] private AnimationClip laserAttackAnimation;
     [SerializeField] private float trackingTime;
     [SerializeField] private float firingTime;
+    [SerializeField] private Vector2 laserOriginOffset;
     
     private Vector2 _teleportDestination;
     private Vector2 _firePosition;
@@ -143,7 +144,7 @@ public class LaserAttackState : DraculaState
         {
             var position = transform.position;
             _laserObject.GetComponent<BigLaserScript>().direction = (_firePosition - (Vector2)position).normalized;
-            _laserObject.transform.position = position;
+            _laserObject.transform.position = (Vector2)position + laserOriginOffset;
             _laserObject.SetActive(true);
             
 

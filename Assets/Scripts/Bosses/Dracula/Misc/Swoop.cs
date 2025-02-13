@@ -24,7 +24,7 @@ public class Swoop
         _externalBoss = boss;
     }
     
-    public void ExecuteSwoop(Vector2 swoopOrigin, Vector2 swoopTarget, Vector2 swoopArcBottom)
+    public void ExecuteSwoop(Vector2 swoopOrigin, Vector2 swoopTarget, Vector2 swoopArcBottom, float completionLevel)
     {
         if (!_swoopStarted)
         {
@@ -32,13 +32,14 @@ public class Swoop
             _externalBoss.facingDirection = swoopTarget.x > swoopOrigin.x ? Vector2.right : Vector2.left;
             _swoopStarted = true;
             _swoopStartTime = Time.time;
+            _externalBoss.AnimancerComponent.Play(swoopAnimation);
         }
         
         // Calculate t with easing for smooth acceleration and deceleration
         float t = (Time.time - _swoopStartTime) / swoopDuration;
     
         // Clamp t to the range [0, 1]
-        if (t > 1f)
+        if (t > completionLevel)
         {
             _onSwoopEnd();
             _swoopStarted = false;
@@ -59,38 +60,6 @@ public class Swoop
         
         // Calculate the position using the eased t
         Vector2 position = CalculateBezierPoint(t, swoopOrigin, swoopTarget, swoopArcBottom);
-
-        if (!_swoopStartPlayed)
-        {
-            if (!_externalBoss.AnimancerComponent.IsPlaying(swoopStartAnimation))
-            {
-                var state = _externalBoss.AnimancerComponent.Play(swoopStartAnimation);
-                state.Events(this).OnEnd += () =>
-                {
-                    state.Destroy();
-                    _externalBoss.AnimancerComponent.Play(swoopAnimation);
-                };
-            }
-            
-            // Gradually lerp the rotation of the external transform to face the direction it is moving
-            _swoopStartTime = Time.time;
-            float animationDuration = swoopStartAnimation.length / 2;
-            Debug.Log("swoop start animation is playing");
-        
-            _externalBoss.transform.rotation = Quaternion.Euler(0, 0, Mathf.Lerp(0, Vector2.SignedAngle(Vector2.up, position - (Vector2)_externalBoss.transform.position), _timer / animationDuration));
-        
-            _timer += Time.deltaTime;
-
-            if (_timer > animationDuration)
-            {
-                _swoopStartPlayed = true;
-                _timer = 0;
-            }
-            else
-            {
-                return;
-            }
-        }
         
         _externalBoss.transform.rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, position - (Vector2)_externalBoss.transform.position));
         
@@ -118,6 +87,5 @@ public class Swoop
     {
         _swoopStarted = false;
         _swoopStartPlayed = false;
-        _externalBoss.transform.rotation = Quaternion.identity;
     }
 }

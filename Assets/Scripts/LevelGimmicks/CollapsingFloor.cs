@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using VContainer;
 
 public class CollapsingFloor : MonoBehaviour {
     #region ---Fields---
@@ -10,6 +11,11 @@ public class CollapsingFloor : MonoBehaviour {
     [SerializeField] private Vector2Int explosionTileSize;
     [SerializeField] private GameObject explosionCarrier;
     [SerializeField] private float delayTime;
+    public IAudioManager AudioManager;
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        AudioManager = container.Resolve<IAudioManager>();
+    }
     #endregion
 
     private void Start() {
@@ -61,6 +67,7 @@ public class CollapsingFloor : MonoBehaviour {
     private void ExplodeRow(int whichRow) {
         for (var i = 0; i < explosionTileSize.y; i++) {
             tilesToExplode.SetTile(new Vector3Int(whichRow, i, 0), null);
+            AudioManager.PlayOneShot("Misc_Floor_Explosion");
              Instantiate(explosionCarrier, new Vector3(whichRow + 0.5f, i + 0.5f, 0) + transform.position, Quaternion.identity, transform);
         }
     }

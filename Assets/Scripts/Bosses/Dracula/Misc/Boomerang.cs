@@ -4,6 +4,7 @@ using UnityEngine;
 public class Boomerang : GravityObject
 {
     [SerializeField] private float speed;
+    [SerializeField] private float catchDistance;
     
     [HideInInspector] public Vector2 direction;
     [HideInInspector] public bool returned;
@@ -48,8 +49,9 @@ public class Boomerang : GravityObject
             _isreturning = true;
         }
 
-        if (_isreturning && Vector2.Distance(_turnPosition, transform.position) > Vector2.Distance(_turnPosition, _initialPosition))
+        if (_isreturning && Vector2.Distance(_turnPosition, transform.position) > Vector2.Distance(_turnPosition, _initialPosition) - catchDistance)
         {
+            _isreturning = false;
             returned = true;
             gameObject.SetActive(false);
         }
