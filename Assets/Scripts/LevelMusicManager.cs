@@ -51,6 +51,16 @@ public class LevelMusicManager : MonoBehaviour, IBind<MusicData> {
         AudioManager.PlayMusic(soundID);
     }
 
+    public void Stop() {
+        AudioManager.StopAllMusic();
+    }
+    
+    public void Play() {
+        if (string.IsNullOrWhiteSpace(musicID)) throw new NullReferenceException("MusicID cannot be null!");
+        
+        PlayMusic(musicID);
+    }
+
     #region ---DataBindingMethods---
     public void Bind() {
         _saveLoadSystemManager.Bind(this, DataInGameData);

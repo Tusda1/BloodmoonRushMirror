@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using Utilities.DataBinding;
+using VContainer;
 
 public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     #region ---Fields---
@@ -68,6 +69,10 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             position = transform.position
         });
     #endregion
+    
+    [Inject] private IAudioManager _audioManager;
+
+    [SerializeField] private string death_SoundID; 
     #endregion
 
     #region ---Methods---
@@ -213,6 +218,8 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected virtual void OnDeath()
     {
         gameObject.SetActive(false);
+        
+        _audioManager.PlayOneShotAttached(death_SoundID, gameObject);
     }
 
     private void DropRubies() {
