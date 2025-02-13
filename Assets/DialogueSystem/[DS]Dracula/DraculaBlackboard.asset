@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6314824275859076673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
+  m_Name: DraculaBlackboard
+  m_EditorClassIdentifier: 
+  VersionTimestamp: 638750525176628506
+  AssetID:
+    m_Value0: 17647965628493093644
+    m_Value1: 17431390172717064907
+  m_Blackboard:
+    m_Variables:
+    - rid: 1653116039201554974
+  m_SharedBlackboardVariableGuids: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1653116039201554974
+      type: {class: 'BlackboardVariable`1[[ActionEventChannel, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 5708116405034489960
+          m_Value1: 9523315553586225575
+        Name: TriggerOpening
+        m_Value: {fileID: 11400000, guid: 79961144ae4177a469f1be08bfff3c73, type: 2}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd922ae02c94c87a66e46a10a7319b9, type: 3}
+  m_Name: DraculaBlackboard
+  m_EditorClassIdentifier: 
+  AssetID:
+    m_Value0: 17647965628493093644
+    m_Value1: 17431390172717064907
+  m_Variables:
+  - rid: 1653116039201554763
+  m_VersionTimestamp: 638750525176628506
+  m_CommandBuffer:
+    m_Commands: []
+  m_RuntimeBlackboardAsset: {fileID: -6314824275859076673}
+  references:
+    version: 2
+    RefIds:
+    - rid: 1653116039201554763
+      type: {class: 'TypedVariableModel`1[[ActionEventChannel, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 5708116405034489960
+          m_Value1: 9523315553586225575
+        Name: TriggerOpening
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 11400000, guid: 79961144ae4177a469f1be08bfff3c73, type: 2}
