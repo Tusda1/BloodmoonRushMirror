@@ -9,6 +9,7 @@ public class SwoopAttackState : DraculaState
     [SerializeField] private int shootAmount = 3;
     [SerializeField] private int swoopAmount = 3;
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Vector2 projectileOriginOffset;
     
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
@@ -95,7 +96,7 @@ public class SwoopAttackState : DraculaState
                 }
                 break;
             case SwoopState.Swooping:
-                swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom);
+                swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom, 1f);
                 break;
             case SwoopState.Shooting:
                 Shoot();
@@ -110,6 +111,7 @@ public class SwoopAttackState : DraculaState
     
     private void SwoopEnd()
     {
+        Boss.transform.rotation = Quaternion.identity;
         _swoopState = SwoopState.Shooting;
         swoopCount++;
         (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
@@ -144,7 +146,7 @@ public class SwoopAttackState : DraculaState
             // Shoot a projectile at the random point
             var position = transform.position;
             var projectile = _projectilePooler.GetPooledObject();
-            projectile.transform.position = position;
+            projectile.transform.position = (Vector2)position + projectileOriginOffset;
             projectile.GetComponent<DraculaBatScript>().targetVector = (randomPoint - (Vector2)position).normalized;
             projectile.SetActive(true);
         }

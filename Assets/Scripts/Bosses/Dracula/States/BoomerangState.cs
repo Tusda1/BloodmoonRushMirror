@@ -6,6 +6,7 @@ public class BoomerangState : DraculaState
 {
     [SerializeField] private AnimationClip boomerangThrow;
     [SerializeField] private AnimationClip boomerangCatch;
+    [SerializeField] private Vector2 boomerangSpawnOffset;
     
     private GameObject _boomerangPrefab;
     private bool _boomerangThrown;
@@ -77,20 +78,25 @@ public class BoomerangState : DraculaState
     protected override void OnTeleportEnd()
     {
         _boomerangStage = BoomerangStage.Boomerang;
+        Boss.facingDirection = _teleportPosition == _rightCorner ? Vector2.left : Vector2.right;
     }
     
     private void Boomerang()
     {
         if (!_boomerangThrown)
         {
-            _boomerang.transform.position = transform.position;
-            _boomerang.direction = _teleportPosition == _rightCorner ? Vector2.left : Vector2.right;
-            _boomerang.gameObject.SetActive(true);
+            var state = Boss.AnimancerComponent.Play(boomerangThrow);
+            state.Events(this).OnEnd = () =>
+            {
+                state.Destroy();
+                Boss.AnimancerComponent.Play(idleAnimation);
+                _boomerang.transform.position = new Vector2(transform.position.x + boomerangSpawnOffset.x * Boss.facingDirection.x, transform.position.y + boomerangSpawnOffset.y);
+                _boomerang.direction = _teleportPosition == _rightCorner ? Vector2.left : Vector2.right;
+                _boomerang.gameObject.SetActive(true);
+                _boomerangStage = BoomerangStage.Wait;
+            };
             _boomerangThrown = true;
-            Boss.AnimancerComponent.Play(boomerangThrow);
         }
-        
-        _boomerangStage = BoomerangStage.Wait;
     }
     
     private void Wait()
@@ -100,7 +106,10 @@ public class BoomerangState : DraculaState
             var state = Boss.AnimancerComponent.Play(boomerangCatch);
             state.Events(this).OnEnd = () =>
             {
+                state.Destroy();
+                Boss.AnimancerComponent.Play(idleAnimation);
                 _boomerangThrown = false;
+                _boomerang.returned = false;
                 EndState();
             };
         }

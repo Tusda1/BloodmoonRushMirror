@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Player;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -15,9 +16,6 @@ public class DashAndSwoopState : DraculaState
     
     [SerializeField] private int loopAmount = 5;
     private int _loopCount;
-    private bool _isFirstLoop;
-    private AnimationClip _currentTeleportEnter;
-    private AnimationClip _currentTeleportExit;
 
     [SerializeField] private AnimationClip dashTeleportEnter;
     [SerializeField] private AnimationClip dashTeleportExit;
@@ -46,14 +44,11 @@ public class DashAndSwoopState : DraculaState
     
     private enum Stage
     {
-        Brain,
-        Teleporting,
         Dashing,
         Swooping
     }
     
-    private Stage _stage;
-    private Stage _currentStage;
+    private List<Stage> _stages = new List<Stage>();
 
     protected override void Awake()
     {
@@ -84,99 +79,98 @@ public class DashAndSwoopState : DraculaState
         
         _bottomMiddle = (_bottomRight + _bottomLeft) / 2;
         
-        _isFirstLoop = true;
+        _stages.Add(default);
+        for (int i = 0; i < loopAmount; i++)
+        {
+            // Add random stages to the list
+            _stages.Add(UnityEngine.Random.value > 0.5f ? Stage.Dashing : Stage.Swooping);
+        }
         
-        _currentStage = Stage.Brain;
+        if (_stages[_loopCount] == Stage.Dashing)
+        {
+            _teleportLocation = UnityEngine.Random.value > 0.5f ? _bottomRight : _bottomLeft;
+        }
+        else
+        {
+            _teleportLocation = UnityEngine.Random.value > 0.5f ? _topRight : _topLeft;
+        }
+        
+        TeleportTrigger();
     }
 
     private void OnDisable()
     {
         _shootTimer = 0;
+        Boss.transform.rotation = Quaternion.identity;
     }
 
-    private void Update()
+    private void MoveToNextLoop()
     {
-        switch (_currentStage)
+        if (_stages[_loopCount] != _stages[_loopCount - 1])
         {
-            case Stage.Brain:
-                Calculate();
-                break;
-            case Stage.Teleporting:
-                if (!teleport.IsTeleporting) teleport.TeleportToLocation(_teleportLocation, _currentTeleportEnter, _currentTeleportExit);
-                break;
-            case Stage.Dashing:
-                Dash();
-                break;
-            case Stage.Swooping:
-                SwoopStage();
-                break;
+            if (_stages[_loopCount] == Stage.Dashing)
+            {
+                _teleportLocation = UnityEngine.Random.value > 0.5f ? _bottomRight : _bottomLeft;
+            }
+            else
+            {
+                _teleportLocation = UnityEngine.Random.value > 0.5f ? _topRight : _topLeft;
+            }
+            
+            TeleportTrigger();
         }
-    }
-    
-    protected override void OnTeleportEnd()
-    {
-        _currentStage = _stage;
-    }
-
-    private void Calculate()
-    {
-        
-        if (_loopCount < loopAmount)
+        else
         {
+            if (_stages[_loopCount] == Stage.Dashing)
+            {
+                _teleportLocation = _teleportLocation == _bottomRight ? _bottomLeft : _bottomRight;
+            }
+            else
+            {
+                _teleportLocation = _teleportLocation == _topRight ? _topLeft : _topRight;
+            }
+            
             _loopCount++;
         }
-        else
+    }
+
+    private void TeleportTrigger()
+    {
+        AnimationClip currentTeleportEnter = null;
+        AnimationClip currentTeleportExit = null;
+
+        if (_loopCount == 0)
         {
-            _loopCount = 0;
-            EndState();
-            return;
-        }
-        
-        // 50% chance to do a dash or a swoop
-        if (UnityEngine.Random.value > 0.5f)
-        {
-            _stage = Stage.Dashing;
-            // 50% chance to teleport left or right
-            _teleportLocation = UnityEngine.Random.value > 0.5f ? _bottomRight : _bottomLeft;
+            currentTeleportEnter = Boss.isGrounded ? teleportEnterGround : teleportEnterAir;
+            currentTeleportExit = _stages[0] == Stage.Dashing ? dashTeleportExit : swoopTeleportExit;
         }
         else
         {
-            _stage = Stage.Swooping;
-            // 50% chance to teleport left or right
-            _teleportLocation = UnityEngine.Random.value > 0.5f ? _topRight : _topLeft;
+            currentTeleportEnter = _stages[_loopCount] == Stage.Dashing ? dashTeleportEnter : swoopTeleportEnter;
+            currentTeleportExit = _stages[_loopCount] == Stage.Dashing ? dashTeleportExit : swoopTeleportExit;
         }
 
-        if (_isFirstLoop)
-        {
-            _isFirstLoop = false;
-            _currentTeleportEnter = Boss.isGrounded ? teleportEnterGround : teleportEnterAir;
-            _currentTeleportExit = _stage == Stage.Dashing ? dashTeleportExit : swoopTeleportExit;
-        }
-        else
-        {
-            _currentTeleportEnter = _stage == Stage.Dashing ? dashTeleportEnter : swoopTeleportEnter;
-            _currentTeleportExit = _stage == Stage.Dashing ? dashTeleportExit : swoopTeleportExit;
-        }
-        
-        _currentStage = Stage.Teleporting;
+        teleport.TeleportToLocation(_teleportLocation, currentTeleportEnter, currentTeleportExit, () => _loopCount++);
     }
-    
+
     private void Dash()
     {
         if (!_dashStarted)
         {
             _dashStarted = true;
             Boss.EnableGravity();
-            _dashTarget = _teleportLocation == _bottomRight ? _bottomLeft : _bottomRight;
             Boss.AnimancerComponent.Play(dashAnimation);
+            
+            _dashTarget = _teleportLocation == _bottomRight ? _bottomLeft : _bottomRight;
         }
         
         if (!Boss.bossGrounded) return;
-        
-        transform.position = Vector2.MoveTowards(transform.position, _dashTarget, dashSpeed * Time.deltaTime);
-        if (Vector2.Distance(transform.position, _dashTarget) < 0.1f)
+        var direction = _dashTarget == _bottomRight ? Vector2.right : Vector2.left;
+        Boss.targetVelocity = direction * dashSpeed;
+        // Check if the boss crossed the finish line
+        if (transform.position.x * direction.x > _dashTarget.x * direction.x)
         {
-            _currentStage = Stage.Brain;
+            MoveToNextLoop();
             Boss.DisableGravity();
             _dashStarted = false;
         }
@@ -198,22 +192,16 @@ public class DashAndSwoopState : DraculaState
     {
         if (!_swoopStarted)
         {
-            if (_teleportLocation == _topRight)
+            if (_teleportLocation != _swoopOrigin)
             {
-                _swoopOrigin = _topRight;
-                _swoopTarget = _topLeft;
-            }
-            else
-            {
-                _swoopOrigin = _topLeft;
-                _swoopTarget = _topRight;
+                (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
             }
             
             _swoopStarted = true;
         }
 
         var oldPos = transform.position;
-        swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _bottomMiddle);
+        swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _bottomMiddle, 0.9f);
 
         if (_shootTimer > 0)
         {
@@ -231,7 +219,7 @@ public class DashAndSwoopState : DraculaState
     
     private void SwoopEnd()
     {
-        _currentStage = Stage.Brain;
+        MoveToNextLoop();
         _swoopStarted = false;
     }
 
