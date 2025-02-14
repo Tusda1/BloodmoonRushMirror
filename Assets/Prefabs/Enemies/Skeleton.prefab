@@ -187,11 +187,11 @@ MonoBehaviour:
   lockToAxis: 0
   targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
-  GravityModifier: 1
+  GravityModifier: 5
   takesSpikeDamage: 0
   faceLeftOnStart: 0
-  moveSpeed: 2
-  maxHealth: 3
+  moveSpeed: 6
+  maxHealth: 4
   invulnerableTime: 0.5
   knockbackDuration: 0.1
   enemyDamageInstance:
@@ -218,6 +218,7 @@ MonoBehaviour:
     health: 0
     gemsContaining: 0
     position: {x: 0, y: 0, z: 0}
+  death_SoundID: 
   detectionDistance: 10
   keepAgroDistance: 20
   smoothDampScript:
