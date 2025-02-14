@@ -22,7 +22,7 @@ public partial class CameraOffsetAction : Action {
     protected override Status OnStart() {
         _taskCompleted = false;
         
-        DialogueUI.CameraEffects.TriggerMoveCamera(duration.Value, vector3.Value, () => { _taskCompleted = true; });
+        DialogueUI.cameraEffects.TriggerMoveCamera(duration.Value, vector3.Value, () => { _taskCompleted = true; });
         return Status.Running;
     }
 

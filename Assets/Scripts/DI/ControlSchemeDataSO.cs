@@ -54,10 +54,10 @@ public class ControlSchemeDataSO : ScriptableObject {
         spriteAnimation.frames = sprites;
     }
 #endif
+}
 
-    [Serializable] public class SpriteAnimation {
-        public Texture2D autoSetTexture;
-        public float secondsPerFrame = 0.2f;
-        public Sprite[] frames;
-    }
+[Serializable] public class SpriteAnimation {
+    public Texture2D autoSetTexture;
+    public float secondsPerFrame = 0.2f;
+    public Sprite[] frames;
 }

@@ -149,6 +149,13 @@ public class ControlSchemeChanger : IControlSchemeChanger {
     private void OnControllerDeviceChanged(string controllerID, InputDevice inputDevice) {
         _currentGamepadSchemeID = controllerID;
         _currentControllerDevice = inputDevice;
+
+        if (inputDevice != null) {
+            ControllerInputDetected(inputDevice);
+        }
+        else {
+            ChangeSchemeByID(_currentKeyboardSchemeID);
+        }
     }
 
     private void KeyboardInputDetected(InputDevice inputDevice) {

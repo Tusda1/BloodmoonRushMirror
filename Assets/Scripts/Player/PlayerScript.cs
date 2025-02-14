@@ -103,12 +103,6 @@ namespace Player {
                 throw new NullReferenceException("SaveLoadSystemManager is null");
             }
         }
-
-        private SaveLoadSystemManager _saveLoadSystemManager;
-        private CameraEffects _cameraEffects;
-        private IControlSchemeChanger _controlSchemeChanger;
-        private IPauseManager _pauseManager;
-        public IAudioManager AudioManager;
         private static LevelDataManager LevelDataManager => LevelDataManager.Instance;
         #endregion
 
@@ -134,6 +128,13 @@ namespace Player {
 
         private static PlayerData PlayerData => SaveLoadSystemManager.Instance.gameData.playerData;
         #endregion
+
+        private SaveLoadSystemManager _saveLoadSystemManager;
+        private CameraEffects _cameraEffects;
+        private IControlSchemeChanger _controlSchemeChanger;
+        private IPauseManager _pauseManager;
+        public IAudioManager AudioManager;
+        private LevelMusicManager _levelMusicManager;
 
         public const string PlayerSlashSoundID = "Player_Slash";
         public const string PlayerDashSoundID = "Player_Dash";
@@ -315,7 +316,7 @@ namespace Player {
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
-            AudioManager.StopAllSound();
+            _levelMusicManager.Stop();
             AudioManager.PlayOneShot(PlayerDeathSoundD);
 
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
@@ -336,8 +337,9 @@ namespace Player {
             }
             else {
                 Respawn();
+                _levelMusicManager.Play();
 
-                yield return new WaitForSeconds(0.5f);
+                // yield return new WaitForSeconds(0.5f);
                 _cameraEffects.CircleFadeIn(0.5f);
             }
         }
