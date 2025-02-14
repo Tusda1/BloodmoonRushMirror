@@ -8,6 +8,8 @@ public class OpeningDialogue : MonoBehaviour {
     #region ---Fields---
     [SerializeField, Required] private ActionEventChannel openingInteractionChannel;
     
+    [SerializeField] private bool forcePlayOnStart;
+    
     private LevelDataManager _levelDataManager;
     #endregion
 
@@ -18,18 +20,10 @@ public class OpeningDialogue : MonoBehaviour {
 
     private void Start() {
 #if UNITY_EDITOR
-        if (SceneCollectionManager.CurrentSceneCollection == null) return;
+        if (SceneCollectionManager.CurrentSceneCollection == null && !forcePlayOnStart) return;
 #endif
-        if (string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointData.ID)) {
+        if (string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointData.ID) || forcePlayOnStart) {
             openingInteractionChannel.SendEventMessage();
         }
-    }
-
-    public void BatSwarm() {
-        
-    }
-
-    public void DraculaTeleport() {
-        
     }
 }
