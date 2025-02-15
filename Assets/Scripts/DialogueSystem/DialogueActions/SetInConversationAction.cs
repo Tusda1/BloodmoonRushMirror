@@ -19,7 +19,7 @@ namespace Unity.Behavior {
             if (DialogueUI == null) return Status.Failure;
 
             if (value.Value == false) {
-                DialogueUI.uiDocumentVisible = value.Value;
+                DialogueUI.DisableDialogueUI();
             }
 
             DialogueUI.dialogueText = "";

@@ -18,7 +18,13 @@ namespace Unity.Behavior {
         protected override Status OnStart() {
             if (DialogueUI == null) return Status.Failure;
 
-            DialogueUI.uiDocumentVisible = value.Value;
+            if (value.Value) {
+                DialogueUI.EnableDialogueUI();
+            }
+            else {
+                DialogueUI.DisableDialogueUI();
+            }
+
             return Status.Success;
         }
     }

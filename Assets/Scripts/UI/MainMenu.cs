@@ -26,6 +26,7 @@ namespace UI {
         [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
         [SerializeField, Required] private Animator backgroundAnimator;
         [SerializeField] private AllInFavourConsensusSO playerCanMove;
+        [SerializeField, Required] private SceneCollectionSO demoSceneCollectionSO;
 
         #region ***---PrivateFields---***
         private VisualElement _rootElement;
@@ -40,6 +41,7 @@ namespace UI {
 
         private IAudioManager _audioManager;
         private DebugLoggerSO _debugLoggerSO;
+        private CameraEffects _cameraEffects;
 
         private Action _updateActions = delegate { };
         #endregion
@@ -61,6 +63,7 @@ namespace UI {
         public void Construct(IObjectResolver container) {
             _audioManager = container.Resolve<IAudioManager>();
             _debugLoggerSO = container.ResolveProviderID<DebugLoggerSO>("UI");
+            _cameraEffects = container.Resolve<CameraEffects>();
         }
 
         private void Awake() {
@@ -88,7 +91,7 @@ namespace UI {
         private void Start() {
             _audioManager.PlayMusic(MainMenuMusic_SoundID);
 
-            _startButton.clicked += savesMenu.Activate;
+            _startButton.clicked += StartButtonClicked;
             savesMenu.OnMenuActivated += HideMenu;
             savesMenu.OnMenuDeactivated += ShowMenu;
 
@@ -113,6 +116,16 @@ namespace UI {
                     _audioManager.PlayMusic(MainMenuMusic_SoundID);
                 }
             });
+        }
+
+        private void StartButtonClicked() {
+#if DEMO_BUILD
+            _cameraEffects.CircleFadeOut(1,
+                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(demoSceneCollectionSO,
+                    () => _cameraEffects.CircleFadeIn(1)));
+#else
+            savesMenu.Activate();
+#endif
         }
         #endregion
 
