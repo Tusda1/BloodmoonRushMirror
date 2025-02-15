@@ -65,6 +65,7 @@ namespace UI {
             _controlSchemeChanger.OnControlSchemeChanged += ControlSchemeChangerOnOnControlSchemeChanged;
             ControlSchemeChangerOnOnControlSchemeChanged(_controlSchemeChanger.CurrentControlSchemeData);
             _animationTask = _skipDialogueButton.Animate();
+            _root.style.display = DisplayStyle.Flex;
             uiDocumentVisible = true;
         }
 
@@ -73,6 +74,7 @@ namespace UI {
             
             _controlSchemeChanger.OnControlSchemeChanged -= ControlSchemeChangerOnOnControlSchemeChanged;
             _animationTask?.Cancel();
+            _root.style.display = DisplayStyle.None;
             uiDocumentVisible = false;
         }
 
