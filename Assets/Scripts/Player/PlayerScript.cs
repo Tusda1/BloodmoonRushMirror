@@ -449,12 +449,7 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            if (SaveLoadSystemManager != null || !Application.isPlaying) {
-                SaveLoadSystemManager.Bind(this, DataInGameData);
-            }
-            else {
-                Debug.LogWarning("No SaveLoadSystemManager found", this);
-            }
+            _saveLoadSystemManager?.Bind(this, DataInGameData);
         }
 
         [ContextMenu(nameof(LoadBindData))]
