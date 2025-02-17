@@ -15,8 +15,8 @@ namespace Player {
         [GetOrAddComponent, SerializeField, HideInInspector]
         private BoxCollider2D boxCollider;
 
-        [Header("Player Movement")] [SerializeField, ReadOnly]
-        public Vector2 inputVector;
+        [Header("Player Movement")] 
+        [SerializeField, ReadOnly] public Vector2 inputVector;
 
         [ReadOnly] public bool isDucking;
         [ReadOnly] public bool isHoldingDuck;
@@ -29,13 +29,15 @@ namespace Player {
         [SerializeField] private LayerMask whatIsInvalidSpawnPoint;
         [SerializeField] public float climbSpeed;
 
-        [Header("Dash")] [ReadOnly] public bool isDashing;
+        [Header("Dash")] 
+        [ReadOnly] public bool isDashing;
         [ReadOnly] public bool canDash;
         [SerializeField] private float dashTime;
         [SerializeField] private float dashCooldown;
         [SerializeField] private float dashForce;
 
-        [Header("Jump / Fall")] [ReadOnly] public bool isJumping;
+        [Header("Jump / Fall")] 
+        [ReadOnly] public bool isJumping;
         [ReadOnly] public bool isHoldingJump;
         [ReadOnly] public bool doubleJumping;
         [SerializeField] private float jumpForce;
