@@ -30,20 +30,22 @@ namespace Player {
         public Transform cameraFollowTransform;
         [SerializeField] private float lookahead = 2;
 
-        [Header("Player")] public int playerLives = 5;
+        [Header("Player")] 
+        public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         public PlayerHitbox hitbox;
         [SerializeField] private ParticleSystem bloodSplatter;
 
-        [Header("Taking Damage")] [SerializeField]
-        private float alphaWhenTakingDamage = 0.2f;
+        [Header("Taking Damage")] 
+        [SerializeField] private float alphaWhenTakingDamage = 0.2f;
 
         [SerializeField] private float takeDamageScreenShakeIntensity = 0.2f;
         [SerializeField] private float takeDamageScreenShakeDuration = 0.2f;
         [SerializeField] private float takeDamageTimeSlowDuration = 0.5f;
 
-        [Header("Keys")] public int keyAmount;
+        [Header("Keys")] 
+        public int keyAmount;
         public List<GameObject> keyObjects = new();
 
         [Header("Player Can Move")] [SerializeField, Attributes.Required]
@@ -117,6 +119,7 @@ namespace Player {
         private CameraEffects _cameraEffects;
         private IControlSchemeChanger _controlSchemeChanger;
         private IPauseManager _pauseManager;
+        
         public IAudioManager AudioManager;
 
         #region ***---SoundID---***
@@ -131,6 +134,7 @@ namespace Player {
         #endregion
         #endregion
 
+        #region ---Initialization---
         [Inject]
         public void Construct(IObjectResolver container) {
             _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
@@ -139,8 +143,7 @@ namespace Player {
             _pauseManager = container.Resolve<IPauseManager>();
             AudioManager = container.Resolve<IAudioManager>();
         }
-
-        #region ---EventFunctions---
+        
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
@@ -151,7 +154,9 @@ namespace Player {
 #endif
             Bind();
         }
+        #endregion
 
+        #region ---EventFunctions---
         private void Start() {
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
@@ -191,8 +196,8 @@ namespace Player {
 
         private void Update() {
             var offset = 0f;
-            if (_isLookingUp) offset += lookahead;
-            if (_isLookingDown) offset -= lookahead;
+            if (_isLookingUp && Mathf.Abs(playerMovement.inputVector.x) <= 0.2) offset += lookahead;
+            if (_isLookingDown && Mathf.Abs(playerMovement.inputVector.x) <= 0.2) offset -= lookahead;
             cameraFollowTransform.position = transform.position.WithOffset(y: offset);
         }
 
