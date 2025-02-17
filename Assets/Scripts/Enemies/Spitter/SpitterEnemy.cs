@@ -51,11 +51,13 @@ public class SpitterEnemy : ReactiveBase
 
     private void StartAttack()
     {
+        _audioManager.PlayOneShot("Enemy_Hawk");
         _spitterAnimation.Attack(ShootProjectile);
     }
     
     private void ShootProjectile()
     {
+        _audioManager.PlayOneShot("Enemy_Tuah");
         var position = transform.position;
         var spawnPosition = new Vector2(position.x, position.y + YOffset);
         

@@ -15,8 +15,8 @@ namespace Player {
         [GetOrAddComponent, SerializeField, HideInInspector]
         private BoxCollider2D boxCollider;
 
-        [Header("Player Movement")] [SerializeField, ReadOnly]
-        public Vector2 inputVector;
+        [Header("Player Movement")] 
+        [SerializeField, ReadOnly] public Vector2 inputVector;
 
         [ReadOnly] public bool isDucking;
         [ReadOnly] public bool isHoldingDuck;
@@ -29,13 +29,15 @@ namespace Player {
         [SerializeField] private LayerMask whatIsInvalidSpawnPoint;
         [SerializeField] public float climbSpeed;
 
-        [Header("Dash")] [ReadOnly] public bool isDashing;
+        [Header("Dash")] 
+        [ReadOnly] public bool isDashing;
         [ReadOnly] public bool canDash;
         [SerializeField] private float dashTime;
         [SerializeField] private float dashCooldown;
         [SerializeField] private float dashForce;
 
-        [Header("Jump / Fall")] [ReadOnly] public bool isJumping;
+        [Header("Jump / Fall")] 
+        [ReadOnly] public bool isJumping;
         [ReadOnly] public bool isHoldingJump;
         [ReadOnly] public bool doubleJumping;
         [SerializeField] private float jumpForce;
@@ -307,7 +309,7 @@ namespace Player {
                 isFacingRight = false;
 
             if (!wasGroundedLastFrame && isActuallyGrounded) {
-                player.AudioManager.PlayOneShot(PlayerScript.PlayerStepSoundID);
+                player.AudioManager.PlayOneShot(PlayerScript.PlayerStep_SoundID);
             }
 
             wasGroundedLastFrame = isActuallyGrounded;
@@ -335,7 +337,7 @@ namespace Player {
                     killCharges--;
                     player.animator.SetTrigger(AnimatorGunJumpTrigger);
                     
-                    player.AudioManager.PlayOneShot(PlayerScript.PlayerGunJumpSoundID);
+                    player.AudioManager.PlayOneShot(PlayerScript.PlayerGunJump_SoundID);
                     
                     coolParticles.Play();
                 }
@@ -383,7 +385,7 @@ namespace Player {
             ForceExitDuck();
             isDashing = true;
             DashCooldownTimer.StartTimer();
-            player.AudioManager.PlayOneShot(PlayerScript.PlayerDashSoundID);
+            player.AudioManager.PlayOneShot(PlayerScript.PlayerDash_SoundID);
             canDash = false;
             lockToAxis = Axis.XAxis;
             DashTimer.StartTimer();

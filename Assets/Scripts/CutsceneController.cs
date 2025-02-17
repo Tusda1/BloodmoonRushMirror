@@ -19,7 +19,7 @@ public class CutsceneController : MonoBehaviour {
     [SerializeField] private VideoClip oldCutscene;
     [SerializeField] private string oldIntroSoundID = "Cutscene_Intro[Old]";
     
-    public static bool PlayOldCutscene = false;
+    public bool playOldCutscene;
     
     [Inject] private CameraEffects _cameraEffects;
     [Inject] private IAudioManager _audioManager;
@@ -39,7 +39,7 @@ public class CutsceneController : MonoBehaviour {
     }
 
     private IEnumerator PlayCutscene() {
-        var playOldCutscene = PlayOldCutscene || newCutscene == null;
+        var playOldCutscene = this.playOldCutscene || newCutscene == null;
         
         videoPlayer.clip = playOldCutscene ? oldCutscene : newCutscene;
         videoPlayer.Prepare();

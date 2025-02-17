@@ -70,7 +70,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         });
     #endregion
     
-    [Inject] private IAudioManager _audioManager;
+    [Inject] protected IAudioManager _audioManager;
 
     [SerializeField] private string death_SoundID; 
     #endregion
@@ -130,6 +130,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         if (enemyAnimationBase != null) enemyAnimationBase.PlayHitAnimation();
         StartCoroutine(FlashWhite());
+        PlayHitSoundEffect();
 
         if (bloodSplatter != null) {
             var deg = Vector2.Angle(damageInstance.knockback.normalized, Vector2.right);
@@ -157,6 +158,11 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected virtual bool CanBeDamaged(DamageInstance damageInstance)
     {
         return true;
+    }
+    
+    protected virtual void PlayHitSoundEffect()
+    {
+        _audioManager.PlayOneShot("Enemy_Generic_Hit");
     }
 
     private IEnumerator FlashWhite() {
@@ -211,7 +217,8 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private void Die() 
     {
         isDead = true;
-
+        
+        _audioManager.PlayOneShot("Enemy_Die");
         if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, OnDeath);
     }
 

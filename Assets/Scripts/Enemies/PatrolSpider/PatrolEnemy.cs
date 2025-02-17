@@ -63,11 +63,17 @@ public class PatrolEnemy : EnemyBase
 
     protected override void Attack()
     {
+        _audioManager.PlayOneShot("Enemy_Spider_Hit");
         _patrolAnimation.Attack(PatrolAttack);
     }
 
     protected override void SetVisualFacingDirection()
     {
         visualFacingDirection = _visualVelocity.x > 0 ? Vector2.right : Vector2.left;
+    }
+
+    protected override void PlayHitSoundEffect()
+    {
+        _audioManager.PlayOneShot("Enemy_Spider_Hit");
     }
 }

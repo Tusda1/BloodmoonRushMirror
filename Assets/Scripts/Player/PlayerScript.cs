@@ -30,20 +30,22 @@ namespace Player {
         public Transform cameraFollowTransform;
         [SerializeField] private float lookahead = 2;
 
-        [Header("Player")] public int playerLives = 5;
+        [Header("Player")] 
+        public int playerLives = 5;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         public PlayerHitbox hitbox;
         [SerializeField] private ParticleSystem bloodSplatter;
 
-        [Header("Taking Damage")] [SerializeField]
-        private float alphaWhenTakingDamage = 0.2f;
+        [Header("Taking Damage")] 
+        [SerializeField] private float alphaWhenTakingDamage = 0.2f;
 
         [SerializeField] private float takeDamageScreenShakeIntensity = 0.2f;
         [SerializeField] private float takeDamageScreenShakeDuration = 0.2f;
         [SerializeField] private float takeDamageTimeSlowDuration = 0.5f;
 
-        [Header("Keys")] public int keyAmount;
+        [Header("Keys")] 
+        public int keyAmount;
         public List<GameObject> keyObjects = new();
 
         [Header("Player Can Move")] [SerializeField, Attributes.Required]
@@ -63,6 +65,8 @@ namespace Player {
         private readonly ScriptVotePair _isAliveVotePair = new();
 
         public event Action OnRespawn = delegate { };
+
+        private string _currentLevelMusicID;
 
         #region ***---Gems---***
         [Header("Gems")] public int gems;
@@ -86,24 +90,6 @@ namespace Player {
         private static readonly int AnimatorIsDeadBool = Animator.StringToHash("IsDead");
         private static readonly int AnimatorRespawnTrigger = Animator.StringToHash("Respawn");
         private static readonly int AnimatorDeathTrigger = Animator.StringToHash("Death");
-        #endregion
-
-        #region ***---DI---***
-        private SaveLoadSystemManager SaveLoadSystemManager {
-            get {
-                if (_saveLoadSystemManager != null) {
-                    return _saveLoadSystemManager;
-                }
-
-                if (SaveLoadSystemManager.HasInstance) {
-                    _saveLoadSystemManager = SaveLoadSystemManager.Instance;
-                    return _saveLoadSystemManager;
-                }
-
-                throw new NullReferenceException("SaveLoadSystemManager is null");
-            }
-        }
-        private static LevelDataManager LevelDataManager => LevelDataManager.Instance;
         #endregion
 
         #region ***---DataBindingVariables---***
@@ -133,18 +119,22 @@ namespace Player {
         private CameraEffects _cameraEffects;
         private IControlSchemeChanger _controlSchemeChanger;
         private IPauseManager _pauseManager;
+        
         public IAudioManager AudioManager;
-        private LevelMusicManager _levelMusicManager;
 
-        public const string PlayerSlashSoundID = "Player_Slash";
-        public const string PlayerDashSoundID = "Player_Dash";
-        public const string PlayerDeathSoundD = "Player_Death";
-        public const string PlayerStepSoundID = "Player_Step";
-        public const string PlayerRespawnSoundID = "Player_Respawn";
-        public const string PlayerHurtSoundID = "Player_Hurt";
-        public const string PlayerGunJumpSoundID = "Player_GunJump";
+        #region ***---SoundID---***
+        private const string PlayerSlash_SoundID = "Player_Slash";
+        private const string PlayerDeath_SoundD = "Player_Death";
+        private const string PlayerHurtSoundID = "Player_Hurt";
+        
+        public const string PlayerDash_SoundID = "Player_Dash";
+        public const string PlayerStep_SoundID = "Player_Step";
+        public const string PlayerRespawn_SoundID = "Player_Respawn";
+        public const string PlayerGunJump_SoundID = "Player_GunJump";
+        #endregion
         #endregion
 
+        #region ---Initialization---
         [Inject]
         public void Construct(IObjectResolver container) {
             _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
@@ -153,19 +143,20 @@ namespace Player {
             _pauseManager = container.Resolve<IPauseManager>();
             AudioManager = container.Resolve<IAudioManager>();
         }
-
-        #region ---EventFunctions---
+        
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
 #if UNITY_EDITOR
             if (SceneCollectionManager.CurrentSceneCollection == null) {
-                LevelDataManager.LevelStartPoint = transform.position;
+                LevelDataManager.Instance.LevelStartPoint = transform.position;
             }
 #endif
             Bind();
         }
+        #endregion
 
+        #region ---EventFunctions---
         private void Start() {
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
@@ -205,8 +196,8 @@ namespace Player {
 
         private void Update() {
             var offset = 0f;
-            if (_isLookingUp) offset += lookahead;
-            if (_isLookingDown) offset -= lookahead;
+            if (_isLookingUp && Mathf.Abs(playerMovement.inputVector.x) <= 0.2) offset += lookahead;
+            if (_isLookingDown && Mathf.Abs(playerMovement.inputVector.x) <= 0.2) offset -= lookahead;
             cameraFollowTransform.position = transform.position.WithOffset(y: offset);
         }
 
@@ -235,6 +226,9 @@ namespace Player {
                     transform.localScale = new Vector3(u, 1, 1);
                 }
             }
+            
+            playerInput.actions["LookUp"].Reset();
+            playerInput.actions["LookDown"].Reset();
 
             if (playerMovement.isDucking) {
                 DuckAttack();
@@ -251,7 +245,7 @@ namespace Player {
             if (!_canAttack) return;
             debugLogger.Log("Attack");
 
-            AudioManager.PlayOneShot(PlayerSlashSoundID);
+            AudioManager.PlayOneShot(PlayerSlash_SoundID);
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -262,7 +256,7 @@ namespace Player {
             debugLogger.Log("DuckAttack");
 
             animator.SetTrigger(AnimatorDuckAttackTrigger);
-            AudioManager.PlayOneShot(PlayerSlashSoundID);
+            AudioManager.PlayOneShot(PlayerSlash_SoundID);
             _canAttack = false;
             isAttacking = true;
             animator.SetBool(AnimatorIsAttackingBool, true);
@@ -316,8 +310,10 @@ namespace Player {
             _isDead = true;
             playerCanMove.ChangeVote(_isAliveVotePair, false);
             animator.SetBool(AnimatorIsDeadBool, true);
-            _levelMusicManager.Stop();
-            AudioManager.PlayOneShot(PlayerDeathSoundD);
+            
+            _currentLevelMusicID = AudioManager.CurrentMusicID;
+            AudioManager.StopAllMusic();
+            AudioManager.PlayOneShot(PlayerDeath_SoundD);
 
             animator.ResetTrigger(AnimatorTakeDamageTrigger);
             debugLogger.Log("Setting death trigger");
@@ -337,7 +333,7 @@ namespace Player {
             }
             else {
                 Respawn();
-                _levelMusicManager.Play();
+                AudioManager.PlayMusic(_currentLevelMusicID);
 
                 // yield return new WaitForSeconds(0.5f);
                 _cameraEffects.CircleFadeIn(0.5f);
@@ -412,14 +408,6 @@ namespace Player {
             }
         }
 
-        private IEnumerator ResetPlayerInput() {
-            yield return null;
-            yield return null;
-            playerInput.enabled = false;
-            yield return null;
-            playerInput.enabled = true;
-        }
-
         public void CheckpointHealing() {
             if (healthComponent.Health == healthComponent.maxTempHealth) {
                 healthComponent.TempHealth++;
@@ -434,7 +422,7 @@ namespace Player {
         }
 
         public void PlayStepSound() {
-            AudioManager.PlayOneShot(PlayerStepSoundID);
+            AudioManager.PlayOneShot(PlayerStep_SoundID);
         }
         
         #region ---Pause---
@@ -449,12 +437,7 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            if (SaveLoadSystemManager != null || !Application.isPlaying) {
-                SaveLoadSystemManager.Bind(this, DataInGameData);
-            }
-            else {
-                Debug.LogWarning("No SaveLoadSystemManager found", this);
-            }
+            _saveLoadSystemManager?.Bind(this, DataInGameData);
         }
 
         [ContextMenu(nameof(LoadBindData))]

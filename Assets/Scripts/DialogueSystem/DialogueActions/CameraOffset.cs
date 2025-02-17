@@ -8,7 +8,7 @@ using Unity.Properties;
 [Serializable, GeneratePropertyBag]
 [NodeDescription(
     name: "CameraOffset", 
-    story: "Move RenderTextureCamera To: [vector3] Over [duration] Seconds", 
+    story: "Move Camera_Pixelated To: [vector3] Over [duration] Seconds", 
     category: "Action", 
     id: "a0a6bbd9da519a678d1764ab89505147")]
 public partial class CameraOffsetAction : Action {

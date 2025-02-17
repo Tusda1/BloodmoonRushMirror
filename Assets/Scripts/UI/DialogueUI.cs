@@ -53,25 +53,33 @@ namespace UI {
             _root.dataSource = this;
             _skipDialogueButton = _root.Q<SkipDialogueButton_Animated>();
         }
-        #endregion
 
-        private void OnEnable() {
+        private void Start() {
             playerCanMove.ChangeVote(scriptVotePair, true);
             
+            DisableDialogueUI();
+        }
+        #endregion
+        
+        public void EnableDialogueUI() {
             _controlSchemeChanger.OnControlSchemeChanged += ControlSchemeChangerOnOnControlSchemeChanged;
             ControlSchemeChangerOnOnControlSchemeChanged(_controlSchemeChanger.CurrentControlSchemeData);
             _animationTask = _skipDialogueButton.Animate();
+            _root.style.display = DisplayStyle.Flex;
+            uiDocumentVisible = true;
+        }
+
+        public void DisableDialogueUI() {
+            playerCanMove.DeleteVote(scriptVotePair);
+            
+            _controlSchemeChanger.OnControlSchemeChanged -= ControlSchemeChangerOnOnControlSchemeChanged;
+            _animationTask?.Cancel();
+            _root.style.display = DisplayStyle.None;
+            uiDocumentVisible = false;
         }
 
         private void ControlSchemeChangerOnOnControlSchemeChanged(IControlSchemeChanger.ControlSchemeData data) {
             _skipDialogueButton.SpriteAnimation = data.DataSO.skipDialogueButtonAnimation;
-        }
-
-        private void OnDisable() {
-            playerCanMove.DeleteVote(scriptVotePair);
-            
-            _controlSchemeChanger.OnControlSchemeChanged -= ControlSchemeChangerOnOnControlSchemeChanged;
-            _animationTask.Cancel();
         }
 
         public void TriggerOnSkipDialogue() {

@@ -1,6 +1,7 @@
 using System;
 using Attributes;
 using Consensus;
+using SaveLoadSystem;
 using SceneCollections;
 using UI.Settings;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace UI {
         [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
         [SerializeField, Required] private Animator backgroundAnimator;
         [SerializeField] private AllInFavourConsensusSO playerCanMove;
+        [SerializeField, Required] private SceneCollectionSO demoSceneCollectionSO;
 
         #region ***---PrivateFields---***
         private VisualElement _rootElement;
@@ -40,6 +42,8 @@ namespace UI {
 
         private IAudioManager _audioManager;
         private DebugLoggerSO _debugLoggerSO;
+        private CameraEffects _cameraEffects;
+        private SaveLoadSystemManager _saveLoadSystemManager;
 
         private Action _updateActions = delegate { };
         #endregion
@@ -47,10 +51,8 @@ namespace UI {
         #region ***---SoundID---***
         private const string MainMenuMusic_SoundID = "Music_MainMenu";
         private const string ShowCredits_SoundID = "UI_ShowCredits";
-        private const string GenericMenuSound_SoundID = "UI_GenericMenuSound";
         
         private const string ButtonDownSFXBus_SoundID = "UI_ButtonDown[SFXBus]";
-        private const string ButtonUpSFXBus_SoundID = "UI_ButtonUp[SFXBus]";
         
         private const string AnyKeyPressed_SoundID = "Player_Respawn";
         #endregion
@@ -61,6 +63,8 @@ namespace UI {
         public void Construct(IObjectResolver container) {
             _audioManager = container.Resolve<IAudioManager>();
             _debugLoggerSO = container.ResolveProviderID<DebugLoggerSO>("UI");
+            _cameraEffects = container.Resolve<CameraEffects>();
+            _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
         }
 
         private void Awake() {
@@ -88,7 +92,7 @@ namespace UI {
         private void Start() {
             _audioManager.PlayMusic(MainMenuMusic_SoundID);
 
-            _startButton.clicked += savesMenu.Activate;
+            _startButton.clicked += StartButtonClicked;
             savesMenu.OnMenuActivated += HideMenu;
             savesMenu.OnMenuDeactivated += ShowMenu;
 
@@ -113,6 +117,22 @@ namespace UI {
                     _audioManager.PlayMusic(MainMenuMusic_SoundID);
                 }
             });
+        }
+
+        private void StartButtonClicked() {
+#if DEMO_BUILD
+            var saveSlotData = ScriptableObject.CreateInstance<SaveSlotDataSO>();
+            saveSlotData.currentSceneCollection = demoSceneCollectionSO;
+            _saveLoadSystemManager.NewGame(saveSlotData);
+            
+            _cameraEffects.CircleFadeOut(1,
+                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(saveSlotData.currentSceneCollection,
+                    () => _cameraEffects.CircleFadeIn(1)));
+            
+            _startButton.clicked -= StartButtonClicked;
+#else
+            savesMenu.Activate();
+#endif
         }
         #endregion
 

@@ -12,24 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: DrucillaBlackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 638744467701361895
+  VersionTimestamp: 638752429426454133
   AssetID:
     m_Value0: 4944896706078454662
     m_Value1: 8713339101728911770
   m_Blackboard:
     m_Variables:
-    - rid: 1653115880401535149
-    - rid: 1653115880401535150
-    - rid: 1653115880401535151
-    - rid: 1653115880401535152
-    - rid: 1653115880401535153
-    - rid: 1653115880401535154
-    - rid: 1653115880401535155
-  m_SharedBlackboardVariableGuids: []
+    - rid: 1653116089107218941
+    - rid: 1653116089107218942
+    - rid: 1653116089107218943
+    - rid: 1653116089107218944
+    - rid: 1653116089107218945
+    - rid: 1653116089107218946
+    - rid: 1653116089107218947
+    - rid: 1653116089107218948
+  m_SharedBlackboardVariableGuids:
+  - m_Value0: 1481089196096890617
+    m_Value1: 17800598956414840659
+  - m_Value0: 14354650347657143494
+    m_Value1: 8725196837871845085
+  - m_Value0: 7456374676149723218
+    m_Value1: 11093767988059105249
+  - m_Value0: 22783293013192785
+    m_Value1: 11296990410030917634
+  - m_Value0: 2547419228468632051
+    m_Value1: 15405140386796512659
+  - m_Value0: 7328711015213173377
+    m_Value1: 1698377730960077904
+  - m_Value0: 8213679854988386075
+    m_Value1: 17484214280055335588
+  - m_Value0: 10252603538801126971
+    m_Value1: 5184752461496065877
   references:
     version: 2
     RefIds:
-    - rid: 1653115880401535149
+    - rid: 1653116089107218941
       type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -37,7 +54,7 @@ MonoBehaviour:
           m_Value1: 17800598956414840659
         Name: DrucillaAnimator
         m_Value: {fileID: 0}
-    - rid: 1653115880401535150
+    - rid: 1653116089107218942
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -45,7 +62,7 @@ MonoBehaviour:
           m_Value1: 8725196837871845085
         Name: MusicThemeID
         m_Value: Music_DucillaTheme
-    - rid: 1653115880401535151
+    - rid: 1653116089107218943
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -53,31 +70,7 @@ MonoBehaviour:
           m_Value1: 11093767988059105249
         Name: LaughSoundID
         m_Value: Talk_Drucilla_Laugh
-    - rid: 1653115880401535152
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 2547419228468632051
-          m_Value1: 15405140386796512659
-        Name: LaughPortrait
-        m_Value: {fileID: -1587205731444698363, guid: 5620f4f64f5a9cc40be14fa5fdcc6b54, type: 3}
-    - rid: 1653115880401535153
-      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 7328711015213173377
-          m_Value1: 1698377730960077904
-        Name: TransformTrigger
-        m_Value: Transform
-    - rid: 1653115880401535154
-      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 8213679854988386075
-          m_Value1: 17484214280055335588
-        Name: ShootFloorTrigger
-        m_Value: Shoot
-    - rid: 1653115880401535155
+    - rid: 1653116089107218944
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -85,6 +78,38 @@ MonoBehaviour:
           m_Value1: 11296990410030917634
         Name: LaughTrigger
         m_Value: Laugh
+    - rid: 1653116089107218945
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 2547419228468632051
+          m_Value1: 15405140386796512659
+        Name: LaughPortrait
+        m_Value: {fileID: -1587205731444698363, guid: 5620f4f64f5a9cc40be14fa5fdcc6b54, type: 3}
+    - rid: 1653116089107218946
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7328711015213173377
+          m_Value1: 1698377730960077904
+        Name: TransformTrigger
+        m_Value: Transform
+    - rid: 1653116089107218947
+      type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 8213679854988386075
+          m_Value1: 17484214280055335588
+        Name: ShootFloorTrigger
+        m_Value: Shoot
+    - rid: 1653116089107218948
+      type: {class: 'BlackboardVariable`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 10252603538801126971
+          m_Value1: 5184752461496065877
+        Name: LaughSubGraph
+        m_Value: {fileID: 904816420327334282, guid: 3f6e4004d9ebadb40a34a3dd72d1c27d, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,11 +129,12 @@ MonoBehaviour:
   - rid: 2814022244822941939
   - rid: 74644064432554412
   - rid: 74644064412106984
+  - rid: 2814022248038925229
   - rid: 74644064412107713
   - rid: 2814022245187846359
   - rid: 2814022245187847003
-  - rid: 2814022248038925229
-  m_VersionTimestamp: 638744467701361895
+  - rid: 1653116065631961560
+  m_VersionTimestamp: 638752429426454133
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: -6314824275859076673}
@@ -123,7 +149,7 @@ MonoBehaviour:
           m_Value1: 11093767988059105249
         Name: LaughSoundID
         IsExposed: 1
-        m_IsShared: 0
+        m_IsShared: 1
         m_Value: Talk_Drucilla_Laugh
     - rid: 74644064412107713
       type: {class: 'TypedVariableModel`1[[UnityEngine.Sprite, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
@@ -133,7 +159,7 @@ MonoBehaviour:
           m_Value1: 15405140386796512659
         Name: LaughPortrait
         IsExposed: 1
-        m_IsShared: 0
+        m_IsShared: 1
         m_Value: {fileID: -1587205731444698363, guid: 5620f4f64f5a9cc40be14fa5fdcc6b54, type: 3}
     - rid: 74644064432554412
       type: {class: 'TypedVariableModel`1[[System.String, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
@@ -143,8 +169,18 @@ MonoBehaviour:
           m_Value1: 8725196837871845085
         Name: MusicThemeID
         IsExposed: 1
-        m_IsShared: 0
+        m_IsShared: 1
         m_Value: Music_DucillaTheme
+    - rid: 1653116065631961560
+      type: {class: 'TypedVariableModel`1[[Unity.Behavior.BehaviorGraph, Unity.Behavior]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 10252603538801126971
+          m_Value1: 5184752461496065877
+        Name: LaughSubGraph
+        IsExposed: 1
+        m_IsShared: 1
+        m_Value: {fileID: 904816420327334282, guid: 3f6e4004d9ebadb40a34a3dd72d1c27d, type: 2}
     - rid: 2814022244822941939
       type: {class: 'TypedVariableModel`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
@@ -153,7 +189,7 @@ MonoBehaviour:
           m_Value1: 17800598956414840659
         Name: DrucillaAnimator
         IsExposed: 1
-        m_IsShared: 0
+        m_IsShared: 1
         m_Value: {fileID: 0}
     - rid: 2814022245187846359
       type: {class: 'TypedVariableModel`1[[System.String, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
@@ -163,7 +199,7 @@ MonoBehaviour:
           m_Value1: 1698377730960077904
         Name: TransformTrigger
         IsExposed: 1
-        m_IsShared: 0
+        m_IsShared: 1
         m_Value: Transform
     - rid: 2814022245187847003
       type: {class: 'TypedVariableModel`1[[System.String, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
@@ -173,7 +209,7 @@ MonoBehaviour:
           m_Value1: 17484214280055335588
         Name: ShootFloorTrigger
         IsExposed: 1
-        m_IsShared: 0
+        m_IsShared: 1
         m_Value: Shoot
     - rid: 2814022248038925229
       type: {class: 'TypedVariableModel`1[[System.String, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
@@ -183,5 +219,5 @@ MonoBehaviour:
           m_Value1: 11296990410030917634
         Name: LaughTrigger
         IsExposed: 1
-        m_IsShared: 0
+        m_IsShared: 1
         m_Value: Laugh

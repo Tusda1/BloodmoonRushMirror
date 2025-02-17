@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using VContainer;
 
 public class DebugLoggerProvider : IProvider<DebugLoggerSO>  {
     private readonly Dictionary<string, DebugLoggerSO> _services = new();
 
+    [Inject]
     public DebugLoggerProvider() {
         var debugLoggers = ScrubUtils.GetAllScrubsInResourceFolder<DebugLoggerSO>("DebugLoggers");
         

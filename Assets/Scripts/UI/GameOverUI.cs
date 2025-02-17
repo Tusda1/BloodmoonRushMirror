@@ -9,7 +9,8 @@ public class GameOverUI : MonoBehaviour {
     #region ---Fields---
     [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
     
-    [SerializeField, Required] private SceneCollectionSO retryLoadCollection, quitLoadCollection;
+    [SerializeField, Required] private SceneCollectionSO retryLoadCollection;
+    [SerializeField, Required] private SceneCollectionSO quitLoadCollection;
 
     #region ***---UIDocument---***
     private VisualElement _root;

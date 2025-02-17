@@ -22,7 +22,7 @@ public class PersistentManagersInstaller : AutoInjectInstaller {
         builder.RegisterInstanceID(renderTextureCamera, RenderTextureCameraID);
 
         builder.Register<FileDataService<SaveGameData>>(Lifetime.Singleton);
-        builder.Register<JSONSerializer>(Lifetime.Singleton).As<ISerializer>();
+        builder.RegisterInstance(new JSONSerializer()).As<ISerializer>();
     }
 
 #if UNITY_EDITOR

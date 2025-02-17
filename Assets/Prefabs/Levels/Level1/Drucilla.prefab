@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3841655557898247701}
   - component: {fileID: 918808268086035886}
   - component: {fileID: 7589048197982333553}
+  - component: {fileID: 1030239856705721255}
   - component: {fileID: 1866330993603617668}
   - component: {fileID: 4519198094343847217}
-  - component: {fileID: 1030239856705721255}
   m_Layer: 13
   m_Name: Drucilla
   m_TagString: Untagged
@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drucillaInteractionChannel: {fileID: 11400000, guid: 3b664b2a904fdf14aa673d6ec1c5798a, type: 2}
+  nextLevelSceneCollection: {fileID: 0}
   endDemoSceneCollection: {fileID: 11400000, guid: c5f842ad2c0776a419c4ed54c146f504, type: 2}
   drucillaDamageInstance:
     damage: 0
@@ -111,6 +112,42 @@ MonoBehaviour:
     knockbackStrength: 23.21
     staggerStrength: 337
     ignoreInvincibility: 1
+    which: 0
+--- !u!114 &1030239856705721255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5004162161467251752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Graph: {fileID: -4225688549260276096, guid: 1e308a7ff809fc546854e608fd3a7a5f, type: 2}
+  m_BlackboardVariableOverridesList:
+  - rid: 2814022244107027101
+  - rid: 2814022244893982984
+  references:
+    version: 2
+    RefIds:
+    - rid: 2814022244107027101
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 5004162161467251752}
+    - rid: 2814022244893982984
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 6835825622154845331
+          m_Value1: 3398075911540621400
+        Name: DrucillaAnimator
+        m_Value: {fileID: 4519198094343847217}
 --- !u!61 &1866330993603617668
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -179,38 +216,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1030239856705721255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5004162161467251752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Graph: {fileID: -4225688549260276096, guid: 1e308a7ff809fc546854e608fd3a7a5f, type: 2}
-  m_BlackboardVariableOverridesList:
-  - rid: 2814022244107027101
-  - rid: 2814022244893982984
-  references:
-    version: 2
-    RefIds:
-    - rid: 2814022244107027101
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Self
-        m_Value: {fileID: 5004162161467251752}
-    - rid: 2814022244893982984
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 6835825622154845331
-          m_Value1: 3398075911540621400
-        Name: DrucillaAnimator
-        m_Value: {fileID: 4519198094343847217}

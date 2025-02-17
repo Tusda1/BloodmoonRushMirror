@@ -20,8 +20,8 @@ namespace FMODScripts {
 
         private readonly DebugLoggerSO _debugLogger;
         private readonly AudioDictionarySO _audioDictionary;
-        
-        private string _currentMusicID;
+
+        public string CurrentMusicID { get; private set; }
 
         #region ***---Consts---***
         private const string BusPath = "bus:/";
@@ -124,7 +124,7 @@ namespace FMODScripts {
                 _currentMusic = RuntimeManager.CreateInstance(path);
                 RuntimeManager.DetachInstanceFromGameObject(_currentMusic);
                 _currentMusic.start();
-                _currentMusicID = id;
+                CurrentMusicID = id;
                 
                 _debugLogger.Log("Playing music: " + id);
             }
@@ -145,7 +145,7 @@ namespace FMODScripts {
                 _currentMusic = RuntimeManager.CreateInstance(id);
                 RuntimeManager.AttachInstanceToGameObject(_currentMusic, gameObject);
                 _currentMusic.start();
-                _currentMusicID = id;
+                CurrentMusicID = id;
 
                 _debugLogger.Log("Playing music: " + id);
             }
@@ -165,14 +165,14 @@ namespace FMODScripts {
         }
 
         public void StopMusic(string name) {
-            if (_currentMusicID.Equals(name)) {
+            if (CurrentMusicID.Equals(name)) {
                 StopAllMusic();
             }
         }
 
         public void StopAllMusic() {
             _currentMusic.stop(STOP_MODE.ALLOWFADEOUT);
-            _currentMusicID = "";
+            CurrentMusicID = "";
 
             _debugLogger.Log("Stopped all music");
         }
@@ -239,7 +239,7 @@ namespace FMODScripts {
         }
 
         public bool IsMusicPlaying(string id) {
-            return _currentMusicID.Equals(id);
+            return CurrentMusicID.Equals(id);
         }
         #endregion
 
