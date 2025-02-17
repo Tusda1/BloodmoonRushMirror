@@ -1,5 +1,5 @@
 .unity-slider {
-    background-image: url("project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-1157797732&guid=fc3565351fa61854ebeb34f6159db6f4&type=3#UI_Asset_Sheet_21");
+    background-image: url('project://database/Assets/Art/UIArt/UI_Asset_Sheet.png?fileID=-1157797732&guid=fc3565351fa61854ebeb34f6159db6f4&type=3#UI_Asset_Sheet_21');
     width: 376px;
     height: 28px;
     max-width: 376px;
@@ -94,12 +94,12 @@
     background-image: url("project://database/Assets/Art/UI/Settings_Assets.png?fileID=2055428622&guid=8669abad7bb91734b9c5d76592cafacc&type=3#Settings_Assets_5");
     background-color: rgba(0, 0, 0, 0);
     cursor: url('project://database/Assets/UI/Textures/Cursors/Cursor_B.png?fileID=2800000&guid=f3c815d95da3a483385620d7bd8fc545&type=3#Cursor_B') 10 11;
-    width: 14px;
-    height: 40px;
-    max-width: 14px;
-    min-width: 14px;
-    max-height: 40px;
-    min-height: 40px;
+    width: 16px;
+    height: 42px;
+    max-width: 16px;
+    min-width: 16px;
+    max-height: 42px;
+    min-height: 42px;
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
@@ -128,12 +128,6 @@
     background-image: url("project://database/Assets/Art/UI/Settings_Assets.png?fileID=703130352&guid=8669abad7bb91734b9c5d76592cafacc&type=3#Settings_Assets_4");
     background-color: rgba(0, 0, 0, 0);
     cursor: url('center') 10 11;
-    width: 14px;
-    height: 40px;
-    max-width: 14px;
-    min-width: 14px;
-    max-height: 40px;
-    min-height: 40px;
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
@@ -157,12 +151,6 @@
     background-image: url("project://database/Assets/Art/UI/Settings_Assets.png?fileID=703130352&guid=8669abad7bb91734b9c5d76592cafacc&type=3#Settings_Assets_4");
     background-color: rgba(0, 0, 0, 0);
     cursor: url('center') 10 11;
-    width: 14px;
-    height: 40px;
-    max-width: 14px;
-    min-width: 14px;
-    max-height: 40px;
-    min-height: 40px;
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
@@ -180,4 +168,8 @@
     padding-bottom: 0;
     padding-left: 0;
     top: -6px;
+}
+
+#unity-drag-container:active #unity-dragger {
+    background-image: url("project://database/Assets/Art/UI/Settings_Assets_2.png?fileID=665808833&guid=3007733fb5d5c9c4a93c363cb534f7e2&type=3#Settings_Assets_2_0");
 }
