@@ -144,6 +144,7 @@ public class DashAndSwoopState : DraculaState
         Boss.DisableGravity();
         _dashStarted = false;
         _swoopStarted = false;
+        Boss.transform.rotation = Quaternion.identity;
     }
 
     protected override void OnTeleportEnd()
@@ -191,7 +192,12 @@ public class DashAndSwoopState : DraculaState
     {
         if (!_swoopStarted)
         {
-            if (_teleportLocation != _swoopOrigin)
+            if (_teleportLocation != _swoopOrigin && _teleportLocation != _swoopTarget)
+            {
+                _swoopOrigin = _teleportLocation;
+                _swoopTarget = _swoopOrigin == _topRight ? _topLeft : _topRight;
+            }
+            else if (_teleportLocation != _swoopOrigin)
             {
                 (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
             }
