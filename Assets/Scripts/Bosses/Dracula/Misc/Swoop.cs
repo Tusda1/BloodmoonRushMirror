@@ -24,7 +24,7 @@ public class Swoop
         _externalBoss = boss;
     }
     
-    public void ExecuteSwoop(Vector2 swoopOrigin, Vector2 swoopTarget, Vector2 swoopArcBottom, float completionLevel)
+    public void ExecuteSwoop(Vector2 swoopOrigin, Vector2 swoopTarget, Vector2 swoopArcBottom, bool playAnimation = true)
     {
         if (!_swoopStarted)
         {
@@ -32,14 +32,19 @@ public class Swoop
             _externalBoss.facingDirection = swoopTarget.x > swoopOrigin.x ? Vector2.right : Vector2.left;
             _swoopStarted = true;
             _swoopStartTime = Time.time;
+        }
+
+        if (!_swoopStartPlayed && playAnimation)
+        {
             _externalBoss.AnimancerComponent.Play(swoopAnimation);
+            _swoopStartPlayed = true;
         }
         
         // Calculate t with easing for smooth acceleration and deceleration
         float t = (Time.time - _swoopStartTime) / swoopDuration;
     
         // Clamp t to the range [0, 1]
-        if (t > completionLevel)
+        if (t > 1)
         {
             _onSwoopEnd();
             _swoopStarted = false;

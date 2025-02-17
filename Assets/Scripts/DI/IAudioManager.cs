@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 
 public interface IAudioManager {
+    string CurrentMusicID { get; }
+
     #region ---Play---
     void PlayOneShot(string id);
     void PlayOneShotAttached(string id, GameObject gameObject);

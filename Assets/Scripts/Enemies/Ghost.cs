@@ -101,4 +101,9 @@ public class Ghost : ReactiveBase
        //targetVelocity += tempVelocity;
        targetVelocity += suckVelocity;
     }
+
+    public void Execute()
+    {
+        transform.position = startPosition;
+    }
 }
