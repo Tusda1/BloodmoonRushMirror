@@ -226,6 +226,9 @@ namespace Player {
                     transform.localScale = new Vector3(u, 1, 1);
                 }
             }
+            
+            playerInput.actions["LookUp"].Reset();
+            playerInput.actions["LookDown"].Reset();
 
             if (playerMovement.isDucking) {
                 DuckAttack();
