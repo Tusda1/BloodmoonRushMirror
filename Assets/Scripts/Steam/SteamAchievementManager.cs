@@ -1,11 +1,16 @@
 ﻿using System;
 using UnityEngine;
+using VContainer;
 #if STEAM_BUILD
 using Steamworks;
 #endif
 
 public class SteamAchievementManager : IAchievementManager {
     public event Action<string> OnAchievementUnlocked = delegate { };
+
+    [Inject]
+    public SteamAchievementManager() {
+    }
     
     public void UnlockAchievement(string id) {
 #if STEAM_BUILD

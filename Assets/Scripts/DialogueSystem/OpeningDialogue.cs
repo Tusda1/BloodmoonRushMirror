@@ -1,3 +1,4 @@
+using System.Collections;
 using Attributes;
 using SaveLoadSystem;
 using SceneCollections;
@@ -7,6 +8,8 @@ using VContainer;
 public class OpeningDialogue : MonoBehaviour {
     #region ---Fields---
     [SerializeField, Required] private ActionEventChannel openingInteractionChannel;
+    [SerializeField, Required] private GameObject moveInputAnimation;
+    [SerializeField] private bool forcePlayOnStart;
     
     private LevelDataManager _levelDataManager;
     #endregion
@@ -16,20 +19,17 @@ public class OpeningDialogue : MonoBehaviour {
         _levelDataManager = container.Resolve<LevelDataManager>();
     }
 
-    private void Start() {
+    private IEnumerator Start() {
+        yield return null;
+        
 #if UNITY_EDITOR
-        if (SceneCollectionManager.CurrentSceneCollection == null) return;
+        if (SceneCollectionManager.CurrentSceneCollection == null && !forcePlayOnStart) yield break;
 #endif
-        if (string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointData.ID)) {
+        if (string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointData.ID) || forcePlayOnStart) {
             openingInteractionChannel.SendEventMessage();
         }
-    }
-
-    public void BatSwarm() {
-        
-    }
-
-    public void DraculaTeleport() {
-        
+        else {
+            moveInputAnimation.SetActive(true);
+        }
     }
 }

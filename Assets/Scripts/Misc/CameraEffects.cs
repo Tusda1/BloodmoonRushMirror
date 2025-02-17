@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 public class CameraEffects : MonoBehaviour {
     #region ---Fields---
     [SerializeField] private AnimationCurve timeSlowCurve;
+    [SerializeField] private GameObject cameraPixelatedGameObject;
     
     [Header("CircleFade")]
     [SerializeField] private Material circleFadeMaterial;
@@ -95,18 +96,16 @@ public class CameraEffects : MonoBehaviour {
     public async Awaitable MoveCamera(float duration, AnimationCurve curve, Vector3 offset, [Optional] Action callback) {
         float currentProgress = 0;
 
-        offset.z = -10;
-
         while (currentProgress < duration) {
             currentProgress += Time.unscaledDeltaTime;
             
             var progressValue = curve.Evaluate(currentProgress / duration);
-            transform.position = Vector3.Lerp(transform.position, offset, progressValue);
+            cameraPixelatedGameObject.transform.position = Vector3.Lerp(cameraPixelatedGameObject.transform.position, offset, progressValue);
 
             await Awaitable.NextFrameAsync();
         }
         
-        transform.position = offset;
+        cameraPixelatedGameObject.transform.position = offset;
         
         callback?.Invoke();
     }

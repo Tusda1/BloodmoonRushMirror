@@ -15,7 +15,8 @@ namespace Unity.Behavior {
         #region ---Fields---
         [SerializeReference] public BlackboardVariable<DialogueCharacterSO> dialogueCharacter;
         [SerializeReference] public BlackboardVariable<string> dialogue;
-
+        
+        [SerializeReference] public BlackboardVariable<string> characterNameOverride;
         [SerializeReference] public BlackboardVariable<Sprite> imagePortraitOverride;
         [SerializeReference] public BlackboardVariable<FontAsset> dialogueFontOverride;
         [SerializeReference] public BlackboardVariable<float> textSizeOverride;
@@ -171,9 +172,11 @@ namespace Unity.Behavior {
                 ? textSpeedOverride.Value
                 : DialogueCharacter.textSpeed);
 
-            dialogueUI.dialogueText = "";
+            dialogueUI.characterName = characterNameOverride.Value != ""
+                ? characterNameOverride.Value 
+                : DialogueCharacter.characterName;
 
-            dialogueUI.characterName = DialogueCharacter.characterName;
+            dialogueUI.dialogueText = "";
         }
     }
 }

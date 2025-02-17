@@ -39,7 +39,8 @@ public class DrucillaFirstEncounter : MonoBehaviour, IDamageable {
         drucillaInteractionChannel.SendEventMessage();
     }
 
-    public void EndDemo() {
+    [UnityEngine.Scripting.Preserve]
+    public void EndDialogue() {
 #if DEMO_BUILD
         _cameraEffects.CircleFadeOut(1, 
             () => _ = SceneCollectionManager.LoadSceneCollectionAsync(endDemoSceneCollection));
