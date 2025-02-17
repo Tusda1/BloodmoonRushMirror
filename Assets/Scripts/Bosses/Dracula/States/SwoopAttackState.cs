@@ -96,7 +96,7 @@ public class SwoopAttackState : DraculaState
                 }
                 break;
             case SwoopState.Swooping:
-                swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom, 1f);
+                swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _swoopArcBottom);
                 break;
             case SwoopState.Shooting:
                 Shoot();

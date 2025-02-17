@@ -18,7 +18,7 @@ public class Altar : MonoBehaviour
 
                if (Vector2.Distance(transform.position, ghost.transform.position) < executeRange)
                {
-                    ghost.gameObject.SetActive(false);
+                    ghostComponent.Execute();
                     continue;
                }
                
