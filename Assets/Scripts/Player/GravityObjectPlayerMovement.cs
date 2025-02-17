@@ -307,7 +307,7 @@ namespace Player {
                 isFacingRight = false;
 
             if (!wasGroundedLastFrame && isActuallyGrounded) {
-                player.AudioManager.PlayOneShot(PlayerScript.PlayerStepSoundID);
+                player.AudioManager.PlayOneShot(PlayerScript.PlayerStep_SoundID);
             }
 
             wasGroundedLastFrame = isActuallyGrounded;
@@ -335,7 +335,7 @@ namespace Player {
                     killCharges--;
                     player.animator.SetTrigger(AnimatorGunJumpTrigger);
                     
-                    player.AudioManager.PlayOneShot(PlayerScript.PlayerGunJumpSoundID);
+                    player.AudioManager.PlayOneShot(PlayerScript.PlayerGunJump_SoundID);
                     
                     coolParticles.Play();
                 }
@@ -383,7 +383,7 @@ namespace Player {
             ForceExitDuck();
             isDashing = true;
             DashCooldownTimer.StartTimer();
-            player.AudioManager.PlayOneShot(PlayerScript.PlayerDashSoundID);
+            player.AudioManager.PlayOneShot(PlayerScript.PlayerDash_SoundID);
             canDash = false;
             lockToAxis = Axis.XAxis;
             DashTimer.StartTimer();
