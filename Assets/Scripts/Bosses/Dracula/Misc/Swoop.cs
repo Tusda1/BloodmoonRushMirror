@@ -24,7 +24,7 @@ public class Swoop
         _externalBoss = boss;
     }
     
-    public void ExecuteSwoop(Vector2 swoopOrigin, Vector2 swoopTarget, Vector2 swoopArcBottom, bool playAnimation = true)
+    public void ExecuteSwoop(Vector2 swoopOrigin, Vector2 swoopTarget, Vector2 swoopArcBottom, bool playAnimation = true, float completionLevel = 1f)
     {
         if (!_swoopStarted)
         {
@@ -47,9 +47,6 @@ public class Swoop
         if (t > 1)
         {
             _onSwoopEnd();
-            _swoopStarted = false;
-            _externalBoss.transform.position = swoopTarget;
-            ResetSwoop();
             return;
         }
 
@@ -88,7 +85,7 @@ public class Swoop
         return p;
     }
     
-    private void ResetSwoop()
+    public void ResetSwoop()
     {
         _swoopStarted = false;
         _swoopStartPlayed = false;

@@ -17,7 +17,6 @@ public class PatrolAnimation : EnemyAnimationBase
     
     public void Attack(Action followUpAction)
     {
-        if (isAttacking) return;
         isAttacking = true;
         
         var attackState = animancerComponent.Play(windUp);

@@ -24,6 +24,7 @@ public class DashAndSwoopState : DraculaState
     private int _loopCount;
     
     [SerializeField] private float dashSpeed = 10f;
+    [SerializeField] private float dashDestinationOffset = 1f;
     [SerializeField] private float dashProjectileCooldown = 1f;
     [SerializeField] private int dashProjectilesPerVolley = 3;
     private Vector2 _dashTarget;
@@ -31,6 +32,7 @@ public class DashAndSwoopState : DraculaState
     
     [SerializeField] private float swoopProjectileCooldown = 1f;
     [SerializeField] private int swoopProjectilesPerVolley = 3;
+    [SerializeField] private float swoopCompletionLevel = 0.9f;
     private bool _swoopStarted;
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
@@ -75,9 +77,9 @@ public class DashAndSwoopState : DraculaState
         _topRight.x -= 1f;
         _topRight.y -= 2f;
         _bottomRight = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
-        _bottomRight.x -= 1f;
+        _bottomRight.x -= 1.5f;
         _bottomLeft = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
-        _bottomLeft.x += 1f;
+        _bottomLeft.x += 1.5f;
         
         _bottomMiddle = (_bottomRight + _bottomLeft) / 2;
         
@@ -114,9 +116,10 @@ public class DashAndSwoopState : DraculaState
 
     private void StageTransition()
     {
+        print(teleport.IsTeleporting);
         if (teleport.IsTeleporting) return;
         
-        if (_loopCount >= _stages.Count)
+        if (_loopCount >= _stages.Count - 1)
         {
             EndState();
             return;
@@ -145,6 +148,7 @@ public class DashAndSwoopState : DraculaState
         _dashStarted = false;
         _swoopStarted = false;
         Boss.transform.rotation = Quaternion.identity;
+        swoop.ResetSwoop();
     }
 
     protected override void OnTeleportEnd()
@@ -161,7 +165,6 @@ public class DashAndSwoopState : DraculaState
         {
             _dashStarted = true;
             Boss.EnableGravity();
-            Boss.AnimancerComponent.Play(dashAnimation);
             
             _dashTarget = _teleportLocation == _bottomRight ? _bottomLeft : _bottomRight;
         }
@@ -170,7 +173,7 @@ public class DashAndSwoopState : DraculaState
         var direction = _dashTarget == _bottomRight ? Vector2.right : Vector2.left;
         Boss.targetVelocity = direction * dashSpeed;
         // Check if the boss crossed the finish line
-        if (transform.position.x * direction.x > _dashTarget.x * direction.x)
+        if (transform.position.x * direction.x + dashDestinationOffset * direction.x > _dashTarget.x * direction.x)
         {
             StageTransition();  
         }
@@ -224,7 +227,7 @@ public class DashAndSwoopState : DraculaState
     
     private void SwoopEnd()
     {
-        
+        StageTransition();
     }
 
     private IEnumerator Shoot(int projectilesInVolley, Vector2 initialDirection)
