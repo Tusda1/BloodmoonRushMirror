@@ -2,7 +2,9 @@ using System.Collections;
 using Attributes;
 using SaveLoadSystem;
 using SceneCollections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 
 public class OpeningDialogue : MonoBehaviour {
@@ -11,12 +13,16 @@ public class OpeningDialogue : MonoBehaviour {
     [SerializeField, Required] private GameObject moveInputAnimation;
     [SerializeField] private bool forcePlayOnStart;
     
-    private LevelDataManager _levelDataManager;
+    [SerializeField] private ScriptMachine cutsceneGraph;
+    
+    [HideInInspector] public LevelDataManager levelDataManager;
+    [HideInInspector] public LevelMusicManager levelMusicManager;
     #endregion
 
     [Inject]
     public void Construct(IObjectResolver container) {
-        _levelDataManager = container.Resolve<LevelDataManager>();
+        levelDataManager = container.Resolve<LevelDataManager>();
+        levelMusicManager = container.Resolve<LevelMusicManager>();
     }
 
     private IEnumerator Start() {
@@ -25,7 +31,7 @@ public class OpeningDialogue : MonoBehaviour {
 #if UNITY_EDITOR
         if (SceneCollectionManager.CurrentSceneCollection == null && !forcePlayOnStart) yield break;
 #endif
-        if (string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointData.ID) || forcePlayOnStart) {
+        if (string.IsNullOrEmpty(levelDataManager.CurrentCheckpointData.ID) || forcePlayOnStart) {
             openingInteractionChannel.SendEventMessage();
         }
         else {
