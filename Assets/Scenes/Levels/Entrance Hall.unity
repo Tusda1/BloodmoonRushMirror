@@ -415,6 +415,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5759053108673340393, guid: 6a780bb6de4b33145b1393cbb6c0cdc8, type: 3}
   m_PrefabInstance: {fileID: 233286183}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &233286188 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 26182808013452521, guid: 6a780bb6de4b33145b1393cbb6c0cdc8, type: 3}
+  m_PrefabInstance: {fileID: 233286183}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233286184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76b4c3ef6321e1449911e70b752293b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &251536781
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -536,7 +547,7 @@ GameObject:
   - component: {fileID: 453783183}
   - component: {fileID: 453783182}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: OpeningDialogue_UVS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -571,14 +582,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"DavidsCar","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
-      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"BatSwarm","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
-      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Dracula","value":{"$content":2,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Animator,
-      UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"OpeningDialogue","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"OpeningDialogue,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"DavidsCar","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"BatSwarm","value":{"$content":2,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Dracula","value":{"$content":3,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Animator,
+      UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"MoveInputTutorial","value":{"$content":4,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
+    - {fileID: 233286188}
     - {fileID: 1431417383}
     - {fileID: 233286186}
     - {fileID: 233286185}
+    - {fileID: 715518177}
 --- !u!4 &453783184
 Transform:
   m_ObjectHideFlags: 0

@@ -4,7 +4,6 @@ using SaveLoadSystem;
 using SceneCollections;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VContainer;
 
 public class OpeningDialogue : MonoBehaviour {
@@ -17,12 +16,14 @@ public class OpeningDialogue : MonoBehaviour {
     
     [HideInInspector] public LevelDataManager levelDataManager;
     [HideInInspector] public LevelMusicManager levelMusicManager;
+    [HideInInspector] public CameraEffects cameraEffects;
     #endregion
 
     [Inject]
     public void Construct(IObjectResolver container) {
         levelDataManager = container.Resolve<LevelDataManager>();
         levelMusicManager = container.Resolve<LevelMusicManager>();
+        cameraEffects = container.Resolve<CameraEffects>();
     }
 
     private IEnumerator Start() {
@@ -33,6 +34,8 @@ public class OpeningDialogue : MonoBehaviour {
 #endif
         if (string.IsNullOrEmpty(levelDataManager.CurrentCheckpointData.ID) || forcePlayOnStart) {
             openingInteractionChannel.SendEventMessage();
+
+            // cutsceneGraph.TriggerUnityEvent("Start");
         }
         else {
             moveInputAnimation.SetActive(true);
