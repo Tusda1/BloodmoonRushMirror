@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Animancer;
 using Player;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -19,25 +21,24 @@ public class DashAndSwoopState : DraculaState
     [SerializeField] private AnimationClip dashAnimation;
     [SerializeField] private AnimationClip swoopTeleportEnter;
     [SerializeField] private AnimationClip swoopTeleportExit;
+    [SerializeField] private AnimationClip airIdleAnimation;
     
     [SerializeField] private int loopAmount = 5;
     private int _loopCount;
     
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDestinationOffset = 1f;
-    [SerializeField] private float dashProjectileCooldown = 1f;
-    [SerializeField] private int dashProjectilesPerVolley = 3;
     private Vector2 _dashTarget;
     private bool _dashStarted;
     
-    [SerializeField] private float swoopProjectileCooldown = 1f;
+    [SerializeField] private int volleyAmount = 3;
+    [SerializeField] private float volleyCooldown = 0.05f;
+    [SerializeField] private float volleyDelay = 0.2f;
     [SerializeField] private int swoopProjectilesPerVolley = 3;
     [SerializeField] private float swoopCompletionLevel = 0.9f;
     private bool _swoopStarted;
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
-    
-    private float _shootTimer;
     
     [SerializeField] private Swoop swoop = new();
     private PlayerScript _player;
@@ -82,6 +83,7 @@ public class DashAndSwoopState : DraculaState
         _bottomLeft.x += 1.5f;
         
         _bottomMiddle = (_bottomRight + _bottomLeft) / 2;
+        _bottomMiddle.y += 1.5f;
         
         _stages.Add(Stage.Starting);
         for (int i = 0; i < loopAmount; i++)
@@ -90,13 +92,25 @@ public class DashAndSwoopState : DraculaState
             _stages.Add(UnityEngine.Random.value > 0.5f ? Stage.Dashing : Stage.Swooping);
         }
         
-        StageTransition();
+        // Random teleport location
+        if (_stages[_loopCount + 1] == Stage.Dashing)
+        {
+            _teleportLocation = UnityEngine.Random.value > 0.5f ? _bottomRight : _bottomLeft;
+        }
+        else
+        {
+            _teleportLocation = UnityEngine.Random.value > 0.5f ? _topRight : _topLeft;
+        }
+        
+        var teleportEnter = Boss.isGrounded ? teleportEnterGround : teleportEnterAir;
+        var tempTeleportExit = _stages[_loopCount + 1] == Stage.Dashing ? dashTeleportExit : swoopTeleportExit;
+        teleport.TeleportToLocation(_teleportLocation, teleportEnter, tempTeleportExit, MidTeleport);
     }
 
     private void OnDisable()
     {
-        _shootTimer = 0;
         Boss.transform.rotation = Quaternion.identity;
+        swoop.ResetSwoop();
     }
 
     private void Update()
@@ -116,7 +130,6 @@ public class DashAndSwoopState : DraculaState
 
     private void StageTransition()
     {
-        print(teleport.IsTeleporting);
         if (teleport.IsTeleporting) return;
         
         if (_loopCount >= _stages.Count - 1)
@@ -173,20 +186,15 @@ public class DashAndSwoopState : DraculaState
         var direction = _dashTarget == _bottomRight ? Vector2.right : Vector2.left;
         Boss.targetVelocity = direction * dashSpeed;
         // Check if the boss crossed the finish line
-        if (transform.position.x * direction.x + dashDestinationOffset * direction.x > _dashTarget.x * direction.x)
+        if (transform.position.x * direction.x + dashDestinationOffset * direction.x * Mathf.Sign(transform.position.x) > _dashTarget.x * direction.x)
         {
-            StageTransition();  
-        }
-        else
-        {
-            if (_shootTimer > 0)
+            if (_loopCount != _stages.Count - 1)
             {
-                _shootTimer -= Time.deltaTime;
+                StageTransition();  
             }
             else
             {
-                StartCoroutine(Shoot(dashProjectilesPerVolley, Vector2.up));
-                _shootTimer = dashProjectileCooldown;
+                StartCoroutine(WaitBeforeNextState());
             }
         }
     }
@@ -195,52 +203,77 @@ public class DashAndSwoopState : DraculaState
     {
         if (!_swoopStarted)
         {
-            if (_teleportLocation != _swoopOrigin && _teleportLocation != _swoopTarget)
-            {
-                _swoopOrigin = _teleportLocation;
-                _swoopTarget = _swoopOrigin == _topRight ? _topLeft : _topRight;
-            }
-            else if (_teleportLocation != _swoopOrigin)
-            {
-                (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
-            }
+            _swoopOrigin = _teleportLocation;
+            _swoopTarget = _swoopOrigin == _topRight ? _topLeft : _topRight; 
             
             _swoopStarted = true;
+
+            StartCoroutine(Shoot());
         }
 
         var oldPos = transform.position;
-        swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _bottomMiddle, !teleport.IsTeleporting);
-
-        if (_shootTimer > 0)
+        
+        if (_loopCount != _stages.Count - 1)
         {
-            _shootTimer -= Time.deltaTime;
+            swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _bottomMiddle, !teleport.IsTeleporting, swoopCompletionLevel);
         }
         else
-        {
-            // Find the normal on the vector between the current position and the new position
-            var directionVector = (transform.position - oldPos).normalized;
-            var up = new Vector2(directionVector.y, -directionVector.x);
-            StartCoroutine(Shoot(swoopProjectilesPerVolley, up));
-            _shootTimer = swoopProjectileCooldown;
+        { 
+            swoop.ExecuteSwoop(_swoopOrigin, _swoopTarget, _bottomMiddle, !teleport.IsTeleporting);
         }
     }
     
     private void SwoopEnd()
     {
-        StageTransition();
+        if (_loopCount != _stages.Count - 1)
+        {
+            StageTransition();
+        }
+        else
+        {
+            StartCoroutine(WaitBeforeNextState());
+        }
+    }
+    
+    private IEnumerator WaitBeforeNextState()
+    {
+        Boss.transform.rotation = Quaternion.identity;
+
+        Boss.AnimancerComponent.Play(Boss.isGrounded ? idleAnimation : airIdleAnimation);
+
+        yield return new WaitForSeconds(1f);
+        EndState();
     }
 
-    private IEnumerator Shoot(int projectilesInVolley, Vector2 initialDirection)
+    private IEnumerator Shoot()
     {
-        for (int i = 0; i < projectilesInVolley; i++)
+        var timeNeededPerVolley = swoopProjectilesPerVolley * volleyCooldown;
+        var timeTotal = swoop.swoopDuration - volleyDelay * 2;
+        var timeLeftOver = timeTotal - timeNeededPerVolley * volleyAmount;
+        var timeBetweenVolleys = timeLeftOver / (volleyAmount - 1);
+        
+        yield return new WaitUntil(() => swoop.t > volleyDelay);
+
+        yield return StartCoroutine(FireVolley());
+        
+        for (int i = 0; i < volleyAmount - 1 - 1; i++)
+        {
+            yield return new WaitForSeconds(timeBetweenVolleys);
+            yield return StartCoroutine(FireVolley());
+        }
+    }
+    
+    private IEnumerator FireVolley()
+    {
+        for (int i = 0; i < swoopProjectilesPerVolley; i++)
         {
             var projectile = _projectilePooler.GetPooledObject();
             projectile.transform.position = transform.position;
             var script = projectile.GetComponent<HomingProjectile>();
             script.target = _player.gameObject;
-            script.initialDirection = initialDirection;
+            script.initialDirection = Vector2.up;
             projectile.SetActive(true);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(volleyCooldown);
         }
     }
 }

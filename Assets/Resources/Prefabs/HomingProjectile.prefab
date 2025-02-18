@@ -101,11 +101,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06928964bcd213d47bb5a16441339673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb2d: {fileID: -5116733248891243110}
+  isGrounded: 0
+  isFalling: 0
+  lockToAxis: 0
+  targetVelocity: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
+  GravityModifier: 1
   target: {fileID: 0}
   initialDirection: {x: 0, y: 0}
   launchDistance: 3
   launchSpeed: 5
   homingSpeed: 5
+  smoothDampScript:
+    smoothTime: 0.4
 --- !u!50 &-5116733248891243110
 Rigidbody2D:
   serializedVersion: 5

@@ -455,7 +455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  baseAttackQueueSize: 3
+  baseAttackQueueSize: 5
   attackQueueSizeIncreaseFactor: 1
   _currentPhase: 2
 --- !u!114 &172654490
@@ -631,17 +631,17 @@ MonoBehaviour:
   dashAnimation: {fileID: -777088967077919014, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   swoopTeleportEnter: {fileID: -6569452097161185352, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   swoopTeleportExit: {fileID: 7213236000210219614, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  airIdleAnimation: {fileID: 0}
   loopAmount: 5
-  dashSpeed: 10
-  dashDestinationOffset: 1
-  dashProjectileCooldown: 1
-  dashProjectilesPerVolley: 3
-  swoopProjectileCooldown: 1
+  dashSpeed: 25
+  dashDestinationOffset: 3
+  firstShootTime: 0.2
+  secondShootTime: 0.5
   swoopProjectilesPerVolley: 3
-  swoopCompletionLevel: 0.9
+  swoopCompletionLevel: 0.8
   swoop:
     easePower: 2
-    swoopDuration: 3
+    swoopDuration: 1.2
     swoopStartAnimation: {fileID: -3261838507649875358, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
     swoopAnimation: {fileID: -5306158248563788968, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
 --- !u!114 &172654501
