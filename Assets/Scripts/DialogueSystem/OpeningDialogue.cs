@@ -1,5 +1,6 @@
 using System.Collections;
 using Attributes;
+using Consensus;
 using SaveLoadSystem;
 using SceneCollections;
 using Unity.VisualScripting;
@@ -8,22 +9,17 @@ using VContainer;
 
 public class OpeningDialogue : MonoBehaviour {
     #region ---Fields---
-    [SerializeField, Required] private ActionEventChannel openingInteractionChannel;
-    [SerializeField, Required] private GameObject moveInputAnimation;
+    [GetOrAddComponent, SerializeField, HideInInspector] private ScriptMachine cutsceneGraph;
     [SerializeField] private bool forcePlayOnStart;
+
+    [HideInInspector] public ScriptVotePair scriptVotePair = new();
     
-    [SerializeField] private ScriptMachine cutsceneGraph;
-    
-    [HideInInspector] public LevelDataManager levelDataManager;
-    [HideInInspector] public LevelMusicManager levelMusicManager;
-    [HideInInspector] public CameraEffects cameraEffects;
+    private LevelDataManager _levelDataManager;
     #endregion
 
     [Inject]
     public void Construct(IObjectResolver container) {
-        levelDataManager = container.Resolve<LevelDataManager>();
-        levelMusicManager = container.Resolve<LevelMusicManager>();
-        cameraEffects = container.Resolve<CameraEffects>();
+        _levelDataManager = container.Resolve<LevelDataManager>();
     }
 
     private IEnumerator Start() {
@@ -32,13 +28,8 @@ public class OpeningDialogue : MonoBehaviour {
 #if UNITY_EDITOR
         if (SceneCollectionManager.CurrentSceneCollection == null && !forcePlayOnStart) yield break;
 #endif
-        if (string.IsNullOrEmpty(levelDataManager.CurrentCheckpointData.ID) || forcePlayOnStart) {
-            openingInteractionChannel.SendEventMessage();
-
-            // cutsceneGraph.TriggerUnityEvent("Start");
-        }
-        else {
-            moveInputAnimation.SetActive(true);
+        if (string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointData.ID) || forcePlayOnStart) {
+            cutsceneGraph.TriggerUnityEvent("Start");
         }
     }
 }

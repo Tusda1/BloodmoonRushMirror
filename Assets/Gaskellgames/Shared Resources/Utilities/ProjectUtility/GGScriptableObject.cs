@@ -6,7 +6,7 @@ namespace Gaskellgames
     /// Code created by Gaskellgames
     /// </summary>
     
-    public class GGScriptableObject : ScriptableObject
+    public abstract class GGScriptableObject : ScriptableObject
     {
         #region verboseLogs
 

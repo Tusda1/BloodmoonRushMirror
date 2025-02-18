@@ -7,6 +7,7 @@ using VContainer.Unity;
 public class GlobalInstaller : LifetimeScope {
     [SerializeField, Required] private SaveSlots saveSlots;
     [SerializeField, Required] private AudioDictionarySO audioDictionary;
+    [SerializeField, Required] private DialogueDictionary dialogueDictionary;
 
     protected override void Configure(IContainerBuilder builder) {
         builder.RegisterInstance<IPauseManager>(new PauseManager(1));
@@ -22,5 +23,7 @@ public class GlobalInstaller : LifetimeScope {
 
         builder.Register<ControllerRecognizer>(Lifetime.Singleton);
         builder.Register<IControlSchemeChanger, ControlSchemeChanger>(Lifetime.Singleton);
+
+        builder.RegisterInstance(dialogueDictionary);
     }
 }

@@ -12,21 +12,26 @@ namespace Player {
         private VisualElement _root;
         private PlayerHearts _playerHearts;
         
-        [Inject] private PlayerScript _player;
+        private PlayerScript _playerScript;
         #endregion
+
+        [Inject]
+        public void Construct(IObjectResolver container) {
+            _playerScript = container.Resolve<PlayerScript>();
+        }
 
         private void Start() {
             _root = uiDocument.rootVisualElement;
 
             _playerHearts = _root.Q<PlayerHearts>("PlayerHearts");
             
-            _root.dataSource = _player;
+            _root.dataSource = _playerScript;
 
-            _player.healthComponent.OnHealthChanged += health =>
-                OnHealthOnOnHealthChanged(health, _player.healthComponent.TempHealth);
+            _playerScript.healthComponent.OnHealthChanged += health =>
+                OnHealthOnOnHealthChanged(health, _playerScript.healthComponent.TempHealth);
 
-            _playerHearts.HeartContainerCount = _player.healthComponent.maxHealth;
-            OnHealthOnOnHealthChanged(_player.healthComponent.Health, _player.healthComponent.TempHealth);
+            _playerHearts.HeartContainerCount = _playerScript.healthComponent.maxHealth;
+            OnHealthOnOnHealthChanged(_playerScript.healthComponent.Health, _playerScript.healthComponent.TempHealth);
         }
 
         private void OnHealthOnOnHealthChanged(int health, int tempHealth) {

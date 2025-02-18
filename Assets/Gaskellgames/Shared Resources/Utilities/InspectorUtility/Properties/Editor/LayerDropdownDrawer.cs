@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
     [CustomPropertyDrawer(typeof(LayerDropdown))]
     public class LayerDropdownDrawer : PropertyDrawer

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Gaskellgames
 {
@@ -11,16 +12,6 @@ namespace Gaskellgames
     public static class TaskExtensions
     {
         /// <summary>
-        /// Blocks until delay is complete.
-        /// </summary>
-        /// <param name="seconds"></param>
-        public static async Task WaitForSeconds(float seconds)
-        {
-            var milliseconds = (int)(seconds * 1000);
-            await Task.Delay(milliseconds);
-        }
-        
-        /// <summary>
         /// Blocks while condition is true or timeout occurs.
         /// </summary>
         /// <param name="condition">The condition that will perpetuate the block.</param>
@@ -28,16 +19,12 @@ namespace Gaskellgames
         /// <param name="timeout">Timeout in milliseconds. Default is -1, which is infinite timeout.</param>
         /// <param name="throwTimeoutExceptionOnTimeout">False by default. If set to true, on timeout this method will throw timeout exception, otherwise will end quietly.</param>
         /// <exception cref="TimeoutException">Exception thrown if task did not finish before timeout and <paramref name="throwTimeoutExceptionOnTimeout"/> is set to true.</exception>
-        /// <returns>Awaitable task.</returns>
         public static async Task WaitWhile(Func<bool> condition, int frequency = 25, int timeout = -1, bool throwTimeoutExceptionOnTimeout = false)
         {
             var waitTask = Task.Run(async () => { while (condition()) await Task.Delay(frequency); });
             if (waitTask != await Task.WhenAny(waitTask, Task.Delay(timeout)))
             {
-                if (throwTimeoutExceptionOnTimeout)
-                {
-                    throw new TimeoutException();
-                }
+                if (throwTimeoutExceptionOnTimeout) { throw new TimeoutException(); }
             }
         }
 
@@ -49,17 +36,32 @@ namespace Gaskellgames
         /// <param name="timeout">The timeout in milliseconds. Default is -1, which is infinite timeout.</param>
         /// <param name="throwTimeoutExceptionOnTimeout">False by default. If set to true, on timeout this method will throw timeout exception, otherwise will end quietly.</param>
         /// <exception cref="TimeoutException">Exception thrown if task did not finish before timeout and <paramref name="throwTimeoutExceptionOnTimeout"/> is set to true.</exception>
-        /// <returns>Awaitable task.</returns>
         public static async Task WaitUntil(Func<bool> condition, int frequency = 25, int timeout = -1, bool throwTimeoutExceptionOnTimeout = false)
         {
             var waitTask = Task.Run(async () => { while (!condition()) await Task.Delay(frequency); });
             if (waitTask != await Task.WhenAny(waitTask, Task.Delay(timeout)))
             {
-                if (throwTimeoutExceptionOnTimeout)
-                {
-                    throw new TimeoutException();
-                }
+                if (throwTimeoutExceptionOnTimeout) { throw new TimeoutException(); }
             }
+        }
+        
+        /// <summary>
+        /// Blocks until delay is complete.
+        /// </summary>
+        /// <param name="seconds"></param>
+        public static async Task WaitForSeconds(float seconds)
+        {
+            var milliseconds = (int)(seconds * 1000);
+            await Task.Delay(milliseconds);
+        }
+    
+        /// <summary>
+        /// Blocks until next frame
+        /// </summary>
+        public static async Task WaitUntilNextFrame()
+        {
+            int current = Time.frameCount;
+            while (current == Time.frameCount) { await Task.Yield(); }
         }
 
     } // class end

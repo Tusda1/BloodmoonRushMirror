@@ -8,7 +8,6 @@ using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using SceneCollections;
 using TetraCreations.Attributes;
-using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities.DataBinding;
@@ -65,6 +64,8 @@ namespace Player {
         private readonly ScriptVotePair _isAliveVotePair = new();
 
         public event Action OnRespawn = delegate { };
+        
+        public static event Action SkipDialogueEvent = delegate { };
 
         private string _currentLevelMusicID;
 
@@ -204,7 +205,7 @@ namespace Player {
         #region ***---InputActions---***
         public void OnSkipDialogue(InputValue inputValue) {
             if (!inputValue.isPressed) return;
-            DialogueUI.Instance?.TriggerOnSkipDialogue();
+            SkipDialogueEvent.Invoke();
         }
 
         public void OnAttack(InputValue inputValue) {

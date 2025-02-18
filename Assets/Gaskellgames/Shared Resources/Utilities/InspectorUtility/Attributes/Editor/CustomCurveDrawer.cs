@@ -2,20 +2,42 @@
 using UnityEditor;
 using UnityEngine;
 
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
-
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
+    /// <summary>
+    /// Code created by Gaskellgames
+    /// </summary>
+    
     [CustomPropertyDrawer(typeof(CustomCurveAttribute))]
     public class CustomCurveDrawer : PropertyDrawer
     {
+        #region Variables
+
+        private CustomCurveAttribute attributeAsType;
+
+        #endregion
+
+        //----------------------------------------------------------------------------------------------------
+
+        #region Height
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            attributeAsType = attribute as CustomCurveAttribute;
+            
+            return base.GetPropertyHeight(property, label);
+        }
+
+        #endregion
+
+        //----------------------------------------------------------------------------------------------------
+
+        #region OnGUI
+
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
-            CustomCurveAttribute customCurve = attribute as CustomCurveAttribute;
-            Color32 lineColor = new Color32(customCurve.R, customCurve.G, customCurve.B, customCurve.A);
+            Color32 lineColor = new Color32(attributeAsType.R, attributeAsType.G, attributeAsType.B, attributeAsType.A);
 
             if (property.propertyType == SerializedPropertyType.AnimationCurve)
             {
@@ -29,6 +51,8 @@ namespace Gaskellgames
 
             EditorGUI.EndProperty();
         }
+
+        #endregion
 
     } // class end
 }
