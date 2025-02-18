@@ -119,6 +119,68 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &13728134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 13728137}
+  - component: {fileID: 13728136}
+  - component: {fileID: 13728135}
+  m_Layer: 0
+  m_Name: VisualScripting SceneVariables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &13728135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13728134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765181c9ef4b24d32a4f7cbd2ef370dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &13728136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13728134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Scene","collection":{"$content":[{"name":"LevelInstaller","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"LevelInstaller,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 1665568867}
+--- !u!4 &13728137
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13728134}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &55687608 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2257020643121066892, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
@@ -338,11 +400,32 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3473788949153758572, guid: 6a780bb6de4b33145b1393cbb6c0cdc8, type: 3}
   m_PrefabInstance: {fileID: 233286183}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &233286185 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2847658563968768091, guid: 6a780bb6de4b33145b1393cbb6c0cdc8, type: 3}
+  m_PrefabInstance: {fileID: 233286183}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &233286186 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2750412328875262521, guid: 6a780bb6de4b33145b1393cbb6c0cdc8, type: 3}
+  m_PrefabInstance: {fileID: 233286183}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &233286187 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5759053108673340393, guid: 6a780bb6de4b33145b1393cbb6c0cdc8, type: 3}
   m_PrefabInstance: {fileID: 233286183}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &233286188 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 26182808013452521, guid: 6a780bb6de4b33145b1393cbb6c0cdc8, type: 3}
+  m_PrefabInstance: {fileID: 233286183}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233286184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76b4c3ef6321e1449911e70b752293b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &251536781
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -452,6 +535,80 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8483241934062603819, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
   m_PrefabInstance: {fileID: 1302212553}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &453783181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 453783184}
+  - component: {fileID: 453783183}
+  - component: {fileID: 453783182}
+  m_Layer: 0
+  m_Name: OpeningDialogue_UVS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &453783182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453783181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: 75f606a04e5a2ec49b26b1806f5f00f3, type: 2}
+--- !u!114 &453783183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453783181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"OpeningDialogue","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"OpeningDialogue,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"DavidsCar","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"BatSwarm","value":{"$content":2,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Dracula","value":{"$content":3,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Animator,
+      UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"MoveInputTutorial","value":{"$content":4,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 233286188}
+    - {fileID: 1431417383}
+    - {fileID: 233286186}
+    - {fileID: 233286185}
+    - {fileID: 715518177}
+--- !u!4 &453783184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453783181}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &509154166 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6027244890784855497, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
@@ -1077,6 +1234,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
+--- !u!114 &1665568867 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1541314127066406298, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
+  m_PrefabInstance: {fileID: 1665568866}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ff5ab81a9acef94c825225ea9b8b189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1742538729 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1426341417276213809, guid: 84ae2b29e98010b47bdcec1788ad2d92, type: 3}
@@ -1434,3 +1602,5 @@ SceneRoots:
   - {fileID: 5658124895840096493}
   - {fileID: 1871749550}
   - {fileID: 1665568866}
+  - {fileID: 13728137}
+  - {fileID: 453783184}

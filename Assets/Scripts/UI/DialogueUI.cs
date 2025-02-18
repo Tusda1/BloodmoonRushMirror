@@ -27,7 +27,7 @@ namespace UI {
 
         private VisualElement _root;
         private SkipDialogueButton_Animated _skipDialogueButton;
-        
+
         [HideInInspector] public ScriptVotePair scriptVotePair = new();
         public event Action OnSkipDialogue = delegate { };
         
@@ -62,8 +62,8 @@ namespace UI {
         #endregion
         
         public void EnableDialogueUI() {
-            _controlSchemeChanger.OnControlSchemeChanged += ControlSchemeChangerOnOnControlSchemeChanged;
-            ControlSchemeChangerOnOnControlSchemeChanged(_controlSchemeChanger.CurrentControlSchemeData);
+            _controlSchemeChanger.OnControlSchemeChanged += OnControlSchemeChanged;
+            OnControlSchemeChanged(_controlSchemeChanger.CurrentControlSchemeData);
             _animationTask = _skipDialogueButton.Animate();
             _root.style.display = DisplayStyle.Flex;
             uiDocumentVisible = true;
@@ -72,18 +72,28 @@ namespace UI {
         public void DisableDialogueUI() {
             playerCanMove.DeleteVote(scriptVotePair);
             
-            _controlSchemeChanger.OnControlSchemeChanged -= ControlSchemeChangerOnOnControlSchemeChanged;
+            _controlSchemeChanger.OnControlSchemeChanged -= OnControlSchemeChanged;
             _animationTask?.Cancel();
             _root.style.display = DisplayStyle.None;
             uiDocumentVisible = false;
         }
 
-        private void ControlSchemeChangerOnOnControlSchemeChanged(IControlSchemeChanger.ControlSchemeData data) {
+        private void OnControlSchemeChanged(IControlSchemeChanger.ControlSchemeData data) {
             _skipDialogueButton.SpriteAnimation = data.DataSO.skipDialogueButtonAnimation;
         }
 
         public void TriggerOnSkipDialogue() {
             OnSkipDialogue.Invoke();
+        }
+
+        public void Initialize() {
+            
+        }
+
+        public async Awaitable Typewriter() {
+            // write l
+
+            Awaitable.WaitForSecondsAsync(5);
         }
     }
 }
