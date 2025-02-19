@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using Player;
 using UnityEngine.Serialization;
@@ -150,7 +151,9 @@ public class PingPongState : DraculaState
         }
         else
         {
-            EndState();
+            var vulnerableStates = GetComponents<VulnerableState>();
+            var vulnerableState = vulnerableStates.FirstOrDefault(state => state.StatePhase == StatePhase);
+            Boss.StateMachine.ForceSetState(vulnerableState);
         }
         
         _pingPongHitCount++;

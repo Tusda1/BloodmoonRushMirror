@@ -5,7 +5,7 @@ using UnityEngine;
 using Animancer.FSM;
 
 [DefaultExecutionOrder(-10000)]
-public class BossBase : GravityObject
+public class BossBase : GravityObject, IDamageable
 {
     [SerializeField] private AnimancerComponent animancer;
     public AnimancerComponent AnimancerComponent => animancer;
@@ -20,9 +20,14 @@ public class BossBase : GravityObject
     public event Action OnBattleStart;
     public event Action OnBattleEnd;
     
+    [SerializeField] private AnimationClip takeDamageAnimation;
+    
     [HideInInspector] public Vector2 facingDirection;
     [HideInInspector] public bool bossGrounded;
     [HideInInspector] public Collider2D bossCollider;
+    [HideInInspector] public bool canTakeDamage = true;
+    private Material _whiteMaterial;
+    private Material _defaultMaterial;
     
     private 
     
@@ -33,6 +38,8 @@ public class BossBase : GravityObject
         
         CurrentHealth = maxHealth;
         facingDirection = Vector2.left;
+        _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
+        _defaultMaterial = GetComponent<SpriteRenderer>().material;
     }
     
     protected override void Start()
@@ -73,7 +80,37 @@ public class BossBase : GravityObject
     {
         GravityModifier = 0f;
     }
+
+    public void TakeDamage(DamageInstance damageInstance)
+    {
+        if (!canTakeDamage) return;
+        
+        CurrentHealth -= damageInstance.damage;
+
+        StartCoroutine(FlashWhite());
+        
+        if (CurrentHealth <= 0)
+        {
+            Die();
+            return;
+        }
+        
+        animancer.Play(takeDamageAnimation);
+    }
     
+    private IEnumerator FlashWhite() {
+        // Flash white
+        GetComponent<SpriteRenderer>().material = _whiteMaterial;
+        yield return new WaitForSeconds(0.1f);
+        // Return to normal
+        GetComponent<SpriteRenderer>().material = _defaultMaterial;
+    }
+
+    private void Die()
+    {
+        
+    }
+   
 #if UNITY_EDITOR
     private void OnValidate()
     {
