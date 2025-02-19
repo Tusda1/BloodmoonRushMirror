@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Scripting;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 
@@ -25,4 +26,11 @@ public class DialogueUI_DataContainer : ScriptableObject {
     public float textSpeed;
     public Color textColor;
     #endregion
+
+    [Preserve]
+    public void Clear() {
+        text = "";
+        characterPortrait = null;
+        characterName = "";
+    }
 }
