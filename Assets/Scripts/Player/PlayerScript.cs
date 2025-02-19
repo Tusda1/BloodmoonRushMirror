@@ -62,6 +62,7 @@ namespace Player {
 
         private bool PlayerMovementEnabled => playerCanMove.consensus;
         private readonly ScriptVotePair _isAliveVotePair = new();
+        public readonly ScriptVotePair MoveVotePair = new();
 
         public event Action OnRespawn = delegate { };
         
@@ -159,6 +160,8 @@ namespace Player {
 
         #region ---EventFunctions---
         private void Start() {
+            playerCanMove.ChangeVote(MoveVotePair, true);
+            
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
             healthComponent.InvulnerabilityTimer.OnBegin +=
