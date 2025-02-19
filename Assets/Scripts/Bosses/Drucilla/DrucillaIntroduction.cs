@@ -48,6 +48,7 @@ public class DrucillaIntroduction : MonoBehaviour, IDamageable {
         cutsceneGraph.TriggerUnityEvent("Start");
     }
 
+    [UnityEngine.Scripting.Preserve]
     public void EndDialogue() {
 #if DEMO_BUILD
         _cameraEffects.CircleFadeOut(1, 

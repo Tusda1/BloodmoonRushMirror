@@ -212,8 +212,11 @@ namespace Player {
 
             player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
             player.animator.SetBool(AnimatorIsFallingBool, isFalling);
-            
-            if (!PlayerMovementEnabled) return;
+
+            if (!PlayerMovementEnabled) {
+                player.animator.SetBool(AnimatorJumpBool, false);
+                return;
+            }
 
             CoyoteTimeLogic();
 
