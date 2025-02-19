@@ -12,7 +12,7 @@ public class ZoomCamera : Unit {
     [DoNotSerialize] [PortLabelHidden] public ControlInput Enter;
     [DoNotSerialize] [PortLabelHidden] public ControlOutput Exit;
     #endregion
-    
+
     #region ***---Input---***
     public ValueInput Duration;
     public ValueInput OrthographicSize;
@@ -23,7 +23,7 @@ public class ZoomCamera : Unit {
     private static VirtualCameraSwitch CameraSwitch => VirtualCameraSwitch.ActiveVirtualCameraSwitch;
     private static CinemachineCamera Camera => CameraSwitch.cinemachineCamera;
     #endregion
-    
+
     protected override void Definition() {
         Enter = ControlInputCoroutine(nameof(Enter), Action);
         Exit = ControlOutput(nameof(Exit));
@@ -34,7 +34,7 @@ public class ZoomCamera : Unit {
         TargetOffset = ValueInput(nameof(TargetOffset), Vector3.zero);
         ZoomAnimationCurve = ValueInput(nameof(ZoomAnimationCurve), AnimationCurve.EaseInOut(0f, 0f, 1f, 1f));
     }
-    
+
     private IEnumerator Action(Flow flow) {
         var duration = flow.GetValue<float>(Duration);
         var orthographicSize = flow.GetValue<float>(OrthographicSize);
