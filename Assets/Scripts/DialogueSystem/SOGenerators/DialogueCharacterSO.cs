@@ -2,7 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-[CreateAssetMenu(fileName = nameof(DialogueCharacterSO), menuName = "Behavior/Create " + nameof(DialogueCharacterSO))]
+[CreateAssetMenu(
+    fileName = nameof(DialogueCharacterSO), 
+    menuName = "Scriptable Objects/Dialogue/Create " + nameof(DialogueCharacterSO))]
 public class DialogueCharacterSO : ScriptableObject {
     public Sprite dialogueImage;
     public string characterName;
@@ -11,7 +13,7 @@ public class DialogueCharacterSO : ScriptableObject {
     public float textSpeed = 16;
     public Color dialogueColor = Color.black;
     public string talkSoundID;
-    public WhenIsSfxPlayed whenIsSfxPlayed;
+    public WhenIsSfxPlayed whenIsSFXPlayed;
 
     [Serializable, Flags] public enum WhenIsSfxPlayed : byte {
         Nowhere = 0,

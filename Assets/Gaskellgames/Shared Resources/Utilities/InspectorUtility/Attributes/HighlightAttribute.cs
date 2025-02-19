@@ -1,11 +1,13 @@
+using System;
 using UnityEngine;
-
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
 
 namespace Gaskellgames
 {
+    // <summary>
+    // Code created by Gaskellgames
+    // </summary>
+
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class HighlightAttribute : PropertyAttribute
     {
         public byte R;
@@ -28,5 +30,6 @@ namespace Gaskellgames
             B = b;
             A = a;
         }
+        
     } // class end
 }

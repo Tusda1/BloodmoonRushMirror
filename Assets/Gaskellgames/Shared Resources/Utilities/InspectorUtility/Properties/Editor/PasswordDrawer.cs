@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
     // <summary>
     // Code created by Gaskellgames

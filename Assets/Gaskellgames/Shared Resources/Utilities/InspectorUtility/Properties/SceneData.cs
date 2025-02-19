@@ -3,12 +3,12 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-namespace Gaskellgames.SceneManagement
+namespace Gaskellgames
 {
+    /// <summary>
+    /// Code created by Gaskellgames
+    /// </summary>
+    
     [System.Serializable]
     public class SceneData : ISerializationCallbackReceiver, IComparable<SceneData>
     {
@@ -21,8 +21,8 @@ namespace Gaskellgames.SceneManagement
             if (sceneAsset != null)
             {
                 this.sceneName = sceneAsset.name;
-                this.sceneFilePath = AssetDatabase.GetAssetOrScenePath(sceneAsset);
-                this.guid = AssetDatabase.AssetPathToGUID(sceneFilePath);
+                this.sceneFilePath = UnityEditor.AssetDatabase.GetAssetOrScenePath(sceneAsset);
+                this.guid = UnityEditor.AssetDatabase.AssetPathToGUID(sceneFilePath);
                 this.buildIndex = SceneUtility.GetBuildIndexByScenePath(sceneFilePath);
             }
             else
@@ -48,7 +48,7 @@ namespace Gaskellgames.SceneManagement
 
         public int CompareTo(SceneData otherSceneData)
         {
-            return String.Compare(otherSceneData.SceneFilePath, this.sceneFilePath, StringComparison.Ordinal);
+            return string.Compare(otherSceneData.SceneFilePath, sceneFilePath, StringComparison.Ordinal);
         }
         
         public override bool Equals (object obj)
@@ -112,20 +112,25 @@ namespace Gaskellgames.SceneManagement
         #region Variables
 
         [SerializeField]
+        [Tooltip("The build index of the scene.")]
         private int buildIndex;
 
         [SerializeField]
+        [Tooltip("The name of the scene.")]
         private string sceneName;
 
         [SerializeField]
+        [Tooltip("The file path of the scene.")]
         private string sceneFilePath;
 
         [SerializeField]
+        [Tooltip("The guid of the scene.")]
         private string guid;
         
 #if UNITY_EDITOR
         [SerializeField]
-        private SceneAsset sceneAsset;
+        [Tooltip("EditorOnly reference to the scene asset.")]
+        private UnityEditor.SceneAsset sceneAsset;
 #endif
         
         #endregion
@@ -139,8 +144,8 @@ namespace Gaskellgames.SceneManagement
         /// </summary>
         public string Guid
         {
-            get { return guid; }
-            private set { guid = value; }
+            get => guid;
+            private set => guid = value;
         }
 
         /// <summary>
@@ -148,8 +153,8 @@ namespace Gaskellgames.SceneManagement
         /// </summary>
         public int BuildIndex
         {
-            get { return buildIndex; }
-            private set { buildIndex = value; }
+            get => buildIndex;
+            private set => buildIndex = value;
         }
 
         /// <summary>
@@ -157,8 +162,8 @@ namespace Gaskellgames.SceneManagement
         /// </summary>
         public string SceneName
         {
-            get { return sceneName; }
-            private set { sceneName = value; }
+            get => sceneName;
+            private set => sceneName = value;
         }
 
         /// <summary>
@@ -166,26 +171,43 @@ namespace Gaskellgames.SceneManagement
         /// </summary>
         public string SceneFilePath
         {
-            get { return sceneFilePath; }
-            private set { sceneFilePath = value; }
+            get => sceneFilePath;
+            private set => sceneFilePath = value;
         }
 
         /// <summary>
         /// Get the Scene for the SceneData's SceneAsset
         /// </summary>
-        public Scene Scene
-        {
-            get { return UnityEngine.SceneManagement.SceneManager.GetSceneByPath(sceneFilePath); }
-        }
-
+        public Scene Scene => SceneManager.GetSceneByPath(sceneFilePath);
+        
+        /// <summary>
+        /// Returns true if the Scene is loaded.
+        /// </summary>
+        public bool IsLoaded => Scene.isLoaded;
+        
+        /// <summary>
+        /// Returns true if the Scene is a sub-scene.
+        /// </summary>
+        public bool IsSubScene => Scene.isSubScene;
+        
+        /// <summary>
+        /// Returns true if the Scene is modifed.
+        /// </summary>
+        public bool IsDirty => Scene.isDirty;
+        
+        /// <summary>
+        /// Whether this is a valid Scene. A Scene may be invalid if the filePath does not exist or the sceneName is empty.
+        /// </summary>
+        public bool IsValid => File.Exists(sceneFilePath) && sceneName != string.Empty;
+        
 #if UNITY_EDITOR
         /// <summary>
         /// Get the SceneAsset for this SceneData [can only be accessed in Editor]
         /// </summary>
-        public SceneAsset SceneAsset
+        public UnityEditor.SceneAsset SceneAsset
         {
-            get { return sceneAsset; }
-            set { sceneAsset = value; }
+            get => sceneAsset;
+            set => sceneAsset = value;
         }
 #endif
 
@@ -199,10 +221,6 @@ namespace Gaskellgames.SceneManagement
         /// SceneData uses a SceneAsset in the editor to cache the values of buildIndex, sceneName, sceneFilePath and guid.
         /// New SceneData can be created at runtime from: a scene, a guid, a buildIndex or a sceneFilePath.
         /// </summary>
-        /// <param name="sceneAsset"></param>
-        /// <param name="scene"></param>
-        /// <param name="buildIndex"></param>
-        /// <param name="sceneFilePath"></param>
         public SceneData()
         {
 #if UNITY_EDITOR
@@ -214,6 +232,11 @@ namespace Gaskellgames.SceneManagement
             this.guid = null;
         }
         
+        /// <summary>
+        /// SceneData uses a SceneAsset in the editor to cache the values of buildIndex, sceneName, sceneFilePath and guid.
+        /// New SceneData can be created at runtime from: a scene, a guid, a buildIndex or a sceneFilePath.
+        /// </summary>
+        /// <param name="sceneData"></param>
         public SceneData(SceneData sceneData)
         {
 #if UNITY_EDITOR
@@ -225,6 +248,11 @@ namespace Gaskellgames.SceneManagement
             this.guid = sceneData.Guid;
         }
         
+        /// <summary>
+        /// SceneData uses a SceneAsset in the editor to cache the values of buildIndex, sceneName, sceneFilePath and guid.
+        /// New SceneData can be created at runtime from: a scene, a guid, a buildIndex or a sceneFilePath.
+        /// </summary>
+        /// <param name="scene"></param>
         public SceneData(Scene scene)
         {
             if (scene.IsValid())
@@ -232,8 +260,8 @@ namespace Gaskellgames.SceneManagement
                 string filePath = scene.path;
 
 #if UNITY_EDITOR
-                this.sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(filePath);
-                this.guid = AssetDatabase.AssetPathToGUID(filePath);
+                this.sceneAsset = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(filePath);
+                this.guid = UnityEditor.AssetDatabase.AssetPathToGUID(filePath);
 #endif
                 this.buildIndex = SceneUtility.GetBuildIndexByScenePath(filePath);
                 this.sceneName = Path.GetFileNameWithoutExtension(filePath);
@@ -251,6 +279,11 @@ namespace Gaskellgames.SceneManagement
             }
         }
         
+        /// <summary>
+        /// SceneData uses a SceneAsset in the editor to cache the values of buildIndex, sceneName, sceneFilePath and guid.
+        /// New SceneData can be created at runtime from: a scene, a guid, a buildIndex or a sceneFilePath.
+        /// </summary>
+        /// <param name="buildIndex"></param>
         public SceneData(int buildIndex)
         {
             if (0 <= buildIndex && buildIndex < UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings)
@@ -258,8 +291,8 @@ namespace Gaskellgames.SceneManagement
                 string filePath = SceneUtility.GetScenePathByBuildIndex(buildIndex);
 
 #if UNITY_EDITOR
-                this.sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(filePath);
-                this.guid = AssetDatabase.AssetPathToGUID(filePath);
+                this.sceneAsset = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(filePath);
+                this.guid = UnityEditor.AssetDatabase.AssetPathToGUID(filePath);
 #endif
                 this.buildIndex = buildIndex;
                 this.sceneName = Path.GetFileNameWithoutExtension(filePath);
@@ -277,14 +310,19 @@ namespace Gaskellgames.SceneManagement
             }
         }
         
+        /// <summary>
+        /// SceneData uses a SceneAsset in the editor to cache the values of buildIndex, sceneName, sceneFilePath and guid.
+        /// New SceneData can be created at runtime from: a scene, a guid, a buildIndex or a sceneFilePath.
+        /// </summary>
+        /// <param name="sceneFilePath"></param>
         public SceneData(string sceneFilePath)
         {
             Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByPath(sceneFilePath);
             if (scene.IsValid())
             {
 #if UNITY_EDITOR
-                this.sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(sceneFilePath);
-                this.guid = AssetDatabase.AssetPathToGUID(sceneFilePath);
+                this.sceneAsset = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(sceneFilePath);
+                this.guid = UnityEditor.AssetDatabase.AssetPathToGUID(sceneFilePath);
 #endif
                 this.buildIndex = SceneUtility.GetBuildIndexByScenePath(sceneFilePath);
                 this.sceneName = Path.GetFileNameWithoutExtension(sceneFilePath);
@@ -308,25 +346,22 @@ namespace Gaskellgames.SceneManagement
         /// New SceneData can be created at runtime from: a scene, a guid, a buildIndex or a sceneFilePath.
         /// </summary>
         /// <param name="sceneAsset"></param>
-        /// <param name="scene"></param>
-        /// <param name="buildIndex"></param>
-        /// <param name="sceneFilePath"></param>
-        public SceneData(SceneAsset sceneAsset)
+        public SceneData(UnityEditor.SceneAsset sceneAsset)
         {
             if (sceneAsset != null)
             {
                 this.sceneAsset = sceneAsset;
-                this.buildIndex = SceneUtility.GetBuildIndexByScenePath(sceneFilePath);
                 this.sceneName = sceneAsset.name;
-                this.sceneFilePath = AssetDatabase.GetAssetOrScenePath(sceneAsset);
-                this.guid = AssetDatabase.AssetPathToGUID(sceneFilePath);
+                this.sceneFilePath = UnityEditor.AssetDatabase.GetAssetOrScenePath(sceneAsset);
+                this.buildIndex = SceneUtility.GetBuildIndexByScenePath(sceneFilePath);
+                this.guid = UnityEditor.AssetDatabase.AssetPathToGUID(sceneFilePath);
             }
             else
             {
                 this.sceneAsset = null;
-                this.buildIndex = -1;
                 this.sceneName = null;
                 this.sceneFilePath = null;
+                this.buildIndex = -1;
                 this.guid = null;
             }
         }

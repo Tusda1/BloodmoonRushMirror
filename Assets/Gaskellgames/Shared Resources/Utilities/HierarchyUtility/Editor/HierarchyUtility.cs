@@ -6,7 +6,7 @@ using UnityEngine;
 /// Code created by Gaskellgames
 /// </summary>
 
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
     public static class HierarchyUtility
     {

@@ -9,22 +9,33 @@ namespace Gaskellgames
     public static class AudioExtensions
     {
         /// <summary>
+        /// Returns the paused state of the audio source
+        /// </summary>
+        /// <param name="audioSource"></param>
+        /// <returns></returns>
+        public static bool IsPaused(this AudioSource audioSource)
+        {
+            return !audioSource.isPlaying && audioSource.time != 0;
+        }
+        
+        /// <summary>
         /// Get the accurate current playback time of the sampled audioSource to the nearest integer (i.e the active audio source's clip)
         /// </summary>
-        /// <param name="clip"></param>
+        /// <param name="audioSource"></param>
+        /// <param name="beatsPerMinute"></param>
         /// <returns></returns>
-        public static int GetCurrentSampledTimeInt(AudioSource audioSource, int beatsPerMinute)
+        public static int GetCurrentSampledTimeInt(this AudioSource audioSource, int beatsPerMinute)
         {
-            return Mathf.FloorToInt(GetCurrentSampledTime(audioSource, beatsPerMinute));
+            return Mathf.FloorToInt(audioSource.GetCurrentSampledTime(beatsPerMinute));
         }
 
         /// <summary>
         /// Get the accurate current playback time of the sampled audioSource given the clip's beatsPerMinute (i.e the active audio source's clip)
         /// </summary>
-        /// <param name="clip"></param>
+        /// <param name="audioSource"></param>
         /// <param name="beatsPerMinute"></param>
         /// <returns></returns>
-        public static float GetCurrentSampledTime(AudioSource audioSource, int beatsPerMinute)
+        public static float GetCurrentSampledTime(this AudioSource audioSource, int beatsPerMinute)
         {
             float audioSourceTimeSamples = audioSource.timeSamples;
             float audioClipFrequency = audioSource.clip.frequency;
@@ -38,9 +49,9 @@ namespace Gaskellgames
         /// </summary>
         /// <param name="clip"></param>
         /// <returns></returns>
-        public static int GetTotalSampledTimeInt(AudioClip clip, int beatsPerMinute)
+        public static int GetTotalSampledTimeInt(this AudioClip clip, int beatsPerMinute)
         {
-            return Mathf.FloorToInt(GetTotalSampledTime(clip, beatsPerMinute));
+            return Mathf.FloorToInt(clip.GetTotalSampledTime(beatsPerMinute));
         }
 
         /// <summary>
@@ -49,7 +60,7 @@ namespace Gaskellgames
         /// <param name="clip"></param>
         /// <param name="beatsPerMinute"></param>
         /// <returns></returns>
-        public static float GetTotalSampledTime(AudioClip clip, int beatsPerMinute)
+        public static float GetTotalSampledTime(this AudioClip clip, int beatsPerMinute)
         {
             float audioSourceTimeSamples = clip.samples;
             float audioClipFrequency = clip.frequency;
@@ -69,6 +80,59 @@ namespace Gaskellgames
         {
             const float minute = 60f;
             return minute / (beatsPerMinute * step);
+        }
+        
+        /// <summary>
+        /// Convert from a linear volume value (0 to 1.2) to a Logarithmic volume value (-80db to 20db), where 0db is equal to a linear value of 1;
+        /// </summary>
+        /// <param name="linearValue"></param>
+        /// <returns></returns>
+        public static float LinearToLogarithmicVolume(float linearValue)
+        {
+            float logarithmicValue;
+            
+            if (1.0f <= linearValue)
+            {
+                // calculate 'over' volume (0db - 20db) by remapping 1.0 - 1.2 range;
+                float remappedValue = GgMaths.RemapFloat(linearValue - 1, 0.0f, 0.2f, 0.0f, 20.0f);
+                logarithmicValue = GgMaths.RoundFloat(remappedValue, 3);
+            }
+            else if (linearValue <= 0.0f)
+            {
+                // remap negative infinity to -80db
+                logarithmicValue = -80.0f;
+            }
+            else
+            {
+                // direct conversion of linear (0 - 1) to log (-80db - 0db)
+                logarithmicValue = GgMaths.RoundFloat(Mathf.Log10(linearValue) * 20, 3);
+            }
+
+            return logarithmicValue;
+        }
+
+        /// <summary>
+        /// Convert from a Logarithmic volume value (-80db to 20db) to a linear volume value (0 to 1.2), where 0db is equal to a linear value of 1;
+        /// </summary>
+        /// <param name="logarithmicValue"></param>
+        /// <returns></returns>
+        public static float LogarithmicToLinearVolume(float logarithmicValue)
+        {
+            float linearValue;
+            
+            if (0 <= logarithmicValue)
+            {
+                // calculate 'over' volume (1.0 -1.2) by remapping 0db - 20db range;
+                float remappedValue = GgMaths.RemapFloat(logarithmicValue, 0.0f, 20.0f, 0.0f, 0.2f);
+                linearValue = GgMaths.RoundFloat(1 + remappedValue, 3);
+            }
+            else
+            {
+                // direct conversion of log (-80db - 0db) to linear (0 - 1)
+                linearValue = GgMaths.RoundFloat(Mathf.Pow(10, logarithmicValue / 20), 3);
+            }
+
+            return linearValue;
         }
 
     } // class end

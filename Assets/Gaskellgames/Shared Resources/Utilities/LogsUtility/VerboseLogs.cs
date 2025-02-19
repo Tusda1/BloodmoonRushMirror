@@ -19,7 +19,7 @@ namespace Gaskellgames
         
         //----------------------------------------------------------------------------------------------------
 
-        #region Private Functions
+        #region Public Functions
 
         /// <summary>
         /// Format a string with color tags ready to be used in messages in the Unity Console.
@@ -27,7 +27,7 @@ namespace Gaskellgames
         /// <param name="message"></param>
         /// <param name="logColor"></param>
         /// <returns></returns>
-        private static string GetColoredMessage(string message, Color32 logColor)
+        public static string GetColoredMessage(string message, Color32 logColor)
         {
             string hexColor = $"#{logColor.r:X2}{logColor.g:X2}{logColor.b:X2}";
             string coloredMessage = $"<color={hexColor}>{message}</color>";
@@ -46,6 +46,16 @@ namespace Gaskellgames
         }
         
         /// <summary>
+        /// Logs a message to the Unity Console.
+        /// </summary>
+        /// <param name="message">String or object to be converted to string representation for display.</param>
+        /// <param name="messageColor">Color of the message to display in the console</param>
+        public static void Log(object message, Color32 messageColor)
+        {
+            Log(GetColoredMessage(message.ToString(), messageColor));
+        }
+        
+        /// <summary>
         /// Logs a message to the Unity Console. 
         /// </summary>
         /// <param name="message">String or object to be converted to string representation for display.</param>
@@ -53,7 +63,7 @@ namespace Gaskellgames
         /// <param name="type">Type of log to show in the console.</param>
         public static void Log(object message, Object context, LogType type = LogType.Log)
         {
-            if(!logsEnabled) {return;}
+            if (!logsEnabled) {return;}
             Debug.unityLogger.Log(type, message, context);
         }
         
@@ -67,7 +77,7 @@ namespace Gaskellgames
         /// <param name="messageColor">Color of the message to display in the console</param>
         public static void Log(object message, Object context, LogType type, Color32 messageColor)
         {
-            if(!logsEnabled) {return;}
+            if (!logsEnabled) {return;}
             Debug.unityLogger.Log(type, GetColoredMessage(message.ToString(), messageColor) as object, context);
         }
 

@@ -5,13 +5,13 @@ namespace Gaskellgames
     /// <summary>
     /// Code created by Gaskellgames
     /// </summary>
-    
-    public class GGMonoBehaviour : MonoBehaviour
+    public abstract class GGMonoBehaviour : MonoBehaviour
     {
         #region verboseLogs
 
+        [SerializeField]
         [Tooltip("If verbose logs is true: info message logs will be displayed in the console alongside warning and error message logs for this script instance.")]
-        [SerializeField] protected bool verboseLogs = false;
+        protected bool verboseLogs = false;
         
         /// <summary>
         /// If verbose logs is true: info message logs will be displayed in the console alongside warning and error message logs.
@@ -38,12 +38,16 @@ namespace Gaskellgames
 
         #endregion
 
+        //----------------------------------------------------------------------------------------------------
+
         #region Conditional Gizmos
 
-        [SerializeField] protected bool gizmosOnSelected;
+        [SerializeField]
+        [Tooltip("Only show gizmos when this gameObject (or a parent gameObject) is selected.")]
+        protected bool gizmosOnSelected;
 
         /// <summary>
-        /// method for drawing conditional gizmos. Invoked from base class's OnDrawGizmos and OnDrawGizmosSelected
+        /// Method for drawing conditional gizmos. Invoked from base class's <see cref="OnDrawGizmos"/> and <see cref="OnDrawGizmosSelected"/>
         /// </summary>
         /// <param name="selected">True if OnDrawGizmosSelected, false if OnDrawGizmos</param>
         protected virtual void OnDrawGizmosConditional(bool selected)

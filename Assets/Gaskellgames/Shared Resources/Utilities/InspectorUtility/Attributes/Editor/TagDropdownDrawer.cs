@@ -4,24 +4,45 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
-
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
+    /// <summary>
+    /// Code created by Gaskellgames
+    /// </summary>
+
     [CustomPropertyDrawer(typeof(TagDropdownAttribute))]
     public class TagDropdownDrawer : PropertyDrawer
     {
+        #region Variables
+
+        private TagDropdownAttribute attributeAsType;
+
+        #endregion
+
+        //----------------------------------------------------------------------------------------------------
+
+        #region Height
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            attributeAsType = attribute as TagDropdownAttribute;
+            
+            return EditorGUI.GetPropertyHeight(property, label, true);
+        }
+
+        #endregion
+
+        //----------------------------------------------------------------------------------------------------
+
+        #region OnGUI
+
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (property.propertyType == SerializedPropertyType.String)
             {
                 EditorGUI.BeginProperty(position, label, property);
 
-                TagDropdownAttribute TagDropdown = attribute as TagDropdownAttribute;
-
-                if (TagDropdown.UseDefaultTagFieldDrawer)
+                if (attributeAsType.UseDefaultTagFieldDrawer)
                 {
                     property.stringValue = EditorGUI.TagField(position, label, property.stringValue);
                 }
@@ -50,7 +71,9 @@ namespace Gaskellgames
                     }
 
                     // draw the popup box with the current selected index
-                    index = EditorGUI.Popup(position, label.text, index, tagList.ToArray());
+                    List<GUIContent> values = new List<GUIContent>();
+                    foreach (string tag in tagList) { values.Add(new GUIContent(tag, "")); }
+                    index = EditorGUI.Popup(position, label, index, values.ToArray());
                     
                     // adjust the actual string value of the property based on the selection
                     if (index >= 1)
@@ -70,6 +93,8 @@ namespace Gaskellgames
                 EditorGUI.PropertyField(position, property, label);
             }
         }
+
+        #endregion
         
     } // class end
 }
