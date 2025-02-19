@@ -18,6 +18,7 @@ public class DraculaBrain : MonoBehaviour
     private bool _lastInQueue;
     private bool _isFighting;
     private PingPongState _pingPongState;
+    private bool _repeating;
     
     private void Awake()
     {
@@ -75,10 +76,19 @@ public class DraculaBrain : MonoBehaviour
         
         var amount = baseAttackQueueSize + attackQueueSizeIncreaseFactor * (boss.MaxHealth - boss.CurrentHealth);
         var states = GetStatesByPhase(_currentPhase);
-        for (var i = 0; i < amount; i++)
+        while (_attackQueue.Count < amount)
         {
-            _attackQueue.Add(states[Random.Range(0, states.Length)]);
-            print(_attackQueue[i]);
+            var state = states[Random.Range(0, states.Length)];
+
+            if (!_repeating && _attackQueue.Count > 0 && state == _attackQueue[^1])
+            {
+                _repeating = true;
+                continue;
+            }
+            
+            _attackQueue.Add(state);
+            print(state);
+            _repeating = false;
         }
         
         // Add PingPongState to the end of the queue
