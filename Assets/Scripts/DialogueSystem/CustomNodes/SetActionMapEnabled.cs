@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine.InputSystem;
 
 [UnitShortTitle("Set Action Map")] 
