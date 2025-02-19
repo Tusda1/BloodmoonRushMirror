@@ -24,10 +24,8 @@ namespace UI {
         [GetOrAddComponent, SerializeField, HideInInspector] private SavesMenu savesMenu;
         #endregion
 
-        [SerializeField, Required] private SceneCollectionSO startSceneCollectionSO;
         [SerializeField, Required] private Animator backgroundAnimator;
         [SerializeField] private AllInFavourConsensusSO playerCanMove;
-        [SerializeField, Required] private SceneCollectionSO demoSceneCollectionSO;
 
         #region ***---PrivateFields---***
         private VisualElement _rootElement;
@@ -56,6 +54,9 @@ namespace UI {
         
         private const string AnyKeyPressed_SoundID = "Player_Respawn";
         #endregion
+
+        [Header("Demo")]
+        [SerializeField, Required] private SceneCollectionSO demoSceneCollectionSO;
         #endregion
 
         #region ---Initialization---
