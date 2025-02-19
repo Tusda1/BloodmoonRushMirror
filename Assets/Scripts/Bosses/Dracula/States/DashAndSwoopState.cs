@@ -252,11 +252,11 @@ public class DashAndSwoopState : DraculaState
         var timeLeftOver = timeTotal - timeNeededPerVolley * volleyAmount;
         var timeBetweenVolleys = timeLeftOver / (volleyAmount - 1);
         
-        yield return new WaitUntil(() => swoop.t > volleyDelay);
+        yield return new WaitUntil(() => swoop.t * swoop.swoopDuration > volleyDelay);
 
         yield return StartCoroutine(FireVolley());
         
-        for (int i = 0; i < volleyAmount - 1 - 1; i++)
+        for (int i = 0; i < volleyAmount - 1; i++)
         {
             yield return new WaitForSeconds(timeBetweenVolleys);
             yield return StartCoroutine(FireVolley());

@@ -270,6 +270,7 @@ GameObject:
   - component: {fileID: 172654495}
   - component: {fileID: 172654494}
   - component: {fileID: 172654487}
+  - component: {fileID: 172654503}
   - component: {fileID: 172654490}
   - component: {fileID: 172654497}
   - component: {fileID: 172654491}
@@ -437,9 +438,9 @@ MonoBehaviour:
   teleportEnterGround: {fileID: -7221150790100757568, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: -5148104871102379313, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   idleAnimation: {fileID: -7867424926479658243, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
-  pingPongAnimation: {fileID: 0}
-  receiveWindupAnimation: {fileID: 0}
-  receiveAnimation: {fileID: 0}
+  pingPongAnimation: {fileID: 3320145044594406379, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  receiveWindupAnimation: {fileID: -7240686035351072109, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  receiveAnimation: {fileID: -2284823265551665940, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   pingPongStartSpeed: 5
   pingPongsBeforeFailure: 3
 --- !u!114 &172654488
@@ -523,10 +524,11 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6075747610459885566, guid: 4963866cb476cc542853cdc2e00b1198, type: 3}
   projectileOriginOffset: {x: 0, y: 0}
   swoop:
-    easePower: 2
     swoopDuration: 2
+    easePower: 2
     swoopStartAnimation: {fileID: 6739208800350545136, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
     swoopAnimation: {fileID: -6980055594635598164, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+    t: 0
 --- !u!114 &172654494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -625,25 +627,27 @@ MonoBehaviour:
   teleportEnterAir: {fileID: 2252767737170880739, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportEnterGround: {fileID: -5907752814296385387, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: 4374024545698631149, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
-  idleAnimation: {fileID: -7867424926479658243, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  idleAnimation: {fileID: -7198238251861986171, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   dashTeleportEnter: {fileID: 4589300335984849383, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   dashTeleportExit: {fileID: 412533568362238577, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   dashAnimation: {fileID: -777088967077919014, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   swoopTeleportEnter: {fileID: -6569452097161185352, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   swoopTeleportExit: {fileID: 7213236000210219614, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
-  airIdleAnimation: {fileID: 0}
+  airIdleAnimation: {fileID: -1336941771477223933, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   loopAmount: 5
   dashSpeed: 25
   dashDestinationOffset: 3
-  firstShootTime: 0.2
-  secondShootTime: 0.5
+  volleyAmount: 3
+  volleyCooldown: 0.05
+  volleyDelay: 0.1
   swoopProjectilesPerVolley: 3
   swoopCompletionLevel: 0.8
   swoop:
-    easePower: 2
     swoopDuration: 1.2
+    easePower: 2
     swoopStartAnimation: {fileID: -3261838507649875358, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
     swoopAnimation: {fileID: -5306158248563788968, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+    t: 0
 --- !u!114 &172654501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,6 +696,29 @@ MonoBehaviour:
   facingDirection: {x: 0, y: 0}
   bossGrounded: 0
   bossCollider: {fileID: 0}
+--- !u!114 &172654503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172654479}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500ff69dc26a26a4fa23ca288340ba16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 172654502}
+  statePhase: 2
+  teleportEnterAir: {fileID: 2252767737170880739, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  teleportEnterGround: {fileID: -5907752814296385387, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  teleportExit: {fileID: 4374024545698631149, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  idleAnimation: {fileID: -7198238251861986171, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  pingPongAnimation: {fileID: -8452291144989107472, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  receiveWindupAnimation: {fileID: 9200378099100437404, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  receiveAnimation: {fileID: 7570044444706239260, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  pingPongStartSpeed: 5
+  pingPongsBeforeFailure: 3
 --- !u!1 &252259201
 GameObject:
   m_ObjectHideFlags: 0
