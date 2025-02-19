@@ -30,6 +30,7 @@ namespace Checkpoint {
                     }
                 }
             }
+            print($"Found {_enemies.Count} enemies in {_rooms.Length} rooms");
         }
 
         private void OnRespawn() {

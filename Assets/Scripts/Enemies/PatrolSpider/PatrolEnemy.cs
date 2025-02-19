@@ -63,6 +63,7 @@ public class PatrolEnemy : EnemyBase
 
     protected override void Attack()
     {
+        if (_patrolAnimation.isAttacking) return;
         _audioManager.PlayOneShot("Enemy_Spider_Hit");
         _patrolAnimation.Attack(PatrolAttack);
     }
