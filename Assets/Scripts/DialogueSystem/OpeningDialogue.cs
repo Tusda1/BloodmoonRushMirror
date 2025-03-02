@@ -1,6 +1,5 @@
 using System.Collections;
 using Attributes;
-using Consensus;
 using SaveLoadSystem;
 using SceneCollections;
 using Unity.VisualScripting;
@@ -11,16 +10,9 @@ public class OpeningDialogue : MonoBehaviour {
     #region ---Fields---
     [GetOrAddComponent, SerializeField, HideInInspector] private ScriptMachine cutsceneGraph;
     [SerializeField] private bool forcePlayOnStart;
-
-    [HideInInspector] public ScriptVotePair scriptVotePair = new();
     
-    private LevelDataManager _levelDataManager;
+    [Inject] private LevelDataManager _levelDataManager;
     #endregion
-
-    [Inject]
-    public void Construct(IObjectResolver container) {
-        _levelDataManager = container.Resolve<LevelDataManager>();
-    }
 
     private IEnumerator Start() {
         yield return null;
