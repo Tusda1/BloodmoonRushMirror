@@ -9,17 +9,11 @@ public class CutsceneController : MonoBehaviour {
     #region ---Fields---
     [GetOrAddComponent, SerializeField, HideInInspector] private VideoPlayer videoPlayer;
     
-    [SerializeField] private SceneCollectionSO firstLevelCollection;
+    [SerializeField] private SceneCollectionSO loadCollectionAfterCutscene;
     
     [Header("Cutscene")]
-    [SerializeField] private VideoClip newCutscene;
+    [SerializeField] private VideoClip cutscene;
     [SerializeField] private string introSoundID = "Cutscene_Intro";
-    
-    [Header("Old Cutscene")]
-    [SerializeField] private VideoClip oldCutscene;
-    [SerializeField] private string oldIntroSoundID = "Cutscene_Intro[Old]";
-    
-    public bool playOldCutscene;
     
     [Inject] private CameraEffects _cameraEffects;
     [Inject] private IAudioManager _audioManager;
@@ -39,19 +33,17 @@ public class CutsceneController : MonoBehaviour {
     }
 
     private IEnumerator PlayCutscene() {
-        var playOldCutscene = this.playOldCutscene || newCutscene == null;
-        
-        videoPlayer.clip = playOldCutscene ? oldCutscene : newCutscene;
+        videoPlayer.clip = cutscene;
         videoPlayer.Prepare();
 
         yield return new WaitUntil(() => videoPlayer.isPrepared);
-
+        
         videoPlayer.Play();
         _audioManager.StopAllSound();
-        _audioManager.PlayOneShot(playOldCutscene ? oldIntroSoundID : introSoundID);
+        _audioManager.PlayOneShot(introSoundID);
     }
 
     private void CutsceneEnded(VideoPlayer source) {
-        _ = SceneCollectionManager.LoadSceneCollectionAsync(firstLevelCollection);
+        _ = SceneCollectionManager.LoadSceneCollectionAsync(loadCollectionAfterCutscene);
     }
 }
