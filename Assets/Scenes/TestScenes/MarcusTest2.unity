@@ -271,6 +271,8 @@ GameObject:
   - component: {fileID: 172654494}
   - component: {fileID: 172654487}
   - component: {fileID: 172654503}
+  - component: {fileID: 172654505}
+  - component: {fileID: 172654504}
   - component: {fileID: 172654490}
   - component: {fileID: 172654497}
   - component: {fileID: 172654491}
@@ -433,7 +435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  statePhase: 1
+  statePhase: 0
   teleportEnterAir: {fileID: -589026425857230926, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportEnterGround: {fileID: -7221150790100757568, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: -5148104871102379313, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
@@ -456,9 +458,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  baseAttackQueueSize: 5
+  baseAttackQueueSize: 0
   attackQueueSizeIncreaseFactor: 1
-  _currentPhase: 2
 --- !u!114 &172654490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,7 +473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  statePhase: 0
+  statePhase: -1
   teleportEnterAir: {fileID: 0}
   teleportEnterGround: {fileID: 0}
   teleportExit: {fileID: 0}
@@ -490,7 +491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  statePhase: 1
+  statePhase: 0
   teleportEnterAir: {fileID: 4334526518133561121, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportEnterGround: {fileID: -5148104871102379313, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: -7221150790100757568, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
@@ -513,7 +514,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  statePhase: 1
+  statePhase: 0
   teleportEnterAir: {fileID: -589026425857230926, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportEnterGround: {fileID: -7221150790100757568, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: 4334526518133561121, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
@@ -579,7 +580,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  statePhase: 1
+  statePhase: 0
   teleportEnterAir: {fileID: -589026425857230926, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportEnterGround: {fileID: -7221150790100757568, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: -5148104871102379313, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
@@ -601,7 +602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  statePhase: 1
+  statePhase: 0
   teleportEnterAir: {fileID: -589026425857230926, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportEnterGround: {fileID: -7221150790100757568, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: 4334526518133561121, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
@@ -623,7 +624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  statePhase: 2
+  statePhase: 1
   teleportEnterAir: {fileID: 2252767737170880739, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportEnterGround: {fileID: -5907752814296385387, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: 4374024545698631149, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
@@ -661,7 +662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  statePhase: 2
+  statePhase: 1
   teleportEnterAir: {fileID: 2252767737170880739, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportEnterGround: {fileID: -5907752814296385387, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: 4374024545698631149, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
@@ -692,10 +693,15 @@ MonoBehaviour:
   _stateMachine:
     _CurrentState: {fileID: 0}
     _DefaultState: {fileID: 0}
-  maxHealth: 0
+  currentPhase: 0
+  maxHealth: 0300000005000000
+  takeDamageAnimation:
+  - {fileID: 364215676251682367, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  - {fileID: 7631652414612097155, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   facingDirection: {x: 0, y: 0}
   bossGrounded: 0
   bossCollider: {fileID: 0}
+  canTakeDamage: 1
 --- !u!114 &172654503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,7 +715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 172654502}
-  statePhase: 2
+  statePhase: 1
   teleportEnterAir: {fileID: 2252767737170880739, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportEnterGround: {fileID: -5907752814296385387, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: 4374024545698631149, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
@@ -717,8 +723,50 @@ MonoBehaviour:
   pingPongAnimation: {fileID: -8452291144989107472, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   receiveWindupAnimation: {fileID: 9200378099100437404, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   receiveAnimation: {fileID: 7570044444706239260, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
-  pingPongStartSpeed: 5
+  pingPongStartSpeed: 8
   pingPongsBeforeFailure: 3
+--- !u!114 &172654504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172654479}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2004d1f8b7109649b6b32ff88cec031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 172654502}
+  statePhase: 1
+  teleportEnterAir: {fileID: 2252767737170880739, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  teleportEnterGround: {fileID: -5907752814296385387, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  teleportExit: {fileID: 4374024545698631149, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  idleAnimation: {fileID: -7198238251861986171, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  hurt: {fileID: -3970762539468723680, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  knockedDownAnimation: {fileID: 2025452159237903637, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  knockDownIdleAnimation: {fileID: 3548826377730689991, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+--- !u!114 &172654505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172654479}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2004d1f8b7109649b6b32ff88cec031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 172654502}
+  statePhase: 0
+  teleportEnterAir: {fileID: -589026425857230926, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  teleportEnterGround: {fileID: -7221150790100757568, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  teleportExit: {fileID: -5148104871102379313, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  idleAnimation: {fileID: -7867424926479658243, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  hurt: {fileID: 2627495542326929292, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  knockedDownAnimation: {fileID: -737840730443531334, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  knockDownIdleAnimation: {fileID: 918377287215770270, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
 --- !u!1 &252259201
 GameObject:
   m_ObjectHideFlags: 0

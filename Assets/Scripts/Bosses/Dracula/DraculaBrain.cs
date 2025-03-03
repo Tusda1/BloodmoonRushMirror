@@ -14,14 +14,15 @@ public class DraculaBrain : MonoBehaviour
     private BossState[] _states;
     private List<BossState> _attackQueue = new();
     private BossState _currentState;
-    [SerializeField] private int _currentPhase = 1;
     private bool _lastInQueue;
     private bool _isFighting;
-    private PingPongState _pingPongState;
+    private PingPongState[] _pingPongState;
     private bool _repeating;
     
     private void Awake()
     {
+        boss.canTakeDamage = false;
+        
         _states = GetComponentsInChildren<BossState>();
 
         foreach (var state in _states)
@@ -30,8 +31,10 @@ public class DraculaBrain : MonoBehaviour
         }
         
         //remove PingPongState from the list of states to prevent it from being added to the attack queue and set it as a separate variable
-        _pingPongState = _states.First(state => state.GetType() == typeof(PingPongState)) as PingPongState;
+        _pingPongState = _states.Where(state => state.GetType() == typeof(PingPongState)).Cast<PingPongState>().ToArray();
+        
         _states = _states.Where(state => state.GetType() != typeof(PingPongState)).ToArray();
+        _states = _states.Where(state => state.GetType() != typeof(VulnerableState)).ToArray();
     }
 
     private void Start()
@@ -69,13 +72,10 @@ public class DraculaBrain : MonoBehaviour
 
     private void FillAttackQueue()
     {
-        if (_attackQueue.Count > 0)
-        {
-            return;
-        }
+        if (boss.CurrentHealth <= 0) boss.MoveToNextPhase();
         
-        var amount = baseAttackQueueSize + attackQueueSizeIncreaseFactor * (boss.MaxHealth - boss.CurrentHealth);
-        var states = GetStatesByPhase(_currentPhase);
+        var amount = baseAttackQueueSize + attackQueueSizeIncreaseFactor * (boss.MaxHealth[boss.CurrentPhase] - boss.CurrentHealth);
+        var states = GetStatesByPhase(boss.CurrentPhase);
         while (_attackQueue.Count < amount)
         {
             var state = states[Random.Range(0, states.Length)];
@@ -91,8 +91,8 @@ public class DraculaBrain : MonoBehaviour
             _repeating = false;
         }
         
-        // Add PingPongState to the end of the queue
-        _attackQueue.Add(_pingPongState);
+        // Add the pingPongState that corresponds to the currentPhase to the end of the queue
+        _attackQueue.Add(_pingPongState.First(state => state.StatePhase == boss.CurrentPhase));
     }
     
     private void MoveToNextState()

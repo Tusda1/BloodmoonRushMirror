@@ -12,15 +12,19 @@ public class BossBase : GravityObject, IDamageable
     
     [SerializeField] private StateMachine<BossState>.WithDefault _stateMachine;
     public StateMachine<BossState>.WithDefault StateMachine => _stateMachine;
+
+    [SerializeField] private int currentPhase;
+    public int CurrentPhase => currentPhase;
     
-    [SerializeField] private int maxHealth;
-    public int MaxHealth => maxHealth;
+    [SerializeField] private int[] maxHealth;
+    public int[] MaxHealth => maxHealth;
     public int CurrentHealth {get; private set;}
     
     public event Action OnBattleStart;
     public event Action OnBattleEnd;
+    public event Action TakenDamage;
     
-    [SerializeField] private AnimationClip takeDamageAnimation;
+    [SerializeField] private AnimationClip[] takeDamageAnimation;
     
     [HideInInspector] public Vector2 facingDirection;
     [HideInInspector] public bool bossGrounded;
@@ -36,7 +40,7 @@ public class BossBase : GravityObject, IDamageable
         base.Awake();
         _stateMachine.InitializeAfterDeserialize();
         
-        CurrentHealth = maxHealth;
+        CurrentHealth = maxHealth[currentPhase];
         facingDirection = Vector2.left;
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
@@ -81,6 +85,12 @@ public class BossBase : GravityObject, IDamageable
         GravityModifier = 0f;
     }
 
+    public void MoveToNextPhase()
+    {
+        currentPhase++;
+        CurrentHealth = maxHealth[currentPhase];
+    }
+
     public void TakeDamage(DamageInstance damageInstance)
     {
         if (!canTakeDamage) return;
@@ -95,7 +105,8 @@ public class BossBase : GravityObject, IDamageable
             return;
         }
         
-        animancer.Play(takeDamageAnimation);
+        animancer.Play(takeDamageAnimation[currentPhase]);
+        TakenDamage?.Invoke();
     }
     
     private IEnumerator FlashWhite() {

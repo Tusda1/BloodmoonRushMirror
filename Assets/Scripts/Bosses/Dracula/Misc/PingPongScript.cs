@@ -1,19 +1,32 @@
+using System;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
-public class PingPongScript : MonoBehaviour, IDamageable
+public class PingPongScript : GravityObject, IDamageable
 {
     [SerializeField] private DamageInstance projectileDamageInstance;
     
+    public Vector2 setVelocity;
+
+    private void OnEnable()
+    {
+        GravityModifier = 0;
+    }
+
+    protected override void ComputeVelocity()
+    {
+        targetVelocity = setVelocity;
+    }
+
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if (other.TryGetComponent<IDamageable>(out var damageable))
+        if (other.CompareTag("Player"))
         {
             // set the knockback direction based on the velocity of the projectile
             var knockbackDirection = GetComponent<Rigidbody2D>().linearVelocity.normalized.x > 0 ? Vector2.right : Vector2.left;
             projectileDamageInstance.knockback = knockbackDirection * projectileDamageInstance.knockbackStrength;
         
-            damageable.TakeDamage(projectileDamageInstance);
+            other.GetComponent<IDamageable>().TakeDamage(projectileDamageInstance);
         
             Destroy(gameObject);
         }
@@ -21,8 +34,7 @@ public class PingPongScript : MonoBehaviour, IDamageable
     
     public void TakeDamage(DamageInstance damageInstance)
     {
-        Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
-        Vector2 velocity = rb2d.linearVelocity;
+        Vector2 tempVelocity = setVelocity;
         
         velocity.x = Mathf.Abs(velocity.x) + 5f;
         // If knocked back, reverse direction
@@ -35,7 +47,7 @@ public class PingPongScript : MonoBehaviour, IDamageable
         {
             velocity.x = -Mathf.Abs(velocity.x);
         }
-        
-        rb2d.linearVelocity = velocity;
+
+        setVelocity = tempVelocity;
     }
 }
