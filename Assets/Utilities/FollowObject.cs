@@ -12,7 +12,7 @@ public class FollowObject : MonoBehaviour {
         _followObjectPreviousPosition = followObject.position;
     }
 
-    private void FixedUpdate() {
+    private void Update() {
         if (followObject == null) return;
 
         Move();
