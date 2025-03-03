@@ -337,10 +337,8 @@ namespace Player {
             }
             else {
                 Respawn();
-                AudioManager.PlayMusic(_currentLevelMusicID);
-
-                // yield return new WaitForSeconds(0.5f);
                 _cameraEffects.CircleFadeIn(0.5f);
+                AudioManager.PlayMusic(_currentLevelMusicID);
             }
         }
 
