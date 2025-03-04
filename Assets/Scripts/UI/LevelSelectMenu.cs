@@ -1,0 +1,78 @@
+﻿using System;
+using Attributes;
+using SceneCollections;
+using UI.Settings;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+
+namespace UI {
+    [RequireComponent(typeof(UITKWorldSpaceInteractive))]
+    public class LevelSelectMenu : MonoBehaviour, IMenu {
+        #region ---Fields---
+        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        
+        [SerializeField] private SceneCollectionSO[] scenes;
+        
+        [SerializeField, Required] private InputActionReference backAction;
+        
+        public event Action OnMenuActivated = delegate { };
+        public event Action OnMenuDeactivated = delegate { };
+        
+        private VisualElement _root;
+        private VisualElement _levelSelectMenuRoot;
+        private VisualElement _levelSelectButtonContainer;
+        #endregion
+
+        #region ---EventFunctions---
+        private void Awake() {
+            _root = uiDocument.rootVisualElement;
+            _levelSelectMenuRoot = _root.Q<VisualElement>("LevelSelectMenuRoot");
+            _levelSelectButtonContainer = _root.Q<VisualElement>("LevelSelectButtonContainer");
+        }
+
+        private void Start() {
+            foreach (var sceneCollectionSO in scenes) {
+                CreateLevelSelectButton(sceneCollectionSO);
+            }
+        }
+
+        private void OnDisable() {
+            backAction.action.performed -= Deactivate;
+        }
+        #endregion
+
+        #region ---IMenu---
+        public void Activate() {
+            _levelSelectMenuRoot.enabledSelf = true;
+            _levelSelectMenuRoot.RemoveFromClassList("left");
+            
+            backAction.action.performed += Deactivate;
+            
+            OnMenuActivated.Invoke();
+        }
+
+        public void Deactivate(string addToClassList = null) {
+            _levelSelectMenuRoot.AddToClassList("left");
+            
+            backAction.action.performed -= Deactivate;
+
+            _levelSelectMenuRoot.enabledSelf = false;
+            
+            OnMenuDeactivated.Invoke();
+        }
+        #endregion
+        
+        private void Deactivate(InputAction.CallbackContext obj) {
+            Deactivate();
+        }
+
+        private void CreateLevelSelectButton(SceneCollectionSO scene) {
+            var button = new Button(() => _ = SceneCollectionManager.LoadSceneCollectionAsync(scene)) {
+                text = scene.name
+            };
+            
+            _levelSelectButtonContainer.Add(button);
+        }
+    }
+}

@@ -9,16 +9,13 @@ namespace UI {
     public class DialogueUI : Singleton<DialogueUI> {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
-
-        [SerializeField] public AllInFavourConsensusSO playerCanMove;
+        
         [SerializeField] private DialogueUI_DataContainer dialogueUIDataContainer;
 
         private VisualElement _root;
         private SkipDialogueButton_Animated _skipDialogueButton;
         
         private float _textSpeed;
-
-        [HideInInspector] public ScriptVotePair scriptVotePair = new();
 
         private IControlSchemeChanger _controlSchemeChanger;
         
@@ -40,14 +37,12 @@ namespace UI {
 
         private void Start() {
             dialogueUIDataContainer.uiDocumentVisible = DisplayStyle.None;
-            playerCanMove.ChangeVote(scriptVotePair, true);
             _controlSchemeChanger.OnControlSchemeChanged += OnControlSchemeChanged;
             OnControlSchemeChanged(_controlSchemeChanger.CurrentControlSchemeData);
             _animationTask = _skipDialogueButton.Animate();
         }
 
         protected override void OnDestroy() {
-            playerCanMove.DeleteVote(scriptVotePair);
             _controlSchemeChanger.OnControlSchemeChanged -= OnControlSchemeChanged;
             _animationTask?.Cancel();
         }

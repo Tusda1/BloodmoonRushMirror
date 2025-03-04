@@ -55,7 +55,8 @@ public class DrucillaIntroduction : MonoBehaviour, IDamageable {
             () => _ = SceneCollectionManager.LoadSceneCollectionAsync(endDemoSceneCollection));
 #else
         _cameraEffects.CircleFadeOut(1, 
-            () => _ = SceneCollectionManager.LoadSceneCollectionAsync(nextLevelSceneCollection));
+            () => _ = SceneCollectionManager.LoadSceneCollectionAsync(nextLevelSceneCollection, 
+                () => _cameraEffects.CircleFadeIn(1)));
 #endif
     }
 }

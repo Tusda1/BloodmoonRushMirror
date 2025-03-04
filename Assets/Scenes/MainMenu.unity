@@ -275,6 +275,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 983109414922428253, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
+      propertyPath: levelSelectMenu
+      value: 
+      objectReference: {fileID: 1144680748043829822}
+    - target: {fileID: 983109414922428253, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
       propertyPath: backgroundAnimator
       value: 
       objectReference: {fileID: 5127960532297810722}
@@ -333,13 +337,47 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3623942027125754274, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 1144680748043829822}
   m_SourcePrefab: {fileID: 100100000, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
 --- !u!1 &1144680748043829820 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3623942027125754274, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
   m_PrefabInstance: {fileID: 1144680748043829819}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1144680748043829821 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1723220102761852235, guid: 240da4557db65034d9fbc7de059ba526, type: 3}
+  m_PrefabInstance: {fileID: 1144680748043829819}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144680748043829820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1144680748043829822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144680748043829820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faac3a977c844a2ea5bd58a87e284489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiDocument: {fileID: 1144680748043829821}
+  scenes:
+  - {fileID: 11400000, guid: 9ba3e2cdc0b088c48b4e85ea13b1bb36, type: 2}
+  - {fileID: 11400000, guid: 53d54a1ea8fd51841a69e5a7316ee2e1, type: 2}
+  - {fileID: 11400000, guid: 337bb9a33dc71f2468280c2ffd474cc7, type: 2}
+  - {fileID: 11400000, guid: cce17ddd65942f64abdaae2cc310b617, type: 2}
+  - {fileID: 11400000, guid: 86af9687ec28e1f45bccb924464bdf5c, type: 2}
+  backAction: {fileID: 7727032971491509709, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
 --- !u!1001 &3617448918669032401
 PrefabInstance:
   m_ObjectHideFlags: 0

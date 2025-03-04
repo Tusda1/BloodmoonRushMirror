@@ -128,7 +128,6 @@ namespace FMODScripts {
                 
                 _debugLogger.Log("Playing music: " + id);
             }
-
         }
 
         public void PlayMusicAttached(string id, GameObject gameObject) {

@@ -1,12 +1,14 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="SettingsMenu" src="project://database/Assets/UI%20Toolkit/SettingsMenu.uxml?fileID=9197481963319205126&amp;guid=774d38d636bfb324eab883249e6c0099&amp;type=3#SettingsMenu" />
     <engine:Template name="SavesMenu" src="project://database/Assets/UI%20Toolkit/Menus/SavesMenu.uxml?fileID=9197481963319205126&amp;guid=fffc638739ea5944394cd304f1e09f30&amp;type=3#SavesMenu" />
+    <engine:Template name="LevelSelect" src="project://database/Assets/UI%20Toolkit/Menus/LevelSelect.uxml?fileID=9197481963319205126&amp;guid=7f6c22777f5d2ba419c97b4a798e9eeb&amp;type=3#LevelSelect" />
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/MainMenu.uss?fileID=7433441132597879392&amp;guid=11ac15a71fcec9a46a277054ddd917f6&amp;type=3#MainMenu" />
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/Left-Right.uss?fileID=7433441132597879392&amp;guid=bf66cd8737e6f00428f5f82f7deb54f1&amp;type=3#Left-Right" />
     <engine:VisualElement style="flex-grow: 1; width: 100%; height: 100%;">
         <engine:Label text="Press Any Key" name="PressAnyKeyLabel" style="-unity-text-align: upper-center; font-size: 16px; color: rgb(255, 255, 255); position: absolute; align-self: center; bottom: 15px; -unity-font-definition: resource(&apos;Fonts/UI&apos;);" />
-        <engine:Instance template="SettingsMenu" name="SettingsMenu" style="width: 100%; height: 100%; position: absolute;" />
+        <engine:Instance template="SettingsMenu" name="SettingsMenu" style="width: 0; height: 0; position: absolute;" />
         <engine:Instance template="SavesMenu" name="SavesMenu" style="transition-duration: 2s; transition-timing-function: ease-out-bounce; transition-property: translate; width: 0; height: 0;" />
+        <engine:Instance template="LevelSelect" style="width: 100%; height: 100%;" />
         <engine:VisualElement name="MainMenuRoot" class="down" style="flex-grow: 1; transition-duration: 1s; transition-property: all; width: 100%; height: 100%; position: absolute; flex-direction: column-reverse;">
             <engine:Button name="CreditsButton" class="Button" style="position: absolute; transition-duration: 1187ms; transition-timing-function: ease-in-bounce; transition-delay: 53ms; top: 27px; left: 501px;" />
             <engine:VisualElement name="Buttons" style="flex-grow: 1; flex-direction: row; justify-content: space-around; transition-duration: 1s; transition-property: all; height: 66px; max-height: 66px; min-height: 66px; align-content: center; align-items: flex-start;">

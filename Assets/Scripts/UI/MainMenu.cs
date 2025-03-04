@@ -13,7 +13,7 @@ using UnityEditor;
 #endif
 
 namespace UI {
-    [RequireComponent(typeof(UIDocument), typeof(SettingsMenu), typeof(SavesMenu))]
+    [RequireComponent(typeof(UITKWorldSpaceInteractive))]
     public class MainMenu : MonoBehaviour {
         #region ---Fields---
         #region ***---GetOrAddComponents---***
@@ -22,6 +22,8 @@ namespace UI {
         [GetOrAddComponent, SerializeField, HideInInspector] private SettingsMenu settingsMenu;
 
         [GetOrAddComponent, SerializeField, HideInInspector] private SavesMenu savesMenu;
+
+        [GetOrAddComponent, SerializeField, HideInInspector] private LevelSelectMenu levelSelectMenu;
         #endregion
 
         [SerializeField, Required] private Animator backgroundAnimator;
@@ -94,6 +96,10 @@ namespace UI {
             _audioManager.PlayMusic(MainMenuMusic_SoundID);
 
             _startButton.clicked += StartButtonClicked;
+#if BETA_BUILD
+            levelSelectMenu.OnMenuActivated += HideMenu;
+            levelSelectMenu.OnMenuDeactivated += ShowMenu;
+#endif
             savesMenu.OnMenuActivated += HideMenu;
             savesMenu.OnMenuDeactivated += ShowMenu;
 
@@ -129,8 +135,10 @@ namespace UI {
             _cameraEffects.CircleFadeOut(1,
                 () => _ = SceneCollectionManager.LoadSceneCollectionAsync(saveSlotData.currentSceneCollection,
                     () => _cameraEffects.CircleFadeIn(1)));
-            
+
             _startButton.clicked -= StartButtonClicked;
+#elif BETA_BUILD
+            levelSelectMenu.Activate();
 #else
             savesMenu.Activate();
 #endif
