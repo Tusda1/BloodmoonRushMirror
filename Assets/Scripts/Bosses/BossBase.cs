@@ -25,15 +25,15 @@ public class BossBase : GravityObject, IDamageable
     public event Action TakenDamage;
     
     [SerializeField] private AnimationClip[] takeDamageAnimation;
+    [SerializeField] private DamageInstance bossDamageInstance;
     
     [HideInInspector] public Vector2 facingDirection;
     [HideInInspector] public bool bossGrounded;
     [HideInInspector] public Collider2D bossCollider;
     [HideInInspector] public bool canTakeDamage = true;
+    [HideInInspector] public bool canDoDamage = true;
     private Material _whiteMaterial;
     private Material _defaultMaterial;
-    
-    private 
     
     protected new void Awake()
     {
@@ -121,7 +121,17 @@ public class BossBase : GravityObject, IDamageable
     {
         
     }
-   
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!canDoDamage) return;
+        
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<IDamageable>().TakeDamage(bossDamageInstance);
+        }
+    }
+
 #if UNITY_EDITOR
     private void OnValidate()
     {

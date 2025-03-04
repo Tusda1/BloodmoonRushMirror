@@ -17,13 +17,24 @@ public class DiscoBall : MonoBehaviour
     private GameObject _laserPrefab;
     private Pooler _pooler;
 
+    private void Awake()
+    {
+        gameObject.SetActive(false);
+    }
+
     private void OnEnable()
     {
         _currentRotation = narrowFireAngle;
         
         StartCoroutine(LowerDiscoBall());
     }
-    
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        _currentRotation = 0;
+    }
+
     private IEnumerator LowerDiscoBall()
     {
         while (transform.position.y < lowPoint.transform.position.y)

@@ -118,7 +118,7 @@ public class LaserAttackState : DraculaState
                 _lineRenderer = _trackerObject.GetComponent<LineRenderer>();
             }
             
-            _lineRenderer.SetPosition(0, transform.position);
+            _lineRenderer.SetPosition(0, GetComponent<Collider2D>().bounds.center);
             _lineRenderer.SetPosition(1, _firePosition);
         }
         else
