@@ -419,10 +419,10 @@ namespace Player {
 
         public void CheckpointHealing() {
             if (healthComponent.Health == healthComponent.maxTempHealth) {
-                healthComponent.TempHealth++;
+                healthComponent.TempHealth += 2;
             }
             else {
-                healthComponent.Heal(2);
+                healthComponent.Heal(4);
             }
 
             if (playerLives == 1) {
