@@ -25,6 +25,7 @@ namespace Player {
 
         #region ***---SerializedFields---***
         [SerializeField] public MultipleAnimatorControllers animator;
+        [SerializeField] private SpriteRenderer legRenderer;
         [SerializeField] private SceneCollectionSO gameOverScene;
         public Transform cameraFollowTransform;
         [SerializeField] private float lookahead = 2;
@@ -165,8 +166,14 @@ namespace Player {
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
             healthComponent.InvulnerabilityTimer.OnBegin +=
-                () => spriteRenderer.color = new Color(1, 1, 1, alphaWhenTakingDamage);
-            healthComponent.InvulnerabilityTimer.OnComplete += () => spriteRenderer.color = new Color(1, 1, 1, 1);
+                () => {
+                    spriteRenderer.color = new Color(1, 1, 1, alphaWhenTakingDamage);
+                    legRenderer.color = new Color(1, 1, 1, alphaWhenTakingDamage);
+                };
+            healthComponent.InvulnerabilityTimer.OnComplete += () => {
+                spriteRenderer.color = new Color(1, 1, 1, 1);
+                legRenderer.color = new Color(1, 1, 1, 1);
+            };
 
             SetStateBehavioursReferences();
 
