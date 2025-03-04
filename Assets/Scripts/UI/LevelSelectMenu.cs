@@ -5,6 +5,7 @@ using UI.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using VContainer;
 
 namespace UI {
     [RequireComponent(typeof(UITKWorldSpaceInteractive))]
@@ -22,6 +23,8 @@ namespace UI {
         private VisualElement _root;
         private VisualElement _levelSelectMenuRoot;
         private VisualElement _levelSelectButtonContainer;
+        
+        [Inject] private CameraEffects _cameraEffects;
         #endregion
 
         #region ---EventFunctions---
@@ -68,11 +71,19 @@ namespace UI {
         }
 
         private void CreateLevelSelectButton(SceneCollectionSO scene) {
-            var button = new Button(() => _ = SceneCollectionManager.LoadSceneCollectionAsync(scene)) {
+            var button = new Button(() => LoadLevel(scene)) {
                 text = scene.name
             };
             
             _levelSelectButtonContainer.Add(button);
+        }
+
+        private void LoadLevel(SceneCollectionSO scene) {
+            _levelSelectMenuRoot.enabledSelf = false;
+            
+            _cameraEffects.CircleFadeOut(1,
+                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(scene,
+                    () => _cameraEffects.CircleFadeIn(1)));
         }
     }
 }
