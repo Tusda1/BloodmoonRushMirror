@@ -2,13 +2,13 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
     /// <summary>
     /// Code created by Gaskellgames
     /// </summary>
     
-    public class GGEditor : Editor
+    public abstract class GGEditor : Editor
     {
         #region verboseLogs
 

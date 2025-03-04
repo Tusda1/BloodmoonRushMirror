@@ -121,7 +121,10 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             return;
         }
         
-        print("taking damage");
+        if (damageInstance.which == DamageInstance.WhichAttack.CrouchAttack && !isGrounded) {
+            return;
+        }
+        
         if (Time.time - takeDamageTimer < invulnerableTime && !damageInstance.ignoreInvincibility) {
             return;
         }

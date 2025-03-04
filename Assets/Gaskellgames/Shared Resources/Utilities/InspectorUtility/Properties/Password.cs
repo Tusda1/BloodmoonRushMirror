@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace Gaskellgames
 {
-    // <summary>
-    // Code created by Gaskellgames
-    // </summary>
+    /// <summary>
+    /// Code created by Gaskellgames
+    /// </summary>
     
     [System.Serializable]
     public class Password

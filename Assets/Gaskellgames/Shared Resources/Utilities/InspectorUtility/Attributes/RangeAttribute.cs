@@ -1,11 +1,13 @@
+using System;
 using UnityEngine;
-
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
 
 namespace Gaskellgames
 {
+    // <summary>
+    // Code created by Gaskellgames
+    // </summary>
+
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class RangeAttribute : PropertyAttribute
     {
         public float min;
@@ -28,8 +30,8 @@ namespace Gaskellgames
             this.min = min;
             this.max = max;
             this.subLabels = subLabels;
-            minLabel = MathUtility.RoundFloat(min, 3).ToString();
-            maxLabel = MathUtility.RoundFloat(max, 3).ToString();
+            minLabel = GgMaths.RoundFloat(min, 3).ToString();
+            maxLabel = GgMaths.RoundFloat(max, 3).ToString();
         }
 
         public RangeAttribute(float min, float max, string minLabel, string maxLabel)

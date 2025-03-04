@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class HomingProjectile : MonoBehaviour 
+public class HomingProjectile : GravityObject
 {
     [HideInInspector] public GameObject target;
     [HideInInspector] public Vector2 initialDirection;
@@ -12,38 +13,44 @@ public class HomingProjectile : MonoBehaviour
     
     private bool _hasLaunched;
     private Vector2 _initialPosition;
-    private Vector2 _currentVelocity;
     
-    private Rigidbody2D _rb2d;
-    private SmoothDampScript _smoothDampScript = new();
+    [SerializeField] private SmoothDampScript smoothDampScript = new();
 
-    private void Awake()
+    private new void Awake()
     {
-        _rb2d = GetComponent<Rigidbody2D>();
+        base.Awake();
+        GravityModifier = 0f;
     }
 
     private void OnEnable()
     {
-        _rb2d.linearVelocity = initialDirection.normalized * launchSpeed;
         _initialPosition = transform.position;
     }
     
-    private void Update()
+    protected override void ComputeVelocity()
     {
-        if (target == null) return;
+        if (target == null) gameObject.SetActive(false);
 
-        if (!_hasLaunched && Vector2.Distance(_initialPosition, transform.position) > launchDistance)
+        if (!_hasLaunched)
         {
-            _hasLaunched = true;
+            if (Vector2.Distance(_initialPosition, transform.position) > launchDistance)
+            {
+                _hasLaunched = true;
+                smoothDampScript.SetStartVelocity(initialDirection.normalized * launchSpeed);
+            }
+            else
+            {
+                var velocityVector = initialDirection.normalized * launchSpeed;
+                targetVelocity = velocityVector;
+            }
         }
-
-        if (_hasLaunched)
+        else
         {
             // Create a vector pointing from the current position to the target position
             Vector2 direction = target.transform.position - transform.position;
-            _smoothDampScript.SmoothDampVector2(direction.normalized * homingSpeed, ref _currentVelocity);
+            smoothDampScript.SmoothDampVector2(direction.normalized * homingSpeed, ref targetVelocity);
         }
         
-        _rb2d.linearVelocity = _currentVelocity;
+        transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(targetVelocity.y, targetVelocity.x) * Mathf.Rad2Deg - 90);
     }
 }

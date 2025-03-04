@@ -2,26 +2,16 @@ using Attributes;
 using Pathfinding.Util;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
-using Unity.Behavior;
+using Triggers;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utilities.DataBinding;
+using VContainer;
 
-public class ConversationTrigger : MonoBehaviour, IBind<TriggerData> {
+public class ConversationTrigger : TriggerBox, IBind<TriggerData> {
     #region ---Fields---
     #region ***---GetOrAddComponents---***
-    [GetOrAddComponent] public BehaviorGraphAgent behaviorGraphAgent;
-    #endregion
-
-    private bool HasBeenTriggered {
-        get {
-            behaviorGraphAgent.BlackboardReference.GetVariableValue<bool>("HasPlayed", out var hasBeenTriggered);
-            return hasBeenTriggered;
-        }
-    }
-    
-    #region ***---GameManagers---***
-    private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
-    private static LevelDataManager LevelDataManager => LevelDataManager.LevelDataManagerCache;
+    [GetOrAddComponent, SerializeField, HideInInspector] private ScriptMachine cutsceneGraph;
     #endregion
 
     #region ***---DataBindingVariables---***
@@ -30,30 +20,36 @@ public class ConversationTrigger : MonoBehaviour, IBind<TriggerData> {
 
     [field: SerializeField] public TriggerData SaveSystemData { get; set; }
 
-    public TriggerData DataInGameData => LevelDataManager.DataInGameData.triggerDatas.GetOrAddByIdInList(ID, new TriggerData {
+    public TriggerData DataInGameData => _levelDataManager.DataInGameData.triggerDatas.GetOrAddByIdInList(ID, new TriggerData {
         name = name,
         ID = ID,
-        hasBeenTriggered = HasBeenTriggered
+        hasBeenTriggered = hasBeenTriggered
     });
     #endregion
+    
+    private SaveLoadSystemManager _saveLoadSystemManager;
+    private LevelDataManager _levelDataManager;
     #endregion
 
-    #region ---EventFunctions---
+    #region ---Initialization---
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
+        _levelDataManager = container.Resolve<LevelDataManager>();
+    }
+    
     private void Start() {
-        behaviorGraphAgent ??= GetComponent<BehaviorGraphAgent>();
-        
         Bind();
     }
     #endregion
 
+    protected override void TriggeredAction(Collider2D other) {
+        cutsceneGraph.TriggerUnityEvent("Start");
+    }
+
     #region ---DataBindingMethods---
     public void Bind() {
-        if (SaveLoadSystemManager != null || !Application.isPlaying) {
-            SaveLoadSystemManager.Bind(this, DataInGameData);
-        }
-        else {
-            Debug.LogWarning("No SaveLoadSystemManager found", this);
-        }
+        _saveLoadSystemManager.Bind(this, DataInGameData);
     }
 
 #if UNITY_EDITOR
@@ -68,13 +64,13 @@ public class ConversationTrigger : MonoBehaviour, IBind<TriggerData> {
     [ContextMenu(nameof(LoadBindData))]
     public void LoadBindData() {
         name = DataInGameData.name;
-        behaviorGraphAgent.BlackboardReference.SetVariableValue("HasPlayed", DataInGameData.hasBeenTriggered);
+        hasBeenTriggered = DataInGameData.hasBeenTriggered;
     }
 
     [ContextMenu(nameof(SaveBindData))]
     public void SaveBindData() {
         DataInGameData.name = name;
-        DataInGameData.hasBeenTriggered = HasBeenTriggered;
+        DataInGameData.hasBeenTriggered = hasBeenTriggered;
     }
     #endregion
 }

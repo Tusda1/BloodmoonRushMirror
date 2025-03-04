@@ -51,6 +51,7 @@ public class SpitterEnemy : ReactiveBase
 
     private void StartAttack()
     {
+        if (_spitterAnimation.isAttacking) return;
         _audioManager.PlayOneShot("Enemy_Hawk");
         _spitterAnimation.Attack(ShootProjectile);
     }

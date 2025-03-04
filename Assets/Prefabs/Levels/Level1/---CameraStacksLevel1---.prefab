@@ -616,20 +616,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   verboseLogs: 0
   gizmosOnSelected: 0
+  textStyle: 3
+  textAlignment: 0
   customText: 1
-  customIcon: 0
-  customHighlight: 1
   textColor:
     serializedVersion: 2
     rgba: 4294967295
+  customIcon: 0
   iconColor:
     serializedVersion: 2
     rgba: 4289967027
+  customHighlight: 1
   highlightColor:
     serializedVersion: 2
     rgba: 4278197983
-  textStyle: 3
-  textAlignment: 0
 --- !u!1 &3291864126933872899
 GameObject:
   m_ObjectHideFlags: 0
@@ -10460,6 +10460,10 @@ PrefabInstance:
       value: Drucilla
       objectReference: {fileID: 0}
     - target: {fileID: 7589048197982333553, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
+      propertyPath: cutsceneGraph
+      value: 
+      objectReference: {fileID: 2194013203053677515}
+    - target: {fileID: 7589048197982333553, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
       propertyPath: nextLevelSceneCollection
       value: 
       objectReference: {fileID: 11400000, guid: 53d54a1ea8fd51841a69e5a7316ee2e1, type: 2}
@@ -10474,14 +10478,62 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5004162161467251752, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3210927619632790210}
+    - targetCorrespondingSourceObject: {fileID: 5004162161467251752, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2194013203053677515}
   m_SourcePrefab: {fileID: 100100000, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
+--- !u!1 &467679195021201491 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5004162161467251752, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
+  m_PrefabInstance: {fileID: 4832324162085227643}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3210927619632790210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467679195021201491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"DrucillaIntroduction","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"DrucillaIntroduction,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"DrucillaAnimator","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Animator,
+      UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"CollapsingFloor","value":{"$content":2,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"CollapsingFloor,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 3052994255840519690}
+    - {fileID: 9059192411281699146}
+    - {fileID: 4365838010871907858}
+--- !u!114 &2194013203053677515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467679195021201491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: 33c7847f6eb04444686c33ef712deb38, type: 2}
 --- !u!114 &3052994255840519690 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7589048197982333553, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
   m_PrefabInstance: {fileID: 4832324162085227643}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 467679195021201491}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a318fb8ef71b9b74daaa5e88569a1d5c, type: 3}
@@ -10490,6 +10542,11 @@ MonoBehaviour:
 --- !u!4 &8529694932218057326 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3841655557898247701, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
+  m_PrefabInstance: {fileID: 4832324162085227643}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &9059192411281699146 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4519198094343847217, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
   m_PrefabInstance: {fileID: 4832324162085227643}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4979091721613466848
@@ -11183,7 +11240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5781193630542163248, guid: 34d4109ea306efb4abc2db23fff83cf9, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
-      value: -11.5
+      value: -11.25
       objectReference: {fileID: 0}
     - target: {fileID: 6804936971709374335, guid: 34d4109ea306efb4abc2db23fff83cf9, type: 3}
       propertyPath: onEnable.m_PersistentCalls.m_Calls.Array.size
@@ -11867,11 +11924,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 81711474254784661, guid: 6ef356cc79e908e40a79ab2d3d21886a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.07702637
       objectReference: {fileID: 0}
     - target: {fileID: 81711474254784661, guid: 6ef356cc79e908e40a79ab2d3d21886a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.7259712
       objectReference: {fileID: 0}
     - target: {fileID: 5025448873400626659, guid: 6ef356cc79e908e40a79ab2d3d21886a, type: 3}
       propertyPath: m_Size.y
@@ -15157,10 +15214,10 @@ MonoBehaviour:
     ScreenPosition: {x: 0, y: 0}
     DeadZone:
       Enabled: 0
-      Size: {x: 0, y: 1}
+      Size: {x: 0, y: 0}
     HardLimits:
       Enabled: 1
-      Size: {x: 1, y: 1}
+      Size: {x: 0.9, y: 0.85}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 1, z: 0}

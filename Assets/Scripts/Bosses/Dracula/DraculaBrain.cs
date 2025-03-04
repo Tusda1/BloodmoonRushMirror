@@ -14,13 +14,15 @@ public class DraculaBrain : MonoBehaviour
     private BossState[] _states;
     private List<BossState> _attackQueue = new();
     private BossState _currentState;
-    [SerializeField] private int _currentPhase = 1;
     private bool _lastInQueue;
     private bool _isFighting;
-    private PingPongState _pingPongState;
+    private PingPongState[] _pingPongState;
+    private bool _repeating;
     
     private void Awake()
     {
+        boss.canTakeDamage = false;
+        
         _states = GetComponentsInChildren<BossState>();
 
         foreach (var state in _states)
@@ -29,8 +31,10 @@ public class DraculaBrain : MonoBehaviour
         }
         
         //remove PingPongState from the list of states to prevent it from being added to the attack queue and set it as a separate variable
-        _pingPongState = _states.First(state => state.GetType() == typeof(PingPongState)) as PingPongState;
+        _pingPongState = _states.Where(state => state.GetType() == typeof(PingPongState)).Cast<PingPongState>().ToArray();
+        
         _states = _states.Where(state => state.GetType() != typeof(PingPongState)).ToArray();
+        _states = _states.Where(state => state.GetType() != typeof(VulnerableState)).ToArray();
     }
 
     private void Start()
@@ -68,21 +72,27 @@ public class DraculaBrain : MonoBehaviour
 
     private void FillAttackQueue()
     {
-        if (_attackQueue.Count > 0)
+        if (boss.CurrentHealth <= 0) boss.MoveToNextPhase();
+        
+        var amount = baseAttackQueueSize + attackQueueSizeIncreaseFactor * (boss.MaxHealth[boss.CurrentPhase] - boss.CurrentHealth);
+        var states = GetStatesByPhase(boss.CurrentPhase);
+        while (_attackQueue.Count < amount)
         {
-            return;
+            var state = states[Random.Range(0, states.Length)];
+
+            if (!_repeating && _attackQueue.Count > 0 && state == _attackQueue[^1])
+            {
+                _repeating = true;
+                continue;
+            }
+            
+            _attackQueue.Add(state);
+            print(state);
+            _repeating = false;
         }
         
-        var amount = baseAttackQueueSize + attackQueueSizeIncreaseFactor * (boss.MaxHealth - boss.CurrentHealth);
-        var states = GetStatesByPhase(_currentPhase);
-        for (var i = 0; i < amount; i++)
-        {
-            _attackQueue.Add(states[Random.Range(0, states.Length)]);
-            print(_attackQueue[i]);
-        }
-        
-        // Add PingPongState to the end of the queue
-        _attackQueue.Add(_pingPongState);
+        // Add the pingPongState that corresponds to the currentPhase to the end of the queue
+        _attackQueue.Add(_pingPongState.First(state => state.StatePhase == boss.CurrentPhase));
     }
     
     private void MoveToNextState()

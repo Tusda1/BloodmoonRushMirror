@@ -1,26 +1,37 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
-
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
+    /// <summary>
+    /// Code created by Gaskellgames
+    /// </summary>
+
     [CustomPropertyDrawer(typeof(LineSeparatorAttribute))]
     public class LineSeparatorDrawer : DecoratorDrawer
     {
+        #region Variables
+
+        private LineSeparatorAttribute attributeAsType;
+
+        #endregion
+
+        //----------------------------------------------------------------------------------------------------
+
+        #region Height
+
         public override float GetHeight()
         {
-            LineSeparatorAttribute lineSeparator = attribute as LineSeparatorAttribute;
+            attributeAsType = attribute as LineSeparatorAttribute;
 
-            float totalSpacing = lineSeparator.thickness;
-            if (lineSeparator.spacingBefore)
+            float totalSpacing = attributeAsType.thickness;
+            if (attributeAsType.spacingBefore)
             {
                 totalSpacing += 10;
             }
 
-            if (lineSeparator.spacingAfter)
+            if (attributeAsType.spacingAfter)
             {
                 totalSpacing += 10;
             }
@@ -28,20 +39,28 @@ namespace Gaskellgames
             return totalSpacing;
         }
 
+        #endregion
+
+        //----------------------------------------------------------------------------------------------------
+
+        #region OnGUI
+
         public override void OnGUI(Rect position)
         {
-            LineSeparatorAttribute lineSeparator = attribute as LineSeparatorAttribute;
-
             float positionY = position.yMin;
-            if (lineSeparator.spacingBefore)
+            if (attributeAsType.spacingBefore)
             {
                 positionY += 10;
             }
 
-            Rect separatorRect = new Rect(position.xMin, positionY, position.width, lineSeparator.thickness);
-            Color color = new Color32(lineSeparator.R, lineSeparator.G, lineSeparator.B, lineSeparator.A);
+            Rect separatorRect = new Rect(position.xMin, positionY, position.width, attributeAsType.thickness);
+            Color color = new Color32(attributeAsType.R, attributeAsType.G, attributeAsType.B, attributeAsType.A);
             EditorGUI.DrawRect(separatorRect, color);
         }
 
+        #endregion
+
     } // class end
 }
+
+#endif

@@ -111,6 +111,7 @@ public class SwoopAttackState : DraculaState
     
     private void SwoopEnd()
     {
+        swoop.ResetSwoop();
         Boss.transform.rotation = Quaternion.identity;
         _swoopState = SwoopState.Shooting;
         swoopCount++;

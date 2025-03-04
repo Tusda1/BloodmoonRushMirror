@@ -3,21 +3,43 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
-
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
+    /// <summary>
+    /// Code created by Gaskellgames
+    /// </summary>
+
     [CustomPropertyDrawer(typeof(StringDropdownAttribute))]
     public class StringDropdownDrawer : PropertyDrawer
     {
+        #region Variables
+
+        private StringDropdownAttribute attributeAsType;
+
+        #endregion
+
+        //----------------------------------------------------------------------------------------------------
+
+        #region Height
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            attributeAsType = attribute as StringDropdownAttribute;
+            
+            return EditorGUI.GetPropertyHeight(property, label, true);
+        }
+
+        #endregion
+
+        //----------------------------------------------------------------------------------------------------
+
+        #region OnGUI
+
         public override void OnGUI (Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
-            StringDropdownAttribute stringDropdown = attribute as StringDropdownAttribute;
             
-            string[] list = stringDropdown.list;
+            string[] list = attributeAsType.list;
             
             if (property.propertyType == SerializedPropertyType.String)
             {
@@ -35,6 +57,8 @@ namespace Gaskellgames
             
             EditorGUI.EndProperty();
         }
+
+        #endregion
         
     } // class end
 }

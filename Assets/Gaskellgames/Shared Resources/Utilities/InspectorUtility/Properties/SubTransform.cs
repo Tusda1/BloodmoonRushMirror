@@ -1,11 +1,11 @@
 using UnityEngine;
 
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
-
 namespace Gaskellgames
 {
+    /// <summary>
+    /// Code created by Gaskellgames
+    /// </summary>
+    
     [System.Serializable]
     public class SubTransform
     {
@@ -14,14 +14,14 @@ namespace Gaskellgames
 
         public SubTransform()
         {
-            position = Vector3.zero;
-            eulerAngles = Vector3.zero;
+            this.position = Vector3.zero;
+            this.eulerAngles = Vector3.zero;
         }
 
-        public SubTransform(Vector3 Position, Vector3 EulerAngles)
+        public SubTransform(Vector3 position, Vector3 eulerAngles)
         {
-            position = Position;
-            eulerAngles = EulerAngles;
+            this.position = position;
+            this.eulerAngles = eulerAngles;
         }
 
     } // class end

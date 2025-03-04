@@ -1,11 +1,11 @@
 using UnityEngine;
 
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
-
 namespace Gaskellgames
 {
+    /// <summary>
+    /// Code created by Gaskellgames
+    /// </summary>
+    
     [System.Serializable]
     public class LayerDropdown
     {

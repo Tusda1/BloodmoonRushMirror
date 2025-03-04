@@ -8,7 +8,6 @@ using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using SceneCollections;
 using TetraCreations.Attributes;
-using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities.DataBinding;
@@ -63,8 +62,11 @@ namespace Player {
 
         private bool PlayerMovementEnabled => playerCanMove.consensus;
         private readonly ScriptVotePair _isAliveVotePair = new();
+        public readonly ScriptVotePair MoveVotePair = new();
 
         public event Action OnRespawn = delegate { };
+        
+        public static event Action SkipDialogueEvent = delegate { };
 
         private string _currentLevelMusicID;
 
@@ -158,6 +160,8 @@ namespace Player {
 
         #region ---EventFunctions---
         private void Start() {
+            playerCanMove.ChangeVote(MoveVotePair, true);
+            
             healthComponent.OnDeath += () => StartCoroutine(Die());
 
             healthComponent.InvulnerabilityTimer.OnBegin +=
@@ -204,7 +208,7 @@ namespace Player {
         #region ***---InputActions---***
         public void OnSkipDialogue(InputValue inputValue) {
             if (!inputValue.isPressed) return;
-            DialogueUI.Instance?.TriggerOnSkipDialogue();
+            SkipDialogueEvent.Invoke();
         }
 
         public void OnAttack(InputValue inputValue) {
@@ -333,10 +337,8 @@ namespace Player {
             }
             else {
                 Respawn();
-                AudioManager.PlayMusic(_currentLevelMusicID);
-
-                // yield return new WaitForSeconds(0.5f);
                 _cameraEffects.CircleFadeIn(0.5f);
+                AudioManager.PlayMusic(_currentLevelMusicID);
             }
         }
 

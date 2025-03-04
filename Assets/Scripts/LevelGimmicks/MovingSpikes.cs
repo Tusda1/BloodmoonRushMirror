@@ -20,7 +20,7 @@ public class MovingSpikes : MonoBehaviour {
 
     #endregion
 
-    private void Start() {
+    private void Awake() {
         _downPosition = new Vector2(transform.position.x, transform.position.y - 1); ;
         _startPosition = new Vector2(transform.position.x, transform.position.y);
 
@@ -32,13 +32,14 @@ public class MovingSpikes : MonoBehaviour {
             _upTimer = new CountdownTimer(downWait);
             _downTimer = new CountdownTimer(upWait);
         }
-        
 
         _upTimer.OnComplete += Down;
         _upTimer.OnComplete += () => {_downTimer.StartTimer();};
         _downTimer.OnComplete += Up;
         _downTimer.OnComplete += () => {_upTimer.StartTimer();};
+    }
 
+    private void OnEnable() {
         if (startDown) {
             transform.position = _downPosition;
             _downTimer.StartTimer();

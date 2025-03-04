@@ -1,25 +1,34 @@
 #if UNITY_EDITOR
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
-
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
-    public class GGEditorWindow : EditorWindow
+    /// <summary>
+    /// Code created by Gaskellgames
+    /// </summary>
+    
+    public abstract class GGEditorWindow : EditorWindow
     {
         #region Variables
         
-        private readonly float menuHeight = 21.0f;
-        private readonly float shadowBuffer = 2.0f;
-
-        protected string versionNumber = "Version 1.0.0";
-        protected bool versionNumberOnRight = true;
-        protected bool includeOptions = true;
-        protected bool includeCopyright = true;
-        protected string copyrightYear = "2022";
+        protected readonly float toolbarHeight = 21.0f;  // the vertical size in pixels of the toolbar
+        protected readonly float ShadowHeight = 2.0f;    // the vertical size in pixels of the shadow
+        protected readonly float shadowBuffer = 3.0f;    // the vertical size in pixels of the buffer zone around a shadow
+        protected readonly float scrollBarOffset = 6.0f; // the vertical and horizontal offset added when scroll view is active
+        
+        protected static EditorWindow editorWindow;
+        protected Texture banner;
+        
+        protected float pageHeight => Screen.height - (toolbarHeight + shadowBuffer);
+        protected float pageWidth => EditorGUIUtility.currentViewWidth;
+        protected float bannerWidth => pageWidth;
+        protected float bannerHeight => bannerWidth * banner.height / banner.width;
+        protected bool isWindowWide => 500 < Screen.width;
+        protected int singleLine => (int)EditorGUIUtility.singleLineHeight;
+        protected int spacing => (int)EditorGUIUtility.standardVerticalSpacing;
 
         #endregion
         
@@ -56,23 +65,19 @@ namespace Gaskellgames
         
         //----------------------------------------------------------------------------------------------------
 
-        #region Menu Item [Implement in child]
+        #region Menu Item [To be implemented in child]
         
         /*
-        [MenuItem("Gaskellgames/GGEditorWindow", false, 1)]
-        public static void ShowWindow()
+        [MenuItem(MenuItemUtility.NAME_ToolsMenu_Path, false, MenuItemUtility.NAME_ToolsMenu_Priority)]
+        private static void OpenWindow_ToolsMenu()
         {
-            // Create new window from menu item
-            GGEditorWindow window = GetWindow<GGEditorWindow>();
-            window.titleContent = new GUIContent("GGEditorWindow");
-            
-            // Create new utility window from menu item
-            GGEditorWindow window = GetWindow<GGEditorWindow>(true);
-            window.titleContent = new GUIContent("GGEditorWindow");
-            
-            // Limit size of the window
-            window.minSize = new Vector2(750, 500);
-            window.maxSize = window.minSize;
+            OpenWindow<NAMEEditorWindow>();
+        }
+
+        [MenuItem(MenuItemUtility.NAME_WindowMenu_Path, false, MenuItemUtility.NAME_WindowMenu_Priority)]
+        public static void OpenWindow_WindowMenu()
+        {
+            OpenWindow<NAMEEditorWindow>();
         }
         */
         
@@ -82,9 +87,25 @@ namespace Gaskellgames
 
         #region Editor Loop
 
-        protected virtual void OnGUI()
+        protected virtual void OnBecameVisible()
+        {
+            OnInitialise();
+        }
+
+        protected virtual void OnFocus()
+        {
+            OnFocusChange();
+        }
+
+        protected virtual void OnLostFocus()
+        {
+            OnFocusChange();
+        }
+
+        private void OnGUI()
         {
             OnGUI_Toolbar();
+            OnPageGUI();
         }
 
         #endregion
@@ -92,77 +113,78 @@ namespace Gaskellgames
         //----------------------------------------------------------------------------------------------------
 
         #region Toolbar Tree
-
+        
         private void OnGUI_Toolbar()
         {
             // draw page background
-            EditorGUI.DrawRect(new Rect(0, menuHeight, Screen.width, Screen.height - menuHeight), InspectorUtility.backgroundNormalColorDark);
-            EditorGUI.DrawRect(new Rect(0, menuHeight, Screen.width, shadowBuffer), InspectorUtility.backgroundShadowColor);
+            EditorGUI.DrawRect(new Rect(0, toolbarHeight, Screen.width, Screen.height - toolbarHeight), InspectorExtensions.backgroundNormalColorDark);
+            EditorGUI.DrawRect(new Rect(0, toolbarHeight, Screen.width, ShadowHeight), InspectorExtensions.backgroundShadowColor);
             
+            // draw toolbar
             GUILayout.BeginHorizontal(EditorStyles.toolbar);
-            DrawToolbar();
+            DrawSubToolbar(LeftToolbar());
+            GUILayout.FlexibleSpace();
+            DrawSubToolbar(RightToolbar());
+            DrawOptions(OptionsToolbar());
             GUILayout.EndHorizontal();
         }
 
-        private void DrawToolbar()
+        private void DrawSubToolbar(List<ToolbarItem> toolbarItems)
         {
+            // list null check
+            if (toolbarItems == null) { return; }
+            if (toolbarItems.Count <= 0) { return; }
+            
+            Color32 defaultContent = GUI.contentColor;
+            bool defaultGui = GUI.enabled;
+            foreach (var item in toolbarItems)
+            {
+                // item null check
+                if (item == null) { continue; }
+                GUI.enabled = item.toolbarMethod != null;
+                GUI.contentColor = item.guiColor;
+                
+                // draw item in toolbar
+                if (GUILayout.Button(item.guiContent, EditorStyles.toolbarButton))
+                {
+                    if (item.toolbarMethod == null) { continue; }
+                    item.toolbarMethod();
+                }
+                GUI.contentColor = defaultContent;
+                GUI.enabled = defaultGui;
+            }
+        }
+
+        private void DrawOptions(GenericMenu toolsMenu)
+        {
+            // null check
+            if (toolsMenu == null) { return; }
+            if (toolsMenu.GetItemCount() <= 0) { return; }
+            
             // cache variables
             int pixelHeight = 16;
             int dropdownOffset = 5;
             int dropDownWidth = 65;
             
-            // left toolbar
-            if(includeCopyright)
+            if (GUILayout.Button("Options", EditorStyles.toolbarDropDown, GUILayout.Width(dropDownWidth)))
             {
-                GUI.enabled = false;
-                if (GUILayout.Button("Copyright \u00a9" + copyrightYear + " Gaskellgames. All rights reserved.", EditorStyles.toolbarButton)) { }
-                GUI.enabled = true;
-            }
-            if(!versionNumberOnRight)
-            {
-                GUI.enabled = false;
-                if (GUILayout.Button(versionNumber, EditorStyles.toolbarButton)) { }
-                GUI.enabled = true;
-            }
-
-            GUILayout.FlexibleSpace();
-
-            // right toolbar
-            if(versionNumberOnRight)
-            {
-                GUI.enabled = false;
-                if (GUILayout.Button(versionNumber, EditorStyles.toolbarButton)) { }
-                GUI.enabled = true;
-            }
-            if (includeOptions)
-            {
-                if (GUILayout.Button("Options", EditorStyles.toolbarDropDown, GUILayout.Width(dropDownWidth)))
-                {
-                    // create new dropdown menu
-                    GenericMenu toolsMenu = new GenericMenu();
-                    toolsMenu.AddItem(new GUIContent("Unity Asset Store"), false, OnSupport_AssetStoreLink);
-                    toolsMenu.AddSeparator("");
-                    toolsMenu.AddItem(new GUIContent("Gaskellgames Discord"), false, OnSupport_DiscordLink);
-                    toolsMenu.AddItem(new GUIContent("Gaskellgames Website"), false, OnSupport_WebsiteLink);
-                
-                    // offset menu from right of editor window
-                    toolsMenu.DropDown(new Rect(Screen.width - dropDownWidth, dropdownOffset, 0, pixelHeight));
-                    EditorGUIUtility.ExitGUI();
-                }
+                // offset menu from right of editor window
+                toolsMenu.DropDown(new Rect(Screen.width - dropDownWidth, dropdownOffset, 0, pixelHeight));
+                EditorGUIUtility.ExitGUI();
             }
         }
 
-        private void OnSupport_AssetStoreLink()
+        protected void OnSupport_AssetStoreLink()
         {
             Help.BrowseURL("https://assetstore.unity.com/publishers/75563");
         }
 
-        private void OnSupport_DiscordLink()
+        protected void OnSupport_DiscordLink()
         {
             Help.BrowseURL("https://discord.gg/nzRQ87GGbD");
         }
 
-        private void OnSupport_WebsiteLink()
+        protected void OnSupport_WebsiteLink()
         {
             Help.BrowseURL("https://gaskellgames.com");
         }
@@ -171,8 +193,116 @@ namespace Gaskellgames
         
         //----------------------------------------------------------------------------------------------------
 
+        #region Virtual Functions
+
+        /// <summary>
+        /// Used to initialise any values in the editor window.
+        /// Called from base class during <see cref="OnBecameVisible"/>
+        /// </summary>
+        protected abstract void OnInitialise();
+        
+        /// <summary>
+        /// Used to re-initialise any values in the editor window, when re-focusing on/off the window.
+        /// Called from base class during <see cref="OnFocus"/> and <see cref="OnLostFocus"/>
+        /// </summary>
+        protected abstract void OnFocusChange();
+        
+        /// <summary>
+        /// Used to add items to the left had side of the toolbar menu.
+        /// Called from base class during <see cref="OnGUI"/>.
+        /// </summary>
+        /// <returns></returns>
+        protected abstract List<ToolbarItem> LeftToolbar();
+
+        /// <summary>
+        /// Used to add items to the right had side of the toolbar menu.
+        /// Called from base class during <see cref="OnGUI"/>.
+        /// </summary>
+        /// <returns></returns>
+        protected abstract List<ToolbarItem> RightToolbar();
+
+        /// <summary>
+        /// Used to add items to the options menu of the toolbar menu.
+        /// Called from base class during <see cref="OnGUI"/>.
+        /// </summary>
+        /// <returns></returns>
+        protected abstract GenericMenu OptionsToolbar();
+
+        /// <summary>
+        /// Used to draw the page content of the window.
+        /// Called from base class during <see cref="OnGUI"/>.
+        /// </summary>
+        protected abstract void OnPageGUI();
+
+        #endregion
+        
+        //----------------------------------------------------------------------------------------------------
+
         #region Protected Functions
 
+        protected enum Placement
+        {
+            Console,
+            GameView,
+            Hierarchy,
+            InspectorWindow,
+            SceneView,
+        }
+        
+        /// <summary>
+        /// Auto setup editor window using set parameters
+        /// </summary>
+        /// <param name="editorWindowTitle"></param>
+        /// <param name="utilityWindow"></param>
+        /// <param name="openDocked"></param>
+        /// <param name="placement"></param>
+        /// <typeparam name="T"></typeparam>
+        protected static void OpenWindow<T>(string editorWindowTitle, int width = 750, int height = 500, bool utilityWindow = false, bool openDocked = false, Placement placement = Placement.GameView) where T : EditorWindow
+        {
+            if (utilityWindow)
+            {
+                // Create new utility window from menu item
+                editorWindow = GetWindow<T>(true);
+                editorWindow.titleContent = new GUIContent(editorWindowTitle);
+
+                // Limit size of the window
+                editorWindow.minSize = new Vector2(width, height);
+                editorWindow.maxSize = editorWindow.minSize;
+            }
+            else
+            {
+                // use reflection to get type of game window, to dock this window next to it (in order of preference)
+                Type desiredDockNextTo;
+                switch (placement)
+                {
+                    case Placement.Console:
+                        desiredDockNextTo = Type.GetType("UnityEditor.ConsoleWindow, UnityEditor.dll");
+                        break;
+                    case Placement.GameView:
+                        desiredDockNextTo = Type.GetType("UnityEditor.GameView, UnityEditor.dll");
+                        break;
+                    case Placement.Hierarchy:
+                        desiredDockNextTo = Type.GetType("UnityEditor.HierarchyWindow, UnityEditor.dll");
+                        break;
+                    case Placement.InspectorWindow:
+                        desiredDockNextTo = Type.GetType("UnityEditor.InspectorWindow, UnityEditor.dll");
+                        break;
+                    case Placement.SceneView:
+                        desiredDockNextTo = Type.GetType("UnityEditor.SceneView, UnityEditor.dll");
+                        break;
+                    default:
+                        desiredDockNextTo = null;
+                        break;
+                }
+
+                editorWindow = openDocked
+                    ? GetWindow<T>(editorWindowTitle, true, desiredDockNextTo)
+                    : GetWindow<T>(editorWindowTitle, true);
+                editorWindow.minSize = new Vector2(750, 500);
+                editorWindow.Show();
+            }
+        }
+        
         protected void PlaceHolderPageText(string pageName = "")
         {
             // set style

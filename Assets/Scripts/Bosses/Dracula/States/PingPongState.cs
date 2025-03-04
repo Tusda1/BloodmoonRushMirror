@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using Player;
 using UnityEngine.Serialization;
@@ -94,6 +95,7 @@ public class PingPongState : DraculaState
         {
             if (!Boss.AnimancerComponent.IsPlaying(pingPongAnimation))
             {
+                Boss.facingDirection = _player.transform.position.x > transform.position.x ? Vector2.right : Vector2.left;
                 var state = Boss.AnimancerComponent.Play(pingPongAnimation);
                 state.Events(this).OnEnd = () =>
                 {
@@ -106,12 +108,11 @@ public class PingPongState : DraculaState
         }
         
         // Spawn ping pong circle and send it to the player
-        var position = transform.position;
+        var position = transform.position + Vector3.up * 2.25f + (Vector3)Boss.facingDirection * 1.8f;
         GameObject pingPongCircle = Instantiate(_pingPongCircle, position, Quaternion.identity);
         
         // send the circle in the x direction of the player with no y movement
-        _directionToPingPong = (_player.transform.position - position).normalized.x > 0 ? Vector2.right : Vector2.left;
-        pingPongCircle.GetComponent<Rigidbody2D>().linearVelocity = _directionToPingPong * pingPongStartSpeed;
+        pingPongCircle.GetComponent<PingPongScript>().setVelocity = Boss.facingDirection * pingPongStartSpeed;
         
         _pingPongState = PingPong.Play;
     }
@@ -150,7 +151,9 @@ public class PingPongState : DraculaState
         }
         else
         {
-            EndState();
+            var vulnerableStates = GetComponents<VulnerableState>();
+            var vulnerableState = vulnerableStates.FirstOrDefault(state => state.StatePhase == StatePhase);
+            Boss.StateMachine.ForceSetState(vulnerableState);
         }
         
         _pingPongHitCount++;

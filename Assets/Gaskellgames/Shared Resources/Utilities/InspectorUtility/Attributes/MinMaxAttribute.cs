@@ -1,11 +1,13 @@
+using System;
 using UnityEngine;
-
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
 
 namespace Gaskellgames
 {
+    // <summary>
+    // Code created by Gaskellgames
+    // </summary>
+
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class MinMaxAttribute : PropertyAttribute
     {
         public float min;

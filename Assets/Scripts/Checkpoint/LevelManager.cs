@@ -18,6 +18,8 @@ namespace Checkpoint {
             foreach (Transform child in cameraStacks.transform) {
                 areas.Add(child.gameObject);
             }
+            print($"Found {areas.Count} areas in cameraStacks");
+            
 
             // Iterate through all children of areas to find rooms
             foreach (var area in areas) {

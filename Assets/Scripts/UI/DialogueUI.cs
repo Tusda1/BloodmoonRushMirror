@@ -1,9 +1,7 @@
-using System;
 using Attributes;
 using Consensus;
 using UI_Toolkit;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 using VContainer;
 
@@ -12,27 +10,16 @@ namespace UI {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
-        #region ****---Inspector---***
         [SerializeField] public AllInFavourConsensusSO playerCanMove;
-
-        [Header("DialogueUI Settings")]
-        public bool uiDocumentVisible;
-        public Sprite imagePortrait;
-        public string characterName;
-        public string dialogueText;
-        public FontAsset dialogueFont;
-        public float textSize;
-        public Color dialogueColor;
-        #endregion
+        [SerializeField] private DialogueUI_DataContainer dialogueUIDataContainer;
 
         private VisualElement _root;
         private SkipDialogueButton_Animated _skipDialogueButton;
         
+        private float _textSpeed;
+
         [HideInInspector] public ScriptVotePair scriptVotePair = new();
-        public event Action OnSkipDialogue = delegate { };
-        
-        public IAudioManager AudioManager;
-        [HideInInspector] public CameraEffects cameraEffects;
+
         private IControlSchemeChanger _controlSchemeChanger;
         
         private Awaitable _animationTask;
@@ -41,8 +28,6 @@ namespace UI {
         #region ---Initialization---
         [Inject]
         public void Construct(IObjectResolver container) {
-            AudioManager = container.Resolve<IAudioManager>();
-            cameraEffects = container.Resolve<CameraEffects>();
             _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
         }
 
@@ -50,40 +35,26 @@ namespace UI {
             base.Awake();
 
             _root = uiDocument.rootVisualElement;
-            _root.dataSource = this;
             _skipDialogueButton = _root.Q<SkipDialogueButton_Animated>();
         }
 
         private void Start() {
+            dialogueUIDataContainer.uiDocumentVisible = DisplayStyle.None;
             playerCanMove.ChangeVote(scriptVotePair, true);
-            
-            DisableDialogueUI();
+            _controlSchemeChanger.OnControlSchemeChanged += OnControlSchemeChanged;
+            OnControlSchemeChanged(_controlSchemeChanger.CurrentControlSchemeData);
+            _animationTask = _skipDialogueButton.Animate();
+        }
+
+        protected override void OnDestroy() {
+            playerCanMove.DeleteVote(scriptVotePair);
+            _controlSchemeChanger.OnControlSchemeChanged -= OnControlSchemeChanged;
+            _animationTask?.Cancel();
         }
         #endregion
-        
-        public void EnableDialogueUI() {
-            _controlSchemeChanger.OnControlSchemeChanged += ControlSchemeChangerOnOnControlSchemeChanged;
-            ControlSchemeChangerOnOnControlSchemeChanged(_controlSchemeChanger.CurrentControlSchemeData);
-            _animationTask = _skipDialogueButton.Animate();
-            _root.style.display = DisplayStyle.Flex;
-            uiDocumentVisible = true;
-        }
 
-        public void DisableDialogueUI() {
-            playerCanMove.DeleteVote(scriptVotePair);
-            
-            _controlSchemeChanger.OnControlSchemeChanged -= ControlSchemeChangerOnOnControlSchemeChanged;
-            _animationTask?.Cancel();
-            _root.style.display = DisplayStyle.None;
-            uiDocumentVisible = false;
-        }
-
-        private void ControlSchemeChangerOnOnControlSchemeChanged(IControlSchemeChanger.ControlSchemeData data) {
+        private void OnControlSchemeChanged(IControlSchemeChanger.ControlSchemeData data) {
             _skipDialogueButton.SpriteAnimation = data.DataSO.skipDialogueButtonAnimation;
-        }
-
-        public void TriggerOnSkipDialogue() {
-            OnSkipDialogue.Invoke();
         }
     }
 }

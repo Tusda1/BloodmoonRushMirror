@@ -1,12 +1,11 @@
-#if UNITY_EDITOR
 using UnityEngine;
-using PCLauncher;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 using System.Collections.Generic;
 
-namespace PCLauncher
+namespace MissingScript
 {
     public class MissingScriptWindow : EditorWindow
     {
@@ -16,70 +15,91 @@ namespace PCLauncher
         private List<GameObject> objectsWithMissingScripts = new List<GameObject>();
         private bool showWarnings = true;
         private string actionLog = "";
+        private Vector2 scrollPosition = Vector2.zero;
 
         #endregion
 
         #region Editor Window Setup
-        [MenuItem("Tools/Missing Script Tool")]
+
+        [MenuItem("Tools/Missing Script Tool %#u")]
         public static void ShowWindow()
         {
             var window = GetWindow<MissingScriptWindow>("Missing Script Tool");
-            window.maxSize = new Vector2(720, 400);
-            window.minSize = new Vector2(720, 400);
+            window.maxSize = new Vector2(720, 480);
+            window.minSize = new Vector2(720, 480);
             window.Show();
         }
 
         private void OnGUI()
         {
-            GUILayout.Space(10);
+            GUILayout.Space(15);
 
             GUIStyle labelStyle = new GUIStyle(GUI.skin.label)
             {
-                fontSize = 16,
+                fontSize = 18,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = Color.cyan }
+                normal = { textColor = new Color(0.7f, 0.85f, 1.0f) }
             };
             GUILayout.Label("Missing Script Tool", labelStyle);
 
-            GUILayout.Space(10);
+            GUILayout.Space(15);
 
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button)
             {
                 fontSize = 14,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter,
-                normal = { background = Texture2D.whiteTexture, textColor = Color.white },
-                hover = { background = Texture2D.whiteTexture, textColor = Color.cyan },
-                padding = new RectOffset(10, 10, 5, 5)
+                padding = new RectOffset(15, 15, 10, 10)
             };
 
+            buttonStyle.normal.textColor = Color.white;
+            buttonStyle.hover.textColor = new Color(0.4f, 0.7f, 1.0f);
+            buttonStyle.active.textColor = new Color(0.2f, 0.6f, 1.0f);
+            buttonStyle.normal.background = MakeTexture(2, 2, new Color(0.15f, 0.2f, 0.3f));
+
+            GUIStyle textAreaStyle = new GUIStyle(GUI.skin.textArea)
+            {
+                fontSize = 13,
+                wordWrap = true,
+                stretchHeight = true
+            };
+
+            textAreaStyle.normal.textColor = Color.white;
+            textAreaStyle.focused.textColor = new Color(0.5f, 0.8f, 1.0f);
+            textAreaStyle.active.textColor = new Color(0.3f, 0.7f, 1.0f);
+            textAreaStyle.padding = new RectOffset(8, 8, 8, 8);
+            textAreaStyle.margin = new RectOffset(5, 5, 5, 5);
+
+            EditorGUILayout.HelpBox("Project Operations", MessageType.Info);
+            EditorGUILayout.BeginVertical("box");
             if (GUILayout.Button("Find Missing Scripts in Entire Project", buttonStyle))
             {
                 objectsWithMissingScripts.Clear();
                 FindMissingScriptsInProject();
             }
+            EditorGUILayout.EndVertical();
 
             GUILayout.Space(10);
 
+            EditorGUILayout.HelpBox("Scene Operations", MessageType.Info);
+            EditorGUILayout.BeginVertical("box");
+            EditorGUI.BeginChangeCheck();
             selectedScene = (SceneAsset)EditorGUILayout.ObjectField("Scene", selectedScene, typeof(SceneAsset), false, GUILayout.Height(30));
-
-            if (GUILayout.Button("Open Current Scene", buttonStyle))
+            if (EditorGUI.EndChangeCheck() && selectedScene != null)
             {
-                OpenCurrentScene();
+                UnityEngine.Debug.Log("Scene selected, but not opened yet.");
             }
 
             EditorGUILayout.BeginHorizontal();
-
-            if (GUILayout.Button("Find Missing Scripts in Scene", buttonStyle) || (Event.current.shift && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.F))
+            if (GUILayout.Button("Find Missing Scripts in Scene", buttonStyle))
             {
-                objectsWithMissingScripts.Clear();
                 if (selectedScene != null)
                 {
                     string scenePath = AssetDatabase.GetAssetPath(selectedScene);
                     Scene scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
-                    FindMissingScriptsInScene(scene);
                     LogAction($"Found {objectsWithMissingScripts.Count} objects with missing scripts.");
+                    OnSceneOpen(scene);
                 }
                 else
                 {
@@ -91,37 +111,48 @@ namespace PCLauncher
             {
                 SaveScene();
             }
-
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
 
             if (objectsWithMissingScripts.Count > 0)
             {
-                if (GUILayout.Button("Remove Missing Components", buttonStyle) || (Event.current.control && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.R))
+                EditorGUILayout.HelpBox("Cleanup Operations", MessageType.Warning);
+                EditorGUILayout.BeginVertical("box");
+                if (GUILayout.Button("Remove Missing Components", buttonStyle) && objectsWithMissingScripts.Count > 0)
                 {
                     ShowConfirmationDialog("Are you sure you want to remove missing components?", RemoveMissingComponents);
                 }
+                EditorGUILayout.EndVertical();
             }
 
-            GUILayout.Space(10);
+            GUILayout.Space(15);
 
-            GUIStyle textAreaStyle = new GUIStyle(GUI.skin.textArea)
-            {
-                fontSize = 12,
-                wordWrap = true,
-                stretchHeight = true,
-                normal = { textColor = Color.white, background = Texture2D.whiteTexture }
-            };
             GUILayout.Label("Action Log", labelStyle);
-            actionLog = EditorGUILayout.TextArea(actionLog, textAreaStyle, GUILayout.Height(150));
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(150));
+            actionLog = EditorGUILayout.TextArea(actionLog, textAreaStyle, GUILayout.ExpandHeight(true));
+            EditorGUILayout.EndScrollView();
+        }
+
+        private Texture2D MakeTexture(int width, int height, Color color)
+        {
+            Color[] pixels = new Color[width * height];
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                pixels[i] = color;
+            }
+            Texture2D result = new Texture2D(width, height);
+            result.SetPixels(pixels);
+            result.Apply();
+            return result;
         }
 
         #endregion
 
         #region Operations
-        private void OpenCurrentScene()
+
+        private void OnSceneOpen(Scene scene)
         {
-            EditorSceneManager.OpenScene(SceneManager.GetActiveScene().path, OpenSceneMode.Single);
-            LogAction("Opened current scene: " + SceneManager.GetActiveScene().name);
+            FindMissingScriptsInScene(scene);
         }
 
         private void FindMissingScriptsInScene(Scene scene)
@@ -145,7 +176,7 @@ namespace PCLauncher
                         objectsWithMissingScripts.Add(obj);
                         if (showWarnings)
                         {
-                            Debug.LogWarning("Missing script on object: " + obj.name);
+                            UnityEngine.Debug.LogWarning("Missing script on object: " + obj.name);
                         }
                         LogAction("Missing script on object: " + obj.name);
                     }
@@ -161,9 +192,17 @@ namespace PCLauncher
 
         private void FindMissingScriptsInProject()
         {
+            float cpuUsageThreshold = 80f;
             string[] allPrefabs = AssetDatabase.FindAssets("t:Prefab");
+
             foreach (string prefabGUID in allPrefabs)
             {
+                if (GetCpuUsage() > cpuUsageThreshold)
+                {
+                    UnityEngine.Debug.LogWarning("CPU usage is too high! Consider stopping or optimizing the process.");
+                    break;
+                }
+
                 string prefabPath = AssetDatabase.GUIDToAssetPath(prefabGUID);
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
 
@@ -175,7 +214,7 @@ namespace PCLauncher
                     }
                     catch (System.Exception e)
                     {
-                        Debug.LogWarning($"Error processing prefab {prefab.name}: {e.Message}");
+                        UnityEngine.Debug.LogWarning($"Error processing prefab {prefab.name}: {e.Message}");
                         LogAction($"Error processing prefab {prefab.name}: {e.Message}");
                     }
                 }
@@ -184,6 +223,12 @@ namespace PCLauncher
             string[] allScenes = AssetDatabase.FindAssets("t:Scene");
             foreach (string sceneGUID in allScenes)
             {
+                if (GetCpuUsage() > cpuUsageThreshold)
+                {
+                    UnityEngine.Debug.LogWarning("CPU usage is too high! Consider stopping or optimizing the process.");
+                    break;
+                }
+
                 string scenePath = AssetDatabase.GUIDToAssetPath(sceneGUID);
                 try
                 {
@@ -192,7 +237,7 @@ namespace PCLauncher
                 }
                 catch (System.Exception e)
                 {
-                    Debug.LogWarning($"Error processing scene {scenePath}: {e.Message}");
+                    UnityEngine.Debug.LogWarning($"Error processing scene {scenePath}: {e.Message}");
                     LogAction($"Error processing scene {scenePath}: {e.Message}");
                 }
             }
@@ -201,6 +246,11 @@ namespace PCLauncher
             {
                 LogAction("No missing scripts found in project.");
             }
+        }
+
+        private float GetCpuUsage()
+        {
+            return SystemInfo.processorFrequency / 1000f;
         }
 
         private void RemoveMissingComponents()
@@ -228,17 +278,6 @@ namespace PCLauncher
             }
         }
 
-        private void SaveSceneAs()
-        {
-            string path = EditorUtility.SaveFilePanel("Save Scene As", "Assets", selectedScene.name, "unity");
-            if (!string.IsNullOrEmpty(path))
-            {
-                Scene scene = SceneManager.GetActiveScene();
-                EditorSceneManager.SaveScene(scene, path);
-                LogAction("Scene saved as: " + path);
-            }
-        }
-
         private void ShowConfirmationDialog(string message, System.Action onConfirmed)
         {
             if (EditorUtility.DisplayDialog("Confirmation", message, "Yes", "No"))
@@ -251,7 +290,7 @@ namespace PCLauncher
         {
             actionLog += $"{System.DateTime.Now}: {message}\n";
 
-            Debug.Log(message);
+            UnityEngine.Debug.Log(message);
         }
 
         #endregion
@@ -275,9 +314,10 @@ public class ScriptIconHandler
             if (Event.current.type == EventType.MouseDown && selectionRect.Contains(Event.current.mousePosition))
             {
                 Event.current.Use();
-                MissingScriptWindow.ShowWindow();
+                MissingScript.MissingScriptWindow.ShowWindow();
             }
         }
     }
 }
+
 #endif

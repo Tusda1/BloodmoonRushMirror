@@ -6,17 +6,17 @@ using UnityEngine.Serialization;
 [Serializable]
 public class Swoop
 {
+    [SerializeField] public float swoopDuration;
     [SerializeField] private float easePower = 2f;
-    [SerializeField] private float swoopDuration;
     [SerializeField] private AnimationClip swoopStartAnimation;
     [SerializeField] private AnimationClip swoopAnimation;
     
+    public float t;
     private BossBase _externalBoss;
     private bool _swoopStarted;
     private float _swoopStartTime;
     private Action _onSwoopEnd;
     private bool _swoopStartPlayed;
-    private float _timer;
     
     public void InitializeSwoop(Action onSwoopEnd, BossBase boss)
     {
@@ -24,7 +24,7 @@ public class Swoop
         _externalBoss = boss;
     }
     
-    public void ExecuteSwoop(Vector2 swoopOrigin, Vector2 swoopTarget, Vector2 swoopArcBottom, bool playAnimation = true)
+    public void ExecuteSwoop(Vector2 swoopOrigin, Vector2 swoopTarget, Vector2 swoopArcBottom, bool playAnimation = true, float completionLevel = 1f)
     {
         if (!_swoopStarted)
         {
@@ -41,15 +41,16 @@ public class Swoop
         }
         
         // Calculate t with easing for smooth acceleration and deceleration
-        float t = (Time.time - _swoopStartTime) / swoopDuration;
+        t = (Time.time - _swoopStartTime) / swoopDuration;
     
         // Clamp t to the range [0, 1]
-        if (t > 1)
+        if (t > completionLevel)
         {
             _onSwoopEnd();
-            _swoopStarted = false;
-            _externalBoss.transform.position = swoopTarget;
-            ResetSwoop();
+        }
+
+        if (t > 1)
+        {
             return;
         }
 
@@ -88,7 +89,7 @@ public class Swoop
         return p;
     }
     
-    private void ResetSwoop()
+    public void ResetSwoop()
     {
         _swoopStarted = false;
         _swoopStartPlayed = false;

@@ -1,24 +1,20 @@
 #if UNITY_EDITOR
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-/// <summary>
-/// Code created by Gaskellgames
-/// </summary>
-
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
+    /// <summary>
+    /// Code created by Gaskellgames
+    /// </summary>
+    
     [InitializeOnLoad]
     public static class EditorWindowUtility
     {
         #region Variables
-
-        private static string filePath = "Assets/Gaskellgames/Shared Resources/Utilities/EditorWindowUtility/Data/";
-        private static string asset = "GaskellgamesHubSettings.asset";
         
-        public static GGSettings_SO settings;
-
+        public static GaskellgamesHubSettings_SO settings;
+        
         #endregion
 
         //----------------------------------------------------------------------------------------------------
@@ -39,36 +35,15 @@ namespace Gaskellgames
 
         private static void Initialisation()
         {
-            string completePath;
-            
-            if (Directory.Exists(filePath))
-            {
-                completePath = filePath + asset;
-                settings = AssetDatabase.LoadAssetAtPath<GGSettings_SO>(completePath);
-            }
-            else
-            {
-                string[] results = AssetDatabase.FindAssets("GaskellgamesHubSettings");
-                foreach (string guid in results)
-                {
-                    completePath = AssetDatabase.GUIDToAssetPath(guid);
-                    settings = AssetDatabase.LoadAssetAtPath<GGSettings_SO>(completePath);
-                }
-            }
+            settings = EditorExtensions.GetAssetByType<GaskellgamesHubSettings_SO>();
         }
         
         private static void RunOnceOnStartup()
         {
-            if (!settings)
-            {
-                Initialisation();
-            }
-            
-            if(settings.showHubOnStartup && !SessionState.GetBool("EditorWindowUtilityFirstInit", false))
-            {
-                GaskellgamesHub.GaskellgamesWindow();
-                SessionState.SetBool("EditorWindowUtilityFirstInit", true);
-            }
+            if (!settings) { Initialisation(); }
+            if (!settings || !settings.showHubOnStartup || SessionState.GetBool("EditorWindowUtilityFirstInit", false)) { return; }
+            GaskellgamesHub.OpenWindow_WindowMenu();
+            SessionState.SetBool("EditorWindowUtilityFirstInit", true);
         }
 
         #endregion
@@ -77,24 +52,45 @@ namespace Gaskellgames
 
         #region Public Functions
 
-        public static void LineSeparator(bool includeSpace = true)
+        public static Texture LoadInspectorBanner(string ggPathRef, string relativeFilepath)
         {
-            if(includeSpace) { EditorGUILayout.Space(); }
-            Rect rect = EditorGUILayout.GetControlRect(false, 1);
-            EditorGUI.DrawRect(rect, new Color32(079,079,079, 255));
-            if(includeSpace) { EditorGUILayout.Space(); }
-        }
-
-        public static void DrawInspectorBanner(string textureFilepath)
-        {
-            if (settings != null)
+            if (GgPathRef.TryGetFullFilePath(ggPathRef, relativeFilepath, out string fullFilepath))
             {
-                if (settings.showPackageBanners)
-                {
-                    Texture banner = (Texture)AssetDatabase.LoadAssetAtPath(textureFilepath, typeof(Texture));
-                    GUILayout.Box(banner, GUILayout.ExpandWidth(true), GUILayout.Height(Screen.width / 7.5f));
-                }
+                return (Texture)AssetDatabase.LoadAssetAtPath(fullFilepath, typeof(Texture));
             }
+
+            return null;
+        }
+        
+        public static bool TryDrawBanner(Texture banner, bool editorWindow = false, bool forceShow = false)
+        {
+            // null and condition check
+            if (banner == null) { return false; }
+            if (settings == null) { return false; }
+            if (!forceShow) { if (!settings.showPackageBanners) { return false; } }
+            
+            float imageWidth = EditorGUIUtility.currentViewWidth;
+            float imageHeight = imageWidth * banner.height / banner.width;
+            Rect rect = GUILayoutUtility.GetRect(imageWidth, imageHeight);
+            
+            // adjust rect to account for offsets in inspectors
+            if (!editorWindow)
+            {
+                float paddingTop = -4;
+                float paddingLeft = -18;
+                float paddingRight = -4;
+                
+                // calculate rect size
+                float xMin = rect.x + paddingLeft;
+                float yMin = rect.y + paddingTop;
+                float width = rect.width - (paddingLeft + paddingRight);
+                float height = rect.height;
+
+                rect = new Rect(xMin, yMin, width, height);
+            }
+            
+            GUI.DrawTexture(rect, banner, ScaleMode.ScaleToFit);
+            return true;
         }
 
         #endregion

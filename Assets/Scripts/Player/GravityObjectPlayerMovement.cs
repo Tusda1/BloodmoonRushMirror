@@ -56,17 +56,17 @@ namespace Player {
         private Vector2 _knockbackVector;
         
         [Header("Particles")] 
-        [Required] public ParticleSystem lameParticles;
-        [Required] public ParticleSystem coolParticles;
+        [Attributes.Required] public ParticleSystem lameParticles;
+        [Attributes.Required] public ParticleSystem coolParticles;
         
-        [Header("Player Can Move")] [SerializeField, Required]
+        [Header("Player Can Move")] [SerializeField, Attributes.Required]
         private AllInFavourConsensusSO playerCanMove;
 
         private bool PlayerMovementEnabled => playerCanMove.consensus;
 
         [Header("Debug Loggers")] 
-        [SerializeField, Required] private DebugLoggerSO playerMovementDebugLogger;
-        [SerializeField, Required] private DebugLoggerSO ladderDebugLogger;
+        [SerializeField, Attributes.Required] private DebugLoggerSO playerMovementDebugLogger;
+        [SerializeField, Attributes.Required] private DebugLoggerSO ladderDebugLogger;
 
         #region ***---PrivateFields---***
         public CountdownTimer DashTimer;
@@ -212,8 +212,11 @@ namespace Player {
 
             player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
             player.animator.SetBool(AnimatorIsFallingBool, isFalling);
-            
-            if (!PlayerMovementEnabled) return;
+
+            if (!PlayerMovementEnabled) {
+                player.animator.SetBool(AnimatorJumpBool, false);
+                return;
+            }
 
             CoyoteTimeLogic();
 
