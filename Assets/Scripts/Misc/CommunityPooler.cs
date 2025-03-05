@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,5 +17,9 @@ public class CommunityPooler : MonoBehaviour
         }
         
         ServiceLocator.Register(this);
+    }
+
+    private void OnDestroy() {
+        ServiceLocator.Unregister<CommunityPooler>();
     }
 }
