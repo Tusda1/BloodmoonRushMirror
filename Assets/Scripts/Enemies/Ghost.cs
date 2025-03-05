@@ -126,5 +126,8 @@ public class Ghost : ReactiveBase
     {
         transform.position = startPosition;
         currentState = EnemyState.Scanning;
+        smoothDampScript.SetStartVelocity(Vector2.zero);
+        ResetMovement(Axis.XAxis);
+        ResetMovement(Axis.YAxis);
     }
 }
