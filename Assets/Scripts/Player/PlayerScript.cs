@@ -160,7 +160,9 @@ namespace Player {
         #endregion
 
         #region ---EventFunctions---
-        private void Start() {
+        private void Start()
+        {
+            var collider = GetComponent<Collider2D>();
             playerCanMove.ChangeVote(MoveVotePair, true);
             
             healthComponent.OnDeath += () => StartCoroutine(Die());
