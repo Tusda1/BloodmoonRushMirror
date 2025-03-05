@@ -33,6 +33,7 @@ namespace Checkpoint {
             if (hit.collider != null) {
                 _playerRespawnPos = hit.point + Vector2.up * _playerPivotToGroundDistance;
             }
+            print(_playerPivotToGroundDistance);
         }
 
         private void Respawn() {
