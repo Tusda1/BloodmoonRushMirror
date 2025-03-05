@@ -40,6 +40,8 @@ public class GameOverUI : MonoBehaviour {
 
     private void Start() {
         _audioManager.PlayMusic(GameOverMusic_SoundID);
+
+        _cameraEffects.CircleFadeIn(0.5f);
         
         _retryButton.clicked += () => {
             _cameraEffects.CircleFadeOut(0.5f);
