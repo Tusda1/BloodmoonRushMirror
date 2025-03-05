@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using UnityEditor;
@@ -20,11 +21,11 @@ namespace Utilities.Editor {
         }
 
         private static async Task StepPhysics() {
-            var gravityObjects = FindObjectsByType<GravityObject>(FindObjectsSortMode.None);
+            var gravityObjects = FindObjectsByType<GravityObject>(FindObjectsSortMode.None)
+                .Where(x => x is not (CrusherScript or MovingPlatformScript));
         
             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
-            Debug.Log(gravityObjects.Length);
             const int gravityModifier = 1;
             var gravityForce = Physics2D.gravity * (gravityModifier * Time.fixedDeltaTime);
             var parameters = new object[] { gravityForce, true };

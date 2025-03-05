@@ -31,8 +31,9 @@ namespace Checkpoint {
             RaycastHit2D hit = Physics2D.Raycast(_playerScript.gameObject.transform.position + Vector3.up * 0.1f,
                 Vector2.down, 10, LayerMask.GetMask("Ground"));
             if (hit.collider != null) {
-                _playerRespawnPos = hit.point + Vector2.up * _playerPivotToGroundDistance;
+                _playerRespawnPos = hit.point;
             }
+            print(_playerPivotToGroundDistance);
         }
 
         private void Respawn() {
