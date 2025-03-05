@@ -11,7 +11,7 @@ public class Shield
     private int _blockCounter;
     private GravityObjectPlayerMovement _playerMovement;
     
-    public void ShieldBlock(Action counterAttack, PlayerScript player, DamageInstance damageInstance)
+    public bool ShieldBlock(Action counterAttack, PlayerScript player, DamageInstance damageInstance)
     {
         if (!_playerMovement) _playerMovement = player.GetComponent<GravityObjectPlayerMovement>();
         
@@ -22,6 +22,7 @@ public class Shield
             if (damageInstance.which == DamageInstance.WhichAttack.DashAttack)
             {
                 _playerMovement.isDashing = false;
+                _playerMovement.velocity.x = 0;
                 if (alwaysCounterAttackOnDash)
                 {
                     counterAttack();
@@ -38,6 +39,10 @@ public class Shield
                 _blockCounter = 0;
                 counterAttack();
             }
+
+            return true;
         }
+
+        return false;
     }
 }

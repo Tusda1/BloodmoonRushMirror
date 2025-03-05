@@ -275,7 +275,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         rubyDropAmount = 0;
     }
 
-    public void Respawn() {
+    public virtual void Respawn() {
         isDead = false;
         isVulnerable = false;
         isStunned = false;

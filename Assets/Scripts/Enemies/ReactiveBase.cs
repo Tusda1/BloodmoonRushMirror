@@ -50,4 +50,10 @@ public class ReactiveBase : EnemyBase
     {
         
     }
+
+    public override void Respawn()
+    {
+        base.Respawn();
+        currentState = EnemyState.Scanning;
+    }
 }

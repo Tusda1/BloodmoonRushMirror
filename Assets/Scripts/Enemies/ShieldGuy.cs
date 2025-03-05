@@ -8,8 +8,6 @@ public class ShieldGuy : Skeleton
     
     protected override bool CanBeDamaged(DamageInstance damageInstance)
     {
-        shield.ShieldBlock(base.Attack, player, damageInstance);
-        
-        return damageInstance.which == DamageInstance.WhichAttack.CrouchAttack;
+        return !shield.ShieldBlock(base.Attack, player, damageInstance);
     }
 }

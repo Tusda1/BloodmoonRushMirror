@@ -7,6 +7,9 @@ public class Ghost : ReactiveBase
     [SerializeField] private float attackDistance;
     [SerializeField] private float maxWithdrawDistance = 5f;
     [SerializeField] private float minWithdrawDistance = 3f;
+    [SerializeField] private float minSlowDownDistance = 4f;
+    [SerializeField] private float maxSlowDownDistance = 10f;
+    [SerializeField] private float minSpeedPercentage = 0.8f;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
     
     [HideInInspector] public bool sucked;
@@ -72,14 +75,10 @@ public class Ghost : ReactiveBase
     private void AttackPlayer()
     {
         if (targetObject == null) return;
-
-        var position = transform.position;
-        Vector2 direction = (targetObject.position - position).normalized * moveSpeed;
-        var tempVelocity = Vector2.zero;
-        smoothDampScript.SmoothDampVector2(direction, ref tempVelocity);
-        targetVelocity += tempVelocity;
         
-        if (Vector2.Distance(position, targetObject.position + Vector3.up) < attackDistance)
+        MoveToTarget(targetObject.position);
+        
+        if (Vector2.Distance(transform.position, targetObject.position + Vector3.up) < attackDistance)
         {
             _withdrawing = true;
         }
@@ -98,18 +97,31 @@ public class Ghost : ReactiveBase
 
             _withdrawPosition = (Vector2)targetObject.position + randomPosition;
         }
-
         
-        Vector2 direction = (_withdrawPosition - (Vector2)transform.position).normalized * moveSpeed;
-        var tempVelocity = Vector2.zero;
-        smoothDampScript.SmoothDampVector2(direction, ref tempVelocity);
-        targetVelocity += tempVelocity;
+        MoveToTarget(_withdrawPosition);
         
         if (Vector2.Distance(transform.position, _withdrawPosition) < 0.5f)
         {
             _withdrawing = false;
             _withdrawPosition = Vector2.zero;
         }
+    }
+
+    private void MoveToTarget(Vector2 targetPosition)
+    {
+        var realMoveSpeed = moveSpeed;
+        if (Vector2.Distance(targetPosition, transform.position) < minSlowDownDistance)
+        {
+            realMoveSpeed *= minSpeedPercentage;
+        }
+        else if (Vector2.Distance(targetPosition, transform.position) > minSlowDownDistance)
+        {
+            realMoveSpeed = Mathf.Lerp(moveSpeed * minSpeedPercentage, moveSpeed, Mathf.Clamp(Vector2.Distance(targetPosition, transform.position) - minSlowDownDistance / maxSlowDownDistance, 0, 1));
+        }
+        Vector2 direction = (targetPosition - (Vector2)transform.position).normalized * realMoveSpeed;
+        var tempVelocity = Vector2.zero;
+        smoothDampScript.SmoothDampVector2(direction, ref tempVelocity);
+        targetVelocity += tempVelocity;
     }
     
     private void EscapeSuck()

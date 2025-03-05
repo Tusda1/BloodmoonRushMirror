@@ -1,3 +1,4 @@
+using System;
 using Player;
 using UnityEngine;
 using VContainer;
@@ -22,6 +23,11 @@ namespace Checkpoint {
             }
 
             ReachedCheckpoint();
+        }
+
+        private void OnDisable()
+        {
+            _playerScript.OnRespawn -= Respawn;
         }
 
         private void ReachedCheckpoint() {
