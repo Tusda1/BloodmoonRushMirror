@@ -37,11 +37,14 @@ public class CharacterSays : Unit {
 
     #region ***---OverrideValues---***
     [Inspectable] public Sprite CharacterPortraitOverride;
-    [Inspectable] public FontAsset TextFontAssetOverride;
     [Inspectable] public string CharacterNameOverride;
     [Inspectable] public FontAsset CharacterNameFontAssetOverride;
-    [Inspectable] public float TextSizeOverride;
+    [Inspectable] public float CharacterNameSizeOverride;
+    [Inspectable] public Color CharacterNameColorOverride;
+    
+    [Inspectable] public FontAsset TextFontAssetOverride;
     [Inspectable] public float TextSpeedOverride;
+    [Inspectable] public float TextSizeOverride;
     [Inspectable] public Color TextColorOverride;
     [Inspectable] public string TextOverride;
     [Inspectable] public string TalkSoundIDOverride;
@@ -120,6 +123,7 @@ public class CharacterSays : Unit {
         yield break;
 
         void Initialize() {
+            #region ***---Character---***
             dialogueUIDataContainer.characterPortrait = CharacterPortraitOverride ?? dialogueCharacter.dialogueImage;
             
             dialogueUIDataContainer.characterNameFontAsset = CharacterNameFontAssetOverride ?? dialogueCharacter.dialogueFont;
@@ -128,6 +132,16 @@ public class CharacterSays : Unit {
                 ? dialogueCharacter.characterName
                 : CharacterNameOverride;
 
+            dialogueUIDataContainer.characterNameSize = CharacterNameSizeOverride == 0
+                ? dialogueCharacter.textSize
+                : CharacterNameSizeOverride;
+            
+            dialogueUIDataContainer.textColor = CharacterNameColorOverride == default
+                ? dialogueCharacter.dialogueColor
+                : CharacterNameColorOverride;
+            #endregion
+            
+            #region ***---Text---***
             dialogueUIDataContainer.textSize = TextSizeOverride == 0
                 ? dialogueCharacter.textSize
                 : TextSizeOverride;
@@ -151,6 +165,7 @@ public class CharacterSays : Unit {
                 : dialogueCharacter.whenIsSFXPlayed);
 
             dialogueUIDataContainer.text = "";
+            #endregion
         }
         
         void End() {

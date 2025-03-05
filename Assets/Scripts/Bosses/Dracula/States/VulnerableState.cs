@@ -9,6 +9,7 @@ public class VulnerableState : DraculaState
     
     private void OnEnable()
     {
+        Boss.canDoDamage = false;
         var state = Boss.AnimancerComponent.Play(hurt);
         state.Events(this).OnEnd = () =>
         {
@@ -32,6 +33,7 @@ public class VulnerableState : DraculaState
 
     private void TookDamage()
     {
+        Boss.canDoDamage = true;
         Boss.canTakeDamage = false;
         EndState();
     }

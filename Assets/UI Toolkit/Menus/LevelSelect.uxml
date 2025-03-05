@@ -1,0 +1,9 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/LevelSelect.uss?fileID=7433441132597879392&amp;guid=37954821f0f703f48a92c1fecd111b26&amp;type=3#LevelSelect" />
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/Left-Right.uss?fileID=7433441132597879392&amp;guid=bf66cd8737e6f00428f5f82f7deb54f1&amp;type=3#Left-Right" />
+    <engine:VisualElement name="LevelSelectMenuRoot" class="left" style="flex-grow: 1; width: 100%; height: 100%; position: absolute; transition-duration: 1s;">
+        <engine:VisualElement name="LevelSelectButtonContainer" style="flex-grow: 1; width: 100%; align-items: center; align-self: center; align-content: center; justify-content: center; position: absolute; height: 100%;">
+            <engine:Label text="Load Level:" style="-unity-font-definition: resource(&apos;Fonts/UI&apos;); font-size: 16px;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

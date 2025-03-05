@@ -84,6 +84,8 @@ namespace Player {
         [HideInInspector] public bool wasGroundedLastFrame;
         
         public IPlayerLadderLogic PlayerLadderLogic;
+        
+        private static readonly int AnimatorRespawnTrigger = Animator.StringToHash("Respawn");
         #endregion
 
         #region ***---AnimatorStringToHash---***
@@ -171,7 +173,15 @@ namespace Player {
 
         private void InitializeKnockbackTimer() {
             _knockbackTimer = CountdownTimerBuilder.Start(knockBackTime)
-                .WithOnComplete(() => isTakingKnockback = false)
+                .WithOnComplete(() => {
+                    if (!_spikeStunTimer.IsRunning) {
+                        isTakingKnockback = false;
+                    }
+                    else {
+                        if (player.healthComponent.TotalHealth > 0) gameObject.transform.position = lastPlatformCheckpoint;
+                        player.animator.SetTrigger(AnimatorRespawnTrigger);
+                    }
+                })
                 .Finish();
         }
 
@@ -444,16 +454,16 @@ namespace Player {
             ResetMovement(0);
             _knockbackVector = Vector2.zero;
             isTakingKnockback = true;
+            print("Starting spike stun");
         }
 
         private void SpikeStunStop() {
             //_player.spriteRenderer.color = new Color(1, 1, 1, 1);
-            if (player.healthComponent.TotalHealth > 0) gameObject.transform.position = lastPlatformCheckpoint;
+            //if (player.healthComponent.TotalHealth > 0) gameObject.transform.position = lastPlatformCheckpoint;
             isTakingKnockback = false;
         }
 
         public void SpikeReset() {
-            //gameObject.transform.position = lastPlatformCheckpoint;
             ResetMovement(0);
             _spikeStunTimer.StartTimer();
             isDashing = false;

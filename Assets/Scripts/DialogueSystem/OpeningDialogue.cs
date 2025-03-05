@@ -1,4 +1,3 @@
-using System.Collections;
 using Attributes;
 using SaveLoadSystem;
 using SceneCollections;
@@ -14,11 +13,9 @@ public class OpeningDialogue : MonoBehaviour {
     [Inject] private LevelDataManager _levelDataManager;
     #endregion
 
-    private IEnumerator Start() {
-        yield return null;
-        
+    private void Start() {
 #if UNITY_EDITOR
-        if (SceneCollectionManager.CurrentSceneCollection == null && !forcePlayOnStart) yield break;
+        if (SceneCollectionManager.CurrentSceneCollection == null && !forcePlayOnStart) return;
 #endif
         if (string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointData.ID) || forcePlayOnStart) {
             cutsceneGraph.TriggerUnityEvent("Start");
