@@ -38,6 +38,9 @@ namespace UI {
             foreach (var sceneCollectionSO in scenes) {
                 CreateLevelSelectButton(sceneCollectionSO);
             }
+            
+            _levelSelectMenuRoot.AddToClassList("left");
+            _levelSelectMenuRoot.enabledSelf = false;
         }
 
         private void OnDisable() {

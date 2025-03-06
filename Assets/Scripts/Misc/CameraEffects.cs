@@ -123,6 +123,10 @@ public class CameraEffects : MonoBehaviour {
         _ = MoveCamera(duration, curve, offset, callback);
     }
 
+    public void ResetCameraMove() {
+        cameraPixelatedGameObject.transform.position = Vector3.zero;
+    }
+
 #if UNITY_EDITOR
     [ContextMenu(nameof(TestMoveCamera))]
     private void TestMoveCamera() {

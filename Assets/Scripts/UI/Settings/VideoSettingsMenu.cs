@@ -10,7 +10,7 @@ namespace UI.Settings {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
-        [Header("Display Settings Data")]
+        [Header("Display Settings Data")] 
         [SerializeField, Required] private FullScreenModeSO fullScreenModeSo;
         [SerializeField, Required] private AspectRatioResolutionsSO aspectRatioResolutionsSo;
 
@@ -54,6 +54,10 @@ namespace UI.Settings {
             _vsyncToggle = _videoSettingsMenu.Q<Toggle>("VsyncToggle");
             _fpsLimitSlider = _videoSettingsMenu.Q<SliderInt>("FPSLimiterSlider");
 
+            hasMadeChangeThatRequiresRestart.consensus = false;
+        }
+
+        private void Start() {
             if (_screenModeDropdownMenu != null) {
                 _screenModeDropdownMenu.choices.Clear();
                 foreach (var screenMode in fullScreenModeSo.screenModes) {
@@ -124,10 +128,6 @@ namespace UI.Settings {
                 hasMadeChangeThatRequiresRestart.OnVoteChange += OnHasMadeChangeThatRequiresRestartValueChanged;
             }
             else debugLogger.LogWarning("'hasMadeChangeThatRequiresRestartConsensus' is not set");
-        }
-
-        private void Start() {
-            hasMadeChangeThatRequiresRestart.consensus = false;
 
             debugLogger.Log("Settings menu initialized");
         }
@@ -207,7 +207,7 @@ namespace UI.Settings {
             _videoSettingsMenu.RemoveFromClassList("left");
             _videoSettingsMenu.RemoveFromClassList("right");
             _screenModeDropdownMenu.Focus();
-            
+
             OnMenuActivated.Invoke();
         }
 
@@ -217,7 +217,7 @@ namespace UI.Settings {
             if (addToClassList != null) {
                 _videoSettingsMenu.AddToClassList(addToClassList);
             }
-            
+
             OnMenuDeactivated.Invoke();
         }
     }
