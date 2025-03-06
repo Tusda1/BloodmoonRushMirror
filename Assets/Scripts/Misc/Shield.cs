@@ -22,7 +22,6 @@ public class Shield
             if (damageInstance.which == DamageInstance.WhichAttack.DashAttack)
             {
                 _playerMovement.isDashing = false;
-                _playerMovement.velocity.x = 0;
                 if (alwaysCounterAttackOnDash)
                 {
                     counterAttack();

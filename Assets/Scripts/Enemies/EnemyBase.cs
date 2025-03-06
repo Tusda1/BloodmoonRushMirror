@@ -121,7 +121,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             return;
         }
         
-        if (damageInstance.which == DamageInstance.WhichAttack.CrouchAttack && !isGrounded) {
+        if (damageInstance.which == DamageInstance.WhichAttack.CrouchAttack && !isGrounded && !damageInstance.ignoreInvincibility) {
             return;
         }
         
