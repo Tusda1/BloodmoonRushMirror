@@ -47,6 +47,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private GameObject _rubyPrefab;
     private Material _whiteMaterial;
     private Material _defaultMaterial;
+    private SpriteRenderer _spriteRenderer;
     private Pooler _rubyPooler;
     #endregion
     
@@ -94,6 +95,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         _rubyPrefab = Resources.Load<GameObject>("Prefabs/Ruby");
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         
         _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab);
         
@@ -170,10 +172,10 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
     private IEnumerator FlashWhite() {
         // Flash white
-        GetComponent<SpriteRenderer>().material = _whiteMaterial;
+        _spriteRenderer.material = _whiteMaterial;
         yield return new WaitForSeconds(0.1f);
         // Return to normal
-        GetComponent<SpriteRenderer>().material = _defaultMaterial;
+        _spriteRenderer.material = _defaultMaterial;
     }
 
     private IEnumerator KnockUp(Vector2 knockbackStrength) {
@@ -282,6 +284,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         gameObject.SetActive(true);
         currentHealth = maxHealth;
         transform.position = startPosition;
+        _spriteRenderer.material = _defaultMaterial;
     }
 
     private void OnTriggerStay2D(Collider2D other) {
