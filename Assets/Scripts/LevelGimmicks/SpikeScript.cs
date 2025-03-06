@@ -13,6 +13,8 @@ public class SpikeScript : MonoBehaviour {
                 playerScript.playerMovement.SpikeReset();
                 break;
             case EnemyBase enemyBase:
+                if (!enemyBase.takesSpikeDamage) return;
+                
                 damageInstance.damage = 99;
                 enemyBase.TakeDamage(damageInstance);
                 damageInstance.damage = 1;
