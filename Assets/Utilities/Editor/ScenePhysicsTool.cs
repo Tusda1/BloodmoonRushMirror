@@ -22,7 +22,7 @@ namespace Utilities.Editor {
 
         private static async Task StepPhysics() {
             var gravityObjects = FindObjectsByType<GravityObject>(FindObjectsSortMode.None)
-                .Where(x => x is not (CrusherScript or MovingPlatformScript));
+                .Where(x => x is not (CrusherScript or MovingPlatformScript or KeyScript));
         
             const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 

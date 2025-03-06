@@ -124,6 +124,8 @@ namespace UI {
                     _audioManager.PlayMusic(MainMenuMusic_SoundID);
                 }
             });
+
+            _cameraEffects.ResetCameraMove();
         }
 
         private void StartButtonClicked() {
@@ -137,7 +139,7 @@ namespace UI {
                     () => _cameraEffects.CircleFadeIn(1)));
 
             _startButton.clicked -= StartButtonClicked;
-#elif BETA_BUILD
+#elif LEVEL_SELECT
             levelSelectMenu.Activate();
 #else
             savesMenu.Activate();
