@@ -8,7 +8,11 @@ public class SteamHazard : MonoBehaviour {
 
     #region ---Fields---
     private CountdownTimer _steamHazardTimer;
+    private CountdownTimer _hurtboxDelayTimer;
+    private CountdownTimer _steamDurationTimer;
     [SerializeField] private float timeBetweenSteam;
+    [SerializeField] private float hurtboxDelayTime;
+    [SerializeField] private float hurtboxTime;
     [SerializeField] private Animator animator;
     [SerializeField] private DamageInstance damageInstance;
     [SerializeField] private BoxCollider2D boxCollider2D;
@@ -16,18 +20,29 @@ public class SteamHazard : MonoBehaviour {
 
     private void Start() {
         _steamHazardTimer = new CountdownTimer(timeBetweenSteam);
+        _hurtboxDelayTimer = new CountdownTimer(hurtboxDelayTime);
+        _steamDurationTimer = new CountdownTimer(hurtboxTime);
         _steamHazardTimer.OnComplete += ShootSteam;
+        _hurtboxDelayTimer.OnComplete += EnableCollider;
+        _steamDurationTimer.OnComplete += DisableCollider;
         boxCollider2D.enabled = false;
     }
 
     private void ShootSteam() {
-        boxCollider2D.enabled = true;
         animator.SetTrigger(Steam);
+        _hurtboxDelayTimer.StartTimer();
+    }
+
+    private void EnableCollider() {
         boxCollider2D.enabled = true;
+        _steamDurationTimer.StartTimer();
+    }
+
+    private void DisableCollider() {
+        boxCollider2D.enabled = false;
     }
 
     public void DoneShooting() {
-        boxCollider2D.enabled = false;
         _steamHazardTimer.StartTimer();
     }
     

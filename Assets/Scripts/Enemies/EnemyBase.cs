@@ -50,17 +50,12 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private SpriteRenderer _spriteRenderer;
     private Pooler _rubyPooler;
     #endregion
-    
-    #region ***---GameManagers---***
-    private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
-    private static LevelDataManager LevelDataManager => LevelDataManager.LevelDataManagerCache;
-    #endregion
 
     #region ***---DataBindingVariables---***
     [field: Header("Data Binding")]
     [field: SerializeField] public string ID { get; set; }
     [field: SerializeField] public EnemyData SaveSystemData { get; set; }
-    public EnemyData DataInGameData => LevelDataManager.SaveSystemData.enemyDatas.GetOrAddByIdInList(ID,
+    public EnemyData DataInGameData => _levelDataManager.SaveSystemData.enemyDatas.GetOrAddByIdInList(ID,
         new EnemyData {
             name = name,
             ID = ID,
@@ -71,9 +66,22 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         });
     #endregion
     
-    [Inject] protected IAudioManager _audioManager;
+    protected IAudioManager AudioManager;
+    private ISaveLoadSystemManager _saveLoadSystemManager;
+    private LevelDataManager _levelDataManager;
 
     [SerializeField] private string death_SoundID; 
+    #endregion
+
+    #region ---Initialization---
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        AudioManager = container.Resolve<IAudioManager>();
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+#endif
+        _levelDataManager = container.Resolve<LevelDataManager>();
+    }
     #endregion
 
     #region ---Methods---
@@ -167,7 +175,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     
     protected virtual void PlayHitSoundEffect()
     {
-        _audioManager.PlayOneShot("Enemy_Generic_Hit");
+        AudioManager.PlayOneShot("Enemy_Generic_Hit");
     }
 
     private IEnumerator FlashWhite() {
@@ -223,7 +231,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     {
         isDead = true;
         
-        _audioManager.PlayOneShot("Enemy_Die");
+        AudioManager.PlayOneShot("Enemy_Die");
         if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, OnDeath);
     }
 
@@ -231,7 +239,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     {
         gameObject.SetActive(false);
         
-        _audioManager.PlayOneShotAttached(death_SoundID, gameObject);
+        AudioManager.PlayOneShotAttached(death_SoundID, gameObject);
     }
 
     private void DropRubies() {
@@ -334,12 +342,9 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
     #region ---DataBindingMethods---
     public virtual void Bind() {
-        if (SaveLoadSystemManager.HasInstance || !Application.isPlaying) {
-            SaveLoadSystemManager.Bind(this, DataInGameData);
-        }
-        else {
-            Debug.LogWarning("No SaveLoadSystemManager found", this);
-        }
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
     }
     
     [ContextMenu(nameof(LoadBindData))]

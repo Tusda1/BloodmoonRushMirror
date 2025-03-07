@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Attributes;
 using Consensus;
 using ExtensionMethods;
-using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using SceneCollections;
 using TetraCreations.Attributes;
@@ -32,6 +31,7 @@ namespace Player {
 
         [Header("Player")] 
         public int playerLives = 5;
+        public int playerLivesStartAmount;
         [SerializeField] private LayerMask whatIsInteractable;
         public bool isAttacking;
         public PlayerHitbox hitbox;
@@ -115,10 +115,10 @@ namespace Player {
             }
         }
 
-        private static PlayerData PlayerData => SaveLoadSystemManager.Instance.gameData.playerData;
+        private PlayerData PlayerData => _saveLoadSystemManager.CurrentGameData.playerData;
         #endregion
 
-        private SaveLoadSystemManager _saveLoadSystemManager;
+        private ISaveLoadSystemManager _saveLoadSystemManager;
         private CameraEffects _cameraEffects;
         private IControlSchemeChanger _controlSchemeChanger;
         private IPauseManager _pauseManager;
@@ -140,7 +140,9 @@ namespace Player {
         #region ---Initialization---
         [Inject]
         public void Construct(IObjectResolver container) {
-            _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+#endif
             _cameraEffects = container.Resolve<CameraEffects>();
             _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
             _pauseManager = container.Resolve<IPauseManager>();
@@ -150,19 +152,15 @@ namespace Player {
         private void Awake() {
             ServiceLocator.Register(this);
             debugLogger.messageOrigin = this;
-#if UNITY_EDITOR
-            if (SceneCollectionManager.CurrentSceneCollection == null) {
-                LevelDataManager.Instance.LevelStartPoint = transform.position;
-            }
-#endif
+            
             Bind();
         }
         #endregion
 
         #region ---EventFunctions---
-        private void Start()
-        {
-            var collider = GetComponent<Collider2D>();
+        private void Start() {
+            playerLivesStartAmount = playerLives;
+            
             playerCanMove.ChangeVote(MoveVotePair, true);
             
             healthComponent.OnDeath += () => StartCoroutine(Die());
@@ -424,7 +422,7 @@ namespace Player {
                 healthComponent.TempHealth += 1;
             }
             else {
-                healthComponent.Heal(4);
+                healthComponent.Heal(3);
             }
 
             if (playerLives == 1) {
@@ -448,12 +446,15 @@ namespace Player {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            _saveLoadSystemManager?.Bind(this, DataInGameData);
+#if SAVESYSTEM_ACTIVE
+            _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
         }
 
         [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
             healthComponent.Health = SaveSystemData.health;
+            healthComponent.TempHealth = SaveSystemData.tempHealth;
             playerLives = SaveSystemData.lives;
             gems = SaveSystemData.gems;
         }

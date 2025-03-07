@@ -1,7 +1,6 @@
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utilities.DataBinding;
 using VContainer;
 #if UNITY_EDITOR
@@ -15,19 +14,12 @@ namespace Triggers {
         [SerializeField] private string musicID;
         [SerializeField] private int calmness;
 
-        #region ***---GameManagers---***
-        private static SaveLoadSystemManager SaveLoadSystemManager => SaveLoadSystemManager.Instance;
-        private static LevelDataManager LevelDataManager => LevelDataManager.LevelDataManagerCache;
-        #endregion
-
         #region ***---DataBindingVariables---***
         [field: Header("Data Binding")]
-        [field: SerializeField]
-        public string ID { get; set; }
-
+        [field: SerializeField] public string ID { get; set; }
         [field: SerializeField] public TriggerData SaveSystemData { get; set; }
 
-        public TriggerData DataInGameData => LevelDataManager.DataInGameData.triggerDatas.GetOrAddByIdInList(ID,
+        public TriggerData DataInGameData => _levelDataManager.DataInGameData.triggerDatas.GetOrAddByIdInList(ID,
             new TriggerData {
                 name = name,
                 ID = ID,
@@ -35,7 +27,21 @@ namespace Triggers {
             });
         #endregion
 
-        [Inject] private LevelMusicManager _levelMusicManager;
+        private ISaveLoadSystemManager _saveLoadSystemManager;
+        private LevelMusicManager _levelMusicManager;
+        private LevelDataManager _levelDataManager;
+        #endregion
+        
+        
+        #region ---Initialization---
+        [Inject]
+        public void Construct(IObjectResolver container) {
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+#endif
+            _levelMusicManager = container.Resolve<LevelMusicManager>();
+            _levelDataManager = container.Resolve<LevelDataManager>();
+        }
         #endregion
 
         #region ---EventFunctions---
@@ -51,12 +57,9 @@ namespace Triggers {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            if (SaveLoadSystemManager != null || !Application.isPlaying) {
-                SaveLoadSystemManager.Bind(this, DataInGameData);
-            }
-            else {
-                Debug.LogWarning("No SaveLoadSystemManager found", this);
-            }
+#if SAVESYSTEM_ACTIVE
+            _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
         }
 
 #if UNITY_EDITOR
