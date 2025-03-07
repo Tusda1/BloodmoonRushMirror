@@ -148,7 +148,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             Debug.LogWarning($"blood splatter on {name} is null");
         }
 
-        if (!isImmortal) currentHealth -= damageInstance.damage;
+        if (!isImmortal && !isVulnerable) currentHealth -= damageInstance.damage;
 
         if (currentHealth <= 0) {
             Die();
