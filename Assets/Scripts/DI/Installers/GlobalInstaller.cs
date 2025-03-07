@@ -41,12 +41,9 @@ public class GlobalInstaller : LifetimeScope {
         // --- Save/Load System --- \\
         builder.RegisterInstance(saveSlots);
         builder.RegisterInstance(newGameData);
-        builder.Register<FileDataService<SaveGameData>>(Lifetime.Singleton)
-            .As<IDataService<SaveGameData>>();
-        builder.Register<JSONSerializer>(Lifetime.Singleton)
-            .As<ISerializer>();
+        builder.Register<IDataService<SaveGameData>, FileDataService<SaveGameData>>(Lifetime.Singleton);
+        builder.Register<ISerializer, JSONSerializer>(Lifetime.Singleton);
         builder.Register<DataBinder>(Lifetime.Singleton);
-        builder.Register<CheckpointAndFileSaveSystem>(Lifetime.Singleton)
-            .As<ISaveLoadSystemManagerGeneric<SaveGameData>>();
+        builder.Register<ISaveLoadSystemManager, CheckpointAndFileSaveSystem>(Lifetime.Singleton);
     }
 }

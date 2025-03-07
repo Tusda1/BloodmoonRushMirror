@@ -422,7 +422,7 @@ namespace Player {
                 healthComponent.TempHealth += 1;
             }
             else {
-                healthComponent.Heal(4);
+                healthComponent.Heal(3);
             }
 
             if (playerLives == 1) {
