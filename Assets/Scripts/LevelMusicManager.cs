@@ -13,7 +13,7 @@ public class LevelMusicManager : MonoBehaviour, IBind<MusicData> {
 
     public IAudioManager AudioManager;
     private LevelDataManager _levelDataManager;
-    private SaveLoadSystemManager _saveLoadSystemManager;
+    private ISaveLoadSystemManager _saveLoadSystemManager;
 
     #region ***---DataBinding---***
     [field: Header("Data Binding")]
@@ -30,7 +30,9 @@ public class LevelMusicManager : MonoBehaviour, IBind<MusicData> {
     public void Construct(IObjectResolver container) {
         AudioManager = container.Resolve<IAudioManager>();
         _levelDataManager = container.Resolve<LevelDataManager>();
-        _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+#endif
     }
 
     private void Start() {
@@ -63,7 +65,9 @@ public class LevelMusicManager : MonoBehaviour, IBind<MusicData> {
 
     #region ---DataBindingMethods---
     public void Bind() {
-        _saveLoadSystemManager.Bind(this, DataInGameData);
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
     }
 
     [ContextMenu(nameof(LoadBindData))]
@@ -71,6 +75,8 @@ public class LevelMusicManager : MonoBehaviour, IBind<MusicData> {
         SetCalmnessParameter(SaveSystemData.CalmnessParameter);
         PlayMusic(SaveSystemData.MusicID);
     }
+
+    public void LoadCheckpointBindData() => LoadBindData();
 
     [ContextMenu(nameof(SaveBindData))]
     public void SaveBindData() {

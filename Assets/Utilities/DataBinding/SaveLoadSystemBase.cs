@@ -68,7 +68,7 @@ namespace Utilities.DataBinding {
             
             SaveAllDataBinds();
 
-            DataService.Save(gameData);
+            DataService.SaveToFile(gameData);
         }
 
         /// <summary>

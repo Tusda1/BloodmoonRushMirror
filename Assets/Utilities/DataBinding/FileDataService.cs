@@ -33,7 +33,7 @@ namespace Utilities.DataBinding {
             return Path.Combine(DataPath, fileName)  + FileExtension;
         }
 
-        public void Save(TGameData gameData) {
+        public void SaveToFile(TGameData gameData) {
             var filePath = GetPathToSaveFile(gameData.Name);
 
             File.WriteAllText(filePath, Serializer.Serialize(gameData));
