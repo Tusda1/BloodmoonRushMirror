@@ -175,7 +175,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     
     protected virtual void PlayHitSoundEffect()
     {
-        AudioManager.PlayOneShot("Enemy_Generic_Hit");
+        AudioManager.PlayOneShotAttached("Enemy_Generic_Hit", gameObject);
     }
 
     private IEnumerator FlashWhite() {
@@ -231,7 +231,7 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     {
         isDead = true;
         
-        AudioManager.PlayOneShot("Enemy_Die");
+        AudioManager.PlayOneShotAttached("Enemy_Die", gameObject);
         if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, OnDeath);
     }
 

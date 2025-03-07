@@ -13,7 +13,7 @@ public interface ISaveLoadSystemManagerGeneric<TGameData> where TGameData : IGam
     void CheckpointLoad();
     void SaveLoad();
 
-    void NewSaveSlotDataData(SaveSlotDataSO saveSlotData);
+    void SetCurrentGameDataFromTemplate(string gameDataName);
     void SetCurrentGameDataFromSaveSlot(SaveSlotDataSO saveSlotData);
     void DeleteSaveSlotData(SaveSlotDataSO saveSlotData);
 }

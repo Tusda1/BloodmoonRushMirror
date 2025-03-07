@@ -1,7 +1,3 @@
-#if !DEMO_BUILD || !LEVEL_SELECT
-#define SAVESYSTEM_ACTIVE
-#endif
-
 using Attributes;
 using FMODScripts;
 using SaveLoadSystem.Data;
@@ -20,7 +16,7 @@ public class GlobalInstaller : LifetimeScope {
     protected override void Configure(IContainerBuilder builder) {
         // --- DebugLogger System --- \\
         builder.Register<IProvider<DebugLoggerSO>, DebugLoggerProvider>(Lifetime.Singleton);
-
+        
         // --- Dialogue System --- \\
         builder.RegisterInstance(dialogueDictionary);
         
@@ -41,9 +37,12 @@ public class GlobalInstaller : LifetimeScope {
         // --- Save/Load System --- \\
         builder.RegisterInstance(saveSlots);
         builder.RegisterInstance(newGameData);
-        builder.Register<IDataService<SaveGameData>, FileDataService<SaveGameData>>(Lifetime.Singleton);
-        builder.Register<ISerializer, JSONSerializer>(Lifetime.Singleton);
+        builder.Register<FileDataService<SaveGameData>>(Lifetime.Singleton)
+            .As<IDataService<SaveGameData>>();
+        builder.Register<JSONSerializer>(Lifetime.Singleton)
+            .As<ISerializer>();
         builder.Register<DataBinder>(Lifetime.Singleton);
-        builder.Register<ISaveLoadSystemManager, CheckpointAndFileSaveSystem>(Lifetime.Singleton);
+        builder.Register<CheckpointAndFileSaveSystem>(Lifetime.Singleton)
+            .As<ISaveLoadSystemManager>();
     }
 }

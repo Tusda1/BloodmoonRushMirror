@@ -141,7 +141,7 @@ namespace Player {
         [Inject]
         public void Construct(IObjectResolver container) {
 #if SAVESYSTEM_ACTIVE
-        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+            _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
 #endif
             _cameraEffects = container.Resolve<CameraEffects>();
             _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
@@ -363,6 +363,8 @@ namespace Player {
             healthComponent.Health = healthComponent.maxHealth;
 
             LoseGems();
+
+            _saveLoadSystemManager.CheckpointLoad();
 
             animator.ResetTrigger(AnimatorDeathTrigger);
             animator.SetTrigger(AnimatorRespawnTrigger);

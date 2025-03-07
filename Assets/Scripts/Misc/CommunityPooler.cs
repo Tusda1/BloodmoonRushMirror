@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[DefaultExecutionOrder(1)]
+[DefaultExecutionOrder(2)]
 public class CommunityPooler : MonoBehaviour 
 {
     public List<Pooler> poolers {get ;} = new();
