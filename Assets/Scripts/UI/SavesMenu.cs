@@ -1,6 +1,5 @@
 using System;
 using Attributes;
-using SaveLoadSystem;
 using SceneCollections;
 using UI.Settings;
 using UnityEngine;
@@ -31,13 +30,22 @@ namespace UI {
         #endregion
 
         #region ***---DI---***
-        [Inject] private CameraEffects _cameraEffects;
-        [Inject] private SaveLoadSystemManager _saveLoadSystemManager;
-        [Inject] private SaveSlots _saveSlots;
+        private ISaveLoadSystemManager _saveLoadSystemManager;
+        private CameraEffects _cameraEffects;
+        private SaveSlots _saveSlots;
         #endregion
         #endregion
 
-        #region ---EventFunctions---
+        #region ---Initialization---
+        [Inject]
+        public void Construct(IObjectResolver container) {
+#if SAVESYSTEM_ACTIVE
+            _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+#endif
+            _cameraEffects = container.Resolve<CameraEffects>();
+            _saveSlots = container.Resolve<SaveSlots>();
+        }
+        
         private void Awake() {
             _root = uiDocument.rootVisualElement;
             _savesMenuRoot = _root.Q<VisualElement>("SavesMenuRoot");
@@ -48,8 +56,9 @@ namespace UI {
         }
 
         private void Start() {
+#if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager.UpdateSaveSlotSO();
-            
+#endif
             _saveSlot1.clicked += () => LoadSave(_saveSlots.saveSlot1Data);
             _saveSlot2.clicked += () => LoadSave(_saveSlots.saveSlot2Data);
             _saveSlot3.clicked += () => LoadSave(_saveSlots.saveSlot3Data);
@@ -90,13 +99,14 @@ namespace UI {
         }
         
         private void LoadSave(SaveSlotDataSO saveSlotData) {
+#if SAVESYSTEM_ACTIVE
             if (saveSlotData.lastTimePlayed == string.Empty) {
-                _saveLoadSystemManager.NewGame(saveSlotData);
+                _saveLoadSystemManager.NewSaveSlotDataData(saveSlotData);
                 saveSlotData.currentSceneCollection = newGameSceneCollection;
             }
             else {
-                _saveLoadSystemManager.LoadSave(saveSlotData.saveSlotName);
-                saveSlotData.currentSceneCollection = _saveLoadSystemManager.gameData.CurrentSceneCollection;
+                _saveLoadSystemManager.SetCurrentGameDataFromSaveSlot(saveSlotData);
+                saveSlotData.currentSceneCollection = _saveLoadSystemManager.CurrentGameData.CurrentSceneCollection;
             }
 
             Debug.Log(saveSlotData.currentSceneCollection.name);
@@ -104,6 +114,7 @@ namespace UI {
             _cameraEffects.CircleFadeOut(1,
                 () => _ = SceneCollectionManager.LoadSceneCollectionAsync(saveSlotData.currentSceneCollection,
                     () => _cameraEffects.CircleFadeIn(1)));
+#endif
         }
         #endregion
     }

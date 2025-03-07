@@ -40,7 +40,7 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
 
     public event Action CheckpointReached = delegate { };
     
-    private SaveLoadSystemManager _saveLoadSystemManager;
+    private ISaveLoadSystemManager _saveLoadSystemManager;
     private LevelDataManager _levelDataManager;
     private IAudioManager _audioManager;
     private PlayerScript _playerScript;
@@ -54,7 +54,9 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     #region ---Initialization---
     [Inject]
     public void Construct(IObjectResolver container) {
-        _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+#endif
         _levelDataManager = container.Resolve<LevelDataManager>();
         _audioManager = container.Resolve<IAudioManager>();
         _playerScript = container.Resolve<PlayerScript>();
@@ -96,7 +98,9 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
 
     #region ---DataBindingMethods---
     public void Bind() {
-        _saveLoadSystemManager.Bind(this, DataInGameData);
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
     }
 
 #if UNITY_EDITOR

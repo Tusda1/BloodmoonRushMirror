@@ -27,14 +27,16 @@ public class ConversationTrigger : TriggerBox, IBind<TriggerData> {
     });
     #endregion
     
-    private SaveLoadSystemManager _saveLoadSystemManager;
+    private ISaveLoadSystemManager _saveLoadSystemManager;
     private LevelDataManager _levelDataManager;
     #endregion
 
     #region ---Initialization---
     [Inject]
     public void Construct(IObjectResolver container) {
-        _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+#endif
         _levelDataManager = container.Resolve<LevelDataManager>();
     }
     
@@ -49,7 +51,9 @@ public class ConversationTrigger : TriggerBox, IBind<TriggerData> {
 
     #region ---DataBindingMethods---
     public void Bind() {
-        _saveLoadSystemManager.Bind(this, DataInGameData);
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
     }
 
 #if UNITY_EDITOR

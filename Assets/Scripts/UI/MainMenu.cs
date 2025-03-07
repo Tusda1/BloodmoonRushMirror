@@ -1,7 +1,6 @@
 using System;
 using Attributes;
 using Consensus;
-using SaveLoadSystem;
 using SceneCollections;
 using UI.Settings;
 using UnityEngine;
@@ -43,7 +42,7 @@ namespace UI {
         private IAudioManager _audioManager;
         private DebugLoggerSO _debugLoggerSO;
         private CameraEffects _cameraEffects;
-        private SaveLoadSystemManager _saveLoadSystemManager;
+        private ISaveLoadSystemManager _saveLoadSystemManager;
 
         private Action _updateActions = delegate { };
         #endregion
@@ -67,7 +66,9 @@ namespace UI {
             _audioManager = container.Resolve<IAudioManager>();
             _debugLoggerSO = container.ResolveProviderID<DebugLoggerSO>("UI");
             _cameraEffects = container.Resolve<CameraEffects>();
-            _saveLoadSystemManager = container.Resolve<SaveLoadSystemManager>();
+            #if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+#endif
         }
 
         private void Awake() {
@@ -132,7 +133,6 @@ namespace UI {
 #if DEMO_BUILD
             var saveSlotData = ScriptableObject.CreateInstance<SaveSlotDataSO>();
             saveSlotData.currentSceneCollection = demoSceneCollectionSO;
-            _saveLoadSystemManager.NewGame(saveSlotData);
             
             _cameraEffects.CircleFadeOut(1,
                 () => _ = SceneCollectionManager.LoadSceneCollectionAsync(saveSlotData.currentSceneCollection,
