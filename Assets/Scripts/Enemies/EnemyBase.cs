@@ -296,15 +296,8 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     private void OnTriggerStay2D(Collider2D other) {
-        if (isDead) {
-            return;
-        }
-
-        if (isStunned) {
-            return;
-        }
-
-        if (player.healthComponent.HasInvincibilityFrames) {
+        if (isDead || isStunned || player.healthComponent.HasInvincibilityFrames)
+        {
             return;
         }
 

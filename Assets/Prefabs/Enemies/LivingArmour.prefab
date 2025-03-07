@@ -240,7 +240,7 @@ MonoBehaviour:
   knockbackSmoothDampScript:
     smoothTime: 0.1
   bloodSplatter: {fileID: 0}
-  isImmortal: 0
+  isImmortal: 1
   canTakeKnockback: 1
   <ID>k__BackingField: c90b6e9f-9b26-4205-96d7-e6a0f4136c3a
   <SaveSystemData>k__BackingField:
@@ -267,6 +267,8 @@ MonoBehaviour:
   shield:
     blocksUntilCounterAttack: 3
     alwaysCounterAttackOnDash: 1
+    blowsUntilBreak: 2
+    breakResetTime: 1
 --- !u!61 &7390510478339426088
 BoxCollider2D:
   m_ObjectHideFlags: 0
