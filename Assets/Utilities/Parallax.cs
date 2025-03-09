@@ -1,11 +1,18 @@
 using System;
+using System.Collections;
+using System.Linq;
+using ExtensionMethods;
+using SaveLoadSystem;
+using SaveLoadSystem.Data;
+using Unity.Cinemachine;
 using UnityEngine;
+using Utilities.DataBinding;
 using VContainer;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class Parallax : MonoBehaviour {
+public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     #region ---Fields---
     [SerializeField] private bool startEnabled;
     [SerializeField] private ParallaxElement[] parallaxElements;
@@ -15,14 +22,43 @@ public class Parallax : MonoBehaviour {
     private Vector3 _previousCameraPosition;
     private Vector3 _cameraDeltaMovement;
     private bool _enabled;
-    #endregion
     
+    #region ***---DataBindingVariables---***
+    [field: Header("Data Binding")]
+    [field: SerializeField] public string ID { get; set; }
+
+    [field: SerializeField] public ParallaxData SaveSystemData { get; set; }
+
+    public ParallaxData DataInGameData => _levelDataManager.DataInGameData.parallaxDatas
+        .GetOrAddByIdInList(ID, new ParallaxData {
+            ID = ID,
+            Camera = ActiveCamera,
+            CameraPosition = ActiveCamera.transform.position,
+            Positions = GetAllChildPositions()
+        });
+    #endregion
+
+    private CinemachineCamera ActiveCamera => VirtualCameraSwitch.ActiveVirtualCameraSwitch.cinemachineCamera;
+    
+    private ISaveLoadSystemManager _saveLoadSystemManager;
+    private LevelDataManager _levelDataManager;
+    private CinemachineBrain _cinemachineBrain;
+    #endregion
+
+    #region ---Initialization---
     [Inject]
     public void Construct(IObjectResolver container) {
         _mainCamera = container.ResolveInstanceID<Camera>(LevelInstaller.MainCameraID);
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+#endif
+        _levelDataManager = container.Resolve<LevelDataManager>();
+        _cinemachineBrain = container.Resolve<CinemachineBrain>();
     }
 
     private void Start() {
+        Bind();
+        
         _mainCameraTransform = _mainCamera.transform;
         
         _previousCameraPosition = _mainCameraTransform.position;
@@ -64,9 +100,10 @@ public class Parallax : MonoBehaviour {
         
         if (startEnabled) Enable();
     }
+    #endregion
     
     public void Enable() {
-        if (_enabled)   return;
+        if (_enabled) return;
         _enabled = true;
         
         _previousCameraPosition = _mainCameraTransform.position;
@@ -166,6 +203,55 @@ public class Parallax : MonoBehaviour {
         var parallaxMovementY = _cameraDeltaMovement.y + _cameraDeltaMovement.y * parallaxElement.yAxisEffectMultiplier;
 
         parallaxElement.objectTransform.position += new Vector3(0, parallaxMovementY, 0);
+    }
+    #endregion
+
+    private Vector3[] GetAllChildPositions() {
+        return transform.GetImmediateChildren().Select(x => x.transform.position).ToArray();
+    }
+    
+    #region ---DataBindingMethods---
+    public void Bind() {
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
+    }
+
+#if UNITY_EDITOR
+    private void OnValidate() {
+        if (gameObject.activeInHierarchy && string.IsNullOrEmpty(ID)) {
+            ID = Guid.NewGuid().ToString();
+            Debug.Log($"Setting new guid for {nameof(ConversationTrigger)}");
+        }
+    }
+#endif
+
+    [ContextMenu(nameof(LoadBindData))]
+    public void LoadBindData() {
+        StartCoroutine(Blend());
+        
+        DataInGameData.Camera.ForceCameraPosition(DataInGameData.CameraPosition, Quaternion.identity);
+        
+        var children = transform.GetImmediateChildren().ToArray();
+        for (var index = 0; index < children.Length; index++) {
+            var child = children[index];
+            child.transform.position = DataInGameData.Positions[index];
+        }
+        
+        _previousCameraPosition = DataInGameData.CameraPosition;
+    }
+
+    private IEnumerator Blend() {
+        _cinemachineBrain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.Cut, 0);
+        yield return new WaitForSeconds(0.2f);
+        _cinemachineBrain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseOut, 0.6f);
+    }
+
+    public void LoadCheckpointBindData() => LoadBindData();
+
+    [ContextMenu(nameof(SaveBindData))]
+    public void SaveBindData() {
+        DataInGameData.Positions = GetAllChildPositions();
     }
     #endregion
 

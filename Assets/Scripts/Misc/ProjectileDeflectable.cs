@@ -107,6 +107,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         
         AnimancerState state = _animancerComponent.Play(hitAnimation);
         state.Events(this).OnEnd = () => gameObject.SetActive(false);
+        _circleCollider2D.enabled = false;
         
         rb2d.linearVelocity = Vector2.zero;
     }

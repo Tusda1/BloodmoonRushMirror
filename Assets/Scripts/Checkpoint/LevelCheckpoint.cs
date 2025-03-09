@@ -82,8 +82,9 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
         state.Events(this).OnEnd = () => animancerComponent.Play(activeIdle);
 
         _playerScript.CheckpointHealing();
-
-        SaveBindData();
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.SaveAllDataBinds();
+#endif
     }
     
     public void TryStartOnIdle() {

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using VContainer;
 
-[DefaultExecutionOrder(2)]
+[DefaultExecutionOrder(1)]
 public class VirtualCameraSwitch : MonoBehaviour {
     #region ---Fields---
     [SerializeField, Required] public CinemachineCamera cinemachineCamera;

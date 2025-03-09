@@ -20,10 +20,11 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
     #region ---Initialization---
     [Inject]
     public void Construct(IObjectResolver container) {
-        DataService = container.Resolve<FileDataService<SaveGameData>>();
+        _debugLogger = container.ResolveProviderID<DebugLoggerSO>("SaveLoadSystem");
+        
+        DataService = container.Resolve<IDataService<SaveGameData>>();
         DataBinder = container.Resolve<DataBinder>();
 
-        _debugLogger = container.ResolveProviderID<DebugLoggerSO>("SaveLoadSystem");
         _saveSlots = container.Resolve<SaveSlots>();
         _newGameData = container.Resolve<GameDataScrubGeneric<SaveGameData>>();
     }
@@ -47,17 +48,6 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
 
         var metaData = DataService.ReadFileMetadata(pathToSaveFile);
         saveSlotData.lastTimePlayed = metaData.LastWriteTime.ToString("HH:mm dd/MM/yyyy");
-    }
-        
-    /// <summary>
-    /// Creates a new save for the save slot with "_newGameData" as a base template.
-    /// </summary>
-    public void NewSaveSlotDataData(SaveSlotDataSO saveSlotData) {
-        CurrentGameData = (SaveGameData)_newGameData.gameData.Clone();
-
-        CurrentGameData.Name = saveSlotData.saveSlotName;
-
-        _debugLogger.Log($"Creating new game data with name '{CurrentGameData.Name}' with values from '{_newGameData.gameData.Name}'");
     }
 
     /// <summary>
@@ -128,4 +118,15 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
         }
     }
     #endregion
+    
+    /// <summary>
+    /// Sets CurrentGameData with "_newGameData" as a base template.
+    /// </summary>
+    public void SetCurrentGameDataFromTemplate(string name) {
+        CurrentGameData = (SaveGameData)_newGameData.gameData.Clone();
+
+        CurrentGameData.Name = name;
+
+        _debugLogger.Log($"Creating new game data with name '{CurrentGameData.Name}' with values from '{_newGameData.gameData.Name}'");
+    }
 }
