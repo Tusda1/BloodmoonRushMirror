@@ -28,7 +28,6 @@ public class LaserAttackState : DraculaState
     {
         Teleporting,
         Tracking,
-        Waiting,
         Firing
     }
     
@@ -90,9 +89,6 @@ public class LaserAttackState : DraculaState
             case LaserAttackStage.Tracking:
                 Tracking();
                 break;
-            case LaserAttackStage.Waiting:
-                WaitBeforeFire();
-                break;
             case LaserAttackStage.Firing:
                 Fire();
                 break;
@@ -107,35 +103,30 @@ public class LaserAttackState : DraculaState
     
     private void Tracking()
     {
+        var animPlayed = false;
         _timer += Time.deltaTime;
-        if (_timer <= trackingTime)
+        if (_timer >= trackingTime)
         {
-            _firePosition = _playerCollider.bounds.center;
-            
-            if (_trackerObject == null)
+            _timer = -10f;
+            var state = Boss.AnimancerComponent.Play(laserAttackAnimation);
+            state.Events(this).OnEnd = () =>
             {
-                _trackerObject = Instantiate(_trackerPrefab, _firePosition, Quaternion.identity);
-                _lineRenderer = _trackerObject.GetComponent<LineRenderer>();
-            }
+                stage = LaserAttackStage.Firing;
+                Destroy(_trackerObject);
+                _timer = 0;
+            };
+        }
+       
+        _firePosition = _playerCollider.bounds.center;
             
-            _lineRenderer.SetPosition(0, GetComponent<Collider2D>().bounds.center);
-            _lineRenderer.SetPosition(1, _firePosition);
-        }
-        else
+        if (_trackerObject == null)
         {
-            Destroy(_trackerObject);
-            stage = LaserAttackStage.Waiting;
-            _timer = 0;
+            _trackerObject = Instantiate(_trackerPrefab, _firePosition, Quaternion.identity);
+            _lineRenderer = _trackerObject.GetComponent<LineRenderer>();
         }
-    }
-
-    private void WaitBeforeFire()
-    {
-        var state = Boss.AnimancerComponent.Play(laserAttackAnimation);
-        state.Events(this).OnEnd = () =>
-        {
-            stage = LaserAttackStage.Firing;
-        };
+            
+        _lineRenderer.SetPosition(0, GetComponent<Collider2D>().bounds.center);
+        _lineRenderer.SetPosition(1, _firePosition);
     }
     
     private void Fire()

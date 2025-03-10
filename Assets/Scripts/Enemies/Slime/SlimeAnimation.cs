@@ -4,8 +4,7 @@ using UnityEngine;
 public class SlimeAnimation : EnemyAnimationBase
 {
     [SerializeField] private AnimationClip idle;
-    [SerializeField] private AnimationClip jumpStart;
-    [SerializeField] private AnimationClip jumpEnd;
+    [SerializeField] private AnimationClip jump;
     [SerializeField] private AnimationClip up;
     [SerializeField] private AnimationClip fallStart;
     [SerializeField] private AnimationClip fall;
@@ -23,16 +22,11 @@ public class SlimeAnimation : EnemyAnimationBase
     
     public void Jump()
     {
-        var state = animancerComponent.Play(jumpStart);
+        var state = animancerComponent.Play(jump);
         state.Events(this).OnEnd = () =>
         {
             state.Destroy();
-            state = animancerComponent.Play(jumpEnd);
-            state.Events(this).OnEnd = () =>
-            {
-                state.Destroy();
-                state = animancerComponent.Play(up);
-            };
+            state = animancerComponent.Play(up);
         };
     }
     

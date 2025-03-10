@@ -70,7 +70,7 @@ public class JumpEnemy : ReactiveBase
         
         _isJumping = false;
         GravityModifier = _initialGravityModifier;
-        _slimeAnimation.Fall(this);
+        if (!isDead) _slimeAnimation.Fall(this);
     }
 
     protected override void OnTakeDamage(DamageInstance damageInstance)

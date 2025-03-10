@@ -2,8 +2,9 @@ using System;
 using UnityEngine;
 using Animancer;
 
-public class EnemyAnimationBase : MonoBehaviour 
+public class EnemyAnimationBase : MonoBehaviour
 {
+    [SerializeField] private float speed = 1f;
     [SerializeField] private AnimationClip deathAnimation;
     [SerializeField] private AnimationClip hitAnimation;
 
@@ -12,6 +13,7 @@ public class EnemyAnimationBase : MonoBehaviour
     protected virtual void Awake()
     {
         animancerComponent = GetComponent<AnimancerComponent>();
+        animancerComponent.Graph.Speed = speed;
     }
 
     protected virtual void OnEnable()

@@ -20,6 +20,7 @@ public class DiscoBall : MonoBehaviour
     private void Awake()
     {
         gameObject.SetActive(false);
+        transform.position = highPoint.transform.position;
     }
 
     private void OnEnable()
