@@ -61,7 +61,7 @@ namespace SaveLoadSystem {
             }
 #else
         if (SceneCollectionManager.CurrentSceneCollection == null) {
-            _playerScript.transform.position = LevelStartPoint;
+            _playerScript.transform.position = PlayerPosition;
             _playerScript.healthComponent.Health = _playerScript.healthComponent.maxHealth;
             _playerScript.gems = 0;
             _playerScript.playerLives = _playerScript.playerLivesStartAmount;

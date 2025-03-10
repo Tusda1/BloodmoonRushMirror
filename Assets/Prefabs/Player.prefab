@@ -18,7 +18,6 @@ GameObject:
   - component: {fileID: 6503705925884822905}
   - component: {fileID: 4896941881637286329}
   - component: {fileID: 423831354456312567}
-  - component: {fileID: 7166129185474739295}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -122,10 +121,12 @@ MonoBehaviour:
     animators:
     - {fileID: 4896941881637286329}
     - {fileID: 4915913186544905062}
+  legRenderer: {fileID: 0}
   gameOverScene: {fileID: 11400000, guid: f049946a2b8e33e4c89218cc64a675cc, type: 2}
   cameraFollowTransform: {fileID: 3892124713632009612}
   lookahead: 4
   playerLives: 10
+  playerLivesStartAmount: 0
   whatIsInteractable:
     serializedVersion: 2
     m_Bits: 0
@@ -148,6 +149,7 @@ MonoBehaviour:
   <SaveSystemData>k__BackingField:
     <ID>k__BackingField: Player
     health: 0
+    tempHealth: 0
     lives: 0
     gems: 0
 --- !u!114 &627531695120340738
@@ -543,59 +545,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &7166129185474739295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1016095211261194371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Graph: {fileID: 953877100064260328, guid: 7e2dec45c086d5c4383e5fdca1b0c4db, type: 2}
-  m_BlackboardVariableOverridesList:
-  - rid: 2814022196966720096
-  - rid: 2814022196966720097
-  - rid: 2814022196966720098
-  - rid: 2814022196966720099
-  references:
-    version: 2
-    RefIds:
-    - rid: 2814022196966720096
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Self
-        m_Value: {fileID: 1016095211261194371}
-    - rid: 2814022196966720097
-      type: {class: 'BlackboardVariable`1[[Player.PlayerScript, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15833384000089556326
-          m_Value1: 13153703069149291393
-        Name: PlayerScript
-        m_Value: {fileID: 3298925456892397176}
-    - rid: 2814022196966720098
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 9153370928358807515
-          m_Value1: 12286430108915604325
-        Name: Animator
-        m_Value: {fileID: 4896941881637286329}
-    - rid: 2814022196966720099
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 14115449750632566342
-          m_Value1: 9982169200599629012
-        Name: LowerAnimator
-        m_Value: {fileID: 4915913186544905062}
 --- !u!1 &6077760614362481426
 GameObject:
   m_ObjectHideFlags: 0
