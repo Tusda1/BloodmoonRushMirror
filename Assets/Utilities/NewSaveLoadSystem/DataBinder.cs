@@ -2,13 +2,15 @@
 using System.Linq;
 using UnityEngine;
 using Utilities.DataBinding;
+using VContainer;
 
 public class DataBinder {
     private readonly DebugLoggerSO _debugLogger;
     public List<IDataBind> GameDataBinds;
     
-    public DataBinder(DebugLoggerSO debugLogger) {
-        _debugLogger = debugLogger;
+    [Inject]
+    public DataBinder(IObjectResolver container) {
+        _debugLogger = container.ResolveProviderID<DebugLoggerSO>("SaveLoadSystem");;
         GameDataBinds = new List<IDataBind>();
     }
     

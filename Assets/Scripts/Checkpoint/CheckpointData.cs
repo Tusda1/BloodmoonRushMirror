@@ -44,8 +44,8 @@ namespace Checkpoint {
 
         private void Respawn() {
             _audioManager.PlayOneShot(PlayerScript.PlayerRespawn_SoundID);
-            _playerScript.gameObject.transform.position = _playerRespawnPos;
-            print(_playerRespawnPos);
+            // _playerScript.gameObject.transform.position = _playerRespawnPos;
+            // print(_playerRespawnPos);
         }
     }
 }
