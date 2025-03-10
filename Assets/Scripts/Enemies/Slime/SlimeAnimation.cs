@@ -61,7 +61,6 @@ public class SlimeAnimation : EnemyAnimationBase
     
     public void Split(GravityObject gravityObject)
     {
-        animancerComponent.
         var state = animancerComponent.Play(split);
         state.Events(this).OnEnd = () =>
         {
