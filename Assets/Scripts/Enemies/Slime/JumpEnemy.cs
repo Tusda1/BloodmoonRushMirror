@@ -8,12 +8,21 @@ public class JumpEnemy : ReactiveBase
     [SerializeField] private float keepAgroDistance = 5f;
     [SerializeField] private float yPositionTolerance = 0.05f;
     [SerializeField] private float jumpModifier = 1f;
+    [SerializeField] private float deadTime = 2f;
     
-    private GravityObjectPlayerMovement _playerMovement;
     private Vector2 _lastFramePosition = new Vector2(-100, -100);
     private bool _readyToJump;
     private float _initialGravityModifier;
     private bool _isJumping;
+    
+    private GravityObjectPlayerMovement _playerMovement;
+    private SlimeAnimation _slimeAnimation;
+    
+    protected override void Start()
+    {
+        base.Start();
+        _slimeAnimation = enemyAnimationBase as SlimeAnimation;
+    }
     
     protected override void Action()
     {
@@ -46,6 +55,7 @@ public class JumpEnemy : ReactiveBase
         _initialGravityModifier = GravityModifier;
         GravityModifier = 0;
         _isJumping = true;
+        _slimeAnimation.Jump();
         float yDifference = targetObject.position.y - _lastFramePosition.y;
 
         while (yDifference > 0 && _isJumping)
@@ -60,12 +70,25 @@ public class JumpEnemy : ReactiveBase
         
         _isJumping = false;
         GravityModifier = _initialGravityModifier;
+        _slimeAnimation.Fall(this);
     }
-    
-    protected override bool CanBeDamaged(DamageInstance damageInstance)
+
+    protected override void OnTakeDamage(DamageInstance damageInstance)
     {
         _isJumping = false;
-        
-        return true;
+        _slimeAnimation.Split(this);
+        isDead = true;
+        enemyCollider.enabled = false;
+        StartCoroutine(Resconstitute());
+    }
+
+    private IEnumerator Resconstitute()
+    {
+        yield return new WaitForSeconds(deadTime);
+        _slimeAnimation.Reform(() =>
+        {
+            isDead = false;
+            enemyCollider.enabled = true;
+        });
     }
 }

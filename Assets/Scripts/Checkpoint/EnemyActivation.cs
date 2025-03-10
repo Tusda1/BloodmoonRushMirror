@@ -27,7 +27,6 @@ namespace Checkpoint {
                     // Check if child has enemybase component
                     if (child.TryGetComponent<EnemyBase>(out var enemy)) {
                         _enemies.Add(enemy);
-                        print(enemy.transform.position);
                     }
                 }
             }
