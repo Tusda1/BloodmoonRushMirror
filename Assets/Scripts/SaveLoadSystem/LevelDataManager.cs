@@ -67,8 +67,8 @@ namespace SaveLoadSystem {
             _playerScript.healthComponent.Health = _playerScript.healthComponent.maxHealth;
             _playerScript.gems = 0;
             _playerScript.playerLives = _playerScript.playerLivesStartAmount;
-        }
 #endif
+        }
     #endregion
 
         #region ---DataBindingMethods---
