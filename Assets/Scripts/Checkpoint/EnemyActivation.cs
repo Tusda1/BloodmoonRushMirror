@@ -5,32 +5,38 @@ using UnityEngine;
 namespace Checkpoint {
     public class EnemyActivation : MonoBehaviour {
         private GameObject[] _rooms;
-        private string _enemiesLocation;
+        // private string _enemiesLocation;
         private readonly List<EnemyBase> _enemies = new();
         private VirtualCameraSwitch _checkpointRoom;
 
-        public void Initialize(GameObject[] roomArray, string enemiesLocation) {
+        public void Initialize(GameObject[] roomArray) {
             _rooms = roomArray;
-            _enemiesLocation = enemiesLocation;
+            // _enemiesLocation = enemiesLocation;
 
             ServiceLocator.Get<PlayerScript>().OnRespawn += OnRespawn;
 
             foreach (var room in _rooms) {
-                // Find the child GameObject named "AreaGameObject"
-                var areaGameObject = room.transform.Find(_enemiesLocation);
+                var enemyObjects = room.GetComponentsInChildren<EnemyBase>();
 
-                // If AreaGameObject is not found, skip to the next room
-                if (areaGameObject == null) continue;
-
-                // Iterate through all children of AreaGameObject
-                foreach (Transform child in areaGameObject) {
-                    // Check if child has enemybase component
-                    if (child.TryGetComponent<EnemyBase>(out var enemy)) {
-                        _enemies.Add(enemy);
-                    }
-                }
+                _enemies.AddRange(enemyObjects);
             }
-            print($"Found {_enemies.Count} enemies in {_rooms.Length} rooms");
+
+            // foreach (var room in _rooms) {
+            //     // Find the child GameObject named "AreaGameObject"
+            //     var areaGameObject = room.transform.Find(_enemiesLocation);
+            //
+            //     // If AreaGameObject is not found, skip to the next room
+            //     if (areaGameObject == null) continue;
+            //
+            //     // Iterate through all children of AreaGameObject
+            //     foreach (Transform child in areaGameObject) {
+            //         // Check if child has enemyBase component
+            //         if (child.TryGetComponent<EnemyBase>(out var enemy)) {
+            //             _enemies.Add(enemy);
+            //         }
+            //     }
+            // }
+            // print($"Found {_enemies.Count} enemies in {_rooms.Length} rooms");
         }
 
         private void OnRespawn() {
