@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7589048197982333553}
   - component: {fileID: 1866330993603617668}
   - component: {fileID: 4519198094343847217}
+  - component: {fileID: 7979099604429872168}
+  - component: {fileID: -4709153988622603019}
   m_Layer: 13
   m_Name: Drucilla
   m_TagString: Untagged
@@ -102,9 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a318fb8ef71b9b74daaa5e88569a1d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cutsceneGraph: {fileID: -4709153988622603019}
   nextLevelSceneCollection: {fileID: 11400000, guid: 53d54a1ea8fd51841a69e5a7316ee2e1, type: 2}
   endDemoSceneCollection: {fileID: 11400000, guid: c5f842ad2c0776a419c4ed54c146f504, type: 2}
-  cutsceneGraph: {fileID: 0}
   drucillaDamageInstance:
     damage: 0
     knockback: {x: -26.31, y: 0}
@@ -180,3 +182,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7979099604429872168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5004162161467251752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
+--- !u!114 &-4709153988622603019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5004162161467251752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Macro","macro":null,"embed":null}}'
+    _objectReferences: []

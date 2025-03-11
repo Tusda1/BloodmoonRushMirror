@@ -60,14 +60,15 @@ namespace SaveLoadSystem {
                 _playerScript.LoadBindData();
             }
 #else
-        if (SceneCollectionManager.CurrentSceneCollection == null) {
+#if UNITY_EDITOR
+            if (SceneCollectionManager.CurrentSceneCollection != null) return;
+#endif
             _playerScript.transform.position = PlayerPosition;
             _playerScript.healthComponent.Health = _playerScript.healthComponent.maxHealth;
             _playerScript.gems = 0;
             _playerScript.playerLives = _playerScript.playerLivesStartAmount;
         }
 #endif
-    }
     #endregion
 
         #region ---DataBindingMethods---
