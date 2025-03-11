@@ -24,7 +24,8 @@ public class GlobalInstaller : LifetimeScope {
         builder.RegisterInstance<IPauseManager>(new PauseManager(1));
 
         // --- Achievement System --- \\
-        builder.Register<IAchievementManager, SteamAchievementManager>(Lifetime.Singleton);
+        builder.Register<SteamAchievementManager>(Lifetime.Singleton)
+            .As<IAchievementManager>();
 
         // --- Audio System --- \\
         builder.RegisterInstance(audioDictionary);

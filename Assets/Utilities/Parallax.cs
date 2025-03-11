@@ -25,6 +25,7 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     
     #region ***---DataBindingVariables---***
     [field: Header("Data Binding")]
+    [SerializeField] private bool enableDataBinding = true;
     [field: SerializeField] public string ID { get; set; }
 
     [field: SerializeField] public ParallaxData SaveSystemData { get; set; }
@@ -52,12 +53,16 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
 #if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
 #endif
-        _levelDataManager = container.Resolve<LevelDataManager>();
+        if (enableDataBinding) {
+            _levelDataManager = container.Resolve<LevelDataManager>();
+        }
         _cinemachineBrain = container.Resolve<CinemachineBrain>();
     }
 
     private void Start() {
-        Bind();
+        if (enableDataBinding) {
+            Bind();
+        }
         
         _mainCameraTransform = _mainCamera.transform;
         
