@@ -13,7 +13,7 @@ using Utilities.DataBinding;
 using VContainer;
 
 namespace Player {
-    public class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData> {
+    public partial class PlayerScript : MonoBehaviour, IDamageable, IBind<PlayerData>{
         #region ---Fields---
         #region ***---GetOrAddComponents---***
         [GetOrAddComponent, HideInInspector] public PlayerHealth healthComponent;
@@ -93,29 +93,6 @@ namespace Player {
         private static readonly int AnimatorIsDeadBool = Animator.StringToHash("IsDead");
         private static readonly int AnimatorRespawnTrigger = Animator.StringToHash("Respawn");
         private static readonly int AnimatorDeathTrigger = Animator.StringToHash("Death");
-        #endregion
-
-        #region ***---DataBindingVariables---***
-        [field: Header("Data Binding")]
-        [field: SerializeField]
-        public string ID { get; set; } = "Player";
-
-        [field: SerializeField] public PlayerData SaveSystemData { get; set; }
-
-        public PlayerData DataInGameData {
-            get {
-                if (string.IsNullOrEmpty(PlayerData.ID)) {
-                    PlayerData.ID = ID;
-                    PlayerData.health = healthComponent.Health;
-                    PlayerData.lives = playerLives;
-                    PlayerData.gems = gems;
-                }
-
-                return PlayerData;
-            }
-        }
-
-        private PlayerData PlayerData => _saveLoadSystemManager.CurrentGameData.playerData;
         #endregion
 
         private ISaveLoadSystemManager _saveLoadSystemManager;
@@ -443,30 +420,6 @@ namespace Player {
         
         private void OnResumed() {
             playerInput.actions.actionMaps[0].Enable();
-        }
-        #endregion
-
-        #region ---DataBindingMethods---
-        public void Bind() {
-#if SAVESYSTEM_ACTIVE
-            _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
-#endif
-        }
-
-        [ContextMenu(nameof(LoadBindData))]
-        public void LoadBindData() {
-            healthComponent.Health = SaveSystemData.health;
-            healthComponent.TempHealth = SaveSystemData.tempHealth;
-            playerLives = SaveSystemData.lives;
-            gems = SaveSystemData.gems;
-        }
-
-        [ContextMenu(nameof(SaveBindData))]
-        public void SaveBindData() {
-            SaveSystemData.ID = ID;
-            SaveSystemData.health = healthComponent.Health;
-            SaveSystemData.lives = playerLives;
-            SaveSystemData.gems = gems;
         }
         #endregion
     }
