@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Player;
 using SaveLoadSystem.Data;
@@ -23,16 +24,17 @@ namespace SaveLoadSystem {
 
         [field: SerializeField] public LevelData SaveSystemData { get; set; }
 
-        public LevelData DataInGameData => _saveLoadSystemManager.CurrentGameData.levelDatas.GetOrAddByIdInList(ID,
-            new LevelData {
-                ID = ID,
-                SceneCollection = SceneCollection,
-                PlayerPosition = PlayerPosition,
-                enemyDatas = enemyDatas,
-                checkpointDatas = checkpointDatas,
-                CurrentCheckpointData = CurrentCheckpointData,
-
-            });
+        public LevelData DataInGameData => _saveLoadSystemManager.CurrentGameData.levelDatas
+            .GetOrAddByIDInList(ID, LevelDataGenerator);
+        
+        private Func<LevelData> LevelDataGenerator => () => new LevelData {
+            ID = ID,
+            SceneCollection = SceneCollection,
+            PlayerPosition = PlayerPosition,
+            enemyDatas = enemyDatas,
+            checkpointDatas = checkpointDatas,
+            CurrentCheckpointData = CurrentCheckpointData,
+        };
         #endregion
 
         private ISaveLoadSystemManager _saveLoadSystemManager;

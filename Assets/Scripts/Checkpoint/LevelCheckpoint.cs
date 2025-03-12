@@ -29,13 +29,15 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     [field: SerializeField] public string ID { get; set; }
     [field: SerializeField] public CheckpointData SaveSystemData { get; set; }
 
-    public CheckpointData DataInGameData => _levelDataManager.DataInGameData.checkpointDatas.GetOrAddByIdInList(ID,
-        new CheckpointData {
-            name = name,
-            ID = ID,
-            HasBeenTriggered = hasBeenTriggered,
-            Position = transform.position
-        });
+    public CheckpointData DataInGameData => _levelDataManager.DataInGameData.checkpointDatas
+        .GetOrAddByIDInList(ID, CheckpointDataGenerator);
+    
+    private Func<CheckpointData> CheckpointDataGenerator => () => new CheckpointData {
+        name = name,
+        ID = ID,
+        HasBeenTriggered = hasBeenTriggered,
+        Position = transform.position
+    };
     #endregion
 
     public event Action CheckpointReached = delegate { };
