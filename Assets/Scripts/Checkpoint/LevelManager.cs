@@ -7,7 +7,6 @@ namespace Checkpoint {
         [SerializeField] private EnemyActivation enemyActivation;
         [SerializeField] private GameObject cameraStacks;
         [SerializeField] private LevelCheckpoint[] combatCheckpoints;
-        [SerializeField] private GameObject enemyLocation;
 
         private void Start() {
             // Turns checkpointcameraareas into a list of rooms. Rooms are children of checkcameraareaobjects
@@ -34,7 +33,7 @@ namespace Checkpoint {
             checkpointData.combatCheckpoints = combatCheckpoints;
 
             checkpointData.Initialize();
-            enemyActivation.Initialize(rooms.ToArray(), enemyLocation.name);
+            enemyActivation.Initialize(rooms.ToArray());
         }
     }
 }

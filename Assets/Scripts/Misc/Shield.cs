@@ -53,10 +53,10 @@ public class Shield
         }
         
         _breakCounter++;
+        _lastHitTime = Time.time;
         if (_breakCounter >= blowsUntilBreak)
         {
             shieldBreakAction?.Invoke();
-            _lastHitTime = Time.time;
             _breakCounter = 0;
         }
         

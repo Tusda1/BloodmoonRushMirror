@@ -166,12 +166,16 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         // Play hit animation
         // Play hit sound
         if (canTakeKnockback) StartCoroutine(Knockback(damageInstance.knockback));
+        
+        OnTakeDamage(damageInstance);
     }
     
     protected virtual bool CanBeDamaged(DamageInstance damageInstance)
     {
         return true;
     }
+    
+    protected virtual void OnTakeDamage(DamageInstance damageInstance){ }
     
     protected virtual void PlayHitSoundEffect()
     {

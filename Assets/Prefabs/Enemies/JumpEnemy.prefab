@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 8165646548204558986}
   - component: {fileID: 7509887874721101512}
   - component: {fileID: 4851307988054993091}
+  - component: {fileID: 6009761648967207778}
   - component: {fileID: 5170739143609265180}
   - component: {fileID: 2338654440041855855}
   - component: {fileID: 2452546516162396963}
   - component: {fileID: -395388139490882135}
-  - component: {fileID: -6220548345511405237}
   m_Layer: 8
   m_Name: JumpEnemy
   m_TagString: Enemy
@@ -148,6 +148,33 @@ MonoBehaviour:
   keepAgroDistance: 5
   yPositionTolerance: 0.05
   jumpModifier: 1
+  deadTime: 2
+--- !u!114 &6009761648967207778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4656862180651876500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f433ed74181327549b21a2a25eed362d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1.5
+  deathAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
+  hitAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
+  idle: {fileID: -3100369314251171874, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  jump: {fileID: -4711388467287221191, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  up: {fileID: 8451551337587442842, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  fallStart: {fileID: 6563665098591418749, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  fall: {fileID: 5917537482288442099, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  land: {fileID: 6480610267109901665, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  split: {fileID: -909661294977133825, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  splitFall: {fileID: -5787214871801715999, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  splitLand: {fileID: -3147633039623826206, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  waitForReform: {fileID: 4356368261264951703, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  reform: {fileID: -3594680525394467873, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
 --- !u!50 &5170739143609265180
 Rigidbody2D:
   serializedVersion: 5
@@ -248,20 +275,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-6220548345511405237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4656862180651876500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6323bfd0d68967643adf1ebbc5efd4bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deathAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
-  hitAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
 --- !u!1 &7200433064921519111
 GameObject:
   m_ObjectHideFlags: 0
