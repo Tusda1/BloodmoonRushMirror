@@ -31,12 +31,14 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     [field: SerializeField] public ParallaxData SaveSystemData { get; set; }
 
     public ParallaxData DataInGameData => _levelDataManager.DataInGameData.parallaxDatas
-        .GetOrAddByIdInList(ID, new ParallaxData {
-            ID = ID,
-            Camera = ActiveCamera,
-            CameraPosition = ActiveCamera.transform.position,
-            Positions = GetAllChildPositions()
-        });
+        .GetOrAddByIDInList(ID, ParallaxDataGenerator);
+
+    private Func<ParallaxData> ParallaxDataGenerator => () => new ParallaxData {
+        ID = ID,
+        Camera = ActiveCamera,
+        CameraPosition = ActiveCamera.transform.position,
+        Positions = GetAllChildPositions()
+    };
     #endregion
 
     private CinemachineCamera ActiveCamera => VirtualCameraSwitch.ActiveVirtualCameraSwitch.cinemachineCamera;

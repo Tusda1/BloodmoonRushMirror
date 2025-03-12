@@ -1,3 +1,4 @@
+using System;
 using SaveLoadSystem.Data;
 using UnityEngine;
 
@@ -8,15 +9,17 @@ public partial class EnemyBase {
 
     [field: SerializeField] public EnemyData SaveSystemData { get; set; }
 
-    public EnemyData DataInGameData => _levelDataManager.SaveSystemData.enemyDatas.GetOrAddByIdInList(ID,
-        new EnemyData {
-            name = name,
-            ID = ID,
-            health = currentHealth,
-            gemsContaining = rubyDropAmount,
-            isAlive = !isDead,
-            position = transform.position
-        });
+    public EnemyData DataInGameData => _levelDataManager.SaveSystemData.enemyDatas
+        .GetOrAddByIDInList(ID, NewEnemyDataGenerator);
+    
+    private Func<EnemyData> NewEnemyDataGenerator => () => new EnemyData {
+        name = name,
+        ID = ID,
+        health = currentHealth,
+        gemsContaining = rubyDropAmount,
+        isAlive = !isDead,
+        position = transform.position
+    };
     #endregion
 
     #region ---DataBindingMethods---

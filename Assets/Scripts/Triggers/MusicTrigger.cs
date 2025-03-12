@@ -1,11 +1,9 @@
+using System;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using UnityEngine;
 using Utilities.DataBinding;
 using VContainer;
-#if UNITY_EDITOR
-using System;
-#endif
 
 namespace Triggers {
     public class MusicTrigger : TriggerBox, IBind<TriggerData> {
@@ -19,12 +17,14 @@ namespace Triggers {
         [field: SerializeField] public string ID { get; set; }
         [field: SerializeField] public TriggerData SaveSystemData { get; set; }
 
-        public TriggerData DataInGameData => _levelDataManager.DataInGameData.triggerDatas.GetOrAddByIdInList(ID,
-            new TriggerData {
-                name = name,
-                ID = ID,
-                hasBeenTriggered = hasBeenTriggered
-            });
+        public TriggerData DataInGameData => _levelDataManager.DataInGameData.triggerDatas
+            .GetOrAddByIDInList(ID, TriggerDataGenerator);
+
+        private Func<TriggerData> TriggerDataGenerator => () => new TriggerData {
+            name = name,
+            ID = ID,
+            hasBeenTriggered = hasBeenTriggered
+        };
         #endregion
 
         private ISaveLoadSystemManager _saveLoadSystemManager;
