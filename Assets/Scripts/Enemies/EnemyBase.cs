@@ -8,7 +8,7 @@ using SaveLoadSystem.Data;
 using Utilities.DataBinding;
 using VContainer;
 
-public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
+public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     #region ---Fields---
     #region ***---SerializedFields---***
     public bool takesSpikeDamage;
@@ -49,21 +49,6 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private Material _defaultMaterial;
     private SpriteRenderer _spriteRenderer;
     private Pooler _rubyPooler;
-    #endregion
-
-    #region ***---DataBindingVariables---***
-    [field: Header("Data Binding")]
-    [field: SerializeField] public string ID { get; set; }
-    [field: SerializeField] public EnemyData SaveSystemData { get; set; }
-    public EnemyData DataInGameData => _levelDataManager.SaveSystemData.enemyDatas.GetOrAddByIdInList(ID,
-        new EnemyData {
-            name = name,
-            ID = ID,
-            health = currentHealth,
-            gemsContaining = rubyDropAmount,
-            isAlive = !isDead,
-            position = transform.position
-        });
     #endregion
     
     protected IAudioManager AudioManager;
@@ -336,30 +321,4 @@ public class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         currentHealth = maxHealth;
     }
 #endif
-
-    #region ---DataBindingMethods---
-    public virtual void Bind() {
-#if SAVESYSTEM_ACTIVE
-        _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
-#endif
-    }
-    
-    [ContextMenu(nameof(LoadBindData))]
-    public virtual void LoadBindData() {
-        name = SaveSystemData.name;
-        currentHealth = SaveSystemData.health;
-        rubyDropAmount = SaveSystemData.gemsContaining;
-        isDead = !SaveSystemData.isAlive;
-        transform.position = SaveSystemData.position;
-    }
-
-    [ContextMenu(nameof(SaveBindData))]
-    public virtual void SaveBindData() {
-        SaveSystemData.name = name;
-        SaveSystemData.health = currentHealth;
-        SaveSystemData.gemsContaining = rubyDropAmount;
-        SaveSystemData.isAlive = !isDead;
-        SaveSystemData.position = transform.position;
-    }
-    #endregion
 }
