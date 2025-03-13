@@ -7,7 +7,9 @@ using UnityEngine;
 using Utilities.DataBinding;
 using Action = System.Action;
 using System;
+using System.Collections;
 using Attributes;
+using UnityEngine.Rendering.Universal;
 using VContainer;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -23,6 +25,8 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     [SerializeField] private AnimationClip inactiveIdle;
     [SerializeField] private AnimationClip activeIdle;
     [SerializeField] private AnimationClip activeStart;
+    
+    
 
     #region ***---DataBindingVariables---***
     [field: Header("Data Binding")]
@@ -40,6 +44,9 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     };
     #endregion
 
+    private Light2D _lightComponent;
+    private float _lightRange;
+    
     public event Action CheckpointReached = delegate { };
     
     private ISaveLoadSystemManager _saveLoadSystemManager;
@@ -66,12 +73,15 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
 
     private void Awake() {
         animancerComponent ??= GetComponent<AnimancerComponent>();
+        _lightComponent ??= GetComponentInChildren<Light2D>();
     }
 
     private void Start() {
         Bind();
         
         animancerComponent.Play(hasBeenTriggered ? activeIdle : inactiveIdle);
+        _lightRange = _lightComponent.pointLightOuterRadius;
+        _lightComponent.pointLightOuterRadius = 0;
     }
     #endregion
 
@@ -82,11 +92,26 @@ public class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
 
         var state = animancerComponent.Play(activeStart);
         state.Events(this).OnEnd = () => animancerComponent.Play(activeIdle);
+        StartCoroutine(TurnOnLights());
 
         _playerScript.CheckpointHealing();
 #if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager.SaveAllDataBinds();
 #endif
+    }
+
+    private IEnumerator TurnOnLights()
+    {
+        float length = activeStart.length;
+        float time = 0;
+        while (time < length)
+        {
+            time += Time.deltaTime;
+            _lightComponent.pointLightOuterRadius = Mathf.Lerp(0, _lightRange, time / length);
+            yield return null;
+        }
+        
+        _lightComponent.pointLightOuterRadius = _lightRange;
     }
     
     public void TryStartOnIdle() {
