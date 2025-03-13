@@ -7,7 +7,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Utilities.DataBinding;
 using VContainer;
+#if UNITY_EDITOR
 using Guid = Pathfinding.Util.Guid;
+#endif
 
 public class ConversationTrigger : TriggerBox, IBind<TriggerData> {
     #region ---Fields---

@@ -28,5 +28,18 @@ namespace SaveLoadSystem.Data {
             saveGameDataList.Add(data);
             return data;
         }
+
+        public static void SetOrAddByIDInList<T>(this IList<T> saveGameDataList, string id, Func<T> generator) 
+            where T : ISaveable, new() {
+            var data = saveGameDataList.FirstOrDefault(x => x.ID == id);
+
+            if (data == null) {
+                data = generator();
+                saveGameDataList.Add(data);
+            }
+            else {
+                data = generator();
+            }
+        }
     }
 }

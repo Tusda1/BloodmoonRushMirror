@@ -1,42 +1,13 @@
 using System;
-using System.Collections.Generic;
 using Player;
 using SaveLoadSystem.Data;
-using SceneCollections;
 using UnityEngine;
 using Utilities.DataBinding;
 using VContainer;
 
 namespace SaveLoadSystem {
-    public class LevelDataManager : MonoBehaviour, IBind<LevelData> {
+    public partial class LevelDataManager : MonoBehaviour, IBind<LevelData> {
         #region ---Fields---
-        #region ***---DataBindingVariables---***
-        [field: Header("Data Binding")]
-        [field: SerializeField]
-        public string ID { get; set; }
-
-        [field: SerializeField] public SceneCollectionSO SceneCollection { get; set; }
-        [field: SerializeField] public Vector3 PlayerPosition { get; set; }
-        [field: SerializeField] public CheckpointData CurrentCheckpointData { get; set; }
-        [SerializeReference] public List<CheckpointData> checkpointDatas = new();
-
-        [field: SerializeField] public List<EnemyData> enemyDatas = new();
-
-        [field: SerializeField] public LevelData SaveSystemData { get; set; }
-
-        public LevelData DataInGameData => _saveLoadSystemManager.CurrentGameData.levelDatas
-            .GetOrAddByIDInList(ID, LevelDataGenerator);
-        
-        private Func<LevelData> LevelDataGenerator => () => new LevelData {
-            ID = ID,
-            SceneCollection = SceneCollection,
-            PlayerPosition = PlayerPosition,
-            enemyDatas = enemyDatas,
-            checkpointDatas = checkpointDatas,
-            CurrentCheckpointData = CurrentCheckpointData,
-        };
-        #endregion
-
         private ISaveLoadSystemManager _saveLoadSystemManager;
         private PlayerScript _playerScript;
         private GameDataScrubGeneric<SaveGameData> _newGameData;
@@ -61,9 +32,10 @@ namespace SaveLoadSystem {
         protected void Start() {
             Bind();
 #if SAVESYSTEM_ACTIVE
-            if (_saveLoadSystemManager.CurrentGameData == null) {
-                _playerScript.LoadBindData();
-            }
+            // if (_saveLoadSystemManager.CurrentGameData == null) return;
+            
+            _saveLoadSystemManager.SaveLoad();
+            _saveLoadSystemManager.SaveAllDataBinds();
 #else
 #if UNITY_EDITOR
             if (SceneCollectionManager.CurrentSceneCollection == null) return;
@@ -74,35 +46,44 @@ namespace SaveLoadSystem {
             _playerScript.playerLives = _playerScript.playerLivesStartAmount;
 #endif
         }
-    #endregion
+        #endregion
 
-    [ContextMenu("Test")]
-    public void WriteDataToNewGameData(LevelData levelData) {
-        Debug.Log("s");
-#if SAVESYSTEM_ACTIVE && UNITY_EDITOR
-        _newGameData.gameData.levelDatas.GetOrAddByIDInList(ID, LevelDataGenerator);
-#endif
-    }
-
-    #region ---DataBindingMethods---
-        public void Bind() {
-#if SAVESYSTEM_ACTIVE
-            _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
-#endif
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.F5)) {
+                SaveLoadSystemManager_SaveAllDataBinds();
+            }
+            if (Input.GetKeyDown(KeyCode.F6)) {
+                SaveLoadSystemManager_CheckpointLoad();
+            }
+            if (Input.GetKeyDown(KeyCode.F7)) {
+                SaveLoadSystemManager_SaveLoad();
+            }
         }
+#endif
 
-        [ContextMenu(nameof(LoadBindData))]
-        public void LoadBindData() {
+#if SAVESYSTEM_ACTIVE && UNITY_EDITOR
+        private const string SaveSystemMenu = "SaveSystemManager/";
+        
+        [ContextMenu(SaveSystemMenu + nameof(WriteDataToNewGameData))]
+        public void WriteDataToNewGameData() {
+            _newGameData.gameData.levelDatas.SetOrAddByIDInList(ID, LevelDataGenerator);
         }
         
-        public void LoadCheckpointBindData() {
-            _playerScript.transform.position = DataInGameData.PlayerPosition;
+        [ContextMenu(SaveSystemMenu + nameof(SaveLoadSystemManager_SaveLoad))]
+        public void SaveLoadSystemManager_CheckpointLoad() {
+            _saveLoadSystemManager.CheckpointLoad();
         }
-
-        [ContextMenu(nameof(SaveBindData))]
-        public void SaveBindData() {
-            DataInGameData.PlayerPosition = _playerScript.transform.position;
+        
+        [ContextMenu(SaveSystemMenu + nameof(SaveLoadSystemManager_SaveLoad))]
+        public void SaveLoadSystemManager_SaveLoad() {
+            _saveLoadSystemManager.SaveLoad();
         }
-        #endregion
+        
+        [ContextMenu(SaveSystemMenu + nameof(SaveLoadSystemManager_SaveAllDataBinds))]
+        public void SaveLoadSystemManager_SaveAllDataBinds() {
+            _saveLoadSystemManager.SaveAllDataBinds();
+        }
+#endif
     }
 }
