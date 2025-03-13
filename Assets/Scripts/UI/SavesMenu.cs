@@ -110,10 +110,8 @@ namespace UI {
             }
 
             Debug.Log(saveSlotData.currentSceneCollection.name);
-            
-            _cameraEffects.CircleFadeOut(1,
-                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(saveSlotData.currentSceneCollection,
-                    () => _cameraEffects.CircleFadeIn(1)));
+
+            _cameraEffects.FadeLoadScene(saveSlotData.currentSceneCollection);
 #endif
         }
         #endregion

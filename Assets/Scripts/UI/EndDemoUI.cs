@@ -35,8 +35,6 @@ public class EndDemoUI : MonoBehaviour {
         _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 1, true);
         _audioManager.PlayMusic(EndDemoMusic_SoundID);
         
-        _cameraEffects.CircleFadeIn(1);
-        
         _backToMainMenuButton = _root.Q<Button>("BackToMainMenuButton");
         _backToMainMenuButton.clicked += () => {
             _cameraEffects.CircleFadeOut(1,

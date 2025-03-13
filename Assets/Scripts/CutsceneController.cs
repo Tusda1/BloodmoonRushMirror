@@ -15,9 +15,15 @@ public class CutsceneController : MonoBehaviour {
     [SerializeField] private VideoClip cutscene;
     [SerializeField] private string introSoundID = "Cutscene_Intro";
     
-    [Inject] private CameraEffects _cameraEffects;
-    [Inject] private IAudioManager _audioManager;
+    private CameraEffects _cameraEffects;
+    private IAudioManager _audioManager;
     #endregion
+
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _cameraEffects = container.Resolve<CameraEffects>();
+        _audioManager = container.Resolve<IAudioManager>();
+    }
 
     private void Start() {
         StartCoroutine(PlayCutscene());
@@ -44,6 +50,6 @@ public class CutsceneController : MonoBehaviour {
     }
 
     private void CutsceneEnded(VideoPlayer source) {
-        _ = SceneCollectionManager.LoadSceneCollectionAsync(loadCollectionAfterCutscene);
+        _cameraEffects.FadeLoadScene(loadCollectionAfterCutscene);
     }
 }

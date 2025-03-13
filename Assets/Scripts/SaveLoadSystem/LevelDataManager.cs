@@ -39,6 +39,7 @@ namespace SaveLoadSystem {
 
         private ISaveLoadSystemManager _saveLoadSystemManager;
         private PlayerScript _playerScript;
+        private GameDataScrubGeneric<SaveGameData> _newGameData;
         #endregion
 
         #region ---Initialization---
@@ -47,6 +48,8 @@ namespace SaveLoadSystem {
 #if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
 #if UNITY_EDITOR
+            _newGameData = container.Resolve<GameDataScrubGeneric<SaveGameData>>();
+
             if (_saveLoadSystemManager.CurrentGameData == null) {
                 _saveLoadSystemManager.SetCurrentGameDataFromTemplate("NOSAVESYSTEM");
             }
@@ -63,7 +66,7 @@ namespace SaveLoadSystem {
             }
 #else
 #if UNITY_EDITOR
-            if (SceneCollectionManager.CurrentSceneCollection != null) return;
+            if (SceneCollectionManager.CurrentSceneCollection == null) return;
 #endif
             _playerScript.transform.position = PlayerPosition;
             _playerScript.healthComponent.Health = _playerScript.healthComponent.maxHealth;
@@ -73,7 +76,15 @@ namespace SaveLoadSystem {
         }
     #endregion
 
-        #region ---DataBindingMethods---
+    [ContextMenu("Test")]
+    public void WriteDataToNewGameData(LevelData levelData) {
+        Debug.Log("s");
+#if SAVESYSTEM_ACTIVE && UNITY_EDITOR
+        _newGameData.gameData.levelDatas.GetOrAddByIDInList(ID, LevelDataGenerator);
+#endif
+    }
+
+    #region ---DataBindingMethods---
         public void Bind() {
 #if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
