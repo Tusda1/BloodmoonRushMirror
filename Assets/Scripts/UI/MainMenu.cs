@@ -25,6 +25,7 @@ namespace UI {
         [GetOrAddComponent, SerializeField, HideInInspector] private LevelSelectMenu levelSelectMenu;
         #endregion
 
+        [SerializeField, Required] private SceneCollectionSO firstSceneCollection;
         [SerializeField, Required] private Animator backgroundAnimator;
         [SerializeField] private AllInFavourConsensusSO playerCanMove;
 
@@ -55,9 +56,6 @@ namespace UI {
         
         private const string AnyKeyPressed_SoundID = "Player_Respawn";
         #endregion
-
-        [Header("Demo")]
-        [SerializeField, Required] private SceneCollectionSO demoSceneCollectionSO;
         #endregion
 
         #region ---Initialization---
@@ -66,8 +64,8 @@ namespace UI {
             _audioManager = container.Resolve<IAudioManager>();
             _debugLoggerSO = container.ResolveProviderID<DebugLoggerSO>("UI");
             _cameraEffects = container.Resolve<CameraEffects>();
-            #if SAVESYSTEM_ACTIVE
-        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+#if SAVESYSTEM_ACTIVE
+            _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
 #endif
         }
 
@@ -95,15 +93,15 @@ namespace UI {
 
         private void Start() {
             _audioManager.PlayMusic(MainMenuMusic_SoundID);
-
-            _startButton.clicked += StartButtonClicked;
 #if BETA_BUILD
             levelSelectMenu.OnMenuActivated += HideMenu;
             levelSelectMenu.OnMenuDeactivated += ShowMenu;
-#endif
+#elif SAVESYSTEM_ACTIVE
             savesMenu.OnMenuActivated += HideMenu;
             savesMenu.OnMenuDeactivated += ShowMenu;
-
+#endif
+            _startButton.clicked += StartButtonClicked;
+            
             _settingsButton.clicked += settingsMenu.Activate;
             settingsMenu.OnMenuActivated += HideMenu;
             settingsMenu.OnMenuDeactivated += ShowMenu;
@@ -130,19 +128,14 @@ namespace UI {
         }
 
         private void StartButtonClicked() {
-#if DEMO_BUILD
-            var saveSlotData = ScriptableObject.CreateInstance<SaveSlotDataSO>();
-            saveSlotData.currentSceneCollection = demoSceneCollectionSO;
-            
-            _cameraEffects.CircleFadeOut(1,
-                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(saveSlotData.currentSceneCollection,
-                    () => _cameraEffects.CircleFadeIn(1)));
+#if LEVEL_SELECT
+            levelSelectMenu.Activate();
+#elif SAVESYSTEM_ACTIVE
+            savesMenu.Activate();
+#else
+            _cameraEffects.FadeLoadScene(firstSceneCollection);
 
             _startButton.clicked -= StartButtonClicked;
-#elif LEVEL_SELECT
-            levelSelectMenu.Activate();
-#else
-            savesMenu.Activate();
 #endif
         }
         #endregion

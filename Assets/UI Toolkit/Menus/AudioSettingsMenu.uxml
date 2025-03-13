@@ -6,7 +6,7 @@
             <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UI/Settings_Assets.png?fileID=881503191&amp;guid=8669abad7bb91734b9c5d76592cafacc&amp;type=3#Settings_Assets_15" name="AudioSettingsHeader" class="MenuHeader" />
             <engine:VisualElement name="MasterVolume" class="volume">
                 <engine:Label text="Master" name="MasterVolumeLabel" />
-                <engine:Slider value="0" high-value="1" name="MasterVolumeSlider" fill="true" class="settingsText">
+                <engine:Slider value="0" high-value="1" name="MasterVolumeSlider" fill="true" class="settingsText" style="background-image: url(&quot;project://database/Assets/Art/SettingsMenu/Settings_Assets.png?fileID=-1420628315&amp;guid=8669abad7bb91734b9c5d76592cafacc&amp;type=3#Settings_Assets_1&quot;);">
                     <Bindings>
                         <engine:DataBinding property="value" data-source-path="masterVolume" binding-mode="TwoWay" />
                     </Bindings>
@@ -14,7 +14,7 @@
             </engine:VisualElement>
             <engine:VisualElement name="SFXVolume" class="volume" style="flex-grow: 1;">
                 <engine:Label text="SFX" name="SFXVolumeLabel" />
-                <engine:Slider value="0" high-value="1" name="SFXVolumeSlider" fill="true" class="settingsText">
+                <engine:Slider value="0" high-value="1" name="SFXVolumeSlider" fill="true" class="settingsText" style="background-image: url(&quot;project://database/Assets/Art/SettingsMenu/Settings_Assets.png?fileID=-1420628315&amp;guid=8669abad7bb91734b9c5d76592cafacc&amp;type=3#Settings_Assets_1&quot;);">
                     <Bindings>
                         <engine:DataBinding property="value" data-source-path="sfxVolume" binding-mode="TwoWay" />
                     </Bindings>
@@ -22,7 +22,7 @@
             </engine:VisualElement>
             <engine:VisualElement name="MusicVolume" class="volume" style="flex-grow: 1;">
                 <engine:Label text="Music" name="MusicVolumeLabel" />
-                <engine:Slider value="0" high-value="1" name="MusicVolumeSlider" fill="true" class="settingsText">
+                <engine:Slider value="0" high-value="1" name="MusicVolumeSlider" fill="true" class="settingsText" style="background-image: url(&quot;project://database/Assets/Art/SettingsMenu/Settings_Assets.png?fileID=-1420628315&amp;guid=8669abad7bb91734b9c5d76592cafacc&amp;type=3#Settings_Assets_1&quot;);">
                     <Bindings>
                         <engine:DataBinding property="value" data-source-path="musicVolume" binding-mode="TwoWay" />
                     </Bindings>
