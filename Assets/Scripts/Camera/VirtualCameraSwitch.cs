@@ -12,6 +12,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
     [SerializeField, Required] public CinemachineCamera cinemachineCamera;
     [SerializeField, Required] private GameObject areaGameObjects;
     [SerializeField, Required] private GameObject enemyGameObject;
+    [SerializeField, Required] private GameObject persistentEnemyGameObject;
     
     [Header("TimeSlowTransition")]
     [SerializeField] private bool slowTimeOnTransition = true;
@@ -46,6 +47,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
     private void Start() {
         areaGameObjects.SetActive(false);
         enemyGameObject.SetActive(false);
+        persistentEnemyGameObject.SetActive(false);
 
         if (cinemachineCamera.Follow == null) {
             cinemachineCamera.Follow = _playerScript.cameraFollowTransform;
@@ -81,6 +83,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
 
     private void EnemyActivation() {
         enemyGameObject.SetActive(true);
+        persistentEnemyGameObject.SetActive(true);
     }
     
     private IEnumerator DelayedActivation() {
@@ -108,11 +111,13 @@ public class VirtualCameraSwitch : MonoBehaviour {
 
     private void ManualDeactivation() {
         areaGameObjects.SetActive(false);
+        enemyGameObject.SetActive(false);
         isActiveRoom = false;
     }
 
     public void EnemyDeactivation() {
         enemyGameObject.SetActive(false);
+        persistentEnemyGameObject.SetActive(false);
     }
 
     private IEnumerator DelayedDeactivation() {

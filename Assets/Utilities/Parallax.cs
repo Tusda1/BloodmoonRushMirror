@@ -31,12 +31,15 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     [field: SerializeField] public ParallaxData SaveSystemData { get; set; }
 
     public ParallaxData DataInGameData => _levelDataManager.DataInGameData.parallaxDatas
-        .GetOrAddByIdInList(ID, new ParallaxData {
-            ID = ID,
-            Camera = ActiveCamera,
-            CameraPosition = ActiveCamera.transform.position,
-            Positions = GetAllChildPositions()
-        });
+        .GetOrAddByIDInList(ID, ParallaxDataGenerator);
+
+    private Func<ParallaxData> ParallaxDataGenerator => () => new ParallaxData {
+        ID = ID,
+        Camera = ActiveCamera,
+        CameraPosition = _mainCamera.transform.position,
+        Positions = GetAllChildPositions(),
+        IsEnabled = startEnabled,
+    };
     #endregion
 
     private CinemachineCamera ActiveCamera => VirtualCameraSwitch.ActiveVirtualCameraSwitch.cinemachineCamera;
@@ -60,13 +63,14 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     }
 
     private void Start() {
+        _mainCameraTransform = _mainCamera.transform;
+        _previousCameraPosition = _mainCameraTransform.position;
+        
+        if (startEnabled) Enable();
+        
         if (enableDataBinding) {
             Bind();
         }
-        
-        _mainCameraTransform = _mainCamera.transform;
-        
-        _previousCameraPosition = _mainCameraTransform.position;
         
         foreach (var parallaxElement in parallaxElements) {
             if (parallaxElement.gameObject == null) {
@@ -102,8 +106,6 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
                 }
             }
         }
-        
-        if (startEnabled) Enable();
     }
     #endregion
     
@@ -244,6 +246,13 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
         }
         
         _previousCameraPosition = DataInGameData.CameraPosition;
+
+        if (DataInGameData.IsEnabled) {
+            Enable();
+        }
+        else {
+            Disable();
+        }
     }
 
     private IEnumerator Blend() {
@@ -257,6 +266,9 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     [ContextMenu(nameof(SaveBindData))]
     public void SaveBindData() {
         DataInGameData.Positions = GetAllChildPositions();
+        DataInGameData.IsEnabled = _enabled;
+        DataInGameData.Camera = ActiveCamera;
+        DataInGameData.CameraPosition = _mainCamera.transform.position;
     }
     #endregion
 

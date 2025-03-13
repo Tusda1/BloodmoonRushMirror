@@ -9,5 +9,6 @@ namespace SaveLoadSystem.Data {
         public CinemachineCamera Camera { get; set; }
         [field: SerializeField] public Vector3 CameraPosition { get; set; }
         [field: SerializeField] public Vector3[] Positions { get; set; }
+        [field: SerializeField] public bool IsEnabled { get; set; }
     }
 }

@@ -225,6 +225,7 @@ Transform:
   - {fileID: 6520985061960554819}
   - {fileID: 1984963023285166369}
   - {fileID: 5245557192519107077}
+  - {fileID: 6666963303606981663}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6804936971709374335
@@ -242,6 +243,7 @@ MonoBehaviour:
   cinemachineCamera: {fileID: 8798351002445025831}
   areaGameObjects: {fileID: 9093227878091812984}
   enemyGameObject: {fileID: 534372104746981164}
+  persistentEnemyGameObject: {fileID: 8767794844128597512}
   slowTimeOnTransition: 1
   timeSlowDuration: 2
   timeSlowCurve:
@@ -342,6 +344,37 @@ PolygonCollider2D:
       - {x: 20, y: -11.25}
       - {x: -20, y: -11.25}
   m_UseDelaunayMesh: 0
+--- !u!1 &8767794844128597512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6666963303606981663}
+  m_Layer: 0
+  m_Name: PersistentEnemyObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6666963303606981663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8767794844128597512}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1593079545925029435}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9093227878091812984
 GameObject:
   m_ObjectHideFlags: 0

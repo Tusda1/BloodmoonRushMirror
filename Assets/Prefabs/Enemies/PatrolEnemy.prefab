@@ -115,7 +115,7 @@ MonoBehaviour:
   GravityModifier: 5
   takesSpikeDamage: 1
   faceLeftOnStart: 1
-  moveSpeed: 5
+  moveSpeed: 6
   maxHealth: 2
   invulnerableTime: 0.2
   knockbackDuration: 0.1
@@ -135,6 +135,7 @@ MonoBehaviour:
   bloodSplatter: {fileID: 416086247305196542, guid: 3143456b3816a8b4e8a6dfa795392a20, type: 3}
   isImmortal: 0
   canTakeKnockback: 1
+  death_SoundID: 
   <ID>k__BackingField: 557a32f7-fa5c-48ac-ad56-1d026404fdeb
   <SaveSystemData>k__BackingField:
     name: 
@@ -143,11 +144,10 @@ MonoBehaviour:
     health: 0
     gemsContaining: 0
     position: {x: 0, y: 0, z: 0}
-  death_SoundID: 
   smoothDampScript:
     smoothTime: 0.25
   ledgeDistance: 1.5
-  attackRange: 2
+  attackRange: 2.5
 --- !u!114 &8093919142195008724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f1637e13ef8c8546bead8e076ec1fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 1
   deathAnimation: {fileID: 5723935964300731062, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
   hitAnimation: {fileID: -3117440549422228268, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}
   walk: {fileID: 3280591909972774192, guid: ac0df0ee4d729b141b2e5bdb12943d12, type: 3}

@@ -1,5 +1,5 @@
+using System;
 using Attributes;
-using Pathfinding.Util;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using Triggers;
@@ -7,6 +7,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Utilities.DataBinding;
 using VContainer;
+#if UNITY_EDITOR
+using Guid = Pathfinding.Util.Guid;
+#endif
 
 public class ConversationTrigger : TriggerBox, IBind<TriggerData> {
     #region ---Fields---
@@ -20,11 +23,14 @@ public class ConversationTrigger : TriggerBox, IBind<TriggerData> {
 
     [field: SerializeField] public TriggerData SaveSystemData { get; set; }
 
-    public TriggerData DataInGameData => _levelDataManager.DataInGameData.triggerDatas.GetOrAddByIdInList(ID, new TriggerData {
+    public TriggerData DataInGameData => _levelDataManager.DataInGameData.triggerDatas
+        .GetOrAddByIDInList(ID, TriggerDataGenerator);
+
+    private Func<TriggerData> TriggerDataGenerator => () => new TriggerData {
         name = name,
         ID = ID,
         hasBeenTriggered = hasBeenTriggered
-    });
+    };
     #endregion
     
     private ISaveLoadSystemManager _saveLoadSystemManager;

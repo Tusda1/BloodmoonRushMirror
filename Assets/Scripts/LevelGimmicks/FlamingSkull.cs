@@ -3,6 +3,7 @@ using Attributes;
 using PlayerLoopTimer;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 
 public class FlamingSkull : MonoBehaviour, IDamageable {
     private static readonly int Ignite = Animator.StringToHash("Ignite");
@@ -16,10 +17,14 @@ public class FlamingSkull : MonoBehaviour, IDamageable {
     private CountdownTimer flameTimer;
     [SerializeField] private float flameChargeTime;
     [GetOrAddComponent, SerializeField, HideInInspector] private Animator animator;
+    
+    private Light2D _lightComponent;
     #endregion
 
     private void Start() {
         _particleSystem = particles.GetComponent<ParticleSystem>();
+        _lightComponent = GetComponentInChildren<Light2D>();
+        _lightComponent.gameObject.SetActive(false);
         
         flameTimer = new CountdownTimer(flameChargeTime);
         flameTimer.OnBegin += FlameOff;
@@ -32,6 +37,7 @@ public class FlamingSkull : MonoBehaviour, IDamageable {
         isFlaming = true;
         boxCollider.enabled = true;
         animator.SetTrigger(Ignite);
+        _lightComponent.gameObject.SetActive(true);
     }
 
     private void FlameOff() {
@@ -39,6 +45,7 @@ public class FlamingSkull : MonoBehaviour, IDamageable {
         boxCollider.enabled = false;
         flameTimer.StartTimer();
         animator.SetTrigger(Extinguish);
+        _lightComponent.gameObject.SetActive(false);
     }
 
     public void TakeDamage(DamageInstance playerDamageInstance) {

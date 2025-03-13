@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6615180065932324736}
-  - component: {fileID: 4272473037953191327}
+  - component: {fileID: 2946373277042690543}
   m_Layer: 0
   m_Name: Installer
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4272473037953191327
+--- !u!114 &2946373277042690543
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,12 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2976792422294074862}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea86e2374cf033b41805123f5b1db962, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f46a66f81e548e5bd30f3d4058a383d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
     TypeName: PersistentManagersInstaller
   autoRun: 1
-  autoInjectGameObjects:
-  - {fileID: 0}
-  mainCamera: {fileID: 0}
+  autoInjectGameObjects: []
