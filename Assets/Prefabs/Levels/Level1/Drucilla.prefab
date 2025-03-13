@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 7589048197982333553}
   - component: {fileID: 1866330993603617668}
   - component: {fileID: 4519198094343847217}
-  - component: {fileID: 7979099604429872168}
   - component: {fileID: -4709153988622603019}
+  - component: {fileID: 3163266781814347160}
   m_Layer: 13
   m_Name: Drucilla
   m_TagString: Untagged
@@ -109,7 +109,7 @@ MonoBehaviour:
   endDemoSceneCollection: {fileID: 11400000, guid: c5f842ad2c0776a419c4ed54c146f504, type: 2}
   drucillaDamageInstance:
     damage: 0
-    knockback: {x: -26.31, y: 0}
+    knockback: {x: -41.09, y: -20.3}
     knockbackStrength: 23.21
     staggerStrength: 337
     ignoreInvincibility: 1
@@ -144,7 +144,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -182,21 +182,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7979099604429872168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5004162161467251752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
 --- !u!114 &-4709153988622603019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,5 +195,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"nest":{"source":"Macro","macro":null,"embed":null}}'
-    _objectReferences: []
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: 33c7847f6eb04444686c33ef712deb38, type: 2}
+--- !u!114 &3163266781814347160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5004162161467251752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"DrucillaIntroduction","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"DrucillaIntroduction,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"DrucillaAnimator","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Animator,
+      UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"CollapsingFloor","value":null,"typeHandle":{"Identification":"CollapsingFloor,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 7589048197982333553}
+    - {fileID: 4519198094343847217}

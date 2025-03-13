@@ -1,5 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
+using SceneCollections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -125,6 +127,15 @@ public class CameraEffects : MonoBehaviour {
 
     public void ResetCameraMove() {
         cameraPixelatedGameObject.transform.position = Vector3.zero;
+    }
+
+    public void FadeLoadScene(SceneCollectionSO sceneCollection, Action callback = null) {
+        CircleFadeOut(1,
+            () => _ = SceneCollectionManager.LoadSceneCollectionAsync(sceneCollection,
+                () => {
+                    CircleFadeIn(1);
+                    callback?.Invoke();
+                }));
     }
 
 #if UNITY_EDITOR
