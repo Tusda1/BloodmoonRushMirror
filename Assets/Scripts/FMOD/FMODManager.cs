@@ -245,7 +245,7 @@ namespace FMODScripts {
         public void SetParameterValue(string parameter, float value, bool ignoreSeekSpeed = false) {
             if (CheckIfStringIsEmpty(parameter)) return;
 
-            _currentMusic.setParameterByName(parameter, value, ignoreSeekSpeed);
+            RuntimeManager.StudioSystem.setParameterByName(parameter, value, ignoreSeekSpeed);
 
             _debugLogger.Log($"Parameter {parameter} set to {value}");
         }
