@@ -178,7 +178,8 @@ namespace Player {
                         isTakingKnockback = false;
                     }
                     else {
-                        if (player.healthComponent.TotalHealth > 0) gameObject.transform.position = lastPlatformCheckpoint;
+                        if (player.healthComponent.TotalHealth <= 0) return;
+                        gameObject.transform.position = lastPlatformCheckpoint;
                         player.animator.SetTrigger(AnimatorRespawnTrigger);
                     }
                 })

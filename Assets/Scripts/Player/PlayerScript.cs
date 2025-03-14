@@ -354,11 +354,12 @@ namespace Player {
             LoseGems();
 
             animator.ResetTrigger(AnimatorDeathTrigger);
-            animator.SetTrigger(AnimatorRespawnTrigger);
 
             _saveLoadSystemManager.CheckpointLoad();
             yield return null;
             _saveLoadSystemManager.CheckpointLoad();
+            
+            animator.SetTrigger(AnimatorRespawnTrigger);
         }
 
         private void LoseGems() {
