@@ -247,6 +247,8 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
 
     [ContextMenu(nameof(LoadBindData))]
     public void LoadBindData() {
+        if (!enableDataBinding) return;
+        
         StartCoroutine(Blend(DataInGameData.IsEnabled));
         
         DataInGameData.Camera.ForceCameraPosition(DataInGameData.CameraPosition, Quaternion.identity);

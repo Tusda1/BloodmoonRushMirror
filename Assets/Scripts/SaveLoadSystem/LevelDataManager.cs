@@ -9,8 +9,11 @@ using VContainer;
 namespace SaveLoadSystem {
     public partial class LevelDataManager : MonoBehaviour, IBind<LevelData> {
         #region ---Fields---
+        [SerializeField] private SceneCollectionSO otherLevel;
+        
         private ISaveLoadSystemManager _saveLoadSystemManager;
         private PlayerScript _playerScript;
+        private CameraEffects _cameraEffects;
         private GameDataScrubGeneric<SaveGameData> _newGameData;
         #endregion
 
@@ -28,6 +31,7 @@ namespace SaveLoadSystem {
 #endif
 #endif
             _playerScript = container.Resolve<PlayerScript>();
+            _cameraEffects = container.Resolve<CameraEffects>();
         }
 
         protected void Start() {
@@ -63,6 +67,11 @@ namespace SaveLoadSystem {
             if (Input.GetKeyDown(KeyCode.F7)) {
                 SaveLoadSystemManager_SaveLoad();
             }
+            if (Input.GetKeyDown(KeyCode.F4)) {
+                _saveLoadSystemManager.CurrentGameData = null;
+                _saveLoadSystemManager.SetCurrentGameDataFromTemplate("NOSAVESYSTEM");
+                _cameraEffects.FadeLoadScene(otherLevel);
+            }
         }
 
         private IEnumerator LoadCheckpoint() {
@@ -74,7 +83,7 @@ namespace SaveLoadSystem {
         }
 #endif
 
-#if SAVESYSTEM_ACTIVE && UNITY_EDITOR
+#if SAVESYSTEM_ACTIVE && (UNITY_EDITOR || DEVELOPMENT_BUILD)
         private const string SaveSystemMenu = "SaveSystemManager/";
         
         [ContextMenu(SaveSystemMenu + nameof(WriteDataToNewGameData))]
