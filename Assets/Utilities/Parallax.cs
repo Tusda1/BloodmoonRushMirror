@@ -265,6 +265,13 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
         _cinemachineBrain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.Cut, 0);
         yield return new WaitForSeconds(0.2f);
         _cinemachineBrain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseOut, 0.6f);
+        
+        var children = transform.GetImmediateChildren().ToArray();
+        for (var index = 0; index < children.Length; index++) {
+            var child = children[index];
+            child.transform.position = DataInGameData.Positions[index];
+        }
+        
         _enabled = endEnabled;
     }
 
