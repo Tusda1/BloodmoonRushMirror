@@ -97,6 +97,8 @@ namespace UI {
             levelSelectMenu.OnMenuActivated += HideMenu;
             levelSelectMenu.OnMenuDeactivated += ShowMenu;
 #elif SAVESYSTEM_ACTIVE
+            _saveLoadSystemManager.CurrentGameData = null;
+            
             savesMenu.OnMenuActivated += HideMenu;
             savesMenu.OnMenuDeactivated += ShowMenu;
 #endif
@@ -130,9 +132,12 @@ namespace UI {
         private void StartButtonClicked() {
 #if LEVEL_SELECT
             levelSelectMenu.Activate();
-#elif SAVESYSTEM_ACTIVE
+#elif SAVESYSTEM_ACTIVE && !NGA_BUILD
             savesMenu.Activate();
 #else
+#if NGA_BUILD
+            _saveLoadSystemManager.SetCurrentGameDataFromTemplate("NGA_BUILD");
+#endif
             _cameraEffects.FadeLoadScene(firstSceneCollection);
 
             _startButton.clicked -= StartButtonClicked;

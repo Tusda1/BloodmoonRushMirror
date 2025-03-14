@@ -235,8 +235,7 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
 
     [ContextMenu(nameof(LoadBindData))]
     public void LoadBindData() {
-        Disable();
-        StartCoroutine(Blend());
+        StartCoroutine(Blend(DataInGameData.IsEnabled));
         
         DataInGameData.Camera.ForceCameraPosition(DataInGameData.CameraPosition, Quaternion.identity);
         
@@ -247,19 +246,14 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
         }
         
         _previousCameraPosition = DataInGameData.CameraPosition;
-
-        if (DataInGameData.IsEnabled) {
-            Enable();
-        }
-        else {
-            Disable();
-        }
     }
 
-    private IEnumerator Blend() {
+    private IEnumerator Blend(bool endEnabled) {
+        _enabled = false;
         _cinemachineBrain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.Cut, 0);
         yield return new WaitForSeconds(0.2f);
         _cinemachineBrain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseOut, 0.6f);
+        _enabled = endEnabled;
     }
 
     public void LoadCheckpointBindData() => LoadBindData();
