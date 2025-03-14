@@ -292,7 +292,6 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         currentHealth = maxHealth;
         transform.position = startPosition;
         _spriteRenderer.material = _defaultMaterial;
-        _spriteRenderer.enabled = true;
     }
 
     private void OnTriggerStay2D(Collider2D other) {
