@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1772306095764167363}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.58, y: 0, z: 0}
+  m_LocalPosition: {x: -1.23, y: 0.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76,7 +76,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.2, y: 1}
+  m_Size: {x: 0.2, y: 2.2}
   m_EdgeRadius: 0
 --- !u!1 &5735379034108790381
 GameObject:
@@ -104,7 +104,7 @@ Transform:
   m_GameObject: {fileID: 5735379034108790381}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.58, z: 0}
+  m_LocalPosition: {x: -0.5, y: 1.41, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -154,7 +154,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8, y: 0.2}
+  m_Size: {x: 1.2, y: 0.2}
   m_EdgeRadius: 0
 --- !u!1 &7610073710609852711
 GameObject:
@@ -167,9 +167,9 @@ GameObject:
   - component: {fileID: 8063258936297604564}
   - component: {fileID: 2042451723140285688}
   - component: {fileID: 615024018191861814}
+  - component: {fileID: 8337203688739231855}
   - component: {fileID: 6437191641786056423}
   - component: {fileID: 505606815429416726}
-  - component: {fileID: 928200434660879670}
   - component: {fileID: -6259984085813048554}
   - component: {fileID: -2495489385183675533}
   m_Layer: 8
@@ -241,7 +241,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 3595896559863859616, guid: 753265b0c06c8654dae33726123f9f13, type: 3}
   m_Color: {r: 1, g: 0.6967601, b: 0.3537736, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -293,6 +293,7 @@ MonoBehaviour:
   bloodSplatter: {fileID: 0}
   isImmortal: 1
   canTakeKnockback: 1
+  death_SoundID: 
   <ID>k__BackingField: 1b4206e6-3285-433f-8e20-27aee2a50db8
   <SaveSystemData>k__BackingField:
     name: 
@@ -301,17 +302,41 @@ MonoBehaviour:
     health: 0
     gemsContaining: 0
     position: {x: 0, y: 0, z: 0}
-  death_SoundID: 
   detectionDistance: 10
-  keepAgroDistance: 25
-  smoothDampScript:
-    smoothTime: 0.1
   shield:
     blocksUntilCounterAttack: 3
     alwaysCounterAttackOnDash: 1
     blowsUntilBreak: 2
     breakResetTime: 5
   attackRange: {fileID: 6516358968469848347}
+  waitBeforeStrike: 2.5
+  keepAgroDistance: 25
+  smoothDampScript:
+    smoothTime: 0.1
+--- !u!114 &8337203688739231855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7610073710609852711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 894aeccb35c5fd14ca4149418ca91e2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  deathAnimation: {fileID: 7400000, guid: b80d2719c5f34d04194b1ffb8a63f8ef, type: 2}
+  hitAnimation: {fileID: 0}
+  idleAnimation: {fileID: 7400000, guid: 49f7788cd28460647a82f3e51757caa6, type: 2}
+  attackAnimation: {fileID: 7093487250664478451, guid: 753265b0c06c8654dae33726123f9f13, type: 3}
+  recoverAnimation: {fileID: -2115920682210934349, guid: 753265b0c06c8654dae33726123f9f13, type: 3}
+  blockAnimation: {fileID: -6801083763907307519, guid: 753265b0c06c8654dae33726123f9f13, type: 3}
+  stunHitAnimation: {fileID: 7666019288946695810, guid: 753265b0c06c8654dae33726123f9f13, type: 3}
+  getStunnedAnimation: {fileID: 7400000, guid: 8c8eb9c5df795cb46b37a3f4d10620d7, type: 2}
+  stunnedAnimation: {fileID: 7400000, guid: 401be5fc35b7dfe4da2b0b3b013e9d0d, type: 2}
+  walkAnimation: {fileID: 2667949614841947897, guid: 753265b0c06c8654dae33726123f9f13, type: 3}
+  isExecutingAnAction: 0
 --- !u!50 &6437191641786056423
 Rigidbody2D:
   serializedVersion: 5
@@ -373,33 +398,18 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.5, y: 0.14999998}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.9347827, y: 0.4347826}
+    oldSize: {x: 2.3, y: 2.3}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.3, y: 2.3}
   m_EdgeRadius: 0
---- !u!114 &928200434660879670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7610073710609852711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6323bfd0d68967643adf1ebbc5efd4bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animationSpeed: 1
-  deathAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
-  hitAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
 --- !u!114 &-6259984085813048554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,7 +473,7 @@ Transform:
   m_GameObject: {fileID: 7800477506489336026}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.21, y: 0.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -503,7 +513,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -1, y: 0}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -513,5 +523,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.3, y: 2}
   m_EdgeRadius: 0
