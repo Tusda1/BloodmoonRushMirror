@@ -111,7 +111,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
 
     private void ManualDeactivation() {
         areaGameObjects.SetActive(false);
-        enemyGameObject.SetActive(false);
+        //enemyGameObject.SetActive(false);
         isActiveRoom = false;
     }
 

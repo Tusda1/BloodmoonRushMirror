@@ -22,7 +22,7 @@ public class PatrolEnemy : EnemyBase
     {
         base.Update();
         
-        if (isDead || isStunned || !isGrounded || _patrolAnimation.isAttacking)
+        if (isDead || isStunned || isKnockedUp || !isGrounded || _patrolAnimation.isAttacking)
         {
             smoothDampScript.SetStartVelocity(velocity);
             return;
