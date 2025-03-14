@@ -134,8 +134,11 @@ public class ShieldGuy : ReactiveBase
     private void CancelWaitThenStrike()
     {
         _waitingForStrike = false;
-        StopCoroutine(_strikeCoroutine);
-        _strikeCoroutine = null;
+        if (_strikeCoroutine != null)
+        {
+            StopCoroutine(_strikeCoroutine);
+            _strikeCoroutine = null;
+        }
     }
 
     private void Strike()
