@@ -48,7 +48,7 @@ namespace SaveLoadSystem {
         }
         #endregion
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if SAVESYSTEM_ACTIVE && (UNITY_EDITOR || DEVELOPMENT_BUILD)
         private void Update() {
             if (Input.GetKeyDown(KeyCode.F5)) {
                 SaveLoadSystemManager_SaveAllDataBinds();
