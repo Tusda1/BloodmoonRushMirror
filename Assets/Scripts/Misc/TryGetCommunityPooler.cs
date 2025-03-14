@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Linq;
+using VContainer;
 
 public class TryGetCommunityPooler
 {
-    public static Pooler TryGetPooler(GameObject prefabToFind)
+    public static Pooler TryGetPooler(GameObject prefabToFind, IObjectResolver container)
     {
         try
         {
@@ -14,14 +15,14 @@ public class TryGetCommunityPooler
             }
 
             Debug.LogWarning("No pooler found for projectile, creating new pooler");
-            var newPooler = new Pooler(prefabToFind, 5);
+            var newPooler = new Pooler(prefabToFind, 5, container);
             communityPooler.poolers.Add(newPooler); // Register the new pooler
             return newPooler;
         }
         catch (System.Exception ex)
         {
             Debug.LogError($"Couldnt find communitypooler: {ex.Message}");
-            return new Pooler(prefabToFind, 5);
+            return new Pooler(prefabToFind, 5, container);
         }
     }
 }

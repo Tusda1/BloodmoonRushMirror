@@ -3,6 +3,7 @@ using Animancer.FSM;
 using UnityEngine;
 using System;
 using UnityEngine.Serialization;
+using VContainer;
 
 public enum BossStatePriority
 {
@@ -47,6 +48,13 @@ public class BossState : StateBehaviour
     protected void EndState()
     {
         OnStateEnd?.Invoke();
+    }
+
+    protected IObjectResolver ObjectResolver;
+
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        ObjectResolver = container;
     }
     
 #if UNITY_EDITOR

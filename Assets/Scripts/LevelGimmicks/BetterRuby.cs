@@ -25,7 +25,7 @@ public class BetterRuby : GravityObject
     private GameObject _spriteGameObject;
     
     [Inject] private IAudioManager _audioManager;
-    [SerializeField] private string pickupSoundID = "Gem_Get";
+    [SerializeField] private string pickupSoundID = "Misc_Gem_Get";
     
     private enum RubyState
     {
