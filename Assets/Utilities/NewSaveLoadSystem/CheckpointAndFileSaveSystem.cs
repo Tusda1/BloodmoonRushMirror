@@ -9,7 +9,7 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
     public IDataService<SaveGameData> DataService { get; private set; }
     public DataBinder DataBinder { get; private set; }
 
-    public SaveGameData CurrentGameData { get; private set; }
+    public SaveGameData CurrentGameData { get; set; }
 
     #region ***---DI---***
     private DebugLoggerSO _debugLogger;

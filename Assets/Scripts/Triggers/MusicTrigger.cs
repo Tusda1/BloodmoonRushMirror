@@ -48,6 +48,10 @@ namespace Triggers {
         private void Start() {
             Bind();
         }
+
+        private void OnDestroy() {
+            Unbind();
+        }
         #endregion
 
         protected override void TriggeredAction(Collider2D other) {
@@ -59,6 +63,12 @@ namespace Triggers {
         public void Bind() {
 #if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
+        }
+
+        public void Unbind() {
+#if SAVESYSTEM_ACTIVE
+            _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
 #endif
         }
 

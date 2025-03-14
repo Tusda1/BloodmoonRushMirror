@@ -3,7 +3,7 @@
 public interface ISaveLoadSystemManagerGeneric<TGameData> where TGameData : IGameData {
     IDataService<TGameData> DataService { get; }
     DataBinder DataBinder { get; }
-    TGameData CurrentGameData { get; }
+    TGameData CurrentGameData { get; set; }
 
     void UpdateSaveSlotSO();
 

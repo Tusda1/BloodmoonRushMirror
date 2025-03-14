@@ -39,6 +39,10 @@ namespace Checkpoint {
             // print($"Found {_enemies.Count} enemies in {_rooms.Length} rooms");
         }
 
+        private void OnDestroy() {
+            ServiceLocator.Get<PlayerScript>().OnRespawn -= OnRespawn;
+        }
+
         private void OnRespawn() {
             foreach (var enemy in _enemies) {
                 print(enemy.gameObject.name);

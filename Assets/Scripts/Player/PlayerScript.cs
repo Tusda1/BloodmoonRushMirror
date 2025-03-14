@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Attributes;
 using Consensus;
 using ExtensionMethods;
@@ -187,7 +188,18 @@ namespace Player {
             if (_isLookingUp && Mathf.Abs(playerMovement.inputVector.x) <= 0.2) offset += lookahead;
             if (_isLookingDown && Mathf.Abs(playerMovement.inputVector.x) <= 0.2) offset -= lookahead;
             cameraFollowTransform.position = transform.position.WithOffset(y: offset);
+
+            if (OverlapLadder()) return;
+            playerMovement.PlayerLadderLogic.LadderTop = null;
+            playerMovement.PlayerLadderLogic.LadderMiddle = null;
+            playerMovement.PlayerLadderLogic.LadderBottom = null;
         }
+        
+        private bool OverlapLadder() {
+            var hitCount = Physics2D.OverlapCircleAll(transform.position, 2);
+            return hitCount.Any(x => x.transform.CompareTag("Ladder"));
+        }
+
 
         #region ***---InputActions---***
         public void OnSkipDialogue(InputValue inputValue) {
@@ -320,13 +332,13 @@ namespace Player {
                     () => _cameraEffects.CircleFadeIn(0.5f));
             }
             else {
-                Respawn();
+                StartCoroutine(Respawn());
                 _cameraEffects.CircleFadeIn(0.5f);
                 AudioManager.PlayMusic(_currentLevelMusicID);
             }
         }
 
-        private void Respawn() {
+        private IEnumerator Respawn() {
             debugLogger.Log("Respawning");
 
             OnRespawn.Invoke();
@@ -341,10 +353,12 @@ namespace Player {
 
             LoseGems();
 
-            _saveLoadSystemManager.CheckpointLoad();
-
             animator.ResetTrigger(AnimatorDeathTrigger);
             animator.SetTrigger(AnimatorRespawnTrigger);
+
+            _saveLoadSystemManager.CheckpointLoad();
+            yield return null;
+            _saveLoadSystemManager.CheckpointLoad();
         }
 
         private void LoseGems() {

@@ -32,6 +32,12 @@ namespace Player {
 #endif
         }
 
+        public void Unbind() {
+#if SAVESYSTEM_ACTIVE
+            _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
+#endif
+        }
+
         public void LoadBindData() {
             healthComponent.Health = SaveSystemData.health;
             healthComponent.TempHealth = SaveSystemData.tempHealth;

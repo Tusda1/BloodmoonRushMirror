@@ -19,6 +19,8 @@
         /// </summary>
         /// <code>saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
         void Bind();
+        
+        void Unbind();
     }
 
     public interface IBind<TData> : IDataBind {

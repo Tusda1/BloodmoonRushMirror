@@ -34,14 +34,23 @@ namespace SaveLoadSystem {
         #endregion
         
         public SaveGameData currentGameData;
-        
         #endregion
+
+        private void OnDestroy() {
+            Unbind();
+        }
 
         #region ---DataBindingMethods---
         public void Bind() {
 #if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
             currentGameData = _saveLoadSystemManager.CurrentGameData;
+#endif
+        }
+
+        public void Unbind() {
+#if SAVESYSTEM_ACTIVE
+            _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
 #endif
         }
 

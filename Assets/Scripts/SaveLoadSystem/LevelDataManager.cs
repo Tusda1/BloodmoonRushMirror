@@ -1,6 +1,7 @@
-using System;
+using System.Collections;
 using Player;
 using SaveLoadSystem.Data;
+using SceneCollections;
 using UnityEngine;
 using Utilities.DataBinding;
 using VContainer;
@@ -32,6 +33,9 @@ namespace SaveLoadSystem {
         protected void Start() {
             Bind();
 #if SAVESYSTEM_ACTIVE
+#if UNITY_EDITOR
+            if (SceneCollectionManager.CurrentSceneCollection == null) return;
+#endif
             // if (_saveLoadSystemManager.CurrentGameData == null) return;
             
             _saveLoadSystemManager.SaveLoad();
@@ -54,11 +58,19 @@ namespace SaveLoadSystem {
                 SaveLoadSystemManager_SaveAllDataBinds();
             }
             if (Input.GetKeyDown(KeyCode.F6)) {
-                SaveLoadSystemManager_CheckpointLoad();
+                StartCoroutine(LoadCheckpoint());
             }
             if (Input.GetKeyDown(KeyCode.F7)) {
                 SaveLoadSystemManager_SaveLoad();
             }
+        }
+
+        private IEnumerator LoadCheckpoint() {
+            _saveLoadSystemManager.CheckpointLoad();
+            yield return null;
+            yield return null;
+            yield return null;
+            _saveLoadSystemManager.CheckpointLoad();
         }
 #endif
 
