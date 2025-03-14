@@ -62,7 +62,7 @@ public class Ghost : ReactiveBase
     {
         // Use overlapcircle to see if there are any ghosts nearby
         var ghost = Physics2D.OverlapCircle(transform.position, 1f, LayerMask.GetMask("Enemy"));
-        if (!ghost.TryGetComponent(out Ghost ghostComponent)) return;
+        if (!ghost || !ghost.TryGetComponent(out Ghost ghostComponent)) return;
             
         // make the ghost move a little away from the other ghosts
         if (Vector2.Distance(ghostComponent.transform.position, transform.position) != 0)
