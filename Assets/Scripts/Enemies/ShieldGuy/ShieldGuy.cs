@@ -101,12 +101,12 @@ public class ShieldGuy : ReactiveBase
         if (isStunned) return true;
         
         var blocked = shield.ShieldBlock(Strike, player, damageInstance, () => StartCoroutine(ShieldBreakCoroutine()));
-        return false;
+        return !blocked;
     }
 
     protected override void OnTakeDamage(DamageInstance damageInstance)
     {
-        _shieldGuyAnimation.Stun();
+        if (isStunned) _shieldGuyAnimation.Stun();
     }
 
     private IEnumerator ShieldBreakCoroutine()
