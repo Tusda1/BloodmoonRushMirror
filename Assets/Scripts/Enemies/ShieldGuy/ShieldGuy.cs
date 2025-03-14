@@ -44,7 +44,7 @@ public class ShieldGuy : ReactiveBase
 
     protected override void Action()
     {
-        if (_shieldGuyAnimation.isExecutingAnAction) return;
+        if (_shieldGuyAnimation.isExecutingAnAction || isStunned || isKnockedUp || isDead) return;
         
         // Check if the target is still in range
         if (Vector2.Distance(targetObject.position, transform.position) > keepAgroDistance)
@@ -69,8 +69,6 @@ public class ShieldGuy : ReactiveBase
             smoothDampScript.SmoothDampVector2(facingDirection * moveSpeed, ref targetVelocity);
             _shieldGuyAnimation.Walk();
         }
-        
-        if (isStunned || isKnockedUp || isDead) return;
         
         // Check if player is in attack range and if he is there for a certain amount of time then strike
         var bounds = attackRange.bounds;
@@ -102,7 +100,8 @@ public class ShieldGuy : ReactiveBase
     {
         if (isStunned) return true;
         
-        return !shield.ShieldBlock(Strike, player, damageInstance, () => StartCoroutine(ShieldBreakCoroutine()));
+        var blocked = shield.ShieldBlock(Strike, player, damageInstance, () => StartCoroutine(ShieldBreakCoroutine()));
+        return false;
     }
 
     protected override void OnTakeDamage(DamageInstance damageInstance)
@@ -112,22 +111,24 @@ public class ShieldGuy : ReactiveBase
 
     private IEnumerator ShieldBreakCoroutine()
     {
+        _shieldGuyAnimation.Stun();
         isVulnerable = true;
         isStunned = true;
         yield return new WaitForSeconds(2);
         isVulnerable = false;
         isStunned = false;
-        Strike();
+        
+        if (!isDead) Strike();
     }
 
     private void Strike()
     {
+        _shieldGuyAnimation.Attack();
         // Use a overlayBox to check if the player is in the attack range
         var bounds = attackRange.bounds;
         Collider2D playerObject = Physics2D.OverlapBox(bounds.center, bounds.size, 0, LayerMask.GetMask("Player"));
         if (playerObject)
         {
-            _shieldGuyAnimation.Attack();
             Attack();
         }
     }

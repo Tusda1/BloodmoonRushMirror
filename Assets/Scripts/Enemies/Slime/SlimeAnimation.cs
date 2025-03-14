@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using VContainer;
 
 public class SlimeAnimation : EnemyAnimationBase
 {
@@ -14,6 +15,12 @@ public class SlimeAnimation : EnemyAnimationBase
     [SerializeField] private AnimationClip splitLand;
     [SerializeField] private AnimationClip waitForReform; 
     [SerializeField] private AnimationClip reform;
+    
+    [SerializeField] private string jumpSoundID = "Slime_jump";
+    [SerializeField] private string landSoundID = "Slime_land";
+    [SerializeField] private string reformSoundID = "Slime_reform";
+    
+    [Inject] private IAudioManager _audioManager;
 
     public override void PlayDefaultAnimation()
     {
@@ -22,6 +29,7 @@ public class SlimeAnimation : EnemyAnimationBase
     
     public void Jump()
     {
+        _audioManager.PlayOneShotAttached(jumpSoundID, gameObject);
         var state = animancerComponent.Play(jump);
         state.Events(this).OnEnd = () =>
         {
@@ -43,6 +51,7 @@ public class SlimeAnimation : EnemyAnimationBase
                 {
                     state.Destroy();
                     state = animancerComponent.Play(land);
+                    _audioManager.PlayOneShotAttached(landSoundID, gameObject);
                     state.Events(this).OnEnd = () =>
                     {
                         state.Destroy();
@@ -78,6 +87,7 @@ public class SlimeAnimation : EnemyAnimationBase
     
     public void Reform(Action onReformEnd)
     {
+        _audioManager.PlayOneShotAttached(reformSoundID, gameObject);
         var state = animancerComponent.Play(reform);
         state.Events(this).OnEnd = () =>
         {
