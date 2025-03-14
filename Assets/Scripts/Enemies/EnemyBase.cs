@@ -35,6 +35,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     
     protected bool isDead;
     protected bool isStunned;
+    protected bool isKnockedUp;
     protected bool isVulnerable;
     protected int currentHealth = 2;
     protected float takeDamageTimer;
@@ -141,7 +142,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             Debug.LogWarning($"blood splatter on {name} is null");
         }
 
-        if (!isImmortal && !isVulnerable) currentHealth -= damageInstance.damage;
+        if (!isImmortal || isVulnerable) currentHealth -= damageInstance.damage;
 
         if (currentHealth <= 0) {
             Die();
@@ -176,6 +177,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     private IEnumerator KnockUp(Vector2 knockbackStrength) {
+        print("KnockUp");
         isStunned = true;
         isVulnerable = true;
         float force = knockbackStrength.magnitude;
@@ -189,7 +191,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     private IEnumerator Knockback(Vector2 knockbackStrength) {
-        isStunned = true;
+        isKnockedUp = true;
         Vector2 knockbackVelocity = knockbackStrength.magnitude * knockbackStrength.normalized / weight;
         Vector2 smoothedVelocity = knockbackVelocity;
         smoothedVelocity.y = 0;
@@ -212,7 +214,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         if (isDead) yield break;
 
-        isStunned = false;
+        isKnockedUp = false;
         if (enemyAnimationBase != null) enemyAnimationBase.PlayDefaultAnimation();
     }
 
@@ -285,7 +287,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     private void OnTriggerStay2D(Collider2D other) {
-        if (isDead || isStunned || player.healthComponent.HasInvincibilityFrames)
+        if (isDead || isStunned || isKnockedUp || player.healthComponent.HasInvincibilityFrames)
         {
             return;
         }

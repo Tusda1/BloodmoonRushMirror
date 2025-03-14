@@ -22,7 +22,7 @@ public class ReactiveBase : EnemyBase
             return;
         }
 
-        if (isStunned) { return; }
+        if (isStunned || isKnockedUp) { return; }
 
         switch (currentState)
         {
