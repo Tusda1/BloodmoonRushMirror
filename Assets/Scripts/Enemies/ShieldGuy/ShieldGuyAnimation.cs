@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using VContainer;
 
 public class ShieldGuyAnimation : EnemyAnimationBase
 {
@@ -13,6 +14,9 @@ public class ShieldGuyAnimation : EnemyAnimationBase
     [SerializeField] private AnimationClip walkAnimation;
     
     [HideInInspector] public bool isExecutingAnAction;
+    
+    [Inject] private IAudioManager _audioManager;
+    [SerializeField] private string blockSoundID = "Shield_Block";
 
     public override void PlayDefaultAnimation()
     {
@@ -37,6 +41,7 @@ public class ShieldGuyAnimation : EnemyAnimationBase
     
     public void Block()
     {
+        _audioManager.PlayOneShotAttached(blockSoundID, gameObject);
         isExecutingAnAction = true;
         var state = animancerComponent.Play(blockAnimation);
         state.Events(this).OnEnd = () =>
