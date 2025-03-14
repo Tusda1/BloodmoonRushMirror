@@ -66,7 +66,7 @@ public class DashAndSwoopState : DraculaState
     private void Start()
     {
         _player = ServiceLocator.Get<PlayerScript>();
-        _projectilePooler = TryGetCommunityPooler.TryGetPooler(_homingProjectile);
+        _projectilePooler = TryGetCommunityPooler.TryGetPooler(_homingProjectile, ObjectResolver);
     }
 
     private void OnEnable()
