@@ -135,6 +135,8 @@ MonoBehaviour:
   bloodSplatter: {fileID: 0}
   isImmortal: 1
   canTakeKnockback: 0
+  hitSoundID: Slime_Hit
+  deathSoundID: 
   <ID>k__BackingField: 2347d84c-2d28-4593-90a7-0f2cd56b3a0d
   <SaveSystemData>k__BackingField:
     name: 
@@ -143,7 +145,6 @@ MonoBehaviour:
     health: 0
     gemsContaining: 0
     position: {x: 0, y: 0, z: 0}
-  death_SoundID: 
   detectionDistance: 20
   keepAgroDistance: 5
   yPositionTolerance: 0.05
@@ -161,7 +162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f433ed74181327549b21a2a25eed362d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.5
   deathAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
   hitAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
   idle: {fileID: -3100369314251171874, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
@@ -175,6 +175,9 @@ MonoBehaviour:
   splitLand: {fileID: -3147633039623826206, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
   waitForReform: {fileID: 4356368261264951703, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
   reform: {fileID: -3594680525394467873, guid: b794b0f719a2d9b43b8a88549cd6bc9e, type: 3}
+  jumpSoundID: Slime_Jump
+  landSoundID: Slime_Land
+  reformSoundID: Slime_Reform
 --- !u!50 &5170739143609265180
 Rigidbody2D:
   serializedVersion: 5

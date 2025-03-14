@@ -3,6 +3,7 @@ using Attributes;
 using Player;
 using PlayerLoopTimer;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -15,7 +16,7 @@ public class KeyScript : GravityObject {
     private Vector2 _carryingPosition = Vector2.zero;
     private Vector3 _offset = Vector3.zero;
     [SerializeField] private float smoothTime;
-    [SerializeField] private float followSpeed;
+    [SerializeField] public float followSpeed;
     private CountdownTimer _destructionTimer;
     #endregion
     
@@ -27,6 +28,10 @@ public class KeyScript : GravityObject {
         _carryingPosition = Vector2.SmoothDamp(_carryingPosition, targetPosition + _offset, ref _velocity, smoothTime);
         
         targetVelocity = _carryingPosition * followSpeed;
+
+        if (Mathf.Sign(targetVelocity.x) != 0) {
+            gameObject.transform.localScale = new Vector3(Mathf.Sign(targetVelocity.x), 1, 1);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

@@ -242,7 +242,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 3595896559863859616, guid: 753265b0c06c8654dae33726123f9f13, type: 3}
-  m_Color: {r: 1, g: 0.6967601, b: 0.3537736, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -274,7 +274,7 @@ MonoBehaviour:
   takesSpikeDamage: 1
   faceLeftOnStart: 0
   moveSpeed: 3
-  maxHealth: 3
+  maxHealth: 5
   invulnerableTime: 0.2
   knockbackDuration: 0.1
   enemyDamageInstance:
@@ -292,8 +292,9 @@ MonoBehaviour:
     smoothTime: 0.1
   bloodSplatter: {fileID: 0}
   isImmortal: 1
-  canTakeKnockback: 1
-  death_SoundID: 
+  canTakeKnockback: 0
+  hitSoundID: Enemy_Generic_Hit
+  deathSoundID: Enemy_Die
   <ID>k__BackingField: 1b4206e6-3285-433f-8e20-27aee2a50db8
   <SaveSystemData>k__BackingField:
     name: 
@@ -306,10 +307,10 @@ MonoBehaviour:
   shield:
     blocksUntilCounterAttack: 3
     alwaysCounterAttackOnDash: 1
-    blowsUntilBreak: 2
+    blowsUntilBreak: 3
     breakResetTime: 5
   attackRange: {fileID: 6516358968469848347}
-  waitBeforeStrike: 2.5
+  waitBeforeStrike: 1.5
   keepAgroDistance: 25
   smoothDampScript:
     smoothTime: 0.1
@@ -325,7 +326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894aeccb35c5fd14ca4149418ca91e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
   deathAnimation: {fileID: 7400000, guid: b80d2719c5f34d04194b1ffb8a63f8ef, type: 2}
   hitAnimation: {fileID: 0}
   idleAnimation: {fileID: 7400000, guid: 49f7788cd28460647a82f3e51757caa6, type: 2}

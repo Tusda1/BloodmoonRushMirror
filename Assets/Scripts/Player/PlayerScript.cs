@@ -395,6 +395,7 @@ namespace Player {
             for (var i = 0; i < usedKeys; i++) {
                 var keyScript = keyObjects[^1].GetComponent<KeyScript>();
                 keyScript.SetFollowTransform(doorTransform);
+                keyScript.followSpeed *= 2;
                 keyScript.StartDestructionTimer(destructionTime);
                 keyObjects.RemoveAt(keyObjects.Count - 1);
                 print("used key: " + i);

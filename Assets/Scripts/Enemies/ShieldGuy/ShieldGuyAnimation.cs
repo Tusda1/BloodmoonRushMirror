@@ -59,6 +59,7 @@ public class ShieldGuyAnimation : EnemyAnimationBase
 
     public void Stun()
     {
+        isExecutingAnAction = false;
         var state = animancerComponent.Play(getStunnedAnimation);
         state.Events(this).OnEnd = () =>
         {

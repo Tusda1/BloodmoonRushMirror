@@ -1,6 +1,8 @@
 using System;
+using FMODScripts;
 using Player;
 using UnityEngine;
+using VContainer;
 
 public class BetterRuby : GravityObject
 {
@@ -22,6 +24,8 @@ public class BetterRuby : GravityObject
     private ParticleSystem _particleSystem;
     private GameObject _spriteGameObject;
     
+    [Inject] private IAudioManager _audioManager;
+    [SerializeField] private string pickupSoundID = "Gem_Get";
     
     private enum RubyState
     {
@@ -132,7 +136,7 @@ public class BetterRuby : GravityObject
         }
         else
         {
-            // TODO: Add a sound effect for when the Ruby is picked up
+            _audioManager.PlayOneShot(pickupSoundID);
             _player.gems++;
             enabled = false;
         }
