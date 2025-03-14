@@ -7,11 +7,15 @@ public class ShieldGuy : ReactiveBase
 {
     [SerializeField] private Shield shield = new();
     [SerializeField] private Collider2D attackRange;
+    [SerializeField] private float rangeBeforeStrike = 1.5f;
     [SerializeField] private float waitBeforeStrike = 2.5f;
+    [SerializeField] private float distanceToCancelStrike = 3f;
     [SerializeField] private float keepAgroDistance = 2f;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
 
     private float _timer;
+    private bool _waitingForStrike;
+    private Coroutine _strikeCoroutine;
     
     private ShieldGuyAnimation _shieldGuyAnimation;
 
@@ -45,20 +49,40 @@ public class ShieldGuy : ReactiveBase
     protected override void Action()
     {
         if (_shieldGuyAnimation.isExecutingAnAction || isStunned || isKnockedUp || isDead) return;
+
+        var distance = Vector2.Distance(targetObject.position, transform.position);
         
         // Check if the target is still in range
-        if (Vector2.Distance(targetObject.position, transform.position) > keepAgroDistance)
+        if (distance > keepAgroDistance)
         {
             currentState = EnemyState.Scanning;
             _shieldGuyAnimation.PlayDefaultAnimation();
             return;
         }
+
+        if (_waitingForStrike && distance > distanceToCancelStrike)
+        {
+            print("Cancel strike");
+            _waitingForStrike = false;
+            StopCoroutine(_strikeCoroutine);
+            _strikeCoroutine = null;
+        }
         
         // Check if the target is to the left or right
         facingDirection = (targetObject.position.x > transform.position.x) ? Vector2.right : Vector2.left;
         
+        if (_waitingForStrike) return;
+        
+        RaycastHit2D foundPlayer = Physics2D.Raycast(GetBottomPosition(), facingDirection, rangeBeforeStrike, LayerMask.GetMask("Player"));
+        if (foundPlayer.collider)
+        {
+            _shieldGuyAnimation.PlayDefaultAnimation();
+            _strikeCoroutine = StartCoroutine(WaitThenStrike());
+            return;
+        }
+        
         //Check if there is something in the way
-        RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition(), facingDirection, 1f, LayerMask.GetMask("Player", "Ground"));
+        RaycastHit2D hit = Physics2D.Raycast(GetBottomPosition(), facingDirection, 1f, LayerMask.GetMask("Ground"));
         if (hit.collider)
         {
             _shieldGuyAnimation.PlayDefaultAnimation();
@@ -68,26 +92,6 @@ public class ShieldGuy : ReactiveBase
             // Smoothly move towards the target
             smoothDampScript.SmoothDampVector2(facingDirection * moveSpeed, ref targetVelocity);
             _shieldGuyAnimation.Walk();
-        }
-        
-        // Check if player is in attack range and if he is there for a certain amount of time then strike
-        var bounds = attackRange.bounds;
-        Collider2D playerObject = Physics2D.OverlapBox(bounds.center, bounds.size, 0, LayerMask.GetMask("Player"));
-        if (playerObject)
-        {
-            if (_timer > waitBeforeStrike)
-            {
-                _timer = 0;
-                Strike();
-            }
-            else
-            {
-                _timer += Time.deltaTime;
-            }
-        }
-        else
-        {
-            _timer = 0;
         }
     }
 
@@ -119,6 +123,14 @@ public class ShieldGuy : ReactiveBase
         isStunned = false;
         
         if (!isDead) Strike();
+    }
+    
+    private IEnumerator WaitThenStrike()
+    {
+        _waitingForStrike = true;
+        yield return new WaitForSeconds(waitBeforeStrike);
+        Strike();
+        _waitingForStrike = false;
     }
 
     private void Strike()

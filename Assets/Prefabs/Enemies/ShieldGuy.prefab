@@ -292,7 +292,7 @@ MonoBehaviour:
     smoothTime: 0.1
   bloodSplatter: {fileID: 0}
   isImmortal: 1
-  canTakeKnockback: 0
+  canTakeKnockback: 1
   hitSoundID: Enemy_Generic_Hit
   deathSoundID: Enemy_Die
   <ID>k__BackingField: 1b4206e6-3285-433f-8e20-27aee2a50db8
@@ -305,12 +305,13 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
   detectionDistance: 10
   shield:
-    blocksUntilCounterAttack: 3
     alwaysCounterAttackOnDash: 1
     blowsUntilBreak: 3
     breakResetTime: 5
   attackRange: {fileID: 6516358968469848347}
+  rangeBeforeStrike: 1.5
   waitBeforeStrike: 1.5
+  distanceToCancelStrike: 3
   keepAgroDistance: 25
   smoothDampScript:
     smoothTime: 0.1
