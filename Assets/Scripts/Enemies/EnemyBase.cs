@@ -5,6 +5,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
+using UnityEngine.Serialization;
 using Utilities.DataBinding;
 using VContainer;
 
@@ -56,7 +57,8 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private ISaveLoadSystemManager _saveLoadSystemManager;
     private LevelDataManager _levelDataManager;
 
-    [SerializeField] private string death_SoundID; 
+    [SerializeField] private string hitSoundID;
+    [SerializeField] private string deathSoundID; 
     #endregion
 
     #region ---Initialization---
@@ -166,7 +168,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     
     protected virtual void PlayHitSoundEffect()
     {
-        AudioManager.PlayOneShotAttached("Enemy_Generic_Hit", gameObject);
+        AudioManager.PlayOneShotAttached(hitSoundID, gameObject);
     }
 
     private IEnumerator FlashWhite() {
@@ -222,16 +224,14 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private void Die() 
     {
         isDead = true;
-        
-        AudioManager.PlayOneShotAttached("Enemy_Die", gameObject);
-        if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, OnDeath);
+        DropRubies();
+        AudioManager.PlayOneShotAttached(deathSoundID, gameObject);
+        if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, OnDeath);
     }
 
     protected virtual void OnDeath()
     {
         gameObject.SetActive(false);
-        
-        AudioManager.PlayOneShotAttached(death_SoundID, gameObject);
     }
 
     private void DropRubies() {
