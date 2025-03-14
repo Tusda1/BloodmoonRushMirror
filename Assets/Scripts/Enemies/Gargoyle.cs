@@ -20,7 +20,7 @@ public class Gargoyle : ReactiveBase
         
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/GargoyleProjectile");
         _playerTransform = ServiceLocator.Get<PlayerScript>().transform;
-        _projectilePooler = TryGetCommunityPooler.TryGetPooler(_projectilePrefab);
+        _projectilePooler = TryGetCommunityPooler.TryGetPooler(_projectilePrefab, _objectResolver);
         
         var hit = Physics2D.OverlapCircle(transform.position, 1f, LayerMask.GetMask("Room"));
         if (hit == null)

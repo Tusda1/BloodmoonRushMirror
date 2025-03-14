@@ -44,7 +44,7 @@ public class SwoopAttackState : DraculaState
     private void Start()
     {
         _player = ServiceLocator.Get<PlayerScript>().transform;
-        _projectilePooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab);
+        _projectilePooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab, ObjectResolver);
     }
 
     private void OnEnable()

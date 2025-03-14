@@ -27,7 +27,7 @@ public class IceRain : DrucillaState
 
     private void Start()
     {
-        _pooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab);
+        _pooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab, ObjectResolver);
     }
     
     private void OnEnable()

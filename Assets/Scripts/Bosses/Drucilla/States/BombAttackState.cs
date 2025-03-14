@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Player;
 using UnityEngine;
+using VContainer;
 
 public class BombAttackState : DrucillaState
 {
@@ -34,7 +35,7 @@ public class BombAttackState : DrucillaState
     {
         _player = ServiceLocator.Get<PlayerScript>();
         
-        _bombPooler = TryGetCommunityPooler.TryGetPooler(bombPrefab);
+        _bombPooler = TryGetCommunityPooler.TryGetPooler(bombPrefab, ObjectResolver);
         var tempCollider = GetComponent<Collider2D>();
         _groundSlam = new GroundSlam(tempCollider);
     }

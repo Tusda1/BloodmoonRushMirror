@@ -2,6 +2,7 @@ using System;
 using Animancer;
 using UnityEngine;
 using UnityEngine.Serialization;
+using VContainer;
 using Object = UnityEngine.Object;
 
 [Serializable]
@@ -10,10 +11,17 @@ public class LightningManager
     [SerializeField] private GameObject lightningPrefab;
     [SerializeField] private AnimationClip lightningAnimation;
     private Pooler _lightningPooler;
+
+    protected IObjectResolver ObjectResolver;
+
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        ObjectResolver = container;
+    }
     
     public void CreateLightning(Vector2 position, Vector2 targetPosition, Action onLightningEnd = null)
     {
-        _lightningPooler ??= TryGetCommunityPooler.TryGetPooler(lightningPrefab);
+        _lightningPooler ??= TryGetCommunityPooler.TryGetPooler(lightningPrefab, ObjectResolver);
         
         var exampleLightning = _lightningPooler.GetPooledObject();
         exampleLightning.SetActive(true);
