@@ -22,10 +22,20 @@ public partial class EnemyBase {
     };
     #endregion
 
+    private void OnDestroy() {
+        Unbind();
+    }
+
     #region ---DataBindingMethods---
     public virtual void Bind() {
 #if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
+    }
+
+    public void Unbind() {
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);        
 #endif
     }
 

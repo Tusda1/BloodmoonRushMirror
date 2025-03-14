@@ -18,6 +18,10 @@ namespace Player {
             gameObject.SetActive(false);
         }
 
+        private void OnDestroy() {
+            ServiceLocator.Unregister<PlayerHitbox>();
+        }
+
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Player") || !other.TryGetComponent<IDamageable>(out var damageable)) return;
 

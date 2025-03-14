@@ -216,11 +216,23 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     private Vector3[] GetAllChildPositions() {
         return transform.GetImmediateChildren().Select(x => x.transform.position).ToArray();
     }
+
+    private void OnDestroy() {
+        if (enableDataBinding) {
+            Unbind();
+        }
+    }
     
     #region ---DataBindingMethods---
     public void Bind() {
 #if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
+    }
+
+    public void Unbind() {
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
 #endif
     }
 
