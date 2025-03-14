@@ -224,9 +224,9 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private void Die() 
     {
         isDead = true;
-        
+        DropRubies();
         AudioManager.PlayOneShotAttached(deathSoundID, gameObject);
-        if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, OnDeath);
+        if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, OnDeath);
     }
 
     protected virtual void OnDeath()
