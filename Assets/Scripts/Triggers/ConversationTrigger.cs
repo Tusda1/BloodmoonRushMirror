@@ -55,11 +55,21 @@ public class ConversationTrigger : TriggerBox, IBind<TriggerData> {
         cutsceneGraph.TriggerUnityEvent("Start");
     }
 
+    private void OnDestroy() {
+        Unbind();
+    }
+
     #region ---DataBindingMethods---
     public void Bind() {
 #if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
 #endif
+    }
+
+    public void Unbind() {
+    #if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);        
+    #endif
     }
 
 #if UNITY_EDITOR

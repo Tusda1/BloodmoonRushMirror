@@ -216,11 +216,23 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     private Vector3[] GetAllChildPositions() {
         return transform.GetImmediateChildren().Select(x => x.transform.position).ToArray();
     }
+
+    private void OnDestroy() {
+        if (enableDataBinding) {
+            Unbind();
+        }
+    }
     
     #region ---DataBindingMethods---
     public void Bind() {
 #if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+#endif
+    }
+
+    public void Unbind() {
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
 #endif
     }
 
@@ -253,6 +265,13 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
         _cinemachineBrain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.Cut, 0);
         yield return new WaitForSeconds(0.2f);
         _cinemachineBrain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseOut, 0.6f);
+        
+        var children = transform.GetImmediateChildren().ToArray();
+        for (var index = 0; index < children.Length; index++) {
+            var child = children[index];
+            child.transform.position = DataInGameData.Positions[index];
+        }
+        
         _enabled = endEnabled;
     }
 
