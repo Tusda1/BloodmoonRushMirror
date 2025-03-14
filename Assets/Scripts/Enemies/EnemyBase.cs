@@ -125,12 +125,6 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             return;
         }
 
-        takeDamageTimer = Time.time;
-
-        if (enemyAnimationBase != null) enemyAnimationBase.PlayHitAnimation();
-        StartCoroutine(FlashWhite());
-        PlayHitSoundEffect();
-
         if (bloodSplatter != null) {
             var deg = Vector2.Angle(damageInstance.knockback.normalized, Vector2.right);
             bloodSplatter.transform.rotation = new Quaternion(0, 0, deg, 0);
@@ -142,7 +136,14 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             Debug.LogWarning($"blood splatter on {name} is null");
         }
 
-        if (!isImmortal || isVulnerable) currentHealth -= damageInstance.damage;
+        if (!isImmortal || isVulnerable)
+        {
+            currentHealth -= damageInstance.damage;
+            takeDamageTimer = Time.time;
+            if (enemyAnimationBase != null) enemyAnimationBase.PlayHitAnimation();
+            StartCoroutine(FlashWhite());
+            PlayHitSoundEffect();
+        }
 
         if (currentHealth <= 0) {
             Die();

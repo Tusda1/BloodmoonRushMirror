@@ -15,6 +15,8 @@ public class Shield
     private float _lastHitTime;
     private int _breakCounter;
     private GravityObjectPlayerMovement _playerMovement;
+    public event Action AttackBlocked;
+    public event Action AttackNotBlocked;
     
     public bool ShieldBlock(Action counterAttack, PlayerScript player, DamageInstance damageInstance, Action shieldBreakAction = null)
     {
@@ -23,7 +25,8 @@ public class Shield
         if (damageInstance.which != DamageInstance.WhichAttack.CrouchAttack)
         {
             _blockCounter++;
-
+            AttackBlocked?.Invoke();
+            
             if (damageInstance.which == DamageInstance.WhichAttack.DashAttack)
             {
                 _playerMovement.isDashing = false;
@@ -52,6 +55,7 @@ public class Shield
             _breakCounter = 0;
         }
         
+        AttackNotBlocked?.Invoke();
         _breakCounter++;
         _lastHitTime = Time.time;
         if (_breakCounter >= blowsUntilBreak)
