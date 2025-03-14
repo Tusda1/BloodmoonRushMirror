@@ -62,10 +62,7 @@ public class ShieldGuy : ReactiveBase
 
         if (_waitingForStrike && distance > distanceToCancelStrike)
         {
-            print("Cancel strike");
-            _waitingForStrike = false;
-            StopCoroutine(_strikeCoroutine);
-            _strikeCoroutine = null;
+            CancelWaitThenStrike();
         }
         
         // Check if the target is to the left or right
@@ -116,6 +113,7 @@ public class ShieldGuy : ReactiveBase
     private IEnumerator ShieldBreakCoroutine()
     {
         _shieldGuyAnimation.Stun();
+        CancelWaitThenStrike();
         isVulnerable = true;
         isStunned = true;
         yield return new WaitForSeconds(2);
@@ -131,6 +129,13 @@ public class ShieldGuy : ReactiveBase
         yield return new WaitForSeconds(waitBeforeStrike);
         Strike();
         _waitingForStrike = false;
+    }
+    
+    private void CancelWaitThenStrike()
+    {
+        _waitingForStrike = false;
+        StopCoroutine(_strikeCoroutine);
+        _strikeCoroutine = null;
     }
 
     private void Strike()

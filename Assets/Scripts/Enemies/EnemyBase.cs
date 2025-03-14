@@ -54,6 +54,9 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private Pooler _rubyPooler;
     #endregion
     
+    #region ***---Events---***
+    #endregion
+    
     protected IObjectResolver _objectResolver;
     protected IAudioManager AudioManager;
     private ISaveLoadSystemManager _saveLoadSystemManager;
@@ -223,7 +226,6 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         if (isDead) yield break;
 
         isKnockedUp = false;
-        if (enemyAnimationBase != null) enemyAnimationBase.PlayDefaultAnimation();
     }
 
     private void Die() 

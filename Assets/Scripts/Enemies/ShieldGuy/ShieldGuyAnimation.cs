@@ -20,6 +20,8 @@ public class ShieldGuyAnimation : EnemyAnimationBase
 
     public override void PlayDefaultAnimation()
     {
+        isExecutingAnAction = false;
+        
         animancerComponent.Play(idleAnimation);
     }
 
