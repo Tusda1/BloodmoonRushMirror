@@ -41,9 +41,7 @@ public partial class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     #region ---Initialization---
     [Inject]
     public void Construct(IObjectResolver container) {
-#if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
-#endif
         _levelDataManager = container.Resolve<LevelDataManager>();
         _audioManager = container.Resolve<IAudioManager>();
         _playerScript = container.Resolve<PlayerScript>();
@@ -73,8 +71,10 @@ public partial class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
         StartCoroutine(TurnOnLights());
 
         _playerScript.CheckpointHealing();
-#if SAVESYSTEM_ACTIVE
+        _levelDataManager.CurrentCheckpointID = ID;
         _saveLoadSystemManager.SaveAllDataBinds();
+#if SAVESYSTEM_ACTIVE
+        _saveLoadSystemManager.SaveToFile();
 #endif
     }
 

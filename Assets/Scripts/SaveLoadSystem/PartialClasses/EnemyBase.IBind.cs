@@ -28,15 +28,11 @@ public partial class EnemyBase {
 
     #region ---DataBindingMethods---
     public virtual void Bind() {
-#if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
-#endif
     }
 
     public void Unbind() {
-#if SAVESYSTEM_ACTIVE
-        _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);        
-#endif
+        _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
     }
 
     public virtual void LoadBindData() {

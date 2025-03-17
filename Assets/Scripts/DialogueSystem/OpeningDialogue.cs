@@ -1,23 +1,27 @@
 using Attributes;
 using SaveLoadSystem;
-using SceneCollections;
 using Unity.VisualScripting;
 using UnityEngine;
 using VContainer;
 
 public class OpeningDialogue : MonoBehaviour {
     #region ---Fields---
-    [GetOrAddComponent, SerializeField, HideInInspector] private ScriptMachine cutsceneGraph;
+    [GetOrAddComponent, SerializeField] private ScriptMachine cutsceneGraph;
     [SerializeField] private bool forcePlayOnStart;
     
-    [Inject] private LevelDataManager _levelDataManager;
+    private LevelDataManager _levelDataManager;
     #endregion
+
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _levelDataManager = container.Resolve<LevelDataManager>();
+    }
 
     private void Start() {
 #if UNITY_EDITOR
-        if (SceneCollectionManager.CurrentSceneCollection == null && !forcePlayOnStart) return;
+        if (_levelDataManager.startedInLevel && !forcePlayOnStart) return;
 #endif
-        if (string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointData.ID) || forcePlayOnStart) {
+        if (string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointID) || forcePlayOnStart) {
             cutsceneGraph.TriggerUnityEvent("Start");
         }
     }

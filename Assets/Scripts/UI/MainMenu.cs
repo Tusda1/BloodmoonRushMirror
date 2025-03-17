@@ -64,9 +64,7 @@ namespace UI {
             _audioManager = container.Resolve<IAudioManager>();
             _debugLoggerSO = container.ResolveProviderID<DebugLoggerSO>("UI");
             _cameraEffects = container.Resolve<CameraEffects>();
-#if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
-#endif
         }
 
         private void Awake() {
@@ -132,12 +130,10 @@ namespace UI {
         private void StartButtonClicked() {
 #if LEVEL_SELECT
             levelSelectMenu.Activate();
-#elif SAVESYSTEM_ACTIVE && !NGA_BUILD
+#elif SAVESYSTEM_ACTIVE
             savesMenu.Activate();
 #else
-#if NGA_BUILD
-            _saveLoadSystemManager.SetCurrentGameDataFromTemplate("NGA_BUILD");
-#endif
+            _saveLoadSystemManager.SetCurrentGameDataFromTemplate("NO_LOAD");
             _cameraEffects.FadeLoadScene(firstSceneCollection);
 
             _startButton.clicked -= StartButtonClicked;

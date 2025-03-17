@@ -53,9 +53,7 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     [Inject]
     public void Construct(IObjectResolver container) {
         _mainCamera = container.ResolveInstanceID<Camera>(LevelInstaller.MainCameraID);
-#if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
-#endif
         if (enableDataBinding) {
             _levelDataManager = container.Resolve<LevelDataManager>();
         }
@@ -225,15 +223,11 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     
     #region ---DataBindingMethods---
     public void Bind() {
-#if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
-#endif
     }
 
     public void Unbind() {
-#if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
-#endif
     }
 
 #if UNITY_EDITOR

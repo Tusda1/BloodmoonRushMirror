@@ -39,9 +39,7 @@ namespace UI {
         #region ---Initialization---
         [Inject]
         public void Construct(IObjectResolver container) {
-#if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
-#endif
             _cameraEffects = container.Resolve<CameraEffects>();
             _saveSlots = container.Resolve<SaveSlots>();
         }

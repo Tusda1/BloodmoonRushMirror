@@ -35,7 +35,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
-        _spawnRoom = VirtualCameraSwitch.ActiveVirtualCameraSwitch.gameObject;
+        _spawnRoom = VirtualCameraSwitch.ActiveVirtualCameraSwitch?.gameObject;
         _circleCollider2D.enabled = false;
         
         _animancerComponent.Play(baseAnimation);
