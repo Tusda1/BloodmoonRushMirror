@@ -36,9 +36,7 @@ namespace Triggers {
         #region ---Initialization---
         [Inject]
         public void Construct(IObjectResolver container) {
-#if SAVESYSTEM_ACTIVE
-        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
-#endif
+            _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
             _levelMusicManager = container.Resolve<LevelMusicManager>();
             _levelDataManager = container.Resolve<LevelDataManager>();
         }
@@ -61,15 +59,11 @@ namespace Triggers {
 
         #region ---DataBindingMethods---
         public void Bind() {
-#if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
-#endif
         }
 
         public void Unbind() {
-#if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
-#endif
         }
 
 #if UNITY_EDITOR

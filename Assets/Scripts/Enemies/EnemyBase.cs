@@ -71,9 +71,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     public void Construct(LifetimeScope currentScope) {
         _objectResolver = currentScope.Container;
         AudioManager = _objectResolver.Resolve<IAudioManager>();
-#if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager = _objectResolver.Resolve<ISaveLoadSystemManager>();
-#endif
         _levelDataManager = _objectResolver.Resolve<LevelDataManager>();
     }
     #endregion

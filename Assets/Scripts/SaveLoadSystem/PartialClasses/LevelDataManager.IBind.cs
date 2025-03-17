@@ -12,7 +12,7 @@ namespace SaveLoadSystem {
         [field: SerializeField] public string ID { get; set; }
         [field: SerializeField] public SceneCollectionSO SceneCollection { get; set; }
         [field: SerializeField] public Vector3 PlayerPosition { get; set; }
-        [field: SerializeField] public CheckpointData CurrentCheckpointData { get; set; }
+        [field: SerializeField] public string CurrentCheckpointID { get; set; }
         [SerializeReference] public List<CheckpointData> checkpointDatas = new();
 
         [field: SerializeField] public List<EnemyData> enemyDatas = new();
@@ -28,8 +28,7 @@ namespace SaveLoadSystem {
             SceneCollection = SceneCollection,
             PlayerPosition = PlayerPosition,
             enemyDatas = enemyDatas,
-            checkpointDatas = checkpointDatas,
-            CurrentCheckpointData = CurrentCheckpointData,
+            checkpointDatas = checkpointDatas
         };
         #endregion
         
@@ -42,23 +41,18 @@ namespace SaveLoadSystem {
 
         #region ---DataBindingMethods---
         public void Bind() {
-#if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
             currentGameData = _saveLoadSystemManager.CurrentGameData;
-#endif
         }
 
         public void Unbind() {
-#if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
-#endif
         }
 
         [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
-            _playerScript.transform.position = DataInGameData.CurrentCheckpointData.HasBeenTriggered 
-                ? DataInGameData.CurrentCheckpointData.Position 
-                : DataInGameData.PlayerPosition;
+            _playerScript.transform.position = DataInGameData.CurrentCheckpoint?.Position 
+                                               ?? DataInGameData.PlayerPosition;
         }
 
         public void LoadCheckpointBindData() => LoadBindData();

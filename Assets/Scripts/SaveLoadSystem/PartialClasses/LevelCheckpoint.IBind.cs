@@ -2,9 +2,6 @@
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 public partial class LevelCheckpoint {
     #region ---Fields---
@@ -29,15 +26,11 @@ public partial class LevelCheckpoint {
 
     #region ---DataBindingMethods---
     public void Bind() {
-#if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
-#endif
     }
 
     public void Unbind() {
-#if SAVESYSTEM_ACTIVE
         _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
-#endif
     }
 
 #if UNITY_EDITOR

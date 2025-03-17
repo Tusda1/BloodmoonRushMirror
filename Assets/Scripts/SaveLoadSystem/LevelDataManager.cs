@@ -1,4 +1,3 @@
-using System.Collections;
 using Player;
 using SaveLoadSystem.Data;
 using SceneCollections;
@@ -13,46 +12,40 @@ namespace SaveLoadSystem {
         
         private ISaveLoadSystemManager _saveLoadSystemManager;
         private PlayerScript _playerScript;
-        private CameraEffects _cameraEffects;
         private GameDataScrubGeneric<SaveGameData> _newGameData;
+#if SAVESYSTEM_ACTIVE && (UNITY_EDITOR || DEVELOPMENT_BUILD)
+        private CameraEffects _cameraEffects;
+
+        private const string SaveSystemMenu = "SaveSystemManager/";
+#endif
+        
+        [HideInInspector] public bool startedInLevel;
         #endregion
 
         #region ---Initialization---
         [Inject]
         public void Construct(IObjectResolver container) {
-#if SAVESYSTEM_ACTIVE
             _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
 #if UNITY_EDITOR
-            _newGameData = container.Resolve<GameDataScrubGeneric<SaveGameData>>();
-
             if (_saveLoadSystemManager.CurrentGameData == null) {
-                _saveLoadSystemManager.SetCurrentGameDataFromTemplate("NOSAVESYSTEM");
+                startedInLevel = true;
+                _saveLoadSystemManager.SetCurrentGameDataFromTemplate("DATAMANAGER");
             }
 #endif
-#endif
             _playerScript = container.Resolve<PlayerScript>();
+#if SAVESYSTEM_ACTIVE && (UNITY_EDITOR || DEVELOPMENT_BUILD)
             _cameraEffects = container.Resolve<CameraEffects>();
+#endif
         }
 
         protected void Start() {
             Bind();
-#if SAVESYSTEM_ACTIVE
 #if UNITY_EDITOR
-            if (SceneCollectionManager.CurrentSceneCollection == null) return;
+            if (startedInLevel) {
+                DataInGameData.PlayerPosition = _playerScript.transform.position;
+            }
 #endif
-            // if (_saveLoadSystemManager.CurrentGameData == null) return;
-            
             _saveLoadSystemManager.SaveLoad();
-            _saveLoadSystemManager.SaveAllDataBinds();
-#else
-#if UNITY_EDITOR
-            if (SceneCollectionManager.CurrentSceneCollection == null) return;
-#endif
-            _playerScript.transform.position = PlayerPosition;
-            _playerScript.healthComponent.Health = _playerScript.healthComponent.maxHealth;
-            _playerScript.gems = 0;
-            _playerScript.playerLives = _playerScript.playerLivesStartAmount;
-#endif
         }
         #endregion
 
@@ -81,10 +74,6 @@ namespace SaveLoadSystem {
             yield return null;
             _saveLoadSystemManager.CheckpointLoad();
         }
-#endif
-
-#if SAVESYSTEM_ACTIVE && (UNITY_EDITOR || DEVELOPMENT_BUILD)
-        private const string SaveSystemMenu = "SaveSystemManager/";
         
         [ContextMenu(SaveSystemMenu + nameof(WriteDataToNewGameData))]
         public void WriteDataToNewGameData() {
