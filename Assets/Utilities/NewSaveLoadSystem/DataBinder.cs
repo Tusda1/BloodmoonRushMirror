@@ -41,6 +41,9 @@ public class DataBinder {
         if (!GameDataBinds.Contains(bind)) {
             GameDataBinds.Add(bind);
         }
+        else {
+            _debugLogger.ForceLogError("GameDataBind already exists. Binding operation aborted.");
+        }
         bind.SaveSystemData = data;
         // bind.LoadBindData();
         _debugLogger.Log($"{typeof(TBind)} object bind-ed to {typeof(TData)}");

@@ -128,6 +128,7 @@ namespace UI {
         }
 
         private void StartButtonClicked() {
+            VirtualCameraSwitch.ActiveVirtualCameraSwitch = null;
 #if LEVEL_SELECT
             levelSelectMenu.Activate();
 #elif SAVESYSTEM_ACTIVE

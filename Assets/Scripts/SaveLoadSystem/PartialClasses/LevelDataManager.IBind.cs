@@ -45,19 +45,17 @@ namespace SaveLoadSystem {
             currentGameData = _saveLoadSystemManager.CurrentGameData;
         }
 
-        public void Unbind() {
-            _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
-        }
-
-        [ContextMenu(nameof(LoadBindData))]
         public void LoadBindData() {
             _playerScript.transform.position = DataInGameData.CurrentCheckpoint?.Position 
                                                ?? DataInGameData.PlayerPosition;
         }
 
+        public void Unbind() {
+            _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
+        }
+
         public void LoadCheckpointBindData() => LoadBindData();
 
-        [ContextMenu(nameof(SaveBindData))]
         public void SaveBindData() {
             DataInGameData.PlayerPosition = _playerScript.transform.position;
         }
