@@ -124,11 +124,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4025233398118611601, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
   m_PrefabInstance: {fileID: 5158702354565610302}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &133131390 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5107846836374316058, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
-  m_PrefabInstance: {fileID: 5158702354565610302}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &219505202 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9074566789440411977, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
@@ -193,11 +188,6 @@ GameObject:
 --- !u!1 &742937763 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7665657306599204761, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
-  m_PrefabInstance: {fileID: 5158702354565610302}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &746243202 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4905630561343365759, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
   m_PrefabInstance: {fileID: 5158702354565610302}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &764177701 stripped
@@ -825,18 +815,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6510358761275795667, guid: 47253399f807cc64eaee7d2e98533dfb, type: 3}
-      propertyPath: cameraStacks
-      value: 
-      objectReference: {fileID: 133131390}
-    - target: {fileID: 6510358761275795667, guid: 47253399f807cc64eaee7d2e98533dfb, type: 3}
-      propertyPath: enemyLocation
-      value: 
-      objectReference: {fileID: 746243202}
-    - target: {fileID: 8935689163689949249, guid: 47253399f807cc64eaee7d2e98533dfb, type: 3}
-      propertyPath: <ID>k__BackingField
-      value: a3de4631-88f7-4aa8-95c4-a286fc5ab2db
-      objectReference: {fileID: 0}
     - target: {fileID: 9223194633480403158, guid: 47253399f807cc64eaee7d2e98533dfb, type: 3}
       propertyPath: m_Name
       value: ---Level_TheBoiler---
@@ -854,14 +832,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 167808513482103738, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
-      propertyPath: upWait
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 167808513482103738, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
-      propertyPath: downWait
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 659208232636900046, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -902,17 +872,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1348545991160605214, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
-      propertyPath: speed
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5107846836374316058, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
       propertyPath: m_Name
       value: ---CameraStacks_TheBoiler---
       objectReference: {fileID: 0}
-    - target: {fileID: 8467253980684055198, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
-      propertyPath: speed
-      value: 2
+    - target: {fileID: 8712787025834540999, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
