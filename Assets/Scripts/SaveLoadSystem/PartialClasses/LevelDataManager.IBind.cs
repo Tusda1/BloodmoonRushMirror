@@ -58,6 +58,7 @@ namespace SaveLoadSystem {
 
         public void SaveBindData() {
             DataInGameData.PlayerPosition = _playerScript.transform.position;
+            _saveLoadSystemManager.CurrentGameData.CurrentSceneCollection = SceneCollection;
         }
         #endregion
     }

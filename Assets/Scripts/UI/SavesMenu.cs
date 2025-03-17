@@ -55,12 +55,12 @@ namespace UI {
 
         private void Start() {
 #if SAVESYSTEM_ACTIVE
-            _saveLoadSystemManager.UpdateSaveSlotSO();
-#endif
+            _saveLoadSystemManager.UpdateSaveSlots();
+            
             _saveSlot1.clicked += () => LoadSave(_saveSlots.saveSlot1Data);
             _saveSlot2.clicked += () => LoadSave(_saveSlots.saveSlot2Data);
             _saveSlot3.clicked += () => LoadSave(_saveSlots.saveSlot3Data);
-            
+#endif
             _savesMenuRoot.SetEnabled(false);
         }
 
@@ -90,28 +90,30 @@ namespace UI {
             OnMenuDeactivated.Invoke();
         }
         #endregion
-
+ 
         #region ---PrivateMethods---
         private void Deactivate(InputAction.CallbackContext obj) {
             Deactivate();
         }
         
-        private void LoadSave(SaveSlotDataSO saveSlotData) {
 #if SAVESYSTEM_ACTIVE
+        private void LoadSave(SaveSlotDataSO saveSlotData) {
+            SceneCollectionSO sceneCollectionToLoad;
+            
             if (saveSlotData.lastTimePlayed == string.Empty) {
-                _saveLoadSystemManager.SetCurrentGameDataFromTemplate(saveSlotData.name);
-                saveSlotData.currentSceneCollection = newGameSceneCollection;
+                _saveLoadSystemManager.SetCurrentGameDataFromTemplate(saveSlotData.saveSlotName);
+                sceneCollectionToLoad = newGameSceneCollection;
             }
             else {
                 _saveLoadSystemManager.SetCurrentGameDataFromSaveSlot(saveSlotData);
-                saveSlotData.currentSceneCollection = _saveLoadSystemManager.CurrentGameData.CurrentSceneCollection;
+                sceneCollectionToLoad = _saveLoadSystemManager.CurrentGameData.CurrentSceneCollection;
             }
 
-            Debug.Log(saveSlotData.currentSceneCollection.name);
+            Debug.Log("*** SceneCollection To Load:" + sceneCollectionToLoad.name);
 
-            _cameraEffects.FadeLoadScene(saveSlotData.currentSceneCollection);
-#endif
+            _cameraEffects.FadeLoadScene(sceneCollectionToLoad);
         }
+#endif
         #endregion
     }
 }

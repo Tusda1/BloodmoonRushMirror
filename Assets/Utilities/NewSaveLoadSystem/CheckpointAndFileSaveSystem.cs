@@ -32,7 +32,7 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
     #endregion
 
     #region ---SaveSlots---
-    public void UpdateSaveSlotSO() {
+    public void UpdateSaveSlots() {
         LoadSaveSlotData(_saveSlots.saveSlot1Data);
         LoadSaveSlotData(_saveSlots.saveSlot2Data);
         LoadSaveSlotData(_saveSlots.saveSlot3Data);
@@ -82,13 +82,16 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
 
             _debugLogger.Log("Updating DataBind");
         }
+#if SAVESYSTEM_ACTIVE
+        SaveToFile();
+#endif
     }
 
     /// <summary>
     /// Method calls "SaveAllDataBinds" and saves the "_currentGameData" using the "DataService" to a file.
     /// </summary>
     public void SaveToFile() {
-        SaveAllDataBinds();
+        // SaveAllDataBinds();
 
         DataService.SaveToFile(CurrentGameData);
         

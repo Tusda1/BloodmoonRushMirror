@@ -5,7 +5,7 @@ public interface ISaveLoadSystemManagerGeneric<TGameData> where TGameData : IGam
     DataBinder DataBinder { get; }
     TGameData CurrentGameData { get; set; }
 
-    void UpdateSaveSlotSO();
+    void UpdateSaveSlots();
 
     void SaveAllDataBinds();
     void SaveToFile();
