@@ -5,8 +5,10 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
+using UnityEngine.Serialization;
 using Utilities.DataBinding;
 using VContainer;
+using VContainer.Unity;
 
 public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     #region ---Fields---
@@ -52,21 +54,27 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private Pooler _rubyPooler;
     #endregion
     
+    #region ***---Events---***
+    #endregion
+    
+    protected IObjectResolver _objectResolver;
     protected IAudioManager AudioManager;
     private ISaveLoadSystemManager _saveLoadSystemManager;
     private LevelDataManager _levelDataManager;
 
-    [SerializeField] private string death_SoundID; 
+    [SerializeField] private string hitSoundID;
+    [SerializeField] private string deathSoundID; 
     #endregion
 
     #region ---Initialization---
     [Inject]
-    public void Construct(IObjectResolver container) {
-        AudioManager = container.Resolve<IAudioManager>();
+    public void Construct(LifetimeScope currentScope) {
+        _objectResolver = currentScope.Container;
+        AudioManager = _objectResolver.Resolve<IAudioManager>();
 #if SAVESYSTEM_ACTIVE
-        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+        _saveLoadSystemManager = _objectResolver.Resolve<ISaveLoadSystemManager>();
 #endif
-        _levelDataManager = container.Resolve<LevelDataManager>();
+        _levelDataManager = _objectResolver.Resolve<LevelDataManager>();
     }
     #endregion
 
@@ -91,7 +99,9 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         
-        _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab);
+        _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab, _objectResolver);
+        
+        // _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab);
         
         Bind();
     }
@@ -166,7 +176,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     
     protected virtual void PlayHitSoundEffect()
     {
-        AudioManager.PlayOneShotAttached("Enemy_Generic_Hit", gameObject);
+        AudioManager.PlayOneShotAttached(hitSoundID, gameObject);
     }
 
     private IEnumerator FlashWhite() {
@@ -216,22 +226,19 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         if (isDead) yield break;
 
         isKnockedUp = false;
-        if (enemyAnimationBase != null) enemyAnimationBase.PlayDefaultAnimation();
     }
 
     private void Die() 
     {
         isDead = true;
-        
-        AudioManager.PlayOneShotAttached("Enemy_Die", gameObject);
-        if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, DropRubies, OnDeath);
+        DropRubies();
+        AudioManager.PlayOneShotAttached(deathSoundID, gameObject);
+        if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, OnDeath);
     }
 
     protected virtual void OnDeath()
     {
         gameObject.SetActive(false);
-        
-        AudioManager.PlayOneShotAttached(death_SoundID, gameObject);
     }
 
     private void DropRubies() {

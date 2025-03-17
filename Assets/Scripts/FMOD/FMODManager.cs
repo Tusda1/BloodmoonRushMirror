@@ -66,10 +66,10 @@ namespace FMODScripts {
 
             MasterVolume = GetVolumeFromPlayerPrefs(MasterPlayerPrefsKey);
             SFXVolume = GetVolumeFromPlayerPrefs(SFXPlayerPrefsKey);
-            MusicVolume = GetVolumeFromPlayerPrefs(MusicPlayerPrefsKey);
+            MusicVolume = GetVolumeFromPlayerPrefs(MusicPlayerPrefsKey, 0.5f);
         }
 
-        private static float GetVolumeFromPlayerPrefs(string name) {
+        private static float GetVolumeFromPlayerPrefs(string name, float defaultValue = 1) {
             if (PlayerPrefs.HasKey(name)) {
                 return PlayerPrefs.GetFloat(name);
             }

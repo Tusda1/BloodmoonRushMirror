@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 public class Pooler
 {
@@ -7,16 +9,18 @@ public class Pooler
     
     private readonly List<GameObject> _pooledObjects;
     private readonly GameObject _parent;
+    private readonly IObjectResolver _container;
     
-    public Pooler(GameObject objectToPool, int poolSize, GameObject parent = null)
+    public Pooler(GameObject objectToPool, int poolSize, IObjectResolver container, GameObject parent = null)
     {
         ObjectToPool = objectToPool;
         _pooledObjects = new List<GameObject>();
+        _container = container;
         if(parent != null) _parent = parent;
         
         for (int i = 0; i < poolSize; i++)
         {
-            var pooledObject = Object.Instantiate(ObjectToPool);
+            var pooledObject = _container.Instantiate(ObjectToPool);
             pooledObject.SetActive(false);
             _pooledObjects.Add(pooledObject);
             if(_parent != null) pooledObject.transform.parent = _parent.transform;
@@ -33,7 +37,7 @@ public class Pooler
             }
         }
         
-        var pooledObject = Object.Instantiate(ObjectToPool);
+        var pooledObject = _container.Instantiate(ObjectToPool);
         pooledObject.SetActive(false);
         _pooledObjects.Add(pooledObject);
         if(_parent != null) pooledObject.transform.parent = _parent.transform;

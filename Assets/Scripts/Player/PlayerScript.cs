@@ -354,11 +354,12 @@ namespace Player {
             LoseGems();
 
             animator.ResetTrigger(AnimatorDeathTrigger);
-            animator.SetTrigger(AnimatorRespawnTrigger);
 
             _saveLoadSystemManager.CheckpointLoad();
             yield return null;
             _saveLoadSystemManager.CheckpointLoad();
+            
+            animator.SetTrigger(AnimatorRespawnTrigger);
         }
 
         private void LoseGems() {
@@ -395,6 +396,7 @@ namespace Player {
             for (var i = 0; i < usedKeys; i++) {
                 var keyScript = keyObjects[^1].GetComponent<KeyScript>();
                 keyScript.SetFollowTransform(doorTransform);
+                keyScript.followSpeed *= 2;
                 keyScript.StartDestructionTimer(destructionTime);
                 keyObjects.RemoveAt(keyObjects.Count - 1);
                 print("used key: " + i);

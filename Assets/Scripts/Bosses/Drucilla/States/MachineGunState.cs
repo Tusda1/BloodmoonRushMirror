@@ -34,7 +34,7 @@ public class MachineGunState : DrucillaState
     private void Start()
     {
         _player = ServiceLocator.Get<PlayerScript>();
-        _pooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab);
+        _pooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab, ObjectResolver);
     }
 
     private void OnEnable()

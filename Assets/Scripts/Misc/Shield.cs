@@ -7,11 +7,9 @@ using UnityEngine.Serialization;
 [Serializable]
 public class Shield
 {
-    [SerializeField] private int blocksUntilCounterAttack = 3;
     [SerializeField] private bool alwaysCounterAttackOnDash = true;
     [SerializeField] private int blowsUntilBreak = 2;
     [SerializeField] private float breakResetTime = 5f;
-    private int _blockCounter;
     private float _lastHitTime;
     private int _breakCounter;
     private GravityObjectPlayerMovement _playerMovement;
@@ -24,7 +22,6 @@ public class Shield
         
         if (damageInstance.which != DamageInstance.WhichAttack.CrouchAttack)
         {
-            _blockCounter++;
             AttackBlocked?.Invoke();
             
             if (damageInstance.which == DamageInstance.WhichAttack.DashAttack)
@@ -33,18 +30,7 @@ public class Shield
                 if (alwaysCounterAttackOnDash)
                 {
                     counterAttack();
-                    _blockCounter = 0;
                 }
-                else
-                {
-                    _blockCounter++;
-                }
-            }
-            
-            else if (_blockCounter >= blocksUntilCounterAttack)
-            {
-                _blockCounter = 0;
-                counterAttack();
             }
 
             return true;
