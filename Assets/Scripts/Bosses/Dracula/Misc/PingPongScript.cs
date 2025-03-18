@@ -34,20 +34,16 @@ public class PingPongScript : GravityObject, IDamageable
     
     public void TakeDamage(DamageInstance damageInstance)
     {
-        Vector2 tempVelocity = setVelocity;
-        
-        velocity.x = Mathf.Abs(velocity.x) + 5f;
+        setVelocity.x = Mathf.Abs(setVelocity.x) + 5f;
         // If knocked back, reverse direction
         if (damageInstance.knockback.x > 0)
         {
             // Reverse velocity
-            velocity.x = Mathf.Abs(velocity.x);
+            setVelocity.x = Mathf.Abs(setVelocity.x);
         }
         else if (damageInstance.knockback.x < 0)
         {
-            velocity.x = -Mathf.Abs(velocity.x);
+            setVelocity.x = -Mathf.Abs(setVelocity.x);
         }
-
-        setVelocity = tempVelocity;
     }
 }

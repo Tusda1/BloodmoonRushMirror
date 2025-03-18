@@ -119,10 +119,10 @@ public class BossBase : GravityObject, IDamageable
 
     private void Die()
     {
-        
+        MoveToNextPhase();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (!canDoDamage) return;
         

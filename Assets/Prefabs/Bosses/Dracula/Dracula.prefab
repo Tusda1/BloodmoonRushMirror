@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 9200508711738700960}
-  baseAttackQueueSize: 0
+  baseAttackQueueSize: 4
   attackQueueSizeIncreaseFactor: 1
 --- !u!50 &7499902071793897444
 Rigidbody2D:
@@ -285,6 +285,7 @@ MonoBehaviour:
   receiveAnimation: {fileID: -2284823265551665940, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   pingPongStartSpeed: 5
   pingPongsBeforeFailure: 3
+  receiveDistance: 0.5
 --- !u!114 &7050091178257783450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,6 +309,7 @@ MonoBehaviour:
   receiveAnimation: {fileID: 7570044444706239260, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   pingPongStartSpeed: 8
   pingPongsBeforeFailure: 3
+  receiveDistance: 0.5
 --- !u!114 &319105590609954980
 MonoBehaviour:
   m_ObjectHideFlags: 0

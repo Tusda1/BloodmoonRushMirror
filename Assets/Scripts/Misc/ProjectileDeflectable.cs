@@ -10,6 +10,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     [SerializeField] private AnimationClip baseAnimation;
     [SerializeField] private AnimationClip hitAnimation;
     [SerializeField] private float speed;
+    [SerializeField] private bool isNotDeflectable;
     
     [HideInInspector] public GameObject shooter;
     [HideInInspector] public Vector2 velocityDirection;
@@ -114,7 +115,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     
     public void TakeDamage(DamageInstance damageInstance)
     {
-        if (_isDeflected) return;
+        if (_isDeflected || isNotDeflectable) return;
         
         _isDeflected = true;
         

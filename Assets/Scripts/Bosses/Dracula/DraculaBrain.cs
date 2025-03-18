@@ -8,8 +8,8 @@ using Random = UnityEngine.Random;
 public class DraculaBrain : MonoBehaviour 
 {
     [SerializeField] private BossBase boss;
-    [SerializeField] private int baseAttackQueueSize = 3;
-    [SerializeField] private int attackQueueSizeIncreaseFactor = 1;
+    [SerializeField] private int[] baseAttackQueueSize;
+    [SerializeField] private int[] attackQueueSizeIncreaseFactor;
     
     private BossState[] _states;
     private List<BossState> _attackQueue = new();
@@ -74,7 +74,7 @@ public class DraculaBrain : MonoBehaviour
     {
         if (boss.CurrentHealth <= 0) boss.MoveToNextPhase();
         
-        var amount = baseAttackQueueSize + attackQueueSizeIncreaseFactor * (boss.MaxHealth[boss.CurrentPhase] - boss.CurrentHealth);
+        var amount = baseAttackQueueSize[boss.CurrentPhase] + attackQueueSizeIncreaseFactor[boss.CurrentPhase] * (boss.MaxHealth[boss.CurrentPhase] - boss.CurrentHealth);
         var states = GetStatesByPhase(boss.CurrentPhase);
         while (_attackQueue.Count < amount)
         {
@@ -91,6 +91,7 @@ public class DraculaBrain : MonoBehaviour
             _repeating = false;
         }
         
+        print(_pingPongState.Length);
         // Add the pingPongState that corresponds to the currentPhase to the end of the queue
         _attackQueue.Add(_pingPongState.First(state => state.StatePhase == boss.CurrentPhase));
     }
@@ -110,6 +111,7 @@ public class DraculaBrain : MonoBehaviour
         if (_lastInQueue)
         {
             FillAttackQueue();
+            MoveToNextState();
         }
         else
         {
