@@ -4,7 +4,7 @@ using UnityEngine;
 public class DiscoBallActivation : DraculaState
 {
     [SerializeField] private AnimationClip discoBallActivationAnimation;
-    [SerializeField] private GameObject discoBall;
+    [SerializeField] private DiscoBall discoBall;
     
     private CornerFinder _cornerFinder;
     
@@ -33,7 +33,7 @@ public class DiscoBallActivation : DraculaState
         {
             state.Destroy();
             Boss.AnimancerComponent.Play(idleAnimation);
-            discoBall.SetActive(true);
+            discoBall.Enable();
             EndState();
         };
     }

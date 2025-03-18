@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using VContainer;
 
 public class DiscoBall : MonoBehaviour 
 {
@@ -16,21 +17,29 @@ public class DiscoBall : MonoBehaviour
     
     private GameObject _laserPrefab;
     private Pooler _pooler;
+    private IObjectResolver _objectResolver;
+
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _objectResolver = container;
+    }
 
     private void Awake()
     {
         gameObject.SetActive(false);
         transform.position = highPoint.transform.position;
+        _laserPrefab = Resources.Load<GameObject>("Prefabs/Laser");
+        _pooler = TryGetCommunityPooler.TryGetPooler(_laserPrefab, _objectResolver);
     }
 
-    private void OnEnable()
+    public void Enable()
     {
         _currentRotation = narrowFireAngle;
         
         StartCoroutine(LowerDiscoBall());
     }
 
-    private void OnDisable()
+    private void Disable()
     {
         StopAllCoroutines();
         _currentRotation = 0;
@@ -55,7 +64,7 @@ public class DiscoBall : MonoBehaviour
             yield return null;
         }
         
-        gameObject.SetActive(false);
+        Disable();
     }
     
     private IEnumerator RotateDiscoBall()

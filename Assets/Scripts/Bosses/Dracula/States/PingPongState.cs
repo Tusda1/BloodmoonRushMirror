@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using Player;
+using Unity.VisualScripting;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -12,12 +13,14 @@ public class PingPongState : DraculaState
     [SerializeField] private AnimationClip receiveAnimation;
     [SerializeField] private float pingPongStartSpeed = 5f;
     [SerializeField] private int pingPongsBeforeFailure = 3;
+    [SerializeField] private float receiveDistance = 0.5f;
     
     private bool _readyToPingPong;
+    private bool _isReceiving;
     private GameObject _pingPongCircle;
     private GameObject _player;
+    private GameObject _pongPongInstance;
     private int _pingPongHitCount;
-    private Vector2 _directionToPingPong;
     private Vector2 _teleportPosition;
     
     private CornerFinder _cornerFinder;
@@ -101,6 +104,7 @@ public class PingPongState : DraculaState
                 {
                     _readyToPingPong = true;
                     state.Destroy();
+                    Boss.AnimancerComponent.Play(idleAnimation);
                 };
             }
             
@@ -109,44 +113,53 @@ public class PingPongState : DraculaState
         
         // Spawn ping pong circle and send it to the player
         var position = transform.position + Vector3.up * 2.25f + (Vector3)Boss.facingDirection * 1.8f;
-        GameObject pingPongCircle = Instantiate(_pingPongCircle, position, Quaternion.identity);
+        _pongPongInstance = Instantiate(_pingPongCircle, position, Quaternion.identity);
         
         // send the circle in the x direction of the player with no y movement
-        pingPongCircle.GetComponent<PingPongScript>().setVelocity = Boss.facingDirection * pingPongStartSpeed;
+        _pongPongInstance.GetComponent<PingPongScript>().setVelocity = Boss.facingDirection * pingPongStartSpeed;
         
         _pingPongState = PingPong.Play;
     }
     
     private void PlayPingPong()
     {
-        // Use Raycast to check if the pingpongcircle is close enough to be hit back
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, _directionToPingPong, 1);
-        if (hit.collider != null && hit.collider.CompareTag("PingPongCircle"))
+        if (_pongPongInstance == null)
         {
-            if (hit.collider.attachedRigidbody.linearVelocity.normalized == _directionToPingPong)
-            {
-                return;
-            }
-            
+            EndState();
+            return;
+        }
+        
+        if (Mathf.Abs(_pongPongInstance.transform.position.x - transform.position.x) < receiveDistance)
+        {
             // Hit the circle back
             ReceivePingPong();
-            DamageInstance damageInstance = new DamageInstance();
-            damageInstance.knockback = _directionToPingPong;
-            
-            hit.collider.GetComponent<IDamageable>().TakeDamage(damageInstance);
+        }
+        else
+        {
+            _isReceiving = false;
         }
     }
     
     private void ReceivePingPong()
     {
-        if (_pingPongHitCount <= pingPongsBeforeFailure)
+        if (_isReceiving)
         {
-            var state = Boss.AnimancerComponent.Play(receiveWindupAnimation);
+            return;
+        }
+        
+        print(_pingPongHitCount);
+        if (_pingPongHitCount < pingPongsBeforeFailure)
+        {
+            _isReceiving = true;
+            DamageInstance damageInstance = new DamageInstance();
+            damageInstance.knockback = Boss.facingDirection;
+            
+            _pongPongInstance.GetComponent<IDamageable>().TakeDamage(damageInstance);
+            var state = Boss.AnimancerComponent.Play(receiveAnimation);
             state.Events(this).OnEnd = () =>
             {
                 state.Destroy();
-                Boss.AnimancerComponent.Play(receiveAnimation);
-                
+                Boss.AnimancerComponent.Play(idleAnimation);
             };
         }
         else
@@ -154,6 +167,7 @@ public class PingPongState : DraculaState
             var vulnerableStates = GetComponents<VulnerableState>();
             var vulnerableState = vulnerableStates.FirstOrDefault(state => state.StatePhase == StatePhase);
             Boss.StateMachine.ForceSetState(vulnerableState);
+            return;
         }
         
         _pingPongHitCount++;
@@ -162,5 +176,9 @@ public class PingPongState : DraculaState
     private void OnDisable()
     {
         Debug.Log("PingPongState Exit");
+        _pingPongHitCount = 0;
+        _readyToPingPong = false;
+        _isReceiving = false;
+        _pingPongState = PingPong.Teleport;
     }
 }
