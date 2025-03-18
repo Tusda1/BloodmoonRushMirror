@@ -105,8 +105,12 @@ public class BossBase : GravityObject, IDamageable
             return;
         }
         
-        animancer.Play(takeDamageAnimation[currentPhase]);
-        TakenDamage?.Invoke();
+        var state = animancer.Play(takeDamageAnimation[currentPhase]);
+        state.Events(this).OnEnd = () =>
+        {
+            state.Destroy();
+            TakenDamage?.Invoke();
+        };
     }
     
     private IEnumerator FlashWhite() {

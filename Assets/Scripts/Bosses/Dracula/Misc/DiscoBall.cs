@@ -12,8 +12,11 @@ public class DiscoBall : MonoBehaviour
     [SerializeField] private GameObject lowPoint;
     [SerializeField] private GameObject highPoint;
     
+    private Vector2 _lowPointPosition;
+    private Vector2 _highPointPosition;
     private float _rotationTimer;
     private float _currentRotation;
+    private bool _isActive;
     
     private GameObject _laserPrefab;
     private Pooler _pooler;
@@ -26,28 +29,33 @@ public class DiscoBall : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.SetActive(false);
-        transform.position = highPoint.transform.position;
+        _lowPointPosition = lowPoint.transform.position;
+        _highPointPosition = highPoint.transform.position;
+        transform.position = _highPointPosition;
         _laserPrefab = Resources.Load<GameObject>("Prefabs/Laser");
         _pooler = TryGetCommunityPooler.TryGetPooler(_laserPrefab, _objectResolver);
     }
 
     public void Enable()
     {
+        if (_isActive) return;
+        
         _currentRotation = narrowFireAngle;
+        _isActive = true;
         
         StartCoroutine(LowerDiscoBall());
     }
 
     private void Disable()
     {
+        _isActive = false;
         StopAllCoroutines();
         _currentRotation = 0;
     }
 
     private IEnumerator LowerDiscoBall()
     {
-        while (transform.position.y < lowPoint.transform.position.y)
+        while (transform.position.y > _lowPointPosition.y)
         {
             transform.position += Vector3.down * (loweringSpeed * Time.deltaTime);
             yield return null;
@@ -58,7 +66,7 @@ public class DiscoBall : MonoBehaviour
     
     private IEnumerator RaiseDiscoBall()
     {
-        while (transform.position.y > highPoint.transform.position.y)
+        while (transform.position.y < _highPointPosition.y)
         {
             transform.position += Vector3.up * (loweringSpeed * Time.deltaTime);
             yield return null;
