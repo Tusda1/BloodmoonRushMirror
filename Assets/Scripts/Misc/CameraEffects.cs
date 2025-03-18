@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using SceneCollections;
 using UnityEngine;
+using VContainer;
 using Random = UnityEngine.Random;
 
 public class CameraEffects : MonoBehaviour {
@@ -24,10 +25,27 @@ public class CameraEffects : MonoBehaviour {
     private const float FadeCircleDefaultSize = 2.5f;
     
     private CancellationTokenSource _cancellationTokenSource = new();
+    private CancellationTokenSource _timeSlow = new();
+    
+    private IPauseManager _pauseManager;
 
     #region ***---ShaderPropertyID---***
     private static readonly int Size = Shader.PropertyToID("_Size");
     #endregion
+    #endregion
+
+    #region ---Initialization---
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _pauseManager = container.Resolve<IPauseManager>();
+    }
+
+    private void Start() {
+        _pauseManager.OnPause += () => {
+            _timeSlow.Cancel();
+            _timeSlow = new CancellationTokenSource();
+        };
+    }
     #endregion
 
     private void OnEnable() {
@@ -76,7 +94,7 @@ public class CameraEffects : MonoBehaviour {
             
             Time.timeScale = Mathf.Clamp01(curve.Evaluate(currentProgress));
 
-            await Awaitable.NextFrameAsync(_cancellationTokenSource.Token);
+            await Awaitable.NextFrameAsync(_timeSlow.Token);
         }
 
         Time.timeScale = 1;
@@ -136,11 +154,15 @@ public class CameraEffects : MonoBehaviour {
 
     public void FadeLoadScene(SceneCollectionSO sceneCollection, Action callback = null) {
         CircleFadeOut(1,
-            () => _ = SceneCollectionManager.LoadSceneCollectionAsync(sceneCollection,
-                () => {
-                    CircleFadeIn(1);
-                    callback?.Invoke();
-                }));
+            () => {
+                Time.timeScale = 0;
+                _ = SceneCollectionManager.LoadSceneCollectionAsync(sceneCollection,
+                    () => {
+                        CircleFadeIn(1);
+                        Time.timeScale = 1;
+                        callback?.Invoke();
+                    });
+            });
     }
 
 #if UNITY_EDITOR

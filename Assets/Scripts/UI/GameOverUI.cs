@@ -46,7 +46,7 @@ public class GameOverUI : MonoBehaviour {
         _cameraEffects.CircleFadeIn(0.5f);
 
         _retryButton.clicked += () => {
-            _cameraEffects.FadeLoadScene(_saveLoadSystemManager.CurrentGameData.CurrentSceneCollection, 
+            _cameraEffects.FadeLoadScene(_saveLoadSystemManager.GetCurrentSceneCollection(), 
                 () => _saveLoadSystemManager.SaveLoad());
         };
 

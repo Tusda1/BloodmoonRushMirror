@@ -72,6 +72,7 @@ public partial class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
 
         _playerScript.CheckpointHealing();
         _levelDataManager.CurrentCheckpointID = ID;
+        _levelDataManager.PlayerPosition = transform.position;
         _saveLoadSystemManager.SaveAllDataBinds();
     }
 

@@ -14,6 +14,8 @@ namespace Player {
 
         [GetOrAddComponent, SerializeField, HideInInspector]
         private BoxCollider2D boxCollider;
+        private Vector2 _defaultBoxSize;
+        private Vector2 _defaultBoxOffset;
 
         [Header("Player Movement")] 
         [SerializeField, ReadOnly] public Vector2 inputVector;
@@ -103,6 +105,9 @@ namespace Player {
 
         protected override void Start() {
             base.Start();
+            
+            _defaultBoxSize = boxCollider.size;
+            _defaultBoxOffset = boxCollider.offset;
 
             GravityModifier = gravityMultiplier;
 
@@ -327,7 +332,6 @@ namespace Player {
             }
 
             wasGroundedLastFrame = isActuallyGrounded;
-            
         }
 
         #region ---EventFunctions---
@@ -424,8 +428,8 @@ namespace Player {
         public void ForceExitDuck() {
             playerMovementDebugLogger.Log("exiting duck");
             isDucking = false;
-            boxCollider.size = new Vector2(0.9f, 1.9f);
-            boxCollider.offset = new Vector2(0f, 1f);
+            boxCollider.size = _defaultBoxSize;
+            boxCollider.offset = _defaultBoxOffset;
             player.animator.SetBool(AnimatorCrouchBool, false);
         }
 

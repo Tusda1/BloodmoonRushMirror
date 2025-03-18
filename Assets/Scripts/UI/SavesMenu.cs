@@ -98,18 +98,14 @@ namespace UI {
         
 #if SAVESYSTEM_ACTIVE
         private void LoadSave(SaveSlotDataSO saveSlotData) {
-            SceneCollectionSO sceneCollectionToLoad;
-            
             if (saveSlotData.lastTimePlayed == string.Empty) {
                 _saveLoadSystemManager.SetCurrentGameDataFromTemplate(saveSlotData.saveSlotName);
-                sceneCollectionToLoad = newGameSceneCollection;
             }
             else {
                 _saveLoadSystemManager.SetCurrentGameDataFromSaveSlot(saveSlotData);
-                sceneCollectionToLoad = _saveLoadSystemManager.CurrentGameData.CurrentSceneCollection;
             }
 
-            Debug.Log("*** SceneCollection To Load:" + sceneCollectionToLoad.name);
+            var sceneCollectionToLoad = _saveLoadSystemManager.GetCurrentSceneCollection();
 
             _cameraEffects.FadeLoadScene(sceneCollectionToLoad);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ExtensionMethods;
 using SaveLoadSystem.Data;
 using SceneCollections;
 using UnityEngine;
@@ -46,8 +47,7 @@ namespace SaveLoadSystem {
         }
 
         public void LoadBindData() {
-            _playerScript.transform.position = DataInGameData.CurrentCheckpoint?.Position 
-                                               ?? DataInGameData.PlayerPosition;
+            _playerScript.transform.position = DataInGameData.PlayerPosition;
         }
 
         public void Unbind() {
@@ -57,8 +57,8 @@ namespace SaveLoadSystem {
         public void LoadCheckpointBindData() => LoadBindData();
 
         public void SaveBindData() {
-            DataInGameData.PlayerPosition = _playerScript.transform.position;
-            _saveLoadSystemManager.CurrentGameData.CurrentSceneCollection = SceneCollection;
+            // DataInGameData.PlayerPosition = _playerScript.transform.position;
+            _saveLoadSystemManager.CurrentGameData.currentSceneCollectionName = SceneCollection.name;
         }
         #endregion
     }
