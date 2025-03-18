@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using SaveLoadSystem.Data;
-using UnityEngine;
+using SceneCollections;
 using Utilities.DataBinding;
 using VContainer;
 
@@ -15,6 +15,7 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
     private DebugLoggerSO _debugLogger;
     private SaveSlots _saveSlots;
     private GameDataScrubGeneric<SaveGameData> _newGameData;
+    private IProvider<SceneCollectionSO> _sceneCollectionProvider;
     #endregion
     #endregion
 
@@ -28,11 +29,13 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
 
         _saveSlots = container.Resolve<SaveSlots>();
         _newGameData = container.Resolve<GameDataScrubGeneric<SaveGameData>>();
+        
+        _sceneCollectionProvider = container.Resolve<IProvider<SceneCollectionSO>>();
     }
     #endregion
 
     #region ---SaveSlots---
-    public void UpdateSaveSlotSO() {
+    public void UpdateSaveSlots() {
         LoadSaveSlotData(_saveSlots.saveSlot1Data);
         LoadSaveSlotData(_saveSlots.saveSlot2Data);
         LoadSaveSlotData(_saveSlots.saveSlot3Data);
@@ -49,6 +52,8 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
 
         var metaData = DataService.ReadFileMetadata(pathToSaveFile);
         saveSlotData.lastTimePlayed = metaData.LastWriteTime.ToString("HH:mm dd/MM/yyyy");
+        saveSlotData.saveGameData = DataService.LoadByPath(pathToSaveFile);
+        saveSlotData.currentLevel = saveSlotData.saveGameData.currentSceneCollectionName;
     }
 
     /// <summary>
@@ -82,14 +87,15 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
 
             _debugLogger.Log("Updating DataBind");
         }
+#if SAVESYSTEM_ACTIVE
+        SaveToFile();
+#endif
     }
 
     /// <summary>
     /// Method calls "SaveAllDataBinds" and saves the "_currentGameData" using the "DataService" to a file.
     /// </summary>
     public void SaveToFile() {
-        SaveAllDataBinds();
-
         DataService.SaveToFile(CurrentGameData);
         
         _debugLogger.Log($"Saving {typeof(SaveGameData)}");
@@ -129,5 +135,9 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
         CurrentGameData.Name = name;
 
         _debugLogger.Log($"Creating new game data with name '{CurrentGameData.Name}' with values from '{_newGameData.gameData.Name}'");
+    }
+
+    public SceneCollectionSO GetCurrentSceneCollection() {
+        return _sceneCollectionProvider.Get(CurrentGameData.currentSceneCollectionName);
     }
 }

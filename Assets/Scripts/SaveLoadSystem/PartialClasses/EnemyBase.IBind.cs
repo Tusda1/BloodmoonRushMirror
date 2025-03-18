@@ -32,7 +32,15 @@ public partial class EnemyBase {
     }
 
     public void Unbind() {
+#if UNITY_EDITOR
+        try {
+#endif
         _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
+#if UNITY_EDITOR
+        }
+        catch (NullReferenceException) {
+        }
+#endif
     }
 
     public virtual void LoadBindData() {

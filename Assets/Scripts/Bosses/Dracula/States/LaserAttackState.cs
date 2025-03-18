@@ -111,9 +111,11 @@ public class LaserAttackState : DraculaState
             var state = Boss.AnimancerComponent.Play(laserAttackAnimation);
             state.Events(this).OnEnd = () =>
             {
+                state.Destroy();
                 stage = LaserAttackStage.Firing;
                 Destroy(_trackerObject);
                 _timer = 0;
+                Boss.AnimancerComponent.Play(idleAnimation);
             };
         }
        
@@ -140,7 +142,7 @@ public class LaserAttackState : DraculaState
             
 
             // Calculate the angle to point the top of the laser object towards the fire position
-            var direction = (_firePosition - (Vector2)position).normalized;
+            var direction = (_firePosition - (Vector2)_laserObject.transform.position).normalized;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f; // Subtract 90 degrees to point the top towards the fire position
             _laserObject.transform.rotation = Quaternion.Euler(0, 0, angle);
     

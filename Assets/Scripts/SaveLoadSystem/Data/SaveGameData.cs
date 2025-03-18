@@ -11,7 +11,8 @@ namespace SaveLoadSystem.Data {
         [field: SerializeField] public string Name { get; set; }
 
         [SerializeField] public PlayerData playerData = new();
-        [field: SerializeField] public SceneCollectionSO CurrentSceneCollection { get; set; }
+        
+        public string currentSceneCollectionName;
 
         [SerializeReference] public List<LevelData> levelDatas = new();
 

@@ -1,3 +1,4 @@
+using SaveLoadSystem.Data;
 using SceneCollections;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class SaveSlotDataSO : ScriptableObject {
     public string currentProgress;
     
     public SceneCollectionSO currentSceneCollection;
+    
+    public SaveGameData saveGameData;
 
     public void Clear() {
         lastTimePlayed = "";

@@ -269,7 +269,7 @@ namespace Player {
 
         public void TakeDamage(DamageInstance damageInstance) {
             if (healthComponent.HasInvincibilityFrames && !damageInstance.ignoreInvincibility) return;
-            if (_isDead) return;
+            if (_isDead || _pauseManager.Paused) return;
 
             debugLogger.Log($"Taking Damage: {damageInstance.damage}");
 

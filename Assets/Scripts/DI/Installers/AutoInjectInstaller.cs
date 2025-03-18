@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using VContainer.Unity;
+#if UNITY_EDITOR
+using System.Linq;
 using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
+#endif
 
 public class AutoInjectInstaller : LifetimeScope {
 #if UNITY_EDITOR
@@ -18,6 +21,11 @@ public class AutoInjectInstaller : LifetimeScope {
                 autoInjectGameObjects.Add(o);
             }
         }
+    }
+
+    private void OnValidate() {
+        RegisterAutoInjectObjects();
+        EditorUtility.SetDirty(this);
     }
 
     private static bool HasMonoBehaviorWithInjectAttribute(GameObject gameObject) {
