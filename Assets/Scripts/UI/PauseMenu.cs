@@ -105,6 +105,7 @@ namespace UI {
             _root.style.display = DisplayStyle.None;
             _root.enabledSelf = false;
             playerCanMove.ChangeVote(_currentVote, true);
+            settingsMenu.Deactivate();
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
