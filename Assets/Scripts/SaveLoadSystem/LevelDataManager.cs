@@ -4,6 +4,9 @@ using SceneCollections;
 using UnityEngine;
 using Utilities.DataBinding;
 using VContainer;
+#if UNITY_EDITOR
+using System.Collections;
+#endif
 
 namespace SaveLoadSystem {
     public partial class LevelDataManager : MonoBehaviour, IBind<LevelData> {
@@ -12,13 +15,12 @@ namespace SaveLoadSystem {
         
         private ISaveLoadSystemManager _saveLoadSystemManager;
         private PlayerScript _playerScript;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         private GameDataScrubGeneric<SaveGameData> _newGameData;
-#if SAVESYSTEM_ACTIVE && (UNITY_EDITOR || DEVELOPMENT_BUILD)
         private CameraEffects _cameraEffects;
 
         private const string SaveSystemMenu = "SaveSystemManager/";
 #endif
-        
         [HideInInspector] public bool startedInLevel;
         #endregion
 
@@ -26,14 +28,15 @@ namespace SaveLoadSystem {
         [Inject]
         public void Construct(IObjectResolver container) {
             _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+            _playerScript = container.Resolve<PlayerScript>();
 #if UNITY_EDITOR
             if (_saveLoadSystemManager.CurrentGameData == null) {
                 startedInLevel = true;
                 _saveLoadSystemManager.SetCurrentGameDataFromTemplate("DATAMANAGER");
             }
 #endif
-            _playerScript = container.Resolve<PlayerScript>();
-#if SAVESYSTEM_ACTIVE && (UNITY_EDITOR || DEVELOPMENT_BUILD)
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            _newGameData = container.Resolve<GameDataScrubGeneric<SaveGameData>>();
             _cameraEffects = container.Resolve<CameraEffects>();
 #endif
         }
@@ -49,7 +52,7 @@ namespace SaveLoadSystem {
         }
         #endregion
 
-#if SAVESYSTEM_ACTIVE && (UNITY_EDITOR || DEVELOPMENT_BUILD)
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         private void Update() {
             if (Input.GetKeyDown(KeyCode.F5)) {
                 SaveLoadSystemManager_SaveAllDataBinds();

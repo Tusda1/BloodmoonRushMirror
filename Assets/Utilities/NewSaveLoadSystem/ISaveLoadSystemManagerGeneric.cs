@@ -1,11 +1,12 @@
-﻿using Utilities.DataBinding;
+﻿using SceneCollections;
+using Utilities.DataBinding;
 
 public interface ISaveLoadSystemManagerGeneric<TGameData> where TGameData : IGameData {
     IDataService<TGameData> DataService { get; }
     DataBinder DataBinder { get; }
     TGameData CurrentGameData { get; set; }
 
-    void UpdateSaveSlotSO();
+    void UpdateSaveSlots();
 
     void SaveAllDataBinds();
     void SaveToFile();
@@ -16,4 +17,6 @@ public interface ISaveLoadSystemManagerGeneric<TGameData> where TGameData : IGam
     void SetCurrentGameDataFromTemplate(string gameDataName);
     void SetCurrentGameDataFromSaveSlot(SaveSlotDataSO saveSlotData);
     void DeleteSaveSlotData(SaveSlotDataSO saveSlotData);
+    
+    SceneCollectionSO GetCurrentSceneCollection();
 }

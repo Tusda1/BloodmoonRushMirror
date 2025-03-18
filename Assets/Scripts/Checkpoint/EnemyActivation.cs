@@ -7,11 +7,14 @@ namespace Checkpoint {
         private GameObject[] _rooms;
         private readonly List<EnemyBase> _enemies = new();
         private VirtualCameraSwitch _checkpointRoom;
+        private PlayerScript _player;
 
         public void Initialize(GameObject[] roomArray) {
             _rooms = roomArray;
+            // _enemiesLocation = enemiesLocation;
+            _player = ServiceLocator.Get<PlayerScript>();
 
-            ServiceLocator.Get<PlayerScript>().OnRespawn += OnRespawn;
+            _player.OnRespawn += OnRespawn;
 
             foreach (var room in _rooms) {
                 var enemyObjects = room.GetComponentsInChildren<EnemyBase>();
@@ -21,7 +24,9 @@ namespace Checkpoint {
         }
 
         private void OnDestroy() {
-            ServiceLocator.Get<PlayerScript>().OnRespawn -= OnRespawn;
+            if (_player == null) return;
+            
+            _player.OnRespawn -= OnRespawn;
         }
 
         private void OnRespawn() {

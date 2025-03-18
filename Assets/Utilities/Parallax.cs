@@ -245,7 +245,7 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
         
         StartCoroutine(Blend(DataInGameData.IsEnabled));
         
-        DataInGameData.Camera.ForceCameraPosition(DataInGameData.CameraPosition, Quaternion.identity);
+        // DataInGameData.Camera.ForceCameraPosition(DataInGameData.CameraPosition, Quaternion.identity);
         
         var children = transform.GetImmediateChildren().ToArray();
         for (var index = 0; index < children.Length; index++) {

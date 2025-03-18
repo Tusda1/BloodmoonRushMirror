@@ -1,6 +1,7 @@
 using Attributes;
 using SceneCollections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using VContainer;
 
@@ -9,7 +10,7 @@ public class GameOverUI : MonoBehaviour {
     #region ---Fields---
     [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
 
-    [SerializeField, Required] private SceneCollectionSO retryLoadCollection;
+    [SerializeField, Required] private SceneCollectionSO mainMenu;
 
     #region ***---UIDocument---***
     private VisualElement _root;
@@ -45,22 +46,11 @@ public class GameOverUI : MonoBehaviour {
         _cameraEffects.CircleFadeIn(0.5f);
 
         _retryButton.clicked += () => {
-#if SAVESYSTEM_ACTIVE
-            _cameraEffects.CircleFadeOut(0.5f);
-            _ =
- SceneCollectionManager.LoadSceneCollectionAsync(_saveLoadSystemManager.CurrentGameData.CurrentSceneCollection,
-                () => {
-                    _saveLoadSystemManager.SaveLoad();
-                    _cameraEffects.CircleFadeIn(0.5f);
-                });
-#else
-            _cameraEffects.CircleFadeOut(0.5f);
-            _ = SceneCollectionManager.LoadSceneCollectionAsync(retryLoadCollection, () =>
-                _cameraEffects.CircleFadeIn(0.5f));
-#endif
+            _cameraEffects.FadeLoadScene(_saveLoadSystemManager.GetCurrentSceneCollection(), 
+                () => _saveLoadSystemManager.SaveLoad());
         };
 
-        _quitButton.clicked += Application.Quit;
+        _quitButton.clicked += () => _cameraEffects.FadeLoadScene(mainMenu); 
 
         _retryButton.Focus();
     }

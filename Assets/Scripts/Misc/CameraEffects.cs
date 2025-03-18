@@ -1,8 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
-using JetBrains.Annotations;
+using System.Threading;
 using SceneCollections;
 using UnityEngine;
+using VContainer;
 using Random = UnityEngine.Random;
 
 public class CameraEffects : MonoBehaviour {
@@ -22,10 +23,29 @@ public class CameraEffects : MonoBehaviour {
     [SerializeField] private RenderTexture uiNonPixelated;
 
     private const float FadeCircleDefaultSize = 2.5f;
+    
+    private CancellationTokenSource _cancellationTokenSource = new();
+    private CancellationTokenSource _timeSlow = new();
+    
+    private IPauseManager _pauseManager;
 
     #region ***---ShaderPropertyID---***
     private static readonly int Size = Shader.PropertyToID("_Size");
     #endregion
+    #endregion
+
+    #region ---Initialization---
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _pauseManager = container.Resolve<IPauseManager>();
+    }
+
+    private void Start() {
+        _pauseManager.OnPause += () => {
+            _timeSlow.Cancel();
+            _timeSlow = new CancellationTokenSource();
+        };
+    }
     #endregion
 
     private void OnEnable() {
@@ -57,8 +77,8 @@ public class CameraEffects : MonoBehaviour {
 
             var newOffset = new Vector3(offsetX, offsetY, 0);
             transform.position = originalPosition + newOffset;
-
-            await Awaitable.NextFrameAsync();
+            
+            await Awaitable.NextFrameAsync(_cancellationTokenSource.Token);
         }
 
         transform.position = originalPosition;
@@ -74,7 +94,7 @@ public class CameraEffects : MonoBehaviour {
             
             Time.timeScale = Mathf.Clamp01(curve.Evaluate(currentProgress));
 
-            await Awaitable.NextFrameAsync();
+            await Awaitable.NextFrameAsync(_timeSlow.Token);
         }
 
         Time.timeScale = 1;
@@ -104,7 +124,7 @@ public class CameraEffects : MonoBehaviour {
             var progressValue = curve.Evaluate(currentProgress / duration);
             cameraPixelatedGameObject.transform.position = Vector3.Lerp(cameraPixelatedGameObject.transform.position, offset, progressValue);
 
-            await Awaitable.NextFrameAsync();
+            await Awaitable.NextFrameAsync(_cancellationTokenSource.Token);
         }
         
         cameraPixelatedGameObject.transform.position = offset;
@@ -126,16 +146,23 @@ public class CameraEffects : MonoBehaviour {
     }
 
     public void ResetCameraMove() {
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource = new CancellationTokenSource();
+        
         cameraPixelatedGameObject.transform.position = Vector3.zero;
     }
 
     public void FadeLoadScene(SceneCollectionSO sceneCollection, Action callback = null) {
         CircleFadeOut(1,
-            () => _ = SceneCollectionManager.LoadSceneCollectionAsync(sceneCollection,
-                () => {
-                    CircleFadeIn(1);
-                    callback?.Invoke();
-                }));
+            () => {
+                Time.timeScale = 0;
+                _ = SceneCollectionManager.LoadSceneCollectionAsync(sceneCollection,
+                    () => {
+                        CircleFadeIn(1);
+                        Time.timeScale = 1;
+                        callback?.Invoke();
+                    });
+            });
     }
 
 #if UNITY_EDITOR

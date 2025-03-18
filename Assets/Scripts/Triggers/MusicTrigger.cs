@@ -32,7 +32,6 @@ namespace Triggers {
         private LevelDataManager _levelDataManager;
         #endregion
         
-        
         #region ---Initialization---
         [Inject]
         public void Construct(IObjectResolver container) {

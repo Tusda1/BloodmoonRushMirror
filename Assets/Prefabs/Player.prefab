@@ -121,19 +121,19 @@ MonoBehaviour:
     animators:
     - {fileID: 4896941881637286329}
     - {fileID: 4915913186544905062}
-  legRenderer: {fileID: 0}
+  legRenderer: {fileID: 8336404886798544124}
   gameOverScene: {fileID: 11400000, guid: f049946a2b8e33e4c89218cc64a675cc, type: 2}
   cameraFollowTransform: {fileID: 3892124713632009612}
   lookahead: 4
-  playerLives: 10
-  playerLivesStartAmount: 0
+  playerLives: 15
+  playerLivesStartAmount: 15
   whatIsInteractable:
     serializedVersion: 2
     m_Bits: 0
   isAttacking: 0
   hitbox: {fileID: 3672109486144381603}
   bloodSplatter: {fileID: 8517574606943572091}
-  alphaWhenTakingDamage: 0.85
+  alphaWhenTakingDamage: 0.2
   takeDamageScreenShakeIntensity: 0.2
   takeDamageScreenShakeDuration: 0.2
   takeDamageTimeSlowDuration: 0.5
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb2d: {fileID: 1222319225997515202}
-  isGrounded: 0
+  isGrounded: 1
   isFalling: 0
   lockToAxis: 0
   targetVelocity: {x: 0, y: 0}
@@ -205,11 +205,11 @@ MonoBehaviour:
   whatIsInvalidSpawnPoint:
     serializedVersion: 2
     m_Bits: 7680
-  climbSpeed: 6.5
+  climbSpeed: 9
   isDashing: 0
   canDash: 0
   dashTime: 0.25
-  dashCooldown: 0
+  dashCooldown: 0.7
   dashForce: 23.5
   isJumping: 0
   isHoldingJump: 0
@@ -226,7 +226,7 @@ MonoBehaviour:
   isActuallyGrounded: 0
   isTakingKnockback: 0
   knockBackTime: 0.15
-  spikeStunTime: 0.25
+  spikeStunTime: 0.5
   killCharges: 0
   lameParticles: {fileID: 5209149352174865188}
   coolParticles: {fileID: 1163375501913449095}
@@ -388,8 +388,8 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6484fd12-4cb3-44f7-b276-f7ac1cab2a1c
     m_ActionName: 'Player/Duck[/Keyboard/s,/Keyboard/downArrow]'
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Gamepad
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}

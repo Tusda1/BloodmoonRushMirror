@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static DialogueCharacterSO;
 
+#pragma warning disable UDR0001
+#pragma warning disable UDR0005
 [UnitShortTitle("Character Says")] [UnitCategory("DialogueUI")] [TypeIcon(typeof(BoltAnimationEvent))]
 public class CharacterSays : Unit {
     #region ---Fields---
@@ -82,7 +84,6 @@ public class CharacterSays : Unit {
         AutoContinue_Output = ValueOutput(nameof(AutoContinue),
             flow => flow.GetValue<bool>(AutoContinue));
     }
-
     private IEnumerator Action(Flow flow) {
         var dialogueDictionary = flow.GetValue<DialogueDictionary>(DialogueDictionary);
         var dialogueUIDataContainer = flow.GetValue<DialogueUI_DataContainer>(DialogueUIDataContainer);
@@ -172,7 +173,7 @@ public class CharacterSays : Unit {
             end = true;
         }
     }
-
+    
     private void ApplySoundToTypewriterEvents(WhenIsSfxPlayed whenIsSfxPlayed) {
         if ((whenIsSfxPlayed & WhenIsSfxPlayed.InTheBeginning) != WhenIsSfxPlayed.Nowhere) {
             TypewriterOnBegin += PlaySFX;
@@ -250,3 +251,5 @@ public class CharacterSays : Unit {
 #endif
     }
 }
+#pragma warning restore UDR0001
+#pragma warning restore UDR0005
