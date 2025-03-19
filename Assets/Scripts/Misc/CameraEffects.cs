@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using SceneCollections;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using VContainer;
 using Random = UnityEngine.Random;
 
@@ -10,6 +12,7 @@ public class CameraEffects : MonoBehaviour {
     #region ---Fields---
     [SerializeField] private AnimationCurve timeSlowCurve;
     [SerializeField] private GameObject cameraPixelatedGameObject;
+    [SerializeField] private Volume cameraVolume;
     
     [Header("CircleFade")]
     [SerializeField] private Material circleFadeMaterial;
@@ -29,6 +32,8 @@ public class CameraEffects : MonoBehaviour {
     
     private IPauseManager _pauseManager;
 
+    private ChromaticAberration _chromaticAberration;
+
     #region ***---ShaderPropertyID---***
     private static readonly int Size = Shader.PropertyToID("_Size");
     #endregion
@@ -41,6 +46,9 @@ public class CameraEffects : MonoBehaviour {
     }
 
     private void Start() {
+        cameraVolume.profile.TryGet(out _chromaticAberration);
+        _chromaticAberration.intensity.value = 0;
+        
         _pauseManager.OnPause += () => {
             _timeSlow.Cancel();
             _timeSlow = new CancellationTokenSource();
