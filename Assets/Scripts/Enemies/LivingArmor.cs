@@ -71,7 +71,6 @@ public class LivingArmor : ReactiveBase
             currentState = EnemyState.Scanning;
             return;
         }
-
         
         if (_repeatTimer > 0)
         {
@@ -82,7 +81,6 @@ public class LivingArmor : ReactiveBase
             _repeatTimer = repeatRate;
             StartPath();
         }
-        
 
         if (_path == null) { return; }
         

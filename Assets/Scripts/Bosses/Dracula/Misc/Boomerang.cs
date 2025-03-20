@@ -6,6 +6,7 @@ public class Boomerang : GravityObject
 {
     [SerializeField] private float speed;
     [SerializeField] private float catchDistance;
+    [SerializeField] private DamageInstance damageInstance;
     
     [HideInInspector] public Vector2 direction;
     [HideInInspector] public bool returned;
@@ -54,11 +55,11 @@ public class Boomerang : GravityObject
             return;
         }
         
-        _floorPosition = hit.point;
+        _floorPosition = hit.point + Vector2.up * 0.5f;
 
         var timeBeforeSwap = (Mathf.Abs(_initialPosition.x - _turnPosition.x) * 1.5f / speed);
         _downVelocity = -Mathf.Abs(_initialPosition.y - _floorPosition.y) / timeBeforeSwap;
-        _upVelocity = _downVelocity * 3f;
+        _upVelocity = -_downVelocity * 3f;
         StartCoroutine(SwapVerticalVelocity(timeBeforeSwap));
     }
 
@@ -77,7 +78,7 @@ public class Boomerang : GravityObject
             gameObject.SetActive(false);
         }
         
-        _smoothDampScript.SmoothDampVector2(_moveDirection * speed, ref targetVelocity);
+        _smoothDampScript.SmoothDampVector2(new Vector2(_moveDirection.x * speed, _verticalVelocity.y), ref targetVelocity);
     }
     
     private IEnumerator SwapVerticalVelocity(float timeBeforeSwap)
@@ -85,5 +86,17 @@ public class Boomerang : GravityObject
         _verticalVelocity = new Vector2(_verticalVelocity.x, _downVelocity);
         yield return new WaitForSeconds(timeBeforeSwap);
         _verticalVelocity = new Vector2(_verticalVelocity.x, _upVelocity);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.TryGetComponent<IDamageable>(out var damageable))
+        {
+            Vector2 directionToPlayer = (other.transform.position - transform.position).normalized;
+            Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
+
+            damageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * damageInstance.knockbackStrength;
+            damageable.TakeDamage(damageInstance);
+        }
     }
 }

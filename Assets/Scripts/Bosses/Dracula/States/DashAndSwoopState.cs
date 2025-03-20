@@ -31,10 +31,6 @@ public class DashAndSwoopState : DraculaState
     private Vector2 _dashTarget;
     private bool _dashStarted;
     
-    [SerializeField] private int volleyAmount = 3;
-    [SerializeField] private float volleyCooldown = 0.05f;
-    [SerializeField] private float volleyDelay = 0.2f;
-    [SerializeField] private int swoopProjectilesPerVolley = 3;
     [SerializeField] private float swoopCompletionLevel = 0.9f;
     private bool _swoopStarted;
     private Vector2 _swoopOrigin;
@@ -42,9 +38,7 @@ public class DashAndSwoopState : DraculaState
     
     [SerializeField] private Swoop swoop = new();
     private PlayerScript _player;
-    private GameObject _homingProjectile;
     private CornerFinder _cornerFinder;
-    private Pooler _projectilePooler;
     
     private enum Stage
     {
@@ -54,19 +48,18 @@ public class DashAndSwoopState : DraculaState
     }
     
     private List<Stage> _stages = new List<Stage>();
+    private Coroutine _endStateCoroutine;
 
     protected override void Awake()
     {
         base.Awake();
         swoop.InitializeSwoop(SwoopEnd, Boss);
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
-        _homingProjectile = Resources.Load<GameObject>("Prefabs/HomingProjectile");
     }
 
     private void Start()
     {
         _player = ServiceLocator.Get<PlayerScript>();
-        _projectilePooler = TryGetCommunityPooler.TryGetPooler(_homingProjectile, ObjectResolver);
     }
 
     private void OnEnable()
@@ -111,6 +104,8 @@ public class DashAndSwoopState : DraculaState
     {
         Boss.transform.rotation = Quaternion.identity;
         swoop.ResetSwoop();
+        _loopCount = 0;
+        _stages.Clear();
     }
 
     private void Update()
@@ -186,7 +181,7 @@ public class DashAndSwoopState : DraculaState
         var direction = _dashTarget == _bottomRight ? Vector2.right : Vector2.left;
         Boss.targetVelocity = direction * dashSpeed;
         // Check if the boss crossed the finish line
-        if (transform.position.x * direction.x + dashDestinationOffset * direction.x * Mathf.Sign(transform.position.x) > _dashTarget.x * direction.x)
+        if (transform.position.x * direction.x + dashDestinationOffset > _dashTarget.x * direction.x)
         {
             if (_loopCount != _stages.Count - 1)
             {
@@ -194,7 +189,7 @@ public class DashAndSwoopState : DraculaState
             }
             else
             {
-                StartCoroutine(WaitBeforeNextState());
+                _endStateCoroutine ??= StartCoroutine(WaitBeforeNextState());
             }
         }
     }
@@ -207,8 +202,6 @@ public class DashAndSwoopState : DraculaState
             _swoopTarget = _swoopOrigin == _topRight ? _topLeft : _topRight; 
             
             _swoopStarted = true;
-
-            StartCoroutine(Shoot());
         }
 
         var oldPos = transform.position;
@@ -231,7 +224,7 @@ public class DashAndSwoopState : DraculaState
         }
         else
         {
-            StartCoroutine(WaitBeforeNextState());
+            _endStateCoroutine ??= StartCoroutine(WaitBeforeNextState());
         }
     }
     
@@ -242,38 +235,7 @@ public class DashAndSwoopState : DraculaState
         Boss.AnimancerComponent.Play(Boss.isGrounded ? idleAnimation : airIdleAnimation);
 
         yield return new WaitForSeconds(1f);
+        _endStateCoroutine = null;
         EndState();
-    }
-
-    private IEnumerator Shoot()
-    {
-        var timeNeededPerVolley = swoopProjectilesPerVolley * volleyCooldown;
-        var timeTotal = swoop.swoopDuration - volleyDelay * 2;
-        var timeLeftOver = timeTotal - timeNeededPerVolley * volleyAmount;
-        var timeBetweenVolleys = timeLeftOver / (volleyAmount - 1);
-        
-        yield return new WaitUntil(() => swoop.t * swoop.swoopDuration > volleyDelay);
-
-        yield return StartCoroutine(FireVolley());
-        
-        for (int i = 0; i < volleyAmount - 1; i++)
-        {
-            yield return new WaitForSeconds(timeBetweenVolleys);
-            yield return StartCoroutine(FireVolley());
-        }
-    }
-    
-    private IEnumerator FireVolley()
-    {
-        for (int i = 0; i < swoopProjectilesPerVolley; i++)
-        {
-            var projectile = _projectilePooler.GetPooledObject();
-            projectile.transform.position = transform.position;
-            var script = projectile.GetComponent<HomingProjectile>();
-            script.target = _player.gameObject;
-            script.initialDirection = Vector2.up;
-            projectile.SetActive(true);
-            yield return new WaitForSeconds(volleyCooldown);
-        }
     }
 }

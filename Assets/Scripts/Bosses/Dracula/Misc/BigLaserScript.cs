@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,6 +6,14 @@ public class BigLaserScript : MonoBehaviour
 {
     [HideInInspector] public Vector2 direction;
     [SerializeField] private float speed = 1f;
+    [SerializeField] private DamageInstance damageInstance;
+    
+    private BoxCollider2D _collider;
+    
+    private void Awake()
+    {
+        _collider = GetComponent<BoxCollider2D>();
+    }
 
     private void OnEnable()
     {
@@ -26,11 +35,24 @@ public class BigLaserScript : MonoBehaviour
         while (elapsedTime < duration)
         {
             transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / duration);
+            //_collider.size = transform.localScale;
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         transform.localScale = targetScale;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.TryGetComponent<IDamageable>(out var damageable))
+        {
+            Vector2 directionToPlayer = (other.transform.position - transform.position).normalized;
+            Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
+
+            damageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * damageInstance.knockbackStrength;
+            damageable.TakeDamage(damageInstance);
+        }
     }
 
     private void OnDisable()
