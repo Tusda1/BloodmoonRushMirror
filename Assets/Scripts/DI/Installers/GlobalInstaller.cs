@@ -21,7 +21,8 @@ public class GlobalInstaller : LifetimeScope {
 
     protected override void Configure(IContainerBuilder builder) {
         // --- DebugLogger System --- \\
-        builder.Register<IProvider<DebugLoggerSO>, DebugLoggerProvider>(Lifetime.Singleton);
+        builder.Register<DebugLoggerProvider>(Lifetime.Singleton)
+            .As<IProvider<DebugLoggerSO>>();
         
         // --- Dialogue System --- \\
         builder.RegisterInstance(dialogueDictionary);
@@ -35,7 +36,8 @@ public class GlobalInstaller : LifetimeScope {
 
         // --- Audio System --- \\
         builder.RegisterInstance(audioDictionary);
-        builder.Register<IAudioManager, FMODManager>(Lifetime.Singleton);
+        builder.Register<FMODManager>(Lifetime.Singleton)
+            .As<IAudioManager>();
 
         // --- Controller Recognizer System --- \\
         builder.Register<ControllerRecognizer>(Lifetime.Singleton);

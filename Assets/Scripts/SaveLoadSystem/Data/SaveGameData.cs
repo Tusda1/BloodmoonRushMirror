@@ -39,7 +39,8 @@ namespace SaveLoadSystem.Data {
                 saveGameDataList.Add(data);
             }
             else {
-                data = generator();
+                saveGameDataList.Remove(data);
+                saveGameDataList.Add(generator());
             }
         }
     }

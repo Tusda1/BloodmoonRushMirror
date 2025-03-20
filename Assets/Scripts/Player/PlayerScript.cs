@@ -37,6 +37,7 @@ namespace Player {
         public bool isAttacking;
         public PlayerHitbox hitbox;
         [SerializeField] private ParticleSystem bloodSplatter;
+        [SerializeField] private ParticleSystem checkpointTextEmitter;
 
         [Header("Taking Damage")] 
         [SerializeField] private float alphaWhenTakingDamage = 0.2f;
@@ -411,6 +412,8 @@ namespace Player {
         }
 
         public void CheckpointHealing() {
+            checkpointTextEmitter.Play();
+            
             if (healthComponent.Health == healthComponent.maxTempHealth) {
                 healthComponent.TempHealth += 1;
             }
