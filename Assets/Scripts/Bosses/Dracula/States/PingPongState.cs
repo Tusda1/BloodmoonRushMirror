@@ -19,7 +19,7 @@ public class PingPongState : DraculaState
     private bool _isReceiving;
     private GameObject _pingPongCircle;
     private GameObject _player;
-    private GameObject _pongPongInstance;
+    private PingPongScript _pongPongInstance;
     private int _pingPongHitCount;
     private Vector2 _teleportPosition;
     
@@ -38,6 +38,11 @@ public class PingPongState : DraculaState
     {
         base.Awake();
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+        _pongPongInstance = Instantiate(_pingPongCircle, transform.position, Quaternion.identity).GetComponent<PingPongScript>();
+        
+        
+        
+        _pongPongInstance.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -113,17 +118,17 @@ public class PingPongState : DraculaState
         
         // Spawn ping pong circle and send it to the player
         var position = transform.position + Vector3.up * 2.25f + (Vector3)Boss.facingDirection * 1.8f;
-        _pongPongInstance = Instantiate(_pingPongCircle, position, Quaternion.identity);
-        
+        _pongPongInstance.transform.position = position;
         // send the circle in the x direction of the player with no y movement
-        _pongPongInstance.GetComponent<PingPongScript>().setVelocity = Boss.facingDirection * pingPongStartSpeed;
+        _pongPongInstance.setVelocity = Boss.facingDirection * pingPongStartSpeed;
+        _pongPongInstance.gameObject.SetActive(true);
         
         _pingPongState = PingPong.Play;
     }
     
     private void PlayPingPong()
     {
-        if (_pongPongInstance == null)
+        if (!_pongPongInstance.gameObject.activeSelf)
         {
             EndState();
             return;

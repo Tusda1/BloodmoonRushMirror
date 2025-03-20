@@ -108,8 +108,15 @@ MonoBehaviour:
   targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
   GravityModifier: 1
-  speed: 20
+  speed: 30
   catchDistance: 1
+  damageInstance:
+    damage: 0
+    knockback: {x: 0, y: 0}
+    knockbackStrength: 0
+    staggerStrength: 0
+    ignoreInvincibility: 0
+    which: 0
   direction: {x: 0, y: 0}
   returned: 0
 --- !u!50 &2355053162099184426

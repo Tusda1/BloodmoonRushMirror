@@ -7,11 +7,13 @@ public class DiscoBallActivation : DraculaState
     [SerializeField] private DiscoBall discoBall;
     
     private CornerFinder _cornerFinder;
+    private Collider2D _collider;
     
     protected override void Awake()
     {
         base.Awake();
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+        _collider = GetComponent<Collider2D>();
     }
 
     private void OnEnable()
@@ -21,6 +23,28 @@ public class DiscoBallActivation : DraculaState
         
         // Go center
         var center = (rightCorner + leftCorner) / 2;
+        var safePosition = false;
+        var tries = 0;
+        
+        while (!safePosition)
+        {
+            tries++;
+            
+            if (tries > 100)
+            {
+                Debug.LogError("Could not find safe position for DiscoBallActivation");
+                break;
+            }
+            
+            // Use a boxcast to check if you are teleporting on top of the player
+            var hit = Physics2D.BoxCast(center, _collider.bounds.size, 0, Vector2.zero, 0, LayerMask.GetMask("Player"));
+            safePosition = hit.collider == null;
+            
+            if (!safePosition)
+            {
+                center += Vector2.right;
+            }
+        }
         
         var teleportEnter = Boss.isGrounded ? teleportEnterGround : teleportEnterAir;
         teleport.TeleportToLocation(center, teleportEnter, teleportExit);
