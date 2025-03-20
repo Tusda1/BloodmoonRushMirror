@@ -1,3 +1,4 @@
+using System;
 using SaveLoadSystem;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -17,7 +18,11 @@ public class LevelInstaller : AutoInjectInstaller {
         builder.RegisterInstance(cinemachineBrain);
         builder.RegisterInstance(levelDataManager);
         builder.RegisterInstance(levelMusicManager);
-        builder.RegisterInstance(new SteamSpeedrunTimer(leaderboardID)).As<ISpeedrunTimer>();
+        
+        // --- SpeedrunTimer --- \\
+        builder.RegisterInstanceID(leaderboardID, "LeaderboardID");
+        builder.Register<SteamSpeedrunTimer>(Lifetime.Scoped)
+            .As<ISpeedrunTimer>();
     }
 
 #if UNITY_EDITOR

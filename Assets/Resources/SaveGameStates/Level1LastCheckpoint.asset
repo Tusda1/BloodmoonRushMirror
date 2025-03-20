@@ -20,8 +20,143 @@ MonoBehaviour:
       tempHealth: 0
       lives: 0
       gems: 0
-    <CurrentSceneCollection>k__BackingField: {fileID: 0}
-    levelDatas: []
+    currentSceneCollectionName: EntranceHall
+    levelDatas:
+    - rid: 2369108271137030444
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 2369108271137030444
+      type: {class: LevelData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        <ID>k__BackingField: EntranceHall
+        <SceneCollection>k__BackingField: {fileID: 11400000, guid: 9ba3e2cdc0b088c48b4e85ea13b1bb36, type: 2}
+        <PlayerPosition>k__BackingField: {x: 543, y: -43.9, z: 0}
+        <CurrentCheckpointID>k__BackingField: 1089a78a-ed4a-4cff-8ee3-d1c709bb703b
+        checkpointDatas:
+        - rid: 2369108271137030446
+        - rid: 2369108271137030447
+        triggerDatas:
+        - rid: 2369108271137030448
+        - rid: 2369108271137030449
+        - rid: 2369108271137030450
+        - rid: 2369108271137030451
+        parallaxDatas:
+        - rid: 2369108271137030452
+        - rid: 2369108271137030453
+        - rid: 2369108271137030454
+        - rid: 2369108271137030455
+        - rid: 2369108271137030456
+        - rid: 2369108271137030457
+        enemyDatas: []
+        levelTimerData:
+          <ID>k__BackingField: 
+          <Time>k__BackingField: 0
+        <MusicData>k__BackingField:
+          <ID>k__BackingField: 
+          <MusicID>k__BackingField: 
+          <CalmnessParameter>k__BackingField: 0
+    - rid: 2369108271137030446
+      type: {class: CheckpointData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: LevelCheckpoint2
+        <ID>k__BackingField: 1089a78a-ed4a-4cff-8ee3-d1c709bb703b
+        <HasBeenTriggered>k__BackingField: 1
+        <Position>k__BackingField: {x: 543, y: -44, z: 0}
+    - rid: 2369108271137030447
+      type: {class: CheckpointData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: LevelCheckpoint1
+        <ID>k__BackingField: f52b54a3-8c80-4ab1-8d81-e122f3821a0e
+        <HasBeenTriggered>k__BackingField: 1
+        <Position>k__BackingField: {x: 300, y: -63, z: 0}
+    - rid: 2369108271137030448
+      type: {class: TriggerData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: CP2_TriggerConversationBox
+        <ID>k__BackingField: 096d89becc156fa3-47c962b9613b6382
+        hasBeenTriggered: 0
+    - rid: 2369108271137030449
+      type: {class: TriggerData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: CP1_TriggerConversationBox
+        <ID>k__BackingField: 6e0ce9fa7f38f384-0df0910484da6fd4
+        hasBeenTriggered: 1
+    - rid: 2369108271137030450
+      type: {class: TriggerData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: OswaldIntroduction_TriggerConversationBox
+        <ID>k__BackingField: a1a9fe701b7dc010-8f25f91946638ea7
+        hasBeenTriggered: 1
+    - rid: 2369108271137030451
+      type: {class: TriggerData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        name: OpeningDialogue
+        <ID>k__BackingField: c270c11d-91ae-4cfa-a89e-0d6642858f60
+        hasBeenTriggered: 1
+    - rid: 2369108271137030452
+      type: {class: ParallaxData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        <ID>k__BackingField: 0f5572bc-ecae-4a28-b796-2822861bb825
+        <CameraPosition>k__BackingField: {x: 541.695, y: -36.5, z: -10}
+        <Positions>k__BackingField:
+        - {x: 720, y: -34.25, z: 0}
+        - {x: 541.1391, y: -35.149998, z: 0}
+        - {x: 542.2779, y: -36.049995, z: 0}
+        <IsEnabled>k__BackingField: 1
+    - rid: 2369108271137030453
+      type: {class: ParallaxData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        <ID>k__BackingField: 1c233241-8b61-43ad-bf3c-19fe2f8abb1d
+        <CameraPosition>k__BackingField: {x: 541.695, y: -36.5, z: -10}
+        <Positions>k__BackingField:
+        - {x: 500, y: -68.25, z: 0}
+        - {x: 500, y: -102.25, z: 0}
+        - {x: 500, y: -102.25, z: 0}
+        - {x: 500, y: -102.25, z: 0}
+        <IsEnabled>k__BackingField: 0
+    - rid: 2369108271137030454
+      type: {class: ParallaxData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        <ID>k__BackingField: ad0c7fa6-fa38-4941-887e-d132506be6ee
+        <CameraPosition>k__BackingField: {x: 541.695, y: -36.5, z: -10}
+        <Positions>k__BackingField:
+        - {x: 380, y: -102.25, z: 0}
+        - {x: 353.5, y: -98, z: 0}
+        - {x: 318.5, y: -98, z: 0}
+        - {x: 344.5, y: -98, z: 0}
+        - {x: 300, y: -102.25, z: 0}
+        <IsEnabled>k__BackingField: 0
+    - rid: 2369108271137030455
+      type: {class: ParallaxData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        <ID>k__BackingField: 8db502e8-4862-4b02-bd6a-f324c360bbe5
+        <CameraPosition>k__BackingField: {x: 541.695, y: -36.5, z: -10}
+        <Positions>k__BackingField:
+        - {x: 140, y: 10.75, z: 0}
+        - {x: 525.13904, y: 1.750001, z: 0}
+        - {x: 512.5695, y: -5.000002, z: 0}
+        - {x: 60.61952, y: -3.500002, z: 0}
+        - {x: 537.7085, y: 8.500003, z: 0}
+        - {x: -105.13904, y: 9.250005, z: 0}
+        <IsEnabled>k__BackingField: 1
+    - rid: 2369108271137030456
+      type: {class: ParallaxData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        <ID>k__BackingField: 1e6bd4e2-1cd8-4479-a432-abc890b4d161
+        <CameraPosition>k__BackingField: {x: 541.695, y: -36.5, z: -10}
+        <Positions>k__BackingField:
+        - {x: 300, y: -33.25, z: 0}
+        - {x: 300, y: 10.75, z: 0}
+        - {x: 300, y: 10.75, z: 0}
+        - {x: 300, y: 10.75, z: 0}
+        <IsEnabled>k__BackingField: 0
+    - rid: 2369108271137030457
+      type: {class: ParallaxData, ns: SaveLoadSystem.Data, asm: Assembly-CSharp}
+      data:
+        <ID>k__BackingField: 0871c553-764f-45b6-bd16-4150ce9339ac
+        <CameraPosition>k__BackingField: {x: 541.695, y: -36.5, z: -10}
+        <Positions>k__BackingField:
+        - {x: 541.695, y: -36.5, z: 0}
+        - {x: 554.2645, y: -52.999996, z: 0}
+        <IsEnabled>k__BackingField: 1

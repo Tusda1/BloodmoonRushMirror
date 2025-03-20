@@ -50,7 +50,7 @@ public class DataBinder {
     }
 
     public virtual void UnBind<TBind, TData>(TBind bind, TData data)
-        where TBind : MonoBehaviour, IBind<TData> where TData : ISaveable {
+        where TBind : IBind<TData> where TData : ISaveable {
         if (GameDataBinds.Contains(bind)) {
             GameDataBinds.Remove(bind);
         }
