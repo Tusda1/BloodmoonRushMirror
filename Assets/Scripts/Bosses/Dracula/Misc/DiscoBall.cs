@@ -33,6 +33,9 @@ public class DiscoBall : MonoBehaviour
         _highPointPosition = highPoint.transform.position;
         transform.position = _highPointPosition;
         _laserPrefab = Resources.Load<GameObject>("Prefabs/Laser");
+    }
+
+    private void Start() {
         _pooler = TryGetCommunityPooler.TryGetPooler(_laserPrefab, _objectResolver);
     }
 
