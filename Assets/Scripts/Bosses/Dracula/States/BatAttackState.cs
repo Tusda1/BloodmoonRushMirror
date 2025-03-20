@@ -49,9 +49,29 @@ public class BatAttackState : DraculaState
     {
         var rightWall = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
         var leftWall = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
-        
-        var randomX = Random.Range(leftWall.x + 1, rightWall.x - 1);
-        _teleportLocation = new Vector2(randomX, rightWall.y);
+
+        var tries = 0;
+        var safePosition = false;
+        var setPosition = Vector2.zero;
+        while (!safePosition)
+        {
+            tries++;
+            
+            if (tries > 100)
+            {
+                Debug.LogError("Could not find a safe position to teleport to");
+                break;
+            }
+            
+            var randomX = Random.Range(leftWall.x + 1, rightWall.x - 1);
+            setPosition = new Vector2(randomX, rightWall.y);
+            
+            // Use a boxcast to determine that you are not teleporting on top of the player
+            var hit = Physics2D.BoxCast(setPosition, _collider.bounds.size, 0, Vector2.zero, 0, LayerMask.GetMask("Player"));
+            safePosition = hit.collider == null;
+        }
+
+        _teleportLocation = setPosition;
         
         _attackPhase = AttackPhase.Teleporting;
     }
