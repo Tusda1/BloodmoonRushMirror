@@ -440,8 +440,8 @@ namespace Player {
             
             isDucking = true;
             player.animator.SetBool(AnimatorCrouchBool, true);
-            boxCollider.size = new Vector2(0.9f, 0.9f);
-            boxCollider.offset = new Vector2(0f, 0.5f);
+            boxCollider.size = new Vector2(0.9f, 1.071826f);
+            boxCollider.offset = new Vector2(0f, 0.5359131f);
             playerMovementDebugLogger.Log("Changed player scale down");
         }
 
