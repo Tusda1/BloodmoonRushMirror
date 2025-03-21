@@ -425,7 +425,7 @@ namespace Player {
         }
         #endregion
 
-        public void ForceExitDuck() {
+        public void ForceExitDuck() {   
             playerMovementDebugLogger.Log("exiting duck");
             isDucking = false;
             boxCollider.size = _defaultBoxSize;

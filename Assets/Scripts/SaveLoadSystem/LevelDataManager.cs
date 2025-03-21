@@ -5,12 +5,14 @@ using UnityEngine;
 using Utilities.DataBinding;
 using VContainer;
 #if UNITY_EDITOR
+using ExtensionMethods;
 using System.Collections;
 #endif
 
 namespace SaveLoadSystem {
     public partial class LevelDataManager : MonoBehaviour, IBind<LevelData> {
         #region ---Fields---
+        [SerializeField] private bool loadPlayerPositionOnStart;
         [SerializeField] private SceneCollectionSO otherLevel;
         
         private ISaveLoadSystemManager _saveLoadSystemManager;
@@ -44,7 +46,7 @@ namespace SaveLoadSystem {
         protected void Start() {
             Bind();
 #if UNITY_EDITOR
-            if (startedInLevel) {
+            if (startedInLevel && !loadPlayerPositionOnStart) {
                 DataInGameData.PlayerPosition = _playerScript.transform.position;
             }
 #endif
@@ -80,7 +82,10 @@ namespace SaveLoadSystem {
         
         [ContextMenu(SaveSystemMenu + nameof(WriteDataToNewGameData))]
         public void WriteDataToNewGameData() {
-            _newGameData.gameData.levelDatas.SetOrAddByIDInList(ID, LevelDataGenerator);
+            _newGameData.gameData.levelDatas.SetOrAddByIDInList(ID, ClonedData);
+            return;
+
+            LevelData ClonedData() => DataInGameData.DeepClone();
         }
         
         [ContextMenu(SaveSystemMenu + nameof(SaveLoadSystemManager_SaveLoad))]

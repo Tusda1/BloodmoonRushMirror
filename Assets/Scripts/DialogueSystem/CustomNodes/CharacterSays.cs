@@ -10,7 +10,10 @@ using static DialogueCharacterSO;
 
 #pragma warning disable UDR0001
 #pragma warning disable UDR0005
-[UnitShortTitle("Character Says")] [UnitCategory("DialogueUI")] [TypeIcon(typeof(BoltAnimationEvent))]
+
+[UnitShortTitle("Character Says")] 
+[UnitCategory("DialogueUI")] 
+[TypeIcon(typeof(BoltAnimationEvent))]
 public class CharacterSays : Unit {
     #region ---Fields---
     #region ***---Control_IO---***
@@ -54,7 +57,7 @@ public class CharacterSays : Unit {
     [Inspectable] public WhenIsSfxPlayed WhenIsSFXPlayedOverride;
     #endregion
 
-    private static CancellationTokenSource _cancellationTokenSource;
+    private static CancellationTokenSource _typewriterTask;
 
     private static event Action TypewriterOnBegin = delegate { };
     private static event Action TypewriterOnNewWord = delegate { };
@@ -84,6 +87,7 @@ public class CharacterSays : Unit {
         AutoContinue_Output = ValueOutput(nameof(AutoContinue),
             flow => flow.GetValue<bool>(AutoContinue));
     }
+    
     private IEnumerator Action(Flow flow) {
         var dialogueDictionary = flow.GetValue<DialogueDictionary>(DialogueDictionary);
         var dialogueUIDataContainer = flow.GetValue<DialogueUI_DataContainer>(DialogueUIDataContainer);
@@ -92,7 +96,7 @@ public class CharacterSays : Unit {
         var textID = flow.GetValue<string>(TextID);
         var dialogueCharacter = TextIDToCharacter(dialogueDictionary, textID);
         var end = false;
-        _cancellationTokenSource = new CancellationTokenSource();
+        _typewriterTask = new CancellationTokenSource();
 
         Initialize();
 
@@ -179,7 +183,7 @@ public class CharacterSays : Unit {
             TypewriterOnBegin += PlaySFX;
         }
 
-        if ((whenIsSfxPlayed & WhenIsSfxPlayed.PerCharacter) != WhenIsSfxPlayed.Nowhere) {
+        if ((whenIsSfxPlayed & WhenIsSfxPlayed.PerWord) != WhenIsSfxPlayed.Nowhere) {
             TypewriterOnNewWord += PlaySFX;
         }
 
@@ -199,7 +203,7 @@ public class CharacterSays : Unit {
     }
 
     private static void SkipTypewriter() {
-        _cancellationTokenSource.Cancel();
+        _typewriterTask.Cancel();
     }
 
     private static async Awaitable Typewriter(DialogueUI_DataContainer dialogueUIDataContainer, string fulltext) {
@@ -217,7 +221,7 @@ public class CharacterSays : Unit {
                 }
 
                 TypewriterOnNewCharacter.Invoke();
-                await Awaitable.WaitForSecondsAsync(textDelay, _cancellationTokenSource.Token);
+                await Awaitable.WaitForSecondsAsync(textDelay, _typewriterTask.Token);
             }
         }
         catch (OperationCanceledException) {

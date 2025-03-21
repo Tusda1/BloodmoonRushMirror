@@ -17,7 +17,7 @@ namespace UI_Toolkit {
 
         public void SetSprite() {
             if (Sprite == null) {
-                Debug.LogWarning("Sprite is not assigned.");
+                // Debug.LogWarning("Sprite is not assigned.");
                 return;
             }
             

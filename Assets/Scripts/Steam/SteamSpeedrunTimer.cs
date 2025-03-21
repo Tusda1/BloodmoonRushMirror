@@ -1,51 +1,64 @@
 using System;
+using SaveLoadSystem;
+using SaveLoadSystem.Data;
 using UnityEngine;
+using Utilities.DataBinding;
+using VContainer;
 using VContainer.Unity;
 #if STEAM_BUILD
 using System.Threading.Tasks;
 using Steamworks;
 #endif
 
-public class SteamSpeedrunTimer : ISpeedrunTimer, ITickable {
+public partial class SteamSpeedrunTimer : ISpeedrunTimer, IBind<LevelTimerData>, ITickable, IDisposable {
     #region ---Fields---
-    private string _leaderboardID;
+    public bool IsRunning { get; set; }
+    private bool _timerEnabled;
     private float _time;
-    private bool _timerIsRunning;
-    
+
+    private readonly ISaveLoadSystemManager _saveLoadSystemManager;
+    private readonly LevelDataManager _levelDataManager;
+    private readonly string _leaderboardID;
 #if STEAM_BUILD
     private Task<SteamLeaderboard_t> _fetchLeaderboardTask;
     private SteamLeaderboard_t Leaderboard => _fetchLeaderboardTask.Result;
 #endif
     #endregion
 
-    public SteamSpeedrunTimer(string leaderboardID) {
-        _leaderboardID = leaderboardID;
+    [Inject]
+    public SteamSpeedrunTimer(IObjectResolver container) {
+        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+        _levelDataManager = container.Resolve<LevelDataManager>();
+        _leaderboardID = container.ResolveInstanceID<string>("LeaderboardID");
+    }
 
-        if (!string.IsNullOrWhiteSpace(leaderboardID)) {
-            StartTimer();
-        }
+    public void Dispose() {
+        Unbind();
     }
 
     public void Tick() {
-        if (_timerIsRunning) {
-            _time += Time.deltaTime;
-        }
+        if (!_timerEnabled || !IsRunning) return;
+        
+        _time += Time.deltaTime;
     }
 
     public void StartTimer() {
-        if (_timerIsRunning) return;
-        
+        if (_timerEnabled) return;
+
+        Bind();
+
         _time = 0;
-        _timerIsRunning = true;
+        _timerEnabled = true;
+        IsRunning = true;
 #if STEAM_BUILD
         _fetchLeaderboardTask = SteamLeaderboardHelper.FindLeaderboardAsync(leaderboardID);
 #endif
     }
 
     public void StopTimer() {
-        if (!_timerIsRunning) return;
-        
-        _timerIsRunning = false;
+        if (!_timerEnabled) return;
+
+        _timerEnabled = false;
         var timeInMs = (int)(_time * 1000);
 
         Debug.Log(MillisecondsFormat(timeInMs));
@@ -64,9 +77,11 @@ public class SteamSpeedrunTimer : ISpeedrunTimer, ITickable {
 #endif
     }
 
-    public void CancelTimer() {
-        _timerIsRunning = false;
-    }
+    public void PauseTimer() => IsRunning = false;
+
+    public void ResumeTimer() => IsRunning = true;
+
+    public void CancelTimer() => _timerEnabled = false;
 
     private static string MillisecondsFormat(int milliseconds) {
         var timeSpan = TimeSpan.FromMilliseconds(milliseconds);

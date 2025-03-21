@@ -47,6 +47,11 @@ public partial class LevelCheckpoint {
         name = DataInGameData.name;
         hasBeenTriggered = DataInGameData.HasBeenTriggered;
         transform.position = DataInGameData.Position;
+
+        if (hasBeenTriggered) {
+            animancerComponent.Play(activeIdle);
+            _lightComponent.pointLightOuterRadius = _lightRange;
+        }
     }
 
     [ContextMenu(nameof(SaveBindData))]

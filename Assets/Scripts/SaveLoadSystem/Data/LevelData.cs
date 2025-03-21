@@ -17,6 +17,8 @@ namespace SaveLoadSystem.Data {
         [SerializeReference] public List<ParallaxData> parallaxDatas = new();
         
         [SerializeReference] public List<EnemyData> enemyDatas = new();
+
+        public LevelTimerData levelTimerData;
         
         [field: SerializeField] public MusicData MusicData { get; set; }
         

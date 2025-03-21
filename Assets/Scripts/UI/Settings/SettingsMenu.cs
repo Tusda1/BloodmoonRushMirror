@@ -74,8 +74,6 @@ namespace UI.Settings {
             backAction.action.performed += Deactivate;
             _menus.SetIndex(_menus.CurrentIndex);
 
-            Debug.Log("SettingsMenu Activated");
-
             OnMenuActivated.Invoke();
         }
 
@@ -84,8 +82,6 @@ namespace UI.Settings {
             tabNavigateAction.action.performed -= TabNavigation;
             backAction.action.performed -= Deactivate;
             _settingsMenuRoot.SetEnabled(false);
-
-            Debug.Log("SettingsMenu Deactivated");
 
             OnMenuDeactivated.Invoke();
         }

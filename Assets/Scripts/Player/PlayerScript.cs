@@ -37,6 +37,7 @@ namespace Player {
         public bool isAttacking;
         public PlayerHitbox hitbox;
         [SerializeField] private ParticleSystem bloodSplatter;
+        [SerializeField] private ParticleSystem checkpointTextEmitter;
 
         [Header("Taking Damage")] 
         [SerializeField] private float alphaWhenTakingDamage = 0.2f;
@@ -338,6 +339,8 @@ namespace Player {
 
         private IEnumerator Respawn() {
             debugLogger.Log("Respawning");
+            
+            AudioManager.PlayOneShot(PlayerRespawn_SoundID);
 
             OnRespawn.Invoke();
 
@@ -411,6 +414,8 @@ namespace Player {
         }
 
         public void CheckpointHealing() {
+            checkpointTextEmitter.Play();
+            
             if (healthComponent.Health == healthComponent.maxTempHealth) {
                 healthComponent.TempHealth += 1;
             }
