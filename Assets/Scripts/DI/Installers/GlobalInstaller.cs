@@ -1,3 +1,4 @@
+using System;
 using Attributes;
 using FMODScripts;
 using SaveLoadSystem.Data;
@@ -63,5 +64,9 @@ public class GlobalInstaller : LifetimeScope {
         builder.Register<DataBinder>(Lifetime.Singleton);
         builder.Register<CheckpointAndFileSaveSystem>(Lifetime.Singleton)
             .As<ISaveLoadSystemManager>();
+    }
+
+    private void OnApplicationQuit() {
+        Application.Quit();
     }
 }
