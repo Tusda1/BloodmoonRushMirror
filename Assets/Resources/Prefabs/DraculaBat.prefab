@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -3743557134615704576}
   m_Layer: 0
   m_Name: DraculaBat
-  m_TagString: Untagged
+  m_TagString: Despawnable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114,13 +114,13 @@ MonoBehaviour:
   batAnimationEmerge: {fileID: 8829083032964552231, guid: 1004414b47f90874fb2ba5f6af0ce432, type: 3}
   batAnimation: {fileID: 6735917683361531961, guid: 1004414b47f90874fb2ba5f6af0ce432, type: 3}
   damageInstance:
-    damage: 0
+    damage: 1
     knockback: {x: 0, y: 0}
     knockbackStrength: 0
     staggerStrength: 0
     ignoreInvincibility: 0
     which: 0
-  moveSpeed: 10
+  moveSpeed: 15
   targetVector: {x: 0, y: 0}
 --- !u!50 &-331928695134984803
 Rigidbody2D:

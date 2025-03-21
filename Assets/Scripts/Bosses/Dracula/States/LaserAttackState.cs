@@ -11,7 +11,7 @@ public class LaserAttackState : DraculaState
     
     private Vector2 _teleportDestination;
     private Vector2 _firePosition;
-    private Transform _player;
+    private GravityObjectPlayerMovement _player;
     private Collider2D _playerCollider;
     private GameObject _trackerPrefab;
     private GameObject _trackerObject;
@@ -41,7 +41,7 @@ public class LaserAttackState : DraculaState
 
     private void Start()
     {
-        _player = ServiceLocator.Get<PlayerScript>().transform;
+        _player = ServiceLocator.Get<PlayerScript>().GetComponent<GravityObjectPlayerMovement>();
         _playerCollider = _player.GetComponent<Collider2D>();
         _trackerPrefab = Resources.Load<GameObject>("Prefabs/LineRenderer");
         _laserPrefab = Resources.Load<GameObject>("Prefabs/BigLaser");
@@ -135,6 +135,11 @@ public class LaserAttackState : DraculaState
     {
         if (!_hasStartedFiring)
         {
+            _firePosition = _playerCollider.bounds.center;
+            if (_player.velocity != Vector2.zero)
+            {
+                _firePosition += _player.isFacingRight ? Vector2.right : Vector2.left;
+            }
             var position = transform.position;
             _laserObject.GetComponent<BigLaserScript>().direction = (_firePosition - (Vector2)position).normalized;
             _laserObject.transform.position = (Vector2)position + laserOriginOffset;

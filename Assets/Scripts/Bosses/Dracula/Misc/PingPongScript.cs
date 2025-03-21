@@ -28,7 +28,7 @@ public class PingPongScript : GravityObject, IDamageable
         
             other.GetComponent<IDamageable>().TakeDamage(projectileDamageInstance);
         
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
     

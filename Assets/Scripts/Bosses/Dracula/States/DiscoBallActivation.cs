@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DiscoBallActivation : DraculaState
 {
@@ -25,6 +26,7 @@ public class DiscoBallActivation : DraculaState
         var center = (rightCorner + leftCorner) / 2;
         var safePosition = false;
         var tries = 0;
+        var increment = Random.Range(0, 2) == 0 ? -1 : 1;
         
         while (!safePosition)
         {
@@ -37,12 +39,13 @@ public class DiscoBallActivation : DraculaState
             }
             
             // Use a boxcast to check if you are teleporting on top of the player
-            var hit = Physics2D.BoxCast(center, _collider.bounds.size, 0, Vector2.zero, 0, LayerMask.GetMask("Player"));
-            safePosition = hit.collider == null;
+            var colliderSize = new Vector2(6, 3);
+            var hit = Physics2D.OverlapBox(center + Vector2.up * (colliderSize.y / 2), colliderSize, 0, LayerMask.GetMask("Player"));
+            safePosition = hit == null;
             
             if (!safePosition)
             {
-                center += Vector2.right;
+                center += new Vector2(increment, 0);
             }
         }
         
@@ -57,7 +60,7 @@ public class DiscoBallActivation : DraculaState
         {
             state.Destroy();
             Boss.AnimancerComponent.Play(idleAnimation);
-            discoBall.Enable();
+            discoBall.EnableLaser();
             EndState();
         };
     }

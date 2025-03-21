@@ -79,7 +79,7 @@ public class DraculaBrain : MonoBehaviour
         while (_attackQueue.Count < amount)
         {
             var state = states[Random.Range(0, states.Length)];
-
+            
             if (!_repeating && _attackQueue.Count > 0 && state == _attackQueue[^1])
             {
                 _repeating = true;

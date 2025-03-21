@@ -87,6 +87,12 @@ public class BossBase : GravityObject, IDamageable
 
     public void MoveToNextPhase()
     {
+        if (currentPhase + 1 == maxHealth.Length)
+        {
+            OnBattleEnd?.Invoke();
+            return;
+        }
+        
         currentPhase++;
         CurrentHealth = maxHealth[currentPhase];
     }

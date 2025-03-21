@@ -16,10 +16,12 @@ public class DiscoBall : MonoBehaviour
     private Vector2 _highPointPosition;
     private float _rotationTimer;
     private float _currentRotation;
+    private bool _isFiring;
     private bool _isActive;
     
     private GameObject _laserPrefab;
     private Pooler _pooler;
+    private Coroutine _moveCoroutine;
     private IObjectResolver _objectResolver;
 
     [Inject]
@@ -39,21 +41,46 @@ public class DiscoBall : MonoBehaviour
         _pooler = TryGetCommunityPooler.TryGetPooler(_laserPrefab, _objectResolver);
     }
 
-    public void Enable()
+    public void Activate()
     {
-        if (_isActive) return;
+        if (_moveCoroutine != null)
+        {
+            return;
+        }
         
-        _currentRotation = narrowFireAngle;
-        _isActive = true;
-        
-        StartCoroutine(LowerDiscoBall());
+        if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
+        _moveCoroutine = StartCoroutine(LowerDiscoBall());
     }
 
-    private void Disable()
+    public void Deactivate()
     {
         _isActive = false;
         StopAllCoroutines();
+        _moveCoroutine = StartCoroutine(RaiseDiscoBall());
+    }
+    
+    public void EnableLaser()
+    {
+        if (!_isActive)
+        {
+            Activate();
+            return;
+        }
+        
+        if (_isFiring)
+        {
+            return;
+        }
+        
+        _isFiring = true;
+        _currentRotation = narrowFireAngle;
+        StartCoroutine(RotateDiscoBall());
+    }
+    
+    private void DisableLaser()
+    {
         _currentRotation = 0;
+        _isFiring = false;
     }
 
     private IEnumerator LowerDiscoBall()
@@ -64,7 +91,9 @@ public class DiscoBall : MonoBehaviour
             yield return null;
         }
         
-        StartCoroutine(RotateDiscoBall());
+        _isActive = true;
+        _moveCoroutine = null;
+        EnableLaser();
     }
     
     private IEnumerator RaiseDiscoBall()
@@ -75,7 +104,7 @@ public class DiscoBall : MonoBehaviour
             yield return null;
         }
         
-        Disable();
+        _moveCoroutine = null;
     }
     
     private IEnumerator RotateDiscoBall()
@@ -87,7 +116,7 @@ public class DiscoBall : MonoBehaviour
             yield return new WaitForSeconds(fireInterval);
         }
         
-        
+        DisableLaser();
     }
 
     private void Fire()
@@ -96,7 +125,7 @@ public class DiscoBall : MonoBehaviour
         var direction = Quaternion.Euler(0, 0, _currentRotation) * Vector2.left;
         var laser = _pooler.GetPooledObject();
         laser.transform.position = transform.position;
-        laser.GetComponent<ProjectileDeflectable>().velocityDirection = direction;
+        laser.GetComponent<ProjectileNotSolid>().targetVector = direction;
         laser.SetActive(true);
     }
 }

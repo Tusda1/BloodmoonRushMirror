@@ -8,12 +8,14 @@ public class DashAttackState : DraculaState
     [SerializeField] private int dashAmount = 5;
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashCooldown = 1f;
+    [SerializeField] private float easeStrength = 1f;
     
     private Vector2 _dashOrigin;
     private Vector2 _dashTarget;
     private int _dashCount;
     private float _cooldownStartTime;
     private bool _isDashing;
+    private float _dashStartTime;
     
     private CornerFinder _cornerFinder;
 
@@ -100,26 +102,44 @@ public class DashAttackState : DraculaState
         _dashTarget.y = position.y;
         _dashState = DashState.Dashing;
     }
-    
+
     private void Dash()
     {
         if (!_isDashing)
         {
             _isDashing = true;
             Boss.AnimancerComponent.Play(dashAnimation);
+            _dashStartTime = Time.time;
         }
-        
-        var direction = _dashTarget.x > _dashOrigin.x ? Vector2.right : Vector2.left;
-        Boss.targetVelocity = direction * dashSpeed;
-        // Check if the boss crossed the finish line
-        if (transform.position.x * direction.x > _dashTarget.x * direction.x)
+
+        float dashDuration = Vector2.Distance(_dashOrigin, _dashTarget) / dashSpeed;
+        float elapsedTime = Time.time - _dashStartTime;
+        float t = elapsedTime / dashDuration;
+
+        if (t >= 1f)
         {
+            transform.position = _dashTarget;
             _dashCount++;
             _dashState = DashState.Cooldown;
             _cooldownStartTime = Time.time;
             _isDashing = false;
             Boss.AnimancerComponent.Play(idleAnimation);
+            return;
         }
+
+        // Cubic ease in and out function with easeStrength
+        if (t < 0.5f)
+        {
+            t = Mathf.Pow(2 * t, easeStrength) / 2;
+        }
+        else
+        {
+            t = 1 - Mathf.Pow(2 * (1 - t), easeStrength) / 2;
+        }
+
+        Vector2 newPosition = Vector2.Lerp(_dashOrigin, _dashTarget, t);
+        transform.position = new Vector3(newPosition.x, newPosition.y, transform.position.z);
+        Boss.facingDirection = _dashTarget.x > _dashOrigin.x ? Vector2.right : Vector2.left;
     }
     
     private void Cooldown()

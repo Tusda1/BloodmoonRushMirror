@@ -129,13 +129,13 @@ MonoBehaviour:
   _stateMachine:
     _CurrentState: {fileID: 0}
     _DefaultState: {fileID: 0}
-  currentPhase: 0
+  currentPhase: 1
   maxHealth: 0300000005000000
   takeDamageAnimation:
   - {fileID: 364215676251682367, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   - {fileID: 7631652414612097155, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   bossDamageInstance:
-    damage: 0
+    damage: 1
     knockback: {x: 0, y: 0}
     knockbackStrength: 0
     staggerStrength: 0
@@ -159,8 +159,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 9200508711738700960}
-  baseAttackQueueSize: 
-  attackQueueSizeIncreaseFactor: 
+  baseAttackQueueSize: 0300000003000000
+  attackQueueSizeIncreaseFactor: 0100000001000000
 --- !u!50 &7499902071793897444
 Rigidbody2D:
   serializedVersion: 5
@@ -433,8 +433,8 @@ MonoBehaviour:
   teleportEnterGround: {fileID: -7221150790100757568, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   teleportExit: {fileID: 4334526518133561121, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   idleAnimation: {fileID: -6256037416480685042, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
-  shootCooldown: 0.3
-  shootAmount: 6
+  shootCooldown: 0.1
+  shootAmount: 9
   swoopAmount: 3
   projectilePrefab: {fileID: 6075747610459885566, guid: 4963866cb476cc542853cdc2e00b1198, type: 3}
   projectileOriginOffset: {x: 0, y: 0}
@@ -514,10 +514,6 @@ MonoBehaviour:
   loopAmount: 5
   dashSpeed: 25
   dashDestinationOffset: 3
-  volleyAmount: 3
-  volleyCooldown: 0.05
-  volleyDelay: 0.1
-  swoopProjectilesPerVolley: 3
   swoopCompletionLevel: 0.8
   swoop:
     swoopDuration: 1.2

@@ -37,6 +37,7 @@ public class PingPongState : DraculaState
     protected override void Awake()
     {
         base.Awake();
+        _pingPongCircle = Resources.Load<GameObject>("Prefabs/PingPongCircle");
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
         _pongPongInstance = Instantiate(_pingPongCircle, transform.position, Quaternion.identity).GetComponent<PingPongScript>();
         
@@ -48,7 +49,6 @@ public class PingPongState : DraculaState
     private void Start()
     {
         //Initialize variables
-        _pingPongCircle = Resources.Load<GameObject>("Prefabs/PingPongCircle");
         _player = ServiceLocator.Get<PlayerScript>().gameObject;
     }
 
@@ -169,6 +169,7 @@ public class PingPongState : DraculaState
         }
         else
         {
+            _pongPongInstance.gameObject.SetActive(false);
             var vulnerableStates = GetComponents<VulnerableState>();
             var vulnerableState = vulnerableStates.FirstOrDefault(state => state.StatePhase == StatePhase);
             Boss.StateMachine.ForceSetState(vulnerableState);

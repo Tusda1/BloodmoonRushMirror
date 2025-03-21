@@ -26,6 +26,11 @@ public class Swoop
     
     public void ExecuteSwoop(Vector2 swoopOrigin, Vector2 swoopTarget, Vector2 swoopArcBottom, bool playAnimation = true, float completionLevel = 1f)
     {
+        if(Time.deltaTime == 0)
+        {
+            return;
+        }
+        
         if (!_swoopStarted)
         {
             // Set the localscale of the external transform to face the direction it is moving
