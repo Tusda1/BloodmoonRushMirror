@@ -1,51 +1,45 @@
-using System;
-using Player;
+// using System;
+// using Player;
+// using VContainer;
 using UnityEngine;
-using VContainer;
 
 namespace Checkpoint {
     public class CheckpointData : MonoBehaviour {
-        private PlayerScript _playerScript;
-        private Vector2 _playerRespawnPos;
-        private float _playerPivotToGroundDistance;
+        // private PlayerScript _playerScript;
+        // private Vector2 _playerRespawnPos;
+        // private float _playerPivotToGroundDistance;
         [HideInInspector] public LevelCheckpoint[] combatCheckpoints;
-        
-        [Inject] private IAudioManager _audioManager;
+        //
+        // [Inject] private IAudioManager _audioManager;
 
         public void Initialize() {
-            _playerScript = ServiceLocator.Get<PlayerScript>();
-            _playerScript.OnRespawn += Respawn;
-            var playerCollider = _playerScript.gameObject.GetComponent<Collider2D>();
-            _playerPivotToGroundDistance = playerCollider.bounds.min.y - playerCollider.transform.position.y;
-
-            foreach (var checkpoint in combatCheckpoints) {
-                checkpoint.CheckpointReached += ReachedCheckpoint;
-            }
-
-            ReachedCheckpoint();
+            // _playerScript = ServiceLocator.Get<PlayerScript>();
+            // _playerScript.OnRespawn += OnRespawn;
+            // var playerCollider = _playerScript.gameObject.GetComponent<Collider2D>();
+            // _playerPivotToGroundDistance = playerCollider.bounds.min.y - playerCollider.transform.position.y;
+            //
+            // foreach (var checkpoint in combatCheckpoints) {
+            //     checkpoint.CheckpointReached += ReachedCheckpoint;
+            // }
+            //
+            // ReachedCheckpoint();
         }
 
-        private void OnDisable()
-        {
-            _playerScript.OnRespawn -= Respawn;
-        }
-
-        private void ReachedCheckpoint() {
-            print("Checkpoint reached");
-
-            // Set player respawn position to ground level of current player position
-            RaycastHit2D hit = Physics2D.Raycast(_playerScript.gameObject.transform.position + Vector3.up * 0.1f,
-                Vector2.down, 10, LayerMask.GetMask("Ground"));
-            if (hit.collider != null) {
-                _playerRespawnPos = hit.point;
-            }
-            print(_playerPivotToGroundDistance);
-        }
-
-        private void Respawn() {
-            _audioManager.PlayOneShot(PlayerScript.PlayerRespawn_SoundID);
-            // _playerScript.gameObject.transform.position = _playerRespawnPos;
-            // print(_playerRespawnPos);
-        }
+        // private void OnDisable()
+        // {
+        //     _playerScript.OnRespawn -= OnRespawn;
+        // }
+        //
+        // private void ReachedCheckpoint() {
+        //     var hit = Physics2D.Raycast(_playerScript.gameObject.transform.position + Vector3.up * 0.1f,
+        //         Vector2.down, 10, LayerMask.GetMask("Ground"));
+        //     if (hit.collider != null) {
+        //         _playerRespawnPos = hit.point;
+        //     }
+        // }
+        //
+        // private void OnRespawn() {
+        //     // _audioManager.PlayOneShot(PlayerScript.PlayerRespawn_SoundID);
+        // }
     }
 }

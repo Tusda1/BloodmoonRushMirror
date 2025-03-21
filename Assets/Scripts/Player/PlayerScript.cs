@@ -339,6 +339,8 @@ namespace Player {
 
         private IEnumerator Respawn() {
             debugLogger.Log("Respawning");
+            
+            AudioManager.PlayOneShot(PlayerRespawn_SoundID);
 
             OnRespawn.Invoke();
 

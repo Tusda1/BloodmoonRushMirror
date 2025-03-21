@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UI_Toolkit {
@@ -16,7 +15,6 @@ namespace UI_Toolkit {
         public void Enable() {
             if (_isEnabled) return;
             
-            Debug.Log("Enable: " + name);
             focusable = true;
             style.opacity = new StyleFloat(1);
             enabledSelf = true;

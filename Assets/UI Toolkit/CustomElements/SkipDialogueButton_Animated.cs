@@ -10,7 +10,7 @@ namespace UI_Toolkit {
                 _sprite = value;
                 
                 if (Sprite == null) {
-                    Debug.LogWarning("Sprite is not assigned.");
+                    // Debug.LogWarning("Sprite is not assigned.");
                     return;
                 }
             

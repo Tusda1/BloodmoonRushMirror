@@ -310,9 +310,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2419281306809045152}
-  - component: {fileID: 5695241624718652570}
   - component: {fileID: 461909016430778928}
   - component: {fileID: 1829226985215964306}
+  - component: {fileID: 2785237483777826737}
   m_Layer: 8
   m_Name: ShieldTutorialText
   m_TagString: Untagged
@@ -335,22 +335,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5412545791416721238}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &5695241624718652570
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7615522285951984485}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 2898959349095423419, guid: 9909c452a188a8f42b7747bdc0341039, type: 3}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!212 &461909016430778928
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -419,6 +403,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followObject: {fileID: 5819191968418558845}
+--- !u!95 &2785237483777826737
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7615522285951984485}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 66ff891343e86434194b603cf6993fcd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7866125168624355657
 GameObject:
   m_ObjectHideFlags: 0
@@ -9478,7 +9484,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3717102366255205323, guid: f1429bd75a35ad64fb9411ecb53552ef, type: 3}
       propertyPath: m_Name
-      value: ---CameraStacks_TheDungeons--- Variant
+      value: ---CameraStacks_TheDungeons---
       objectReference: {fileID: 0}
     - target: {fileID: 8958364651750657311, guid: f1429bd75a35ad64fb9411ecb53552ef, type: 3}
       propertyPath: m_LocalPosition.x
