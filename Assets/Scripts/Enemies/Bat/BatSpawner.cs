@@ -1,50 +1,46 @@
-using System;
 using Attributes;
 using PlayerLoopTimer;
 using TetraCreations.Attributes;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Splines;
+using VContainer;
 
 namespace Bat {
     public class BatSpawner : MonoBehaviour {
         #region ---Fields---
+        #region ---GetOrAddComponents---
         [GetOrAddComponent, HideInInspector] public SplineContainer batPath;
+        #endregion
 
+        #region ---Inspector---
         [Header("Bat Settings")]
         [SerializeField] private float timeBetweenBats = 2;
         [SerializeField] private float batMoveSpeed = 5;
         [SerializeField] private bool limitBatAmount;
         [SerializeField, DrawIf(nameof(limitBatAmount), true)] private int maxBats = 20;
-
-        private readonly RuntimeSet<Bat> _batRuntimeSet = new();
-
-        private static ObjectPool<Bat> _batPool;
-        private Transform _batParentTransform;
-
-        private RepeatingTimer _timer;
         #endregion
 
+        #region ---PrivateFields---
+        private readonly RuntimeSet<Bat> _batRuntimeSet = new();
+        private ObjectPool<Bat> _batPool;
+        private RepeatingTimer _timer;
+        #endregion
+        #endregion
+
+        #region ---Initialization---
+        [Inject]
+        public void Construct(IObjectResolver container) {
+            _batPool = container.Resolve<BatPoolManager>().Pool;
+        }
+
         private void Start() {
-            if (BatPoolManager.Instance == null) {
-                throw new Exception($"{nameof(BatPoolManager)} does not exist!");
-            }
-
-            _batPool ??= BatPoolManager.Instance.Pool;
-
             _timer = new RepeatingTimer(timeBetweenBats);
             _timer.OnBegin += SpawnBat;
             _timer.StartTimer();
         }
-
-#if UNITY_EDITOR
-        private void OnValidate() {
-            if (_timer != null) {
-                _timer.Duration = timeBetweenBats;
-            }
-        }
-#endif
-
+        #endregion
+        
         private void SpawnBat() {
             if (limitBatAmount && _batRuntimeSet.Count >= maxBats) return;
 
@@ -59,5 +55,12 @@ namespace Bat {
             _batPool.Release(bat);
             _batRuntimeSet.Remove(bat);
         }
+#if UNITY_EDITOR
+        private void OnValidate() {
+            if (_timer != null) {
+                _timer.Duration = timeBetweenBats;
+            }
+        }
+#endif
     }
 }
