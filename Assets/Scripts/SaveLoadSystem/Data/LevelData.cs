@@ -19,6 +19,8 @@ namespace SaveLoadSystem.Data {
         [SerializeReference] public List<EnemyData> enemyDatas = new();
 
         public LevelTimerData levelTimerData;
+
+        [field: SerializeField] public string currentProgress;
         
         [field: SerializeField] public MusicData MusicData { get; set; }
         

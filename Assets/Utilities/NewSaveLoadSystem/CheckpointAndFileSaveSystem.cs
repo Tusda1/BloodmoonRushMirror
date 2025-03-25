@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using SaveLoadSystem.Data;
 using SceneCollections;
 using Utilities.DataBinding;
@@ -54,6 +55,9 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
         saveSlotData.lastTimePlayed = metaData.LastWriteTime.ToString("HH:mm dd/MM/yyyy");
         saveSlotData.saveGameData = DataService.LoadByPath(pathToSaveFile);
         saveSlotData.currentLevel = saveSlotData.saveGameData.currentSceneCollectionName;
+        saveSlotData.currentProgress = saveSlotData.saveGameData.levelDatas
+            .Single(x => x.ID == saveSlotData.saveGameData.currentSceneCollectionName)
+            .currentProgress;
     }
 
     /// <summary>

@@ -16,6 +16,8 @@ public partial class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     #region ***---GetOrAddComponents---****
     [GetOrAddComponent, SerializeField, HideInInspector] private AnimancerComponent animancerComponent;
     #endregion
+
+    [SerializeField] private string currentProgressTitle;
     
     [Header("Animations")]
     [SerializeField] private AnimationClip inactiveIdle;
@@ -71,8 +73,13 @@ public partial class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
         StartCoroutine(TurnOnLights());
 
         _playerScript.CheckpointHealing();
+        
         _levelDataManager.CurrentCheckpointID = ID;
         _levelDataManager.PlayerPosition = transform.position;
+        _levelDataManager.DataInGameData.currentProgress = currentProgressTitle != string.Empty 
+            ? currentProgressTitle 
+            : name;
+        
         _saveLoadSystemManager.SaveAllDataBinds();
     }
 
