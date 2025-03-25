@@ -25,10 +25,6 @@ public partial class OpeningDialogue : MonoBehaviour, IBind<TriggerData> {
 
     private IEnumerator Start() {
         Bind();
-
-        yield return null;
-        yield return null;
-        yield return null;
 #if UNITY_EDITOR
         if (_levelDataManager.startedInLevel && !forcePlayOnStart) yield break;
 #endif

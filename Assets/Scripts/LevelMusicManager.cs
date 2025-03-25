@@ -19,7 +19,7 @@ public class LevelMusicManager : MonoBehaviour, IBind<MusicData> {
     [field: Header("Data Binding")]
     [field: SerializeField] public string ID { get; set; }
     [field: SerializeField] public MusicData SaveSystemData { get; set; }
-    public MusicData DataInGameData => _levelDataManager.SaveSystemData.MusicData ??= new MusicData();
+    public MusicData DataInGameData => _levelDataManager.SaveSystemData.musicData ??= new MusicData();
     #endregion
 
     public const string CalmnessParameter = "is_chill";

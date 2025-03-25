@@ -21,8 +21,8 @@ namespace SaveLoadSystem.Data {
         public LevelTimerData levelTimerData;
 
         [field: SerializeField] public string currentProgress;
-        
-        [field: SerializeField] public MusicData MusicData { get; set; }
+
+        [field: SerializeField] public MusicData musicData;
         
         public CheckpointData CurrentCheckpoint => GetCurrentCheckpointFromID(CurrentCheckpointID);
         public CheckpointData GetCurrentCheckpointFromID(string id) => checkpointDatas.SingleOrDefault(x => x.ID == id);

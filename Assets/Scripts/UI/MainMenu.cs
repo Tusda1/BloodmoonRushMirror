@@ -91,6 +91,7 @@ namespace UI {
 
         private void Start() {
             _audioManager.PlayMusic(MainMenuMusic_SoundID);
+            _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 0, true);
 #if BETA_BUILD
             levelSelectMenu.OnMenuActivated += HideMenu;
             levelSelectMenu.OnMenuDeactivated += ShowMenu;

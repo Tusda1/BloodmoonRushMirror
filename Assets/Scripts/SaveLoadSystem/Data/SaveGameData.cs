@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ExtensionMethods;
-using SceneCollections;
+using JetBrains.Annotations;
 using UnityEngine;
 using Utilities.DataBinding;
 
@@ -16,13 +16,28 @@ namespace SaveLoadSystem.Data {
 
         [SerializeReference] public List<LevelData> levelDatas = new();
 
+        public LevelData GetCurrentLevelData() {
+            return GetLevel(currentSceneCollectionName);
+        }
+
+        public void SetCurrentLevelData([CanBeNull] LevelData value) {
+            if (value == null) {
+                levelDatas.Remove(GetCurrentLevelData());
+            }
+            else {
+                levelDatas.SetOrAddByIDInList(currentSceneCollectionName, () => value);
+            }
+        }
+
+        public LevelData GetLevel(string id) => levelDatas.SingleOrDefault(x => x.ID == id);
+
         public object Clone() => this.DeepClone();
     }
 
     public static class SaveGameDataExtensions {
         public static T GetOrAddByIDInList<T>(this IList<T> saveGameDataList, string id, Func<T> generator) 
             where T : ISaveable, new() {
-            var data = saveGameDataList.FirstOrDefault(x => x.ID == id);
+            var data = saveGameDataList.SingleOrDefault(x => x.ID == id);
             if (data != null) return data;
 
             data = generator();
@@ -32,7 +47,7 @@ namespace SaveLoadSystem.Data {
 
         public static void SetOrAddByIDInList<T>(this IList<T> saveGameDataList, string id, Func<T> generator) 
             where T : ISaveable, new() {
-            var data = saveGameDataList.FirstOrDefault(x => x.ID == id);
+            var data = saveGameDataList.SingleOrDefault(x => x.ID == id);
 
             if (data == null) {
                 data = generator();
