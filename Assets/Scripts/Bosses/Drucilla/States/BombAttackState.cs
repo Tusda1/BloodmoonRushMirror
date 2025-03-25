@@ -35,9 +35,9 @@ public class BombAttackState : DrucillaState
     {
         _player = ServiceLocator.Get<PlayerScript>();
         
-        _bombPooler = TryGetCommunityPooler.TryGetPooler(bombPrefab, ObjectResolver);
         var tempCollider = GetComponent<Collider2D>();
         _groundSlam = new GroundSlam(tempCollider);
+        _bombPooler = TryGetCommunityPooler.TryGetPooler(bombPrefab, ObjectResolver);
     }
 
     private void OnEnable()

@@ -1,6 +1,7 @@
 using System;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DashStrike : DrucillaState
 {
@@ -22,6 +23,13 @@ public class DashStrike : DrucillaState
     }
     
     private DashStrikeStage _stage;
+    
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        _cornerFinder = new CornerFinder(gameObject.transform, LayerMask.GetMask("Ground"));
+    }
     
     private void OnEnable()
     {
