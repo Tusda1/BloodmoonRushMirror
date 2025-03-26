@@ -42,7 +42,7 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     };
     #endregion
 
-    private CinemachineCamera ActiveCamera => VirtualCameraSwitch.ActiveVirtualCameraSwitch.cinemachineCamera;
+    private static CinemachineCamera ActiveCamera => VirtualCameraSwitch.ActiveVirtualCameraSwitch.cinemachineCamera;
     
     private ISaveLoadSystemManager _saveLoadSystemManager;
     private LevelDataManager _levelDataManager;

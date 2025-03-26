@@ -20,8 +20,19 @@ namespace UI.Settings {
         public event Action OnMenuActivated = delegate { };
         public event Action OnMenuDeactivated = delegate { };
         
-        [Inject] private IControlSchemeChanger _controlSchemeChanger;
+        private IControlSchemeChanger _controlSchemeChanger;
         #endregion
+
+        [RuntimeInitializeOnLoadMethod]
+        private static void ResetStatics() {
+            ControlScheme = null;
+        }
+
+        #region ---Initialization---
+        [Inject]
+        public void Construct(IObjectResolver container) {
+            _controlSchemeChanger = container.Resolve<IControlSchemeChanger>();
+        }
 
         private void Awake() {
             _root = uiDocument.rootVisualElement;
@@ -50,6 +61,7 @@ namespace UI.Settings {
             _controlSchemeChanger.OnControlSchemeChanged += SetControlsLayoutImage;
             SetControlsLayoutImage(_controlSchemeChanger.CurrentControlSchemeData);
         }
+        #endregion
 
         private void SetControlsLayoutImage(IControlSchemeChanger.ControlSchemeData controlSchemeData) {
             _controlsLayout.Sprite = controlSchemeData.DataSO.controlsLayout;

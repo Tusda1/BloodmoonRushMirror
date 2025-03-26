@@ -8,6 +8,7 @@ using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.XInput;
 using VContainer;
 
+#pragma warning disable UDR0005
 public class ControllerRecognizer : IDisposable {
     #region ---Fields---
     public string CurrentDeviceID { get; private set; }
@@ -162,3 +163,4 @@ public class ControllerRecognizer : IDisposable {
     }
     #endregion
 }
+#pragma warning enable UDR0005

@@ -87,8 +87,10 @@ namespace UI {
 
         [ContextMenu(nameof(PauseGame))]
         private void PauseGame() {
-            _root.style.display = DisplayStyle.Flex;
-            _root.enabledSelf = true;
+            // _root.style.display = DisplayStyle.Flex;
+            uiDocument.enabled = true;
+            // _root.visible = true;
+            // _root.enabledSelf = true;
             playerCanMove.ChangeVote(_currentVote, false);
 
             _eventSystem.SetSelectedGameObject(gameObject);
@@ -102,8 +104,10 @@ namespace UI {
 
         [ContextMenu(nameof(ResumeGame))]
         private void ResumeGame() {
-            _root.style.display = DisplayStyle.None;
-            _root.enabledSelf = false;
+            // _root.style.display = DisplayStyle.None;
+            uiDocument.enabled = false;
+            // _root.visible = false;
+            // _root.enabledSelf = false;
             playerCanMove.ChangeVote(_currentVote, true);
             settingsMenu.Deactivate();
 

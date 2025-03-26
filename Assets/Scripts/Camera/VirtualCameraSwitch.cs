@@ -28,13 +28,20 @@ public class VirtualCameraSwitch : MonoBehaviour {
     public static VirtualCameraSwitch ActiveVirtualCameraSwitch;
 
     private bool _isDeactivating;
-    private static int _priority;
     private Coroutine _coroutine;
     
-    [Inject] private PlayerScript _playerScript;
-    [Inject] private CinemachineBrain _cinemachineBrain;
-    [Inject] public CameraEffects _cameraEffects;
+    private PlayerScript _playerScript;
+    private CinemachineBrain _cinemachineBrain;
+    private CameraEffects _cameraEffects;
     #endregion
+
+    #region ---Initialization---
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _playerScript = container.Resolve<PlayerScript>();
+        _cinemachineBrain = container.Resolve<CinemachineBrain>();
+        _cameraEffects = container.Resolve<CameraEffects>();
+    }
 
     private void Awake() {
         isActiveRoom = cinemachineCamera.Priority > 0;
@@ -53,10 +60,22 @@ public class VirtualCameraSwitch : MonoBehaviour {
             cinemachineCamera.Follow = _playerScript.cameraFollowTransform;
         }
     }
+    #endregion
+
+    #region ---Resets---
+#if UNITY_EDITOR
+    [RuntimeInitializeOnLoadMethod]
+    private static void ResetStatics() {
+        if (!Application.isPlaying) {
+            ActiveVirtualCameraSwitch = null;
+        }
+    }
+#endif
 
     private void OnDestroy() {
         StopAllCoroutines();
     }
+    #endregion
 
     #region ---Activation---
     private void OnTriggerEnter2D(Collider2D other) {
