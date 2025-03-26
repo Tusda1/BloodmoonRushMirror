@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MachineGunState : DrucillaState
 {
+    [SerializeField] private AnimationClip machineGunStartAnimation;
+    [SerializeField] private AnimationClip machineGunAnimation;
+    [SerializeField] private AnimationClip machineGunEndAnimation;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float shootCooldown = 0.1f;
     [SerializeField] private int projectileCount = 30;
@@ -11,8 +14,9 @@ public class MachineGunState : DrucillaState
     private Vector2 _teleportPosition;
     private float _shootTimer;
     private int _bulletCount;
-    private PlayerScript _player;
+    private bool _startedFiring;
     
+    private PlayerScript _player;
     private Pooler _pooler;
     private CornerFinder _cornerFinder;
     
@@ -78,6 +82,38 @@ public class MachineGunState : DrucillaState
 
     private void Firing()
     {
+        // Finish up if done firing
+        if (_bulletCount >= projectileCount)
+        {
+            if (Boss.AnimancerComponent.IsPlaying(machineGunEndAnimation)) return;
+            
+            var state = Boss.AnimancerComponent.Play(machineGunEndAnimation);
+            state.Events(this).OnEnd = () =>
+            {
+                Boss.AnimancerComponent.Play(idleAnimation);
+                EndState();
+            };
+            
+            return;
+        }
+        
+        // Play start animation before firing
+        if (!_startedFiring)
+        {
+            if (!Boss.AnimancerComponent.IsPlaying(machineGunStartAnimation))
+            {
+                var state = Boss.AnimancerComponent.Play(machineGunStartAnimation);
+                state.Events(this).OnEnd = () =>
+                {
+                    _startedFiring = true;
+                    Boss.AnimancerComponent.Play(machineGunAnimation);
+                };
+            }
+            
+            return;
+        }
+        
+        // Fire bullets
         if (_shootTimer > 0)
         {
             _shootTimer -= Time.deltaTime;
@@ -88,20 +124,16 @@ public class MachineGunState : DrucillaState
             Shoot();
             _shootTimer = shootCooldown;
         }
-        
-        if (_bulletCount >= projectileCount)
-        {
-            EndState();
-        }
     }
     
     private void Shoot()
     {
         var position = transform.position;
         var direction = (_player.transform.position - position).normalized;
-        var projectile = _pooler.GetPooledObject();
+        var projectile = _pooler.GetPooledObject().GetComponent<ProjectileDeflectable>();
         projectile.transform.position = position;
-        projectile.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
-        projectile.SetActive(true);
+        projectile.velocityDirection = direction;
+        projectile.shooter = gameObject;
+        projectile.gameObject.SetActive(true);
     }
 }

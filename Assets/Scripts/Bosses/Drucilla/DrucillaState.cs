@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class DrucillaState : BossState 
 {
+    [SerializeField] protected AnimationClip idleAnimation;
+    
     protected Drucilla DrucillaReference => (Drucilla)Boss;
     
     protected Teleport teleport;

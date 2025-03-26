@@ -39,7 +39,10 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         _spawnRoom = VirtualCameraSwitch.ActiveVirtualCameraSwitch?.gameObject;
         _circleCollider2D.enabled = false;
         
-        _animancerComponent.Play(baseAnimation);
+        if (baseAnimation != null)
+        {
+            _animancerComponent.Play(baseAnimation);
+        }
         
         StartCoroutine(EnableCollider());
         
@@ -106,11 +109,19 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         
         if (damageable == null && other.gameObject.layer != LayerMask.NameToLayer("Ground")) return; 
         
-        AnimancerState state = _animancerComponent.Play(hitAnimation);
-        state.Events(this).OnEnd = () => gameObject.SetActive(false);
         _circleCollider2D.enabled = false;
         
         rb2d.linearVelocity = Vector2.zero;
+        
+        if (baseAnimation != null)
+        {
+            var state = _animancerComponent.Play(hitAnimation);
+            state.Events(this).OnEnd = () => gameObject.SetActive(false);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
     
     public void TakeDamage(DamageInstance damageInstance)

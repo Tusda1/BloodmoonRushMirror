@@ -11,12 +11,16 @@ public class LightningManager
     [SerializeField] private GameObject lightningPrefab;
     [SerializeField] private AnimationClip lightningAnimation;
     private Pooler _lightningPooler;
-
-    [Inject] public IObjectResolver objectResolver;
+    private IObjectResolver _objectResolver;
+    
+    public void InitializeLightningManager(IObjectResolver objectResolver)
+    {
+        _objectResolver = objectResolver;
+    }
     
     public void CreateLightning(Vector2 position, Vector2 targetPosition, Action onLightningEnd = null)
     {
-        _lightningPooler ??= TryGetCommunityPooler.TryGetPooler(lightningPrefab, objectResolver);
+        _lightningPooler ??= TryGetCommunityPooler.TryGetPooler(lightningPrefab, _objectResolver);
         
         var exampleLightning = _lightningPooler.GetPooledObject();
         exampleLightning.SetActive(true);

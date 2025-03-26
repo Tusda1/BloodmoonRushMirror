@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8750478886540931648}
   - component: {fileID: 9061734949686521096}
   - component: {fileID: 8229984395277527744}
-  - component: {fileID: 8343071708536622623}
+  - component: {fileID: 423709207758725102}
   - component: {fileID: 3937474359635219567}
   - component: {fileID: 3595846913031978146}
   - component: {fileID: 3315756796085432830}
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: -6400824306294125611, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -179,8 +179,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &8343071708536622623
-CircleCollider2D:
+--- !u!61 &423709207758725102
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -209,12 +209,22 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Offset: {x: 0.32500002, y: -0.75}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.3913043, y: 0.925}
+    oldSize: {x: 2.3, y: 2}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.25, y: 2.2}
+  m_EdgeRadius: 0
 --- !u!114 &3937474359635219567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,11 +239,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boss: {fileID: 9061734949686521096}
   statePhase: 1
-  bombPrefab: {fileID: 0}
+  idleAnimation: {fileID: 0}
+  bombDropAnimation: {fileID: 0}
+  bombPrefab: {fileID: 4015419000389170646, guid: 8ad8ad34123ae214aaafe075a221e029, type: 3}
   bombCooldown: 1
   glideSpeed: 4
   glideFallVelocity: -1
   groundSlamDistanceThreshold: 3
+  groundSlam:
+    groundSlamEnter: {fileID: 0}
+    groundSlamDown: {fileID: 0}
+    groundSlamSlam: {fileID: 0}
+    groundSlamStuck: {fileID: 0}
+    groundSlamExit: {fileID: 0}
+    groundSlamEnded: {fileID: 0}
+    idleAnimation: {fileID: 0}
+    upSpeed: 20
+    downWaitTime: 0.3
+    downSpeed: 15
+    stuckWaitTime: 1.5
+    waitBeforeNextAttack: 0.5
 --- !u!114 &3595846913031978146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,6 +273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boss: {fileID: 9061734949686521096}
   statePhase: 1
+  idleAnimation: {fileID: 0}
   tooCloseDistance: 4
   lightningOriginHeight: 15
   lightningManager:
@@ -267,7 +293,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boss: {fileID: 9061734949686521096}
   statePhase: 1
+  idleAnimation: {fileID: 0}
   teleportDistance: 6
+  groundSlam:
+    groundSlamEnter: {fileID: 0}
+    groundSlamDown: {fileID: 0}
+    groundSlamSlam: {fileID: 0}
+    groundSlamStuck: {fileID: 0}
+    groundSlamExit: {fileID: 0}
+    groundSlamEnded: {fileID: 0}
+    idleAnimation: {fileID: 0}
+    upSpeed: 20
+    downWaitTime: 0.3
+    downSpeed: 15
+    stuckWaitTime: 1.5
+    waitBeforeNextAttack: 0.5
 --- !u!114 &85904818139864274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,10 +322,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boss: {fileID: 9061734949686521096}
   statePhase: 1
+  idleAnimation: {fileID: 0}
+  iceRainAnimation: {fileID: 0}
   duration: 10
   cooldown: 0.5
   projectileSpawnAmount: 1
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 6940911826098480282, guid: 50ac64d0d7e5e0645ae749cf80eb8c9a, type: 3}
 --- !u!114 &2914922834258410414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,7 +342,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boss: {fileID: 9061734949686521096}
   statePhase: 1
-  projectilePrefab: {fileID: 0}
+  idleAnimation: {fileID: 0}
+  machineGunStartAnimation: {fileID: 0}
+  machineGunAnimation: {fileID: 0}
+  machineGunEndAnimation: {fileID: 0}
+  projectilePrefab: {fileID: 2749816408624752823, guid: 5129d1b1502e9c243a736d47fd1eda66, type: 3}
   shootCooldown: 0.1
   projectileCount: 30
 --- !u!114 &4257012985258620797
@@ -317,6 +363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boss: {fileID: 9061734949686521096}
   statePhase: 1
+  idleAnimation: {fileID: 0}
   vines: []
 --- !u!95 &5891487225574882615
 Animator:

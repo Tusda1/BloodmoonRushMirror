@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 
 public class BombAttackState : DrucillaState
 {
+    [SerializeField] private AnimationClip bombDropAnimation;
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private float bombCooldown = 1f;
     [SerializeField] private float glideSpeed = 4f;
@@ -13,14 +15,14 @@ public class BombAttackState : DrucillaState
     [SerializeField] private float groundSlamDistanceThreshold = 3f;
     
     private float _bombTimer;
-    private int _bombCount;
     private Vector2 _teleportPosition;
+    private bool _droppingBombs;
     
     private PlayerScript _player;
     
-    private Pooler _bombPooler;
+    [SerializeField] private GroundSlam groundSlam = new();
     private SmoothDampScript _smoothDampScript = new();
-    private GroundSlam _groundSlam;
+    private Pooler _bombPooler;
     
     private enum BombAttackStage
     {
@@ -36,13 +38,12 @@ public class BombAttackState : DrucillaState
         _player = ServiceLocator.Get<PlayerScript>();
         
         var tempCollider = GetComponent<Collider2D>();
-        _groundSlam = new GroundSlam(tempCollider);
+        groundSlam.InitializeGroundSlam(tempCollider, Boss.AnimancerComponent);
         _bombPooler = TryGetCommunityPooler.TryGetPooler(bombPrefab, ObjectResolver);
     }
 
     private void OnEnable()
     {
-        _bombCount = 0;
         _bombTimer = 0;
         _stage = BombAttackStage.Teleport;
     }
@@ -63,7 +64,7 @@ public class BombAttackState : DrucillaState
                 DropBombs();
                 break;
             case BombAttackStage.GroundSlam:
-                _groundSlam.ExecuteGroundSlam(ref Boss.targetVelocity, OnGroundSlamEnd);
+                groundSlam.ExecuteGroundSlam(ref Boss.targetVelocity, OnGroundSlamEnd);
                 break;
         }
     }
@@ -75,6 +76,12 @@ public class BombAttackState : DrucillaState
 
     private void DropBombs()
     {
+        if (!_droppingBombs)
+        {
+            Boss.AnimancerComponent.Play(bombDropAnimation);
+            _droppingBombs = true;
+        }
+        
         if (_bombTimer < bombCooldown)
         {
             _bombTimer += Time.deltaTime;

@@ -1,20 +1,35 @@
 using System;
+using Animancer;
 using UnityEngine;
+using UnityEngine.Serialization;
 
+[Serializable]
 public class GroundSlam 
 {
+    [SerializeField] private AnimationClip groundSlamEnter;
+    [SerializeField] private AnimationClip groundSlamDown;
+    [SerializeField] private AnimationClip groundSlamSlam;
+    [SerializeField] private AnimationClip groundSlamStuck;
+    [SerializeField] private AnimationClip groundSlamExit;
+    [SerializeField] private AnimationClip groundSlamEnded;
+    [SerializeField] private AnimationClip idleAnimation;
+    
+    [SerializeField] private float upSpeed = 20f;
+    [SerializeField] private float downWaitTime = 0.3f;
+    [SerializeField] private float downSpeed = 15f;
+    [SerializeField] private float stuckWaitTime = 1.5f;
+    [SerializeField] private float waitBeforeNextAttack = 0.5f;
+    
     private int _groundSlamStage;
-    private const float UpSpeed = 20f;
-    private const float UpTime = 0.1f;
-    private const float DownWaitTime = 0.3f;
-    private const float DownSpeed = 15f;
     private float _timer;
     
-    private readonly Collider2D _collider;
+    private Collider2D _collider;
+    private AnimancerComponent _animancerComponent;
     
-    public GroundSlam(Collider2D externalCollider)
+    public void InitializeGroundSlam(Collider2D externalCollider, AnimancerComponent externalAnimancerComponent)
     {
         _collider = externalCollider;
+        _animancerComponent = externalAnimancerComponent;
     }
 
     public void ExecuteGroundSlam(ref Vector2 velocityReference, Action onGroundSlamEnd = null)
@@ -22,39 +37,84 @@ public class GroundSlam
         switch (_groundSlamStage)
         {
             case 0:
-                _timer += Time.deltaTime;
-                if (_timer < UpTime)
+
+                if (!_animancerComponent.IsPlaying(groundSlamEnter))
                 {
-                    velocityReference.y = UpSpeed;
+                    var state = _animancerComponent.Play(groundSlamEnter);
+                    state.Events(this).OnEnd ??= () =>
+                    {
+                        state.Destroy();
+                        _animancerComponent.Play(groundSlamDown);
+                        _groundSlamStage++;
+                    };
                 }
-                else
-                {
-                    _groundSlamStage++;
-                    _timer = 0;
-                }
+                
+                velocityReference.y = upSpeed;
                 break;
             
             case 1:
-                _timer += Time.deltaTime;
-                if (_timer > DownWaitTime)
+                if (_collider.IsTouchingLayers(LayerMask.GetMask("Ground")))
                 {
-                    if (_collider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+                    Debug.Log("Touching");
+                    if (!_animancerComponent.IsPlaying(groundSlamSlam))
                     {
-                        velocityReference.y = 0;
-                        _groundSlamStage++;
-                        _timer = 0;
+                        var state = _animancerComponent.Play(groundSlamSlam);
+                        state.Events(this).OnEnd = () =>
+                        {
+                            state.Destroy();
+                            _animancerComponent.Play(groundSlamStuck);
+                            _groundSlamStage++;
+                            // TODO : Add explosion type thing when slamming
+                        };
                     }
-                    else
-                    {
-                        velocityReference.y = -DownSpeed;
-                    }
+                    velocityReference.y = 0;
+                }
+                else 
+                { 
+                    velocityReference.y = -downSpeed;
                 }
                 break;
             
             case 2:
-                // TODO : Add explosion type thing when slamming
-                onGroundSlamEnd?.Invoke();
-                _groundSlamStage = 0;
+                if (_timer >= stuckWaitTime)
+                {
+                    if (!_animancerComponent.IsPlaying(groundSlamExit) && !_animancerComponent.IsPlaying(groundSlamEnded))
+                    {
+                        var state = _animancerComponent.Play(groundSlamExit);
+                        state.Events(this).OnEnd = () =>
+                        {
+                            state.Destroy();
+                            
+                            var newState = _animancerComponent.Play(groundSlamEnded);
+                            newState.Events(this).OnEnd = () =>
+                            {
+                                state.Destroy();
+                                onGroundSlamEnd?.Invoke();
+                                _groundSlamStage++;
+                                _timer = 0;
+                                _animancerComponent.Play(idleAnimation);
+                            };
+                        };
+                    }
+                }
+                else
+                {
+                    _timer += Time.deltaTime;
+                }
+                break;
+            
+            case 3:
+                if (_timer >= waitBeforeNextAttack)
+                {
+                    onGroundSlamEnd?.Invoke();
+                    _groundSlamStage = 0;
+                    _timer = 0;
+                }
+                else
+                {
+                    _timer += Time.deltaTime;
+                }
+                
                 break;
             
             default:

@@ -1,6 +1,7 @@
 using System;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GroundSlamState : DrucillaState
 {
@@ -8,16 +9,16 @@ public class GroundSlamState : DrucillaState
     
     private bool _hasTeleported;
     
+    [SerializeField] private GroundSlam groundSlam = new();
     private PlayerScript _player;
     private Collider2D _collider;
-    private GroundSlam _groundSlam;
     
     private void Start()
     { 
         _player = ServiceLocator.Get<PlayerScript>();
         _collider = GetComponent<Collider2D>();
 
-        _groundSlam = new GroundSlam(_collider);
+        groundSlam.InitializeGroundSlam(_collider, Boss.AnimancerComponent);
     }
 
     private void OnDisable()
@@ -35,7 +36,7 @@ public class GroundSlamState : DrucillaState
         }
         else
         {
-            _groundSlam.ExecuteGroundSlam(ref Boss.targetVelocity, GroundSlamEnd);
+            groundSlam.ExecuteGroundSlam(ref Boss.targetVelocity, GroundSlamEnd);
         }
     }
     

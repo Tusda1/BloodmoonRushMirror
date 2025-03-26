@@ -2,6 +2,7 @@ using System;
 using Player;
 using UnityEngine;
 using UnityEngine.Serialization;
+using VContainer;
 
 public class DashStrike : DrucillaState
 {
@@ -30,7 +31,12 @@ public class DashStrike : DrucillaState
         
         _cornerFinder = new CornerFinder(gameObject.transform, LayerMask.GetMask("Ground"));
     }
-    
+
+    private void Start()
+    {
+        lightningManager.InitializeLightningManager(ObjectResolver);
+    }
+
     private void OnEnable()
     {
         if (!_player) _player = ServiceLocator.Get<PlayerScript>();

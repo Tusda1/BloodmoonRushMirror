@@ -4,14 +4,18 @@ using Random = UnityEngine.Random;
 
 public class IceRain : DrucillaState
 {
+    [SerializeField] private AnimationClip iceRainAnimation;
+    
     [SerializeField] private float duration = 10f;
     [SerializeField] private float cooldown = 0.5f;
     [SerializeField] private int projectileSpawnAmount = 1;
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private float spawnDistanceFromRoof = 2f;
     
     private float _timer;
     private float _cooldownTimer;
     private bool _hasTeleported;
+    private bool _iceRainActive;
     private Vector2 cornerOne;
     private Vector2 cornerTwo;
     
@@ -49,33 +53,56 @@ public class IceRain : DrucillaState
         }
         else
         {
-            if (_timer > duration)
+            RainIce();
+        }
+    }
+
+    private void RainIce()
+    {
+        if (!_iceRainActive)
+        {
+            if (!Boss.AnimancerComponent.IsPlaying(iceRainAnimation))
             {
-                _timer = 0;
-                EndState();
-                return;
+                var state = Boss.AnimancerComponent.Play(iceRainAnimation);
+                state.Events(this).OnEnd = () =>
+                {
+                    _iceRainActive = true; 
+                    Boss.AnimancerComponent.Play(idleAnimation);
+                };
             }
+            
+            return;
+        }
+        
+        if (_timer > duration)
+        {
+            _timer = 0;
+            EndState();
+            return;
+        }
 
-            _timer += Time.deltaTime;
+        _timer += Time.deltaTime;
 
-            if (_cooldownTimer < cooldown)
-            {
-                _cooldownTimer += Time.deltaTime;
-                return;
-            }
+        if (_cooldownTimer < cooldown)
+        {
+            _cooldownTimer += Time.deltaTime;
+            return;
+        }
 
-            cornerOne = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
-            cornerTwo = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
-
+        cornerOne = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
+        cornerTwo = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
+        
+        while (_cooldownTimer >= cooldown)
+        {
             for (int i = 0; i < projectileSpawnAmount; i++)
             {
-                var position = new Vector2(Random.Range(cornerOne.x, cornerTwo.x), cornerOne.y);
+                var position = new Vector2(Random.Range(cornerOne.x, cornerTwo.x), cornerOne.y - spawnDistanceFromRoof);
                 var projectile = _pooler.GetPooledObject();
                 projectile.transform.position = position;
                 projectile.SetActive(true);
             }
 
-            _cooldownTimer = 0;
+            _cooldownTimer -= cooldown;
         }
     }
     
