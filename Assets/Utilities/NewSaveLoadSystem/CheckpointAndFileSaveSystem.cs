@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using ExtensionMethods;
 using SaveLoadSystem.Data;
 using SceneCollections;
 using Utilities.DataBinding;
@@ -24,13 +25,13 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
     [Inject]
     public void Construct(IObjectResolver container) {
         _debugLogger = container.ResolveProviderID<DebugLoggerSO>("SaveLoadSystem");
-        
+
         DataService = container.Resolve<IDataService<SaveGameData>>();
         DataBinder = container.Resolve<DataBinder>();
 
         _saveSlots = container.Resolve<SaveSlots>();
         _newGameData = container.Resolve<GameDataScrubGeneric<SaveGameData>>();
-        
+
         _sceneCollectionProvider = container.Resolve<IProvider<SceneCollectionSO>>();
     }
     #endregion
@@ -67,7 +68,6 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
         CurrentGameData = (SaveGameData)DataService.LoadByName(saveSlotData.saveSlotName).Clone();
 
         _debugLogger.Log($"Setting CurrentGameData to values of save slot: '{saveSlotData.saveSlotName}'");
-
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
     /// </summary>
     public void SaveToFile() {
         DataService.SaveToFile(CurrentGameData);
-        
+
         _debugLogger.Log($"Saving {typeof(SaveGameData)}");
     }
     #endregion
@@ -129,7 +129,7 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
         }
     }
     #endregion
-    
+
     /// <summary>
     /// Sets CurrentGameData with "_newGameData" as a base template.
     /// </summary>
@@ -137,8 +137,36 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
         CurrentGameData = (SaveGameData)_newGameData.gameData.Clone();
 
         CurrentGameData.Name = name;
+        var newGameDataName = _newGameData.gameData.Name;
 
-        _debugLogger.Log($"Creating new game data with name '{CurrentGameData.Name}' with values from '{_newGameData.gameData.Name}'");
+        _debugLogger.Log($"Setting CurrentGameData with name: '{CurrentGameData.Name}' from base '{newGameDataName}'");
+    }
+
+    public void GameOverLogic() {
+        // --- GetCurrentData --- \\
+        var currentPlayerData = CurrentGameData.playerData;
+        var currentLevelData = CurrentGameData.GetCurrentLevelData();
+
+        // --- GetNewData --- \\
+        var newGameData = _newGameData.gameData.DeepClone();
+        var newPlayerData = newGameData.playerData;
+        var newLevelData = newGameData.GetLevel(currentLevelData.ID);
+
+        // --- SetCurrentPlayerData --- \\
+        currentPlayerData.lives = newPlayerData.lives;
+        currentPlayerData.health = newPlayerData.health;
+        currentPlayerData.tempHealth = newPlayerData.tempHealth;
+
+        // --- SetCurrentLevelData --- \\
+        currentLevelData.enemyDatas = newLevelData.enemyDatas;
+        currentLevelData.checkpointDatas = newLevelData.checkpointDatas;
+        currentLevelData.parallaxDatas = newLevelData.parallaxDatas;
+        currentLevelData.levelTimerData = newLevelData.levelTimerData;
+        currentLevelData.currentProgress = newLevelData.currentProgress;
+        currentLevelData.musicData = newLevelData.musicData;
+
+        // --- SaveData --- \\
+        SaveToFile();
     }
 
     public SceneCollectionSO GetCurrentSceneCollection() {

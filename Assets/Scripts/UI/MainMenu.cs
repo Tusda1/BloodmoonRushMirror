@@ -17,11 +17,8 @@ namespace UI {
         #region ---Fields---
         #region ***---GetOrAddComponents---***
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
-
         [GetOrAddComponent, SerializeField, HideInInspector] private SettingsMenu settingsMenu;
-
         [GetOrAddComponent, SerializeField, HideInInspector] private SavesMenu savesMenu;
-
         [GetOrAddComponent, SerializeField, HideInInspector] private LevelSelectMenu levelSelectMenu;
         #endregion
 
@@ -91,17 +88,18 @@ namespace UI {
 
         private void Start() {
             _audioManager.PlayMusic(MainMenuMusic_SoundID);
-#if BETA_BUILD
+            _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 0, true);
+
+            _saveLoadSystemManager.CurrentGameData = null;
+
             levelSelectMenu.OnMenuActivated += HideMenu;
             levelSelectMenu.OnMenuDeactivated += ShowMenu;
-#elif SAVESYSTEM_ACTIVE
-            _saveLoadSystemManager.CurrentGameData = null;
-            
+
             savesMenu.OnMenuActivated += HideMenu;
             savesMenu.OnMenuDeactivated += ShowMenu;
-#endif
+
             _startButton.clicked += StartButtonClicked;
-            
+
             _settingsButton.clicked += settingsMenu.Activate;
             settingsMenu.OnMenuActivated += HideMenu;
             settingsMenu.OnMenuDeactivated += ShowMenu;

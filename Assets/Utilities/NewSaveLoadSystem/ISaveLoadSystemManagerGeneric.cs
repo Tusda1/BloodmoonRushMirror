@@ -17,6 +17,8 @@ public interface ISaveLoadSystemManagerGeneric<TGameData> where TGameData : IGam
     void SetCurrentGameDataFromTemplate(string gameDataName);
     void SetCurrentGameDataFromSaveSlot(SaveSlotDataSO saveSlotData);
     void DeleteSaveSlotData(SaveSlotDataSO saveSlotData);
+
+    void GameOverLogic();
     
     SceneCollectionSO GetCurrentSceneCollection();
 }

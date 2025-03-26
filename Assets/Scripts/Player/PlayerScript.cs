@@ -180,6 +180,7 @@ namespace Player {
             InputSystem.PauseHaptics();
             _pauseManager.OnPause -= OnPaused;
             _pauseManager.OnResume -= OnResumed;
+            Unbind();
         }
 
         private void Update() {
@@ -327,8 +328,12 @@ namespace Player {
 
             if (playerLives < 0) {
                 debugLogger.Log("Ran out of lives");
+                
                 _ = SceneCollectionManager.LoadSceneCollectionAsync(gameOverScene,
-                    () => _cameraEffects.CircleFadeIn(0.5f));
+                    () => {
+                        _saveLoadSystemManager.GameOverLogic();
+                        _cameraEffects.CircleFadeIn(0.5f);
+                    });
             }
             else {
                 StartCoroutine(Respawn());

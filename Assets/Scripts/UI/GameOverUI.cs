@@ -1,7 +1,6 @@
 using Attributes;
 using SceneCollections;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using VContainer;
 
@@ -46,8 +45,7 @@ public class GameOverUI : MonoBehaviour {
         _cameraEffects.CircleFadeIn(0.5f);
 
         _retryButton.clicked += () => {
-            _cameraEffects.FadeLoadScene(_saveLoadSystemManager.GetCurrentSceneCollection(), 
-                () => _saveLoadSystemManager.SaveLoad());
+            _cameraEffects.FadeLoadScene(_saveLoadSystemManager.GetCurrentSceneCollection());
         };
 
         _quitButton.clicked += () => _cameraEffects.FadeLoadScene(mainMenu); 
