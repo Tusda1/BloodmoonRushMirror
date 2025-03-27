@@ -132,20 +132,24 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 3298925456892397176, guid: 21b4133c71a311248ba67b9579271143, type: 3}
+      propertyPath: skipAction
+      value: 
+      objectReference: {fileID: -3685540321926434071, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
+    - target: {fileID: 3298925456892397176, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: playerLives
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3298925456892397176, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: playerLivesStartAmount
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.4
+      value: 683.3
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.38
+      value: 101.8
       objectReference: {fileID: 0}
     - target: {fileID: 4186889624386442292, guid: 21b4133c71a311248ba67b9579271143, type: 3}
       propertyPath: m_LocalPosition.z
@@ -247,7 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"Kind":"Scene","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
     _objectReferences: []
 --- !u!4 &59970382
 Transform:

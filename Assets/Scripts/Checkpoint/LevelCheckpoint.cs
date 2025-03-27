@@ -8,6 +8,7 @@ using Utilities.DataBinding;
 using Action = System.Action;
 using System.Collections;
 using Attributes;
+using ExtensionMethods;
 using UnityEngine.Rendering.Universal;
 using VContainer;
 
@@ -74,8 +75,8 @@ public partial class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
 
         _playerScript.CheckpointHealing();
         
-        _levelDataManager.CurrentCheckpointID = ID;
-        _levelDataManager.PlayerPosition = transform.position;
+        _levelDataManager.DataInGameData.CurrentCheckpointID = ID;
+        _levelDataManager.DataInGameData.PlayerPosition = transform.position.WithOffset(y: 0.015024f);
         _levelDataManager.DataInGameData.currentProgress = currentProgressTitle != string.Empty 
             ? currentProgressTitle 
             : name;
