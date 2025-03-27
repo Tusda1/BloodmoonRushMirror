@@ -16,14 +16,17 @@ public class BombScript : GravityObject
 
     private void Explode()
     {
-        var colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
-        foreach (var foundCollider in colliders)
+        ContactFilter2D contactFilter = new ContactFilter2D();
+        contactFilter.SetLayerMask(LayerMask.GetMask("Player"));
+        Collider2D[] colliders = new Collider2D[10]; // Adjust the size as needed
+        int colliderCount = Physics2D.OverlapCircle(transform.position, explosionRadius, contactFilter, colliders);
+        for (int i = 0; i < colliderCount; i++)
         {
-            if (foundCollider.CompareTag("Player"))
+            if (colliders[i].CompareTag("Player"))
             {
-                var directionToPlayer = (foundCollider.transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
+                var directionToPlayer = (colliders[i].transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
                 damageInstance.knockback = directionToPlayer * damageInstance.knockbackStrength;
-                foundCollider.GetComponent<IDamageable>().TakeDamage(damageInstance);
+                colliders[i].GetComponent<IDamageable>().TakeDamage(damageInstance);
             }
         }
         gameObject.SetActive(false);

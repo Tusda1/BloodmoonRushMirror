@@ -90,6 +90,7 @@ public class MachineGunState : DrucillaState
             var state = Boss.AnimancerComponent.Play(machineGunEndAnimation);
             state.Events(this).OnEnd = () =>
             {
+                state.Destroy();
                 Boss.AnimancerComponent.Play(idleAnimation);
                 EndState();
             };
@@ -105,6 +106,7 @@ public class MachineGunState : DrucillaState
                 var state = Boss.AnimancerComponent.Play(machineGunStartAnimation);
                 state.Events(this).OnEnd = () =>
                 {
+                    state.Destroy();
                     _startedFiring = true;
                     Boss.AnimancerComponent.Play(machineGunAnimation);
                 };

@@ -49,7 +49,7 @@ public class GroundSlam
                     };
                 }
                 
-                velocityReference.y = upSpeed;
+                //velocityReference.y = upSpeed;
                 break;
             
             case 1:
@@ -88,7 +88,7 @@ public class GroundSlam
                             var newState = _animancerComponent.Play(groundSlamEnded);
                             newState.Events(this).OnEnd = () =>
                             {
-                                state.Destroy();
+                                newState.Destroy();
                                 onGroundSlamEnd?.Invoke();
                                 _groundSlamStage++;
                                 _timer = 0;

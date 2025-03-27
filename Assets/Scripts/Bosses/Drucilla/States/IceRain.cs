@@ -66,6 +66,7 @@ public class IceRain : DrucillaState
                 var state = Boss.AnimancerComponent.Play(iceRainAnimation);
                 state.Events(this).OnEnd = () =>
                 {
+                    state.Destroy();
                     _iceRainActive = true; 
                     Boss.AnimancerComponent.Play(idleAnimation);
                 };

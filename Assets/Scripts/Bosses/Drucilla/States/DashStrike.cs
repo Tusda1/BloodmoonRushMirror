@@ -6,6 +6,11 @@ using VContainer;
 
 public class DashStrike : DrucillaState
 {
+    [SerializeField] private AnimationClip lightningWindupStart;
+    [SerializeField] private AnimationClip lightningWindup;
+    [SerializeField] private AnimationClip lightningEnd;
+    [SerializeField] private AnimationClip strikeAnimation;
+    
     [SerializeField] private float tooCloseDistance = 4f;
     [SerializeField] private float lightningOriginHeight = 15f;
     
@@ -19,8 +24,7 @@ public class DashStrike : DrucillaState
     private enum DashStrikeStage
     {
         Teleport,
-        LightningDash,
-        Strike
+        LightningDash
     }
     
     private DashStrikeStage _stage;
@@ -82,9 +86,6 @@ public class DashStrike : DrucillaState
             case DashStrikeStage.LightningDash:
                 LightningDash();
                 break;
-            case DashStrikeStage.Strike:
-                Strike();
-                break;
         }
     }
     
@@ -99,11 +100,17 @@ public class DashStrike : DrucillaState
         {
             _lightningDashStarted = true;
             var position = transform.position;
-            lightningManager.CreateLightning(position + Vector3.up * lightningOriginHeight, position,
-                () =>
+            var state = Boss.AnimancerComponent.Play(lightningWindupStart);
+            state.Events(this).OnEnd = () =>
+            {
+                state.Destroy();
+                state = Boss.AnimancerComponent.Play(lightningWindup);
+                state.Events(this).OnEnd = () =>
                 {
+                    state.Destroy();
                     lightningManager.CreateLightning(position, _player.transform.position, OnLightningEnd);
-                });
+                };
+            };
         }
     }
     
@@ -112,11 +119,17 @@ public class DashStrike : DrucillaState
         var playerPosition = _player.transform.position;
         var tempTransform = transform;
         tempTransform.position = playerPosition + (tempTransform.position - playerPosition).normalized * 1.5f;
-        _stage = DashStrikeStage.Strike;
-    }
-    
-    private void Strike()
-    {
-        EndState();
+        var state = Boss.AnimancerComponent.Play(lightningEnd);
+        state.Events(this).OnEnd = () =>
+        {
+            state.Destroy();
+            state = Boss.AnimancerComponent.Play(strikeAnimation);
+            state.Events(this).OnEnd = () =>
+            {
+                state.Destroy();
+                Boss.AnimancerComponent.Play(idleAnimation);
+                EndState();
+            };
+        };
     }
 }
