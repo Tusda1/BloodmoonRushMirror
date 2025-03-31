@@ -58,6 +58,7 @@ public class MachineGunState : DrucillaState
     {
         _bulletCount = 0;
         _shootTimer = 0;
+        _startedFiring = false;
     }
 
     private void Update()
@@ -97,6 +98,8 @@ public class MachineGunState : DrucillaState
             
             return;
         }
+        
+        Boss.facingDirection = Boss.transform.position.x < _player.transform.position.x ? Vector2.right : Vector2.left;
         
         // Play start animation before firing
         if (!_startedFiring)

@@ -9,7 +9,8 @@ public class IceRain : DrucillaState
     [SerializeField] private float duration = 10f;
     [SerializeField] private float cooldown = 0.5f;
     [SerializeField] private int projectileSpawnAmount = 1;
-    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private GameObject bigIciclePrefab;
+    [SerializeField] private GameObject smallIciclePrefab;
     [SerializeField] private float spawnDistanceFromRoof = 2f;
     
     private float _timer;
@@ -19,7 +20,8 @@ public class IceRain : DrucillaState
     private Vector2 cornerOne;
     private Vector2 cornerTwo;
     
-    private Pooler _pooler;
+    private Pooler _bigPooler;
+    private Pooler _smallPooler;
     private CornerFinder _cornerFinder;
 
     protected override void Awake()
@@ -31,7 +33,8 @@ public class IceRain : DrucillaState
 
     private void Start()
     {
-        _pooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab, ObjectResolver);
+        _bigPooler = TryGetCommunityPooler.TryGetPooler(bigIciclePrefab, ObjectResolver);
+        _smallPooler = TryGetCommunityPooler.TryGetPooler(smallIciclePrefab, ObjectResolver);
     }
     
     private void OnEnable()
@@ -43,13 +46,14 @@ public class IceRain : DrucillaState
     private void OnDisable()
     {
         _hasTeleported = false;
+        _iceRainActive = false;
     }
 
     private void Update()
     {
         if (!_hasTeleported)
         {
-            if (!teleport.IsTeleporting) teleport.TeleportToLocation(new Vector2(Random.Range(cornerOne.x + 1, cornerTwo.x - 1), cornerOne.y - 2), DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit);
+            if (!teleport.IsTeleporting) teleport.TeleportToLocation(new Vector2(Random.Range(cornerOne.x + 1, cornerTwo.x - 1), cornerOne.y - 4), DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit);
         }
         else
         {
@@ -98,7 +102,7 @@ public class IceRain : DrucillaState
             for (int i = 0; i < projectileSpawnAmount; i++)
             {
                 var position = new Vector2(Random.Range(cornerOne.x, cornerTwo.x), cornerOne.y - spawnDistanceFromRoof);
-                var projectile = _pooler.GetPooledObject();
+                var projectile = Random.Range(0, 2) == 0 ? _bigPooler.GetPooledObject() : _smallPooler.GetPooledObject();
                 projectile.transform.position = position;
                 projectile.SetActive(true);
             }

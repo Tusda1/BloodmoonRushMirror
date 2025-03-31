@@ -1,64 +1,76 @@
 using System;
 using System.Collections;
+using Animancer;
 using UnityEngine;
 
-public class VineScript : MonoBehaviour 
+public class VineScript : MonoBehaviour
 {
-    [SerializeField] private float amplitude = 1f; // Amplitude of the sine wave
-    [SerializeField] private float frequency = 1f; // Frequency of the sine wave
-    [SerializeField] private float speed = 1f;
-    [SerializeField] private float resetSpeed = 1f;
-    [SerializeField] private float maxHeight = 3f;
+    [SerializeField] private AnimationClip vineLure;
+    [SerializeField] private AnimationClip vineAttack;
+    [SerializeField] private AnimationClip vineIdle;
+    [SerializeField] private AnimationClip vineWithdraw;
     
+    [SerializeField] private Collider2D positionCollider;
+    [SerializeField] private float lureWaitTime = 1f;
+    [SerializeField] private float activeTime = 3f;
+    
+    private float _pivotToGroundDistance;
+    private AnimancerComponent _animancerComponent;
     private Collider2D _collider;
-    private float _colliderLength;
-    private Vector2 _startPosition;
-    private Vector2 _currentPosition;
-    private Vector2 _sinOffset;
 
-    private void Start()
+    private void Awake()
     {
+        _animancerComponent = GetComponent<AnimancerComponent>();
         _collider = GetComponent<Collider2D>();
-        _colliderLength = _collider.bounds.size.y;
-        _startPosition = transform.position;
+        _collider.enabled = false;
     }
 
-    public void ActivateVine()
+    private void OnEnable()
     {
-        StartCoroutine(DeactivateVineRoutine());
-    }
-    
-    private IEnumerator ActivateVineRoutine()
-    {
-        while (_currentPosition.y - _startPosition.y < maxHeight)
+        // Send raycast down to find the ground
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity, LayerMask.GetMask("Ground"));
+        if (hit.collider == null)
         {
-            _currentPosition.y += speed * Time.deltaTime;
-            _sinOffset.y = Mathf.Sin(Time.time * frequency) * amplitude;
-            transform.position = _currentPosition + _sinOffset;
-            yield return new WaitForFixedUpdate();
+            Debug.LogError("VineScript: No ground found");
+            return;
         }
+        
+        _pivotToGroundDistance = Mathf.Abs(positionCollider.bounds.min.y - hit.point.y); // Calculate the distance from the pivot to the ground
+        
+        // Set the bottom of the position collider to the ground
+        positionCollider.transform.position = new Vector2(transform.position.x, hit.point.y + _pivotToGroundDistance);
 
-        while (true)
-        {
-            _sinOffset.y = Mathf.Sin(Time.time * frequency) * amplitude;
-            transform.position = _currentPosition + _sinOffset;
-            yield return new WaitForFixedUpdate();
-        }
+        StartCoroutine(Attack());
     }
-    
-    public void DeactivateVine()
+
+    private void OnDisable()
     {
-        StopCoroutine(ActivateVineRoutine());
-        StartCoroutine(DeactivateVineRoutine());
+        StopAllCoroutines();
     }
-    
-    private IEnumerator DeactivateVineRoutine()
+
+    private IEnumerator Attack()
     {
-        while (_currentPosition.y - _startPosition.y > 0)
+        _animancerComponent.Play(vineLure);
+        
+        yield return new WaitForSeconds(lureWaitTime);
+
+        var state = _animancerComponent.Play(vineAttack);
+        state.Events(this).OnEnd = () =>
         {
-            _currentPosition.y = resetSpeed * Time.deltaTime;
-            transform.position = _currentPosition;
-            yield return new WaitForFixedUpdate();
-        }
+            state.Destroy();
+            _animancerComponent.Play(vineIdle);
+        };
+        
+        _collider.enabled = true;
+
+        yield return new WaitForSeconds(activeTime);
+        
+        var state2 = _animancerComponent.Play(vineWithdraw);
+        state2.Events(this).OnEnd = () =>
+        {
+            state2.Destroy();
+            _collider.enabled = false;
+            gameObject.SetActive(false);
+        };
     }
 }

@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 2241313957578458342}
   - component: {fileID: 9010722243329097737}
   - component: {fileID: 8754596008390219922}
-  - component: {fileID: 653720314199078346}
+  - component: {fileID: 4189954892084536237}
+  - component: {fileID: 7012138070091119509}
+  - component: {fileID: 6756223221258662145}
   m_Layer: 11
-  m_Name: Icicle
+  m_Name: BigIcicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 1766183112093479742, guid: 842ef53a683179947bbd48bd62053e1f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -109,6 +111,8 @@ MonoBehaviour:
   targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
   GravityModifier: 1
+  icicleFall: {fileID: -4333852708522175746, guid: 842ef53a683179947bbd48bd62053e1f, type: 3}
+  icicleImpact: {fileID: 7052000064198580043, guid: 842ef53a683179947bbd48bd62053e1f, type: 3}
   damageInstance:
     damage: 0
     knockback: {x: 0, y: 0}
@@ -143,8 +147,45 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &653720314199078346
-CircleCollider2D:
+--- !u!95 &4189954892084536237
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940911826098480282}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7012138070091119509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940911826098480282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad50f81b1d25c441943c37a89ba23f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Animator: {fileID: 4189954892084536237}
+  _Transitions: {fileID: 0}
+  _ActionOnDisable: 0
+--- !u!61 &6756223221258662145
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -177,5 +218,15 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Offset: {x: -0.07500002, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.59375, y: 0.5}
+    oldSize: {x: 0.8, y: 1.75}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.8, y: 1.75}
+  m_EdgeRadius: 0

@@ -106,9 +106,9 @@ public class GroundSlam
             case 3:
                 if (_timer >= waitBeforeNextAttack)
                 {
-                    onGroundSlamEnd?.Invoke();
                     _groundSlamStage = 0;
                     _timer = 0;
+                    onGroundSlamEnd?.Invoke();
                 }
                 else
                 {
