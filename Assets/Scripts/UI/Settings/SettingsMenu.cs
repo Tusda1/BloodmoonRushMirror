@@ -35,12 +35,17 @@ namespace UI.Settings {
         private BatArrow _rightBat;
         #endregion
         
-        [Inject] private IAudioManager _audioManager;
+        private IAudioManager _audioManager;
         
         private const string GenericMenuSound_SoundID = "UI_GenericMenuSound";
         #endregion
 
         #region ---Initialization---
+        [Inject]
+        public void Construct(IObjectResolver container) {
+            _audioManager = container.Resolve<IAudioManager>();
+        }
+        
         private void Awake() {
             _root = uiDocument.rootVisualElement;
             _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
