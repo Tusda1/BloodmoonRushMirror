@@ -1,11 +1,11 @@
-using System;
 using Attributes;
 using UnityEngine;
 
 public class CameraSizeController : MonoBehaviour {
     #region ---Fields---
-    [GetOrAddComponent, SerializeField, HideInInspector]
-    private Camera renderTextureCamera;
+    [GetOrAddComponent, SerializeField, HideInInspector] private Camera renderTextureCamera;
+
+    private float _cameraSize = 9;
     #endregion
 
     private void Awake() {
@@ -14,10 +14,12 @@ public class CameraSizeController : MonoBehaviour {
         var aspectRatio = GetAspectRatio(resolution);
 
         renderTextureCamera.orthographicSize = aspectRatio switch {
-            { x: 16, y: 9 } => 11.25f,
-            { x: 8, y: 5 } => 12.5f,
+            { x: 16, y: 9 } => _cameraSize,
+            { x: 8, y: 5 } => 10,
             _ => renderTextureCamera.orthographicSize
         };
+
+        _cameraSize = renderTextureCamera.orthographicSize;
     }
 
     private void Start() {
@@ -25,7 +27,7 @@ public class CameraSizeController : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        renderTextureCamera.orthographicSize = 11.25f;
+        renderTextureCamera.orthographicSize = _cameraSize;
     }
 
     private static Vector2Int GetAspectRatio(Vector2Int resolution) {

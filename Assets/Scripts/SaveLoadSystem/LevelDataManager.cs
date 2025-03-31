@@ -4,7 +4,7 @@ using SceneCollections;
 using UnityEngine;
 using Utilities.DataBinding;
 using VContainer;
-#if UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 using ExtensionMethods;
 using System.Collections;
 #endif

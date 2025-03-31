@@ -109,7 +109,7 @@ public class BetterRuby : GravityObject
     
     private void Hover()
     {
-        print("hover");
+        // print("hover");
         if (_initialY == 0) _initialY = transform.position.y;
     
         Vector3 position = transform.position;

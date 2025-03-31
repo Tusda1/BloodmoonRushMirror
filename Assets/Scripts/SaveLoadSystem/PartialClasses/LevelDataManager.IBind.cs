@@ -57,7 +57,6 @@ namespace SaveLoadSystem {
         public void LoadCheckpointBindData() => LoadBindData();
 
         public void SaveBindData() {
-            // DataInGameData.PlayerPosition = _playerScript.transform.position;
             _saveLoadSystemManager.CurrentGameData.currentSceneCollectionName = SceneCollection.name;
         }
         #endregion

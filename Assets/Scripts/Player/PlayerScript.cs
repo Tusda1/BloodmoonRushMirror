@@ -70,6 +70,7 @@ namespace Player {
         public event Action OnRespawn = delegate { };
         
         public static event Action SkipDialogueEvent = delegate { };
+        [SerializeField, Attributes.Required] private InputActionReference skipAction;
 
         private string _currentLevelMusicID;
 
@@ -172,6 +173,12 @@ namespace Player {
             
             _pauseManager.OnPause += OnPaused;
             _pauseManager.OnResume += OnResumed;
+
+            skipAction.action.performed += OnActionOnperformed;
+        }
+
+        private void OnActionOnperformed(InputAction.CallbackContext _) {
+            SkipDialogueEvent.Invoke();
         }
 
         private void OnDestroy() {
@@ -181,6 +188,7 @@ namespace Player {
             _pauseManager.OnPause -= OnPaused;
             _pauseManager.OnResume -= OnResumed;
             Unbind();
+            skipAction.action.performed -= OnActionOnperformed;
         }
 
         private void Update() {
