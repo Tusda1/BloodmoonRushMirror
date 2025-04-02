@@ -195,8 +195,19 @@ public class CharacterSays : Unit {
 
             var textDelay = 1 / dialogueUIDataContainer.textSpeed;
             
+            var richTextTag = false;
+            
             foreach (var c in fulltext) {
                 dialogueUIDataContainer.text += c;
+
+                if (c == '<') richTextTag = true;
+
+                if (richTextTag) {
+                    if (c == '>') richTextTag = false;
+                    
+                    continue;
+                }
+                
                 if (char.IsWhiteSpace(c)) {
                     TypewriterOnNewWord.Invoke();
                     continue;
