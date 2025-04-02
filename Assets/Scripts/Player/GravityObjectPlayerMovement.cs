@@ -228,7 +228,6 @@ namespace Player {
             
             if (PlayerLadderLogic.LadderLogic()) return;
             
-
             player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
             player.animator.SetBool(AnimatorIsFallingBool, isFalling);
 
