@@ -10,20 +10,15 @@ namespace DialogueSystem {
     public static class CSVConverter {
         public static void CSVToSO(string filePath, DialogueDictionary so) {
             var csvContent = File.ReadAllText(filePath);
-            var csvProperties = GetCSVProperties(csvContent);
 
-            SetDictionaryData(so, csvContent, csvProperties);
+            SetDictionaryData(so, csvContent);
         }
 
-        private static string[] GetCSVProperties(string csvContent) {
-            var lines = csvContent.Split('\n');
-            return SplitLine(lines[0]);
-        }
-
-        private static void SetDictionaryData(DialogueDictionary so, string csvContent, string[] csvProperties) {
+        private static void SetDictionaryData(DialogueDictionary so, string csvContent) {
             so.dialogueDictionary.Clear();
 
             var lines = csvContent.Split('\n');
+            var csvProperties = SplitLine(lines[0]);
 
             var idIndex = Array.IndexOf(csvProperties, "ID");
             var characterIndex = Array.IndexOf(csvProperties, "Character");
@@ -32,7 +27,7 @@ namespace DialogueSystem {
             var autoContinueIndex = Array.IndexOf(csvProperties, "AutoContinue");
             var textSpeedIndex = Array.IndexOf(csvProperties, "TextSpeed");
             var soundIDIndex = Array.IndexOf(csvProperties, "SoundID");
-            var characterNameIndex = Array.IndexOf(csvProperties, "CharacterName"); 
+            var characterNameIndex = Array.IndexOf(csvProperties, "CharacterName");
 
             const string dialogueCharactersPath = "Assets/DialogueSystem/Characters/";
 
@@ -44,8 +39,8 @@ namespace DialogueSystem {
                 var id = values[idIndex];
                 var character = AssetDatabase.LoadAssetAtPath<DialogueCharacterSO>(characterSOPath);
                 var text = values[textIndex];
-                var whenIsSFXPlayed = Enum.TryParse(values[whenIsSFXPlayedIndex], out WhenIsSfxPlayed whenIsSFXPlayedOverride) 
-                    ? whenIsSFXPlayedOverride 
+                var whenIsSFXPlayed = Enum.TryParse(values[whenIsSFXPlayedIndex], out WhenIsSfxPlayed sfxPlayedOverride)
+                    ? sfxPlayedOverride
                     : character.whenIsSFXPlayed;
                 var autoContinue = values[autoContinueIndex] == "yes";
                 var textSpeed = float.TryParse(values[textSpeedIndex], out var parsedSpeed)
