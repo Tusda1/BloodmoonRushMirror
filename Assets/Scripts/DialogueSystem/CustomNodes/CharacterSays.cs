@@ -36,7 +36,6 @@ public class CharacterSays : Unit {
     [DoNotSerialize] [PortLabelHidden] public ValueOutput DialogueDictionary_Output;
     [DoNotSerialize] [PortLabelHidden] public ValueOutput DialogueUIDataContainer_Output;
     [DoNotSerialize] [PortLabelHidden] public ValueOutput AudioManager_Output;
-    [DoNotSerialize] [PortLabelHidden] public ValueOutput AutoContinue_Output;
     #endregion
 
     #region ***---OverrideValues---***
