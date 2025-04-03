@@ -14,35 +14,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueDictionary:
     _serializedList:
+    - Key: David_Ellipsis
+      Value:
+        text: . . .
+        character: {fileID: 11400000, guid: 206a9c7f94fa46a4bb93deab729f915c, type: 2}
+        whereToPlaySFX: 4
+        autoContinue: 0
+        textSpeed: 4
+        soundID: David_Ellipsis
+        characterName: David
     - Key: David_Shocked
       Value:
         text: '!!!'
         character: {fileID: 11400000, guid: 206a9c7f94fa46a4bb93deab729f915c, type: 2}
         whereToPlaySFX: 1
         autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: David_Ellipsis
-      Value:
-        text: ...<color=red>Red</color>
-        character: {fileID: 11400000, guid: 206a9c7f94fa46a4bb93deab729f915c, type: 2}
-        whereToPlaySFX: 4
-        autoContinue: 0
-        textSpeed: 4
-        soundID: 
-        characterName: 
+        textSpeed: 2
+        soundID: David_Shocked
+        characterName: David
     - Key: Dracula_OpeningDialogue_01
       Value:
-        text: Ah... What a predictable outcome. A mere human, brash, reckless and 
+        text: 'Ah... What a predictable outcome. A mere human, brash, reckless and 
           utterly lacking in grace as usual. Smashing through my ancient, irreplaceable 
-          castle walls with... this.
+          castle walls with... this.'
         character: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Dracula
+        characterName: Dracula
     - Key: Dracula_OpeningDialogue_02
       Value:
         text: Well, since you seem so eager to part with your possessions... I shall
@@ -51,8 +51,8 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Dracula
+        characterName: Dracula
     - Key: Dracula_OpeningDialogue_03
       Value:
         text: Yes... a fitting compensation for the insult you have delivered upon
@@ -61,8 +61,8 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Dracula
+        characterName: Dracula
     - Key: Dracula_OpeningDialogue_04
       Value:
         text: As for you, I would suggest you scram!
@@ -70,8 +70,152 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Dracula
+        characterName: Dracula
+    - Key: Drucilla_DrucillaIntroduction_01
+      Value:
+        text: Is this what my father's castle has been reduced too? Filthy peasants
+          intruding and tracking mud across the marble?
+        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Drucilla
+        characterName: ???
+    - Key: Drucilla_DrucillaIntroduction_02
+      Value:
+        text: Well, you clearly have no idea whose presence you've just barged into.
+          Let me take some pity and educate you on the matter.
+        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Drucilla
+        characterName: ???
+    - Key: Drucilla_DrucillaIntroduction_03
+      Value:
+        text: I am Drucilla, daughter of the almighty Dracula, heir to his eternal
+          dominion, and most importantly-
+        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Drucilla
+        characterName: Drucilla
+    - Key: Drucilla_DrucillaIntroduction_04
+      Value:
+        text: Daddy's little princess!
+        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Drucilla
+        characterName: Drucilla
+    - Key: Drucilla_DrucillaIntroduction_05
+      Value:
+        text: This castle? Mine.
+        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Drucilla
+        characterName: Drucilla
+    - Key: Drucilla_DrucillaIntroduction_06
+      Value:
+        text: The night itself? Mine.
+        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Drucilla
+        characterName: Drucilla
+    - Key: Drucilla_DrucillaIntroduction_07
+      Value:
+        text: Your pathetic excuse for a fate? Oh, that, too, belongs to me.
+        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Drucilla
+        characterName: Drucilla
+    - Key: Drucilla_DrucillaIntroduction_08
+      Value:
+        text: And yet, you march in here like some bold little hero, thinking you
+          stand a chance? Ohhh, that is just hilarious!
+        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Drucilla
+        characterName: Drucilla
+    - Key: Drucilla_DrucillaIntroduction_09
+      Value:
+        text: Even the rats in my father's dungeon have more refinement than you.
+          Shall we see how you fair against them?
+        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Drucilla
+        characterName: Drucilla
+    - Key: Drucilla_DrucillaIntroduction_10
+      Value:
+        text: Buh-bye, peasant!
+        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Drucilla
+        characterName: Drucilla
+    - Key: Oswald_EntranceHall_Checkpoint1_01
+      Value:
+        text: You're on fire, kid! Look at those moves! Oh, and remember those goons
+          I mentioned?
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_EntranceHall_Checkpoint1_02
+      Value:
+        text: Yeah, they're just up ahead, so keep your eyes peeled and your wits
+          sharper than a vampire's fangs!
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_EntranceHall_Checkpoint2_01
+      Value:
+        text: Ya-ho! You're tearing through this place like a kid in a candy store!
+          Oh, and guess what?
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_EntranceHall_Checkpoint2_02
+      Value:
+        text: That weapon of you yeah? Well I gave it a little tweak. Now every time
+          you pull off something flashy, you'll get a sweet boost!
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_EntranceHall_Checkpoint2_03
+      Value:
+        text: Go on, try it out up ahead. Show em what you've got, champ!
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
     - Key: Oswald_OswaldIntroduction_01
       Value:
         text: Bzzz... zzz.. Hel...btzzz...oOo...bzz
@@ -79,8 +223,8 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Oswald
+        characterName: ???
     - Key: Oswald_OswaldIntroduction_02
       Value:
         text: HELLO! Hiiii! Great this works! I'm Oswald the Befuddled.
@@ -88,8 +232,8 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Oswald
+        characterName: Oswald
     - Key: Oswald_OswaldIntroduction_03
       Value:
         text: Wizard extraordinaire, castle prisoner, and now your official guide
@@ -98,8 +242,8 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Oswald
+        characterName: Oswald
     - Key: Oswald_OswaldIntroduction_04
       Value:
         text: That flashy thing Dracula stole? Your car- You want that back right?
@@ -107,8 +251,8 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Oswald
+        characterName: Oswald
     - Key: Oswald_OswaldIntroduction_05
       Value:
         text: 'Good news: I can help! Bad news: this place is crawling with traps
@@ -117,8 +261,8 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Oswald
+        characterName: Oswald
     - Key: Oswald_OswaldIntroduction_06
       Value:
         text: More good news! I've scattered some magical tips around the castle.
@@ -128,8 +272,8 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Oswald
+        characterName: Oswald
     - Key: Oswald_OswaldIntroduction_07
       Value:
         text: Off you go kiddo!
@@ -137,57 +281,8 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Oswald_EntranceHall_Checkpoint1_01
-      Value:
-        text: You're on fire, kid! Look at those moves! Oh, and remember those goons
-          I mentioned?
-        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Oswald_EntranceHall_Checkpoint1_02
-      Value:
-        text: Yeah, they're just up ahead, so keep your eyes peeled and your wits
-          sharper than a vampire's fangs!
-        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Oswald_EntranceHall_Checkpoint2_01
-      Value:
-        text: Ya-ho! You're tearing through this place like a kid in a candy store!
-          Oh, and guess what?
-        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Oswald_EntranceHall_Checkpoint2_02
-      Value:
-        text: That weapon of you yeah? Well I gave it a little tweak. Now every time
-          you pull off something flashy, you'll get a sweet boost!
-        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Oswald_EntranceHall_Checkpoint2_03
-      Value:
-        text: Go on, try it out up ahead. Show em what you've got, champ!
-        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Oswald
+        characterName: Oswald
     - Key: Oswald_TheDungeons_Intro_01
       Value:
         text: Oh... and watch out for that landing.
@@ -195,100 +290,5 @@ MonoBehaviour:
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Drucilla_DrucillaIntroduction_01
-      Value:
-        text: Is this what my father's castle has been reduced too? Filthy peasants
-          intruding and tracking mud across the marble?
-        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Drucilla_DrucillaIntroduction_02
-      Value:
-        text: Well, you clearly have no idea whose presence you've just barged into.
-          Let me take some pity and educate you on the matter.
-        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Drucilla_DrucillaIntroduction_10
-      Value:
-        text: Buh-bye, peasant!
-        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Drucilla_DrucillaIntroduction_09
-      Value:
-        text: Even the rats in my father's dungeon have more refinement than you.Shall
-          we see how you fair against them?
-        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Drucilla_DrucillaIntroduction_08
-      Value:
-        text: And yet, you march in here like some bold little hero, thinking you
-          stand a chance? Ohhh, that is just hilarious!
-        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Drucilla_DrucillaIntroduction_07
-      Value:
-        text: Your pathetic excuse for a fate? Oh, that, too, belongs to me.
-        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Drucilla_DrucillaIntroduction_06
-      Value:
-        text: The night itself? Mine.
-        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Drucilla_DrucillaIntroduction_05
-      Value:
-        text: This castle? Mine.
-        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Drucilla_DrucillaIntroduction_04
-      Value:
-        text: Daddy's little princess!
-        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
-    - Key: Drucilla_DrucillaIntroduction_03
-      Value:
-        text: I am Drucilla, daughter of the almighty Dracula, heir to his eternal
-          dominion, and most importantly-
-        character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
-        whereToPlaySFX: 2
-        autoContinue: 0
-        textSpeed: 32
-        soundID: 
-        characterName: 
+        soundID: Talk_Oswald
+        characterName: Oswald
