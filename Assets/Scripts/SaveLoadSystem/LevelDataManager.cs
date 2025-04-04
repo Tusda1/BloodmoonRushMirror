@@ -65,7 +65,7 @@ namespace SaveLoadSystem {
             if (Input.GetKeyDown(KeyCode.F7)) {
                 SaveLoadSystemManager_SaveLoad();
             }
-            if (Input.GetKeyDown(KeyCode.F4)) {
+            if (Input.GetKeyDown(KeyCode.F4) && otherLevel != null) {
                 _saveLoadSystemManager.CurrentGameData = null;
                 _saveLoadSystemManager.SetCurrentGameDataFromTemplate("NOSAVESYSTEM");
                 _cameraEffects.FadeLoadScene(otherLevel);

@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using JetBrains.Annotations;
 using SceneCollections;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -160,7 +161,7 @@ public class CameraEffects : MonoBehaviour {
         cameraPixelatedGameObject.transform.position = Vector3.zero;
     }
 
-    public void FadeLoadScene(SceneCollectionSO sceneCollection, Action callback = null) {
+    public void FadeLoadScene(SceneCollectionSO sceneCollection, [CanBeNull]Action callback = null) {
         CircleFadeOut(1,
             () => {
                 Time.timeScale = 0;
