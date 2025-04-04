@@ -1,5 +1,4 @@
 #if UNITY_EDITOR
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,102 +9,96 @@ namespace Gaskellgames.EditorOnly
     /// </summary>
 
     [CustomPropertyDrawer(typeof(FolderPathAttribute))]
-    public class FolderPathDrawer : PropertyDrawer
+    public class FolderPathDrawer : GgPropertyDrawer
     {
         #region Variables
-
-        private FolderPathAttribute attributeAsType;
         
-        private string selectedPath;
         private Texture iconTexture;
         private GUIStyle iconButtonStyle = new GUIStyle();
 
+        private bool changedByPopUp;
+        private string selectedPath;
         private int warningHeight = 25;
-        private int gap = 2;
-        private float singleLine = EditorGUIUtility.singleLineHeight;
-        private float verticalSpacing = EditorGUIUtility.standardVerticalSpacing;
-
+        
         #endregion
         
         //----------------------------------------------------------------------------------------------------
 
-        #region Property Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            attributeAsType = attribute as FolderPathAttribute;
-            CreateButton();
-            
-            if (FileExtensions.IsFolderPathValid(selectedPath))
-            {
-                return EditorGUI.GetPropertyHeight(property, label);
-            }
-            else
-            {
-                return EditorGUI.GetPropertyHeight(property, label) + warningHeight + verticalSpacing;
-            }
-        }
-
-        #endregion
+        #region GgPropertyHeight
         
-        //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
+            if (property.propertyType != SerializedPropertyType.String) { return propertyHeight; }
 
-            if (property.propertyType == SerializedPropertyType.String)
+            if (string.IsNullOrEmpty(selectedPath) || (selectedPath != property.stringValue && !changedByPopUp))
             {
-                float iconWidth = singleLine;
-                Rect fieldPosition = new Rect(position.xMin, position.yMin, position.width - (iconWidth + gap), position.height);
-                Rect iconPosition = new Rect(fieldPosition.xMax + gap, position.yMin, iconWidth, position.height);
-
-                if (!FileExtensions.IsFolderPathValid(selectedPath))
-                {
-                    Rect warningPosition = new Rect(position.xMin, position.yMin, position.width, warningHeight);
-                    EditorGUI.HelpBox(warningPosition, "Folder path does not exist", MessageType.Warning);
-
-                    fieldPosition.yMin += warningHeight + verticalSpacing;
-                    iconPosition.yMin += warningHeight + verticalSpacing;
-                }
-                
-                if (GUI.Button(iconPosition, iconTexture, iconButtonStyle))
-                {
-                    selectedPath = EditorUtility.OpenFolderPanel("Select a folder", "Assets", "");
-                    if (selectedPath.Contains(Application.dataPath))
-                    {
-                        selectedPath = selectedPath.Substring(Application.dataPath.Length + 1);
-                        property.stringValue = selectedPath;
-                    }
-                    else
-                    {
-                        Debug.LogError("The folder path must be in the Assets folder");
-                    }
-                    GUIUtility.ExitGUI();
-                }
-                
-                // set value
-                property.stringValue = EditorGUI.TextField(fieldPosition, label, selectedPath);
                 selectedPath = property.stringValue;
             }
-            else
-            {
-                EditorGUI.PropertyField(position, property, label);
-            }
-
-            // close property
-            EditorGUI.EndProperty();
+            CreateButton();
+            return propertyHeight + (FileExtensions.IsFolderPathValid(selectedPath) || property.hasMultipleDifferentValues
+                ? 0
+                : warningHeight + standardSpacing);
         }
+        
+        #endregion
+        
+        //----------------------------------------------------------------------------------------------------
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
+        {
+            if (property.propertyType != SerializedPropertyType.String)
+            {
+                GgGUI.CustomPropertyField(position, property, label);
+                return;
+            }
+            
+            // calculate positions
+            float iconWidth = singleLineHeight;
+            Rect fieldPosition = new Rect(position.xMin, position.yMin, position.width - (iconWidth + standardSpacing), position.height);
+            Rect iconPosition = new Rect(fieldPosition.xMax + standardSpacing, position.yMin, iconWidth, position.height);
 
+            // try draw warning
+            if (!FileExtensions.IsFolderPathValid(selectedPath) && !property.hasMultipleDifferentValues)
+            {
+                Rect warningPosition = new Rect(position.xMin, position.yMin, position.width, warningHeight);
+                EditorGUI.HelpBox(warningPosition, "Folder path does not exist", MessageType.Warning);
+
+                fieldPosition.yMin += warningHeight + standardSpacing;
+                iconPosition.yMin += warningHeight + standardSpacing;
+            }
+            
+            // draw text field and 'open panel' button
+            if (GUI.Button(iconPosition, iconTexture, iconButtonStyle))
+            {
+                selectedPath = EditorUtility.OpenFolderPanel("Select a folder", "Assets", "");
+                if (selectedPath.Contains(Application.dataPath))
+                {
+                    selectedPath = selectedPath.Substring(Application.dataPath.Length + 1);
+                    changedByPopUp = true;
+                }
+                else
+                {
+                    Debug.LogError("The folder path must be in the Assets folder");
+                }
+                GUIUtility.ExitGUI();
+            }
+                
+            // set value
+            if (GgGUI.TextField(fieldPosition, label, selectedPath, out selectedPath, property.hasMultipleDifferentValues) || changedByPopUp)
+            {
+                property.stringValue = selectedPath;
+                changedByPopUp = false;
+            }
+        }
+        
         #endregion
         
         //----------------------------------------------------------------------------------------------------
 
         #region Private Functions
-
+        
         private void CreateButton()
         {
             iconTexture = EditorGUIUtility.IconContent("d_FolderOpened Icon").image;

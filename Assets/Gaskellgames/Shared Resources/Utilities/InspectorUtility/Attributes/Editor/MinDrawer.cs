@@ -8,54 +8,44 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(MinAttribute))]
-    public class MinDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(MinAttribute), true)]
+    public class MinDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private MinAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as MinAttribute;
-            
-            return base.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
 
-        #region OnGUI
+        #region OnGgGUI
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
-
             if (property.propertyType == SerializedPropertyType.Float)
             {
-                float limitedValue = Mathf.Max(property.floatValue, attributeAsType.min);
-                property.floatValue = EditorGUI.FloatField(position, label, limitedValue);
+                float limitedValue = Mathf.Max(property.floatValue, AttributeAsType<MinAttribute>().min);
+                if (GgGUI.FloatField(position, label, limitedValue, out float outputValue, property.hasMultipleDifferentValues))
+                {
+                    property.floatValue = outputValue;
+                }
             }
             else if (property.propertyType == SerializedPropertyType.Integer)
             {
-                int limitedValue = Mathf.Max(property.intValue, (int)attributeAsType.min);
-                property.intValue = EditorGUI.IntField(position, label, limitedValue);
+                int limitedValue = Mathf.Max(property.intValue, (int)AttributeAsType<MinAttribute>().min);
+                if (GgGUI.IntField(position, label, limitedValue, out int outputValue, property.hasMultipleDifferentValues))
+                {
+                    property.intValue = outputValue;
+                }
             }
             else
             {
-                EditorGUI.PropertyField(position, property, label);
+                GgGUI.CustomPropertyField(position, property, label);
             }
-
-            // close property
-            EditorGUI.EndProperty();
         }
 
         #endregion

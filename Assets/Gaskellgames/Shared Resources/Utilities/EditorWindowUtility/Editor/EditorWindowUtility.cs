@@ -14,11 +14,12 @@ namespace Gaskellgames.EditorOnly
         #region Variables
         
         public static GaskellgamesHubSettings_SO settings;
+        public static ShaderAutoUpdater_SO shaderAutoUpdater;
         
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
+        
         #region Constructor
 
         static EditorWindowUtility()
@@ -28,28 +29,39 @@ namespace Gaskellgames.EditorOnly
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
+        
         #region Private Functions
 
         private static void Initialisation()
         {
             settings = EditorExtensions.GetAssetByType<GaskellgamesHubSettings_SO>();
+            shaderAutoUpdater = EditorExtensions.GetAssetByType<ShaderAutoUpdater_SO>();
         }
         
         private static void RunOnceOnStartup()
         {
-            if (!settings) { Initialisation(); }
-            if (!settings || !settings.showHubOnStartup || SessionState.GetBool("EditorWindowUtilityFirstInit", false)) { return; }
-            GaskellgamesHub.OpenWindow_WindowMenu();
+            if (!settings || !shaderAutoUpdater) { Initialisation(); }
+            if (SessionState.GetBool("EditorWindowUtilityFirstInit", false)) { return; }
+
+            if (settings && settings.showHubOnStartup)
+            {
+                GaskellgamesHub.OpenWindow_WindowMenu();
+            }
+
+            if (shaderAutoUpdater)
+            {
+                shaderAutoUpdater.UpdateMaterialsForCurrentTargetPipeline();
+            }
+            
             SessionState.SetBool("EditorWindowUtilityFirstInit", true);
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
+        
         #region Public Functions
 
         public static Texture LoadInspectorBanner(string ggPathRef, string relativeFilepath)
@@ -94,7 +106,6 @@ namespace Gaskellgames.EditorOnly
         }
 
         #endregion
-        
         
     } // class end
 }

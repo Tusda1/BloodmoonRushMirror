@@ -20,6 +20,7 @@ namespace Gaskellgames.EditorOnly
         public static float spacer = EditorGUIUtility.standardVerticalSpacing;
         
         public static float labelWidthForIndentLevel => EditorGUIUtility.labelWidth - (EditorGUI.indentLevel * singleLine);
+        public static float currentIndent => EditorGUI.indentLevel * singleLine;
 
         #endregion
 
@@ -242,7 +243,6 @@ namespace Gaskellgames.EditorOnly
                     EditorGUILayout.PropertyField(iterator,true);
                 }
                 editor.serializedObject.ApplyModifiedProperties();
-		
                 return EditorGUI.EndChangeCheck();
             }
             else
@@ -253,15 +253,12 @@ namespace Gaskellgames.EditorOnly
             }
         }
         
-        public static void DrawSubLabels(Rect position, string minLabel, string maxLabel, bool drawSubLabels)
+        public static void DrawSubLabels(Rect position, string minLabel, string maxLabel)
         {
-            if (drawSubLabels)
-            {
-                GUIStyle subLabelStyle = InspectorExtensions.GetSubLabelStyle();
-                EditorGUI.LabelField(position, minLabel, subLabelStyle);
-                subLabelStyle.alignment = TextAnchor.UpperRight;
-                EditorGUI.LabelField(position, maxLabel, subLabelStyle);
-            }
+            GUIStyle subLabelStyle = InspectorExtensions.GetSubLabelStyle();
+            GUI.Label(position, minLabel, subLabelStyle);
+            subLabelStyle.alignment = TextAnchor.UpperRight;
+            GUI.Label(position, maxLabel, subLabelStyle);
         }
         
         /// <summary>
@@ -349,6 +346,33 @@ namespace Gaskellgames.EditorOnly
         public static void EndFoldoutGroupNestable()
         {
             EditorGUILayout.EndVertical();
+        }
+        
+        /// <summary>
+        /// Start a foldout group (nestable)
+        /// </summary>
+        /// <param name="label">Label used for label text and tooltip</param>
+        /// <param name="property">The SerializedProperty to make the custom GUI for.</param>
+        /// <returns></returns>
+        public static bool BeginCustomFoldoutGroup(GUIContent label, SerializedProperty property)
+        {
+            BeginCustomInspectorBackground(InspectorExtensions.backgroundSeperatorColorDark, 1, -2);
+            EndCustomInspectorBackground();
+            BeginCustomInspectorBackground(InspectorExtensions.backgroundNormalColor, 1, -3);
+            property.isExpanded = BeginFoldoutGroupNestable(label, property.isExpanded, new GUIStyle(), 3);
+            EndFoldoutGroupNestable();
+            EndCustomInspectorBackground();
+            if (property.isExpanded) { GUILayout.Space(2); }
+            return property.isExpanded;
+        }
+
+        /// <summary>
+        /// End a custom foldout group (nestable)
+        /// </summary>
+        public static void EndCustomFoldoutGroup()
+        {
+            BeginCustomInspectorBackground(InspectorExtensions.backgroundSeperatorColorDark, 2, -3);
+            EndCustomInspectorBackground();
         }
         
         /// <summary>

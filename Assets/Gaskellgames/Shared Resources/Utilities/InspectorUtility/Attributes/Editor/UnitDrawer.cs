@@ -5,69 +5,36 @@ using UnityEngine;
 
 namespace Gaskellgames
 {
-    // <summary>
-    // Code created by Gaskellgames
-    // </summary>
+    /// <summary>
+    /// Code created by Gaskellgames: https://github.com/Gaskellgames
+    /// </summary>
     
-    [CustomPropertyDrawer(typeof(UnitAttribute))]
-    internal class UnitDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(UnitAttribute), true)]
+    internal class UnitDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private UnitAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as UnitAttribute;
-            
-            PropertyDrawer customProperty = PropertyDrawerExtensions.Find(property);
-            if (customProperty != null)
-            {
-                // custom property
-                return customProperty.GetPropertyHeight(property, label);
-            }
-                
-            // 'built in' property
-            return EditorGUI.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
+        
+        #region OnGgGUI
 
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            EditorGUI.BeginProperty(position, label, property);
-            
-            // draw property
-            PropertyDrawer customDrawer = PropertyDrawerExtensions.Find(property);
-            if (customDrawer == null)
-            {
-                EditorGUI.PropertyField(position, property, label, true);
-            }
-            else
-            {
-                customDrawer.OnGUI(position, property, label);
-            }
-            
-            // draw units
-            DrawUnitOverlay(position, GetUnitLabel(attributeAsType.unit), property.propertyType, property.isExpanded);
-
-            EditorGUI.EndProperty();
+            GgGUI.CustomPropertyField(position, property, label);
+            DrawUnitOverlay(position, GetUnitLabel(AttributeAsType<UnitAttribute>().unit), property.propertyType, property.isExpanded);
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
+        
         #region Private Functions
 
         private GUIContent GetUnitLabel(GgMaths.Units units)

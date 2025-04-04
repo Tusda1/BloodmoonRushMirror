@@ -2,27 +2,35 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Gaskellgames
+namespace Gaskellgames.EditorOnly
 {
     /// <summary>
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(HiddenAttribute))]
-    public class HiddenDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(HiddenAttribute), true)]
+    public class HiddenDrawer : GgPropertyDrawer
     {
-        private float removeSpacing = -EditorGUIUtility.standardVerticalSpacing;
-        
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        #region GgPropertyHeight
+
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            return removeSpacing;
+            return -standardSpacing;
         }
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        #endregion
+        
+        //----------------------------------------------------------------------------------------------------
+
+        #region OnGgGUI
+
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
             // blank
         }
 
+        #endregion
+        
     } // class end
 }
 

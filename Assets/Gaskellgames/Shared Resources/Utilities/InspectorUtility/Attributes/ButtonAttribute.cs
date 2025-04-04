@@ -18,5 +18,4 @@ namespace Gaskellgames
         }
         
     } // class end
-    
-} // namespace end
+}

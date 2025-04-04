@@ -8,72 +8,63 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(RangeAttribute))]
-    public class RangeDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(RangeAttribute), true)]
+    public class RangeDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private RangeAttribute attributeAsType;
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
+        {
+            RangeAttribute attributeAsType = AttributeAsType<RangeAttribute>();
+            return attributeAsType != null && attributeAsType.subLabels ? propertyHeight + (singleLineHeight * 0.4f) : propertyHeight;
+        }
+
+        #endregion
         
-        private readonly float singleLine = EditorGUIUtility.singleLineHeight;
-        private readonly float labelWidth = EditorGUIUtility.labelWidth;
-        private readonly int floatWidth = 50;
-        private readonly int gap = 4;
-
-        #endregion
-
         //----------------------------------------------------------------------------------------------------
+        
+        #region OnGgGUI
 
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            attributeAsType = attribute as RangeAttribute;
-            
-            if (attributeAsType.subLabels)
+            if (property.propertyType == SerializedPropertyType.Float)
             {
-                return EditorGUI.GetPropertyHeight(property, label) + (singleLine * 0.4f);
+                RangeAttribute attributeAsType = AttributeAsType<RangeAttribute>();
+                Rect sliderRect = new Rect(position.x, position.y, position.width, singleLineHeight);
+                GgGUI.Slider(sliderRect, property, label, new Vector2(attributeAsType.min, attributeAsType.max));
+                if (attributeAsType.subLabels)
+                {
+                    DrawSubLabels(GetFieldPosition(position, label));
+                }
+            }
+            else if (property.propertyType == SerializedPropertyType.Integer)
+            {
+                RangeAttribute attributeAsType = AttributeAsType<RangeAttribute>();
+                Rect sliderRect = new Rect(position.x, position.y, position.width, singleLineHeight);
+                GgGUI.IntSlider(sliderRect, property, label, new Vector2Int((int)attributeAsType.min, (int)attributeAsType.max));
+                if (attributeAsType.subLabels) { DrawSubLabels(GetFieldPosition(position, label)); }
             }
             else
             {
-                return EditorGUI.GetPropertyHeight(property, label);
+                GgGUI.CustomPropertyField(position, property, label);
             }
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region Private Functions
+        
+        private void DrawSubLabels(Rect fieldPosition)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
-            // draw label, slider and float field
-            // draw slider
-            if (fieldInfo.FieldType == typeof(int))
-            {
-                Rect sliderRect = new Rect(position.x, position.y, position.width, singleLine);
-                property.intValue = (int)EditorGUI.Slider(sliderRect, label, property.intValue, attributeAsType.min, attributeAsType.max);
-            }
-            else if (fieldInfo.FieldType == typeof(float))
-            {
-                Rect sliderRect = new Rect(position.x, position.y, position.width, singleLine);
-                property.floatValue = EditorGUI.Slider(sliderRect, label, property.floatValue, attributeAsType.min, attributeAsType.max);
-            }
-            else
-            {
-                EditorGUI.PropertyField(position, property, label);
-            }
-
-            // draw sub labels
-            Rect subLabelRect = new Rect(position.x + labelWidth + 2, position.y + (singleLine * 0.75f), position.width - (labelWidth + 2 + floatWidth + gap), singleLine);
-            EditorExtensions.DrawSubLabels(subLabelRect, attributeAsType.minLabel, attributeAsType.maxLabel, attributeAsType.subLabels);
-
-            EditorGUI.EndProperty();
+            RangeAttribute attributeAsType = AttributeAsType<RangeAttribute>();
+            float subLabelPositionY = fieldPosition.y + (singleLineHeight * 0.75f);
+            float subLabelWidth = fieldPosition.width - (miniFieldWidth + standardSpacing + standardSpacing);
+            Rect subLabelRect = new Rect(fieldPosition.x, subLabelPositionY, subLabelWidth, singleLineHeight);
+            EditorExtensions.DrawSubLabels(subLabelRect, attributeAsType.minLabel, attributeAsType.maxLabel);
         }
-
+        
         #endregion
         
     } // class end

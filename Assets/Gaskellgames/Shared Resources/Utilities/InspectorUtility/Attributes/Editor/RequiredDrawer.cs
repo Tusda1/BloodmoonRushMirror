@@ -8,48 +8,34 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(RequiredAttribute))]
-    public class RequiredDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(RequiredAttribute), true)]
+    public class RequiredDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private RequiredAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as RequiredAttribute;
-            
-            return EditorGUI.GetPropertyHeight(property, label, true);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
 
-        #region OnGUI
+        #region OnGgGUI
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
-            if (property.objectReferenceValue == null)
+            if (property.propertyType == SerializedPropertyType.ObjectReference && property.objectReferenceValue == null)
             {
+                RequiredAttribute attributeAsType = AttributeAsType<RequiredAttribute>();
                 GUI.backgroundColor = new Color32(attributeAsType.R, attributeAsType.G, attributeAsType.B, attributeAsType.A);
-                EditorGUI.PropertyField(position, property, label);
-                GUI.backgroundColor = Color.white;
+                GgGUI.CustomPropertyField(position, property, label);
             }
             else
             {
-                EditorGUI.PropertyField(position, property, label);
+                GgGUI.CustomPropertyField(position, property, label);
             }
-
-            EditorGUI.EndProperty();
         }
 
         #endregion

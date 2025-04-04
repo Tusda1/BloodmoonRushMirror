@@ -800,6 +800,20 @@ namespace Gaskellgames
         }
         
         /// <summary>
+        /// Is a point on the positive side of a circle in 3D space?
+        /// </summary>
+        /// <param name="point">The position in 3D space to be projected.</param>
+        /// <param name="center">The center of the circle in world space.</param>
+        /// <param name="normal">The normal direction of the circle in world space.</param>
+        /// <param name="up">The up direction of the circle in world space.</param>
+        /// <returns></returns>
+        public static bool GetSideOfCircle(Vector3 point, Vector3 center, Vector3 normal, Vector3 up)
+        {
+            Plane plane = PlaneExtensions.GetPlaneFromPointAndRelativeVectors(center, up, GetRight(up, normal));
+            return plane.GetSide(point);
+        }
+        
+        /// <summary>
         /// Get a point on a circle in the x-axis and y-axis (flat z-axis)
         /// </summary>
         /// <param name="center"></param>

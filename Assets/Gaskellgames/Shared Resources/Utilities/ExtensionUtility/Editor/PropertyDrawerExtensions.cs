@@ -2,43 +2,129 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEditor;
+using Object = UnityEngine.Object;
 
 namespace Gaskellgames.EditorOnly
 {
     /// <summary>
-    /// Code updated by Gaskellgames: https://github.com/Gaskellgames
-    /// Original code created by ghysc: https://github.com/ghysc/SwitchAttribute
+    /// Code created by Gaskellgames unless otherwise stated
     /// </summary>
 	
     public static class PropertyDrawerExtensions
     {
+        #region SerializedPropertyObjectType
+
+        /// <summary>
+        /// Gets the Type of a serialized property (must extend Object).
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public static Type ObjectType(this SerializedProperty property)
+        {
+            string typeAsString = property.type;
+            var match = Regex.Match(typeAsString, @"PPtr<\$(.*?)>");
+            if (match.Success)
+                typeAsString = match.Groups[1].Value;
+            
+            return typeof(Object).Assembly.GetType("UnityEngine." + typeAsString);
+        }
+
+        #endregion
+        
+        //----------------------------------------------------------------------------------------------------
+
+        #region FindCustomPropertyDrawers
+
+        /// <summary>
+        /// Code updated by Gaskellgames: https://github.com/Gaskellgames
+        /// Original code created by ghysc: https://github.com/ghysc/SwitchAttribute
+        /// </summary>
+        
         private static Dictionary<Type, PropertyDrawer> customDrawers = new Dictionary<Type, PropertyDrawer>();
 
         /// <summary>
         /// Returns the custom property drawer for given property, if one exists.
         /// </summary>
         /// <param name="property"></param>
+        /// <param name="customDrawer"></param>
         /// <returns></returns>
-        public static PropertyDrawer Find(SerializedProperty property)
+        public static bool TryFindCustomPropertyDrawer(SerializedProperty property, out PropertyDrawer customDrawer)
         {
-            Type propertyType = property.GetPropertyType();
-            if (propertyType == null) { return null; }
+            if (!property.TryGetPropertyType(out Type propertyType))
+            {
+                customDrawer = null;
+                return false;
+            }
             
             // cache value for future checks
             if (!customDrawers.ContainsKey(propertyType))
             {
-                customDrawers.Add(propertyType, Find(propertyType));
+                if (TryFindCustomDrawer(propertyType, out PropertyDrawer foundDrawer))
+                {
+                    customDrawers.Add(propertyType, foundDrawer);
+                }
             }
-            return customDrawers[propertyType];
+            
+            customDrawer = customDrawers[propertyType];
+            return customDrawers[propertyType] != null;
+        }
+        
+        /// <summary>
+        /// Gets the Type of a serialized property using reflection.
+        /// </summary>
+        /// <param name="property"></param>
+        /// <param name="propertyType"></param>
+        /// <param name="flags"></param>
+        /// <returns></returns>
+        private static bool TryGetPropertyType(this SerializedProperty property, out Type propertyType, BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.Instance)
+        {
+            Type parentType = property.serializedObject.targetObject.GetType();
+            string[] splitPropertyPath = property.propertyPath.Split('.');
+            FieldInfo fieldInfo = parentType.GetField(splitPropertyPath[0], flags);
 
+            if (fieldInfo == null)
+            {
+                propertyType = null;
+                return false;
+            }
+            Type fieldType = fieldInfo.FieldType;
+            Type arrayType = fieldType.GetElementType();
+            
+            for (int i = 1; i < splitPropertyPath.Length; i++)
+            {
+                if (fieldType.IsArray && i + 2 < splitPropertyPath.Length && splitPropertyPath[i] == "Array")
+                {
+                    string dataString = splitPropertyPath[i + 1];
+                    Regex pattern = new Regex(@"^data\[\d+\]$");
+                    Match match = pattern.Match(dataString);
+                    if (!match.Success) { continue; }
+                    if (i + 1 == splitPropertyPath.Length - 1) { break; }
+                    if (arrayType != null) { fieldInfo = arrayType.GetField(splitPropertyPath[i + 2], flags); }
+                    i += 2;
+                }
+                else
+                {
+                    fieldInfo = fieldType.GetField(splitPropertyPath[i], flags);
+                }
+            }
+
+            if (fieldInfo == null)
+            {
+                propertyType = null;
+                return false;
+            }
+            
+            propertyType = fieldInfo.FieldType;
+            return true;
         }
         
         /// <summary>
         /// Returns custom property drawer for type if one could be found, or null if 
         /// no custom property drawer could be found. Does not use cached values, so it's resource intensive.
         /// </summary>
-        public static PropertyDrawer Find(Type propertyType)
+        private static bool TryFindCustomDrawer(Type propertyType, out PropertyDrawer customDrawer)
         {
             foreach (Assembly assem in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -58,7 +144,8 @@ namespace Gaskellgames.EditorOnly
                             {
                                 if (candidate.IsSubclassOf(typeof(PropertyDrawer)))
                                 {
-                                    return (PropertyDrawer)Activator.CreateInstance(candidate);
+                                    customDrawer = (PropertyDrawer)Activator.CreateInstance(candidate);
+                                    return true;
                                 }
                             }
                         }
@@ -66,8 +153,11 @@ namespace Gaskellgames.EditorOnly
                 }
             }
 			
-            return null;
+            customDrawer = null;
+            return true;
         }
+
+        #endregion
 
     } // class end
 }

@@ -8,50 +8,39 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
     
-    [CustomPropertyDrawer(typeof(CustomCurveAttribute))]
-    public class CustomCurveDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(CustomCurveAttribute), true)]
+    public class CustomCurveDrawer : GgPropertyDrawer
     {
-        #region Variables
-
-        private CustomCurveAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        #region GgPropertyHeight
+        
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as CustomCurveAttribute;
-            
-            return base.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
-
+        
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            EditorGUI.BeginProperty(position, label, property);
-            Color32 lineColor = new Color32(attributeAsType.R, attributeAsType.G, attributeAsType.B, attributeAsType.A);
-
-            if (property.propertyType == SerializedPropertyType.AnimationCurve)
-            {
-                // draw curve
-                EditorGUI.CurveField(position, property, lineColor, default, new GUIContent(label));
-            }
-            else
+            // quick return if wrong type
+            if (property.propertyType != SerializedPropertyType.AnimationCurve)
             {
                 EditorGUI.PropertyField(position, property, label);
+                return;
             }
+            
+            Color32 lineColor = new Color32(AttributeAsType<CustomCurveAttribute>().R,
+                AttributeAsType<CustomCurveAttribute>().G,
+                AttributeAsType<CustomCurveAttribute>().B,
+                AttributeAsType<CustomCurveAttribute>().A);
 
-            EditorGUI.EndProperty();
+            GgGUI.CurveField(position, property, label, lineColor);
         }
-
+        
         #endregion
 
     } // class end

@@ -58,7 +58,7 @@ namespace Gaskellgames.EditorOnly
                 }
             }
         }
-    }
-    
-} // namespace end 
+        
+    } // class end
+} 
 #endif

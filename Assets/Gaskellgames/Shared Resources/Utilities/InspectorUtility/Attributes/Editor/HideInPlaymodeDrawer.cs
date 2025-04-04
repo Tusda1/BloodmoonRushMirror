@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using Gaskellgames.EditorOnly;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,47 +9,28 @@ namespace Gaskellgames
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(HideInPlayModeAttribute))]
-    public class HideInPlayModeDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(HideInPlayModeAttribute), true)]
+    public class HideInPlayModeDrawer : GgPropertyDrawer
     {
-        #region Variables
-
-        private HideInPlayModeAttribute attributeAsType;
+        #region GgPropertyHeight
         
-        private float removeSpacing = -EditorGUIUtility.standardVerticalSpacing;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as HideInPlayModeAttribute;
-
-            return !Application.isPlaying ? base.GetPropertyHeight(property, label) : removeSpacing;
+            return Application.isPlaying ? -standardSpacing : propertyHeight;
         }
-
+        
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            EditorGUI.BeginProperty(position, label, property);
-            
-            // draw property
-            if (!Application.isPlaying)
-            {
-                EditorGUI.PropertyField(position, property, label);
-            }
-
-            EditorGUI.EndProperty();
+            if (Application.isPlaying) { return; }
+            GgGUI.CustomPropertyField(position, property, label);
         }
-
+        
         #endregion
 
     } // class end

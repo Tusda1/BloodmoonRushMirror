@@ -8,49 +8,28 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(LabelWidthAttribute))]
-    public class LabelWidthDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(LabelWidthAttribute), true)]
+    public class LabelWidthDrawer : GgPropertyDrawer
     {
-        #region Variables
-
-        private LabelWidthAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        #region GgPropertyHeight
+        
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as LabelWidthAttribute;
-            
-            return base.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
-
+        
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
-            // cache default
-            float defaultWidth = EditorGUIUtility.labelWidth;
-            
-            // draw property
-            EditorGUIUtility.labelWidth = attributeAsType.labelWidth;
-            EditorGUI.PropertyField(position, property, label);
-            
-            // reset values
-            EditorGUIUtility.labelWidth = defaultWidth;
-
-            EditorGUI.EndProperty();
+            EditorGUIUtility.labelWidth = IsListOrArray(property) ? labelWidth : AttributeAsType<LabelWidthAttribute>().labelWidth;
+            GgGUI.CustomPropertyField(position, property, label);
         }
-
+        
         #endregion
         
     } // class end

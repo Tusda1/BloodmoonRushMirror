@@ -9,71 +9,32 @@ namespace Gaskellgames.EditorOnly
     /// Original code created by ghysc: https://github.com/ghysc/SwitchAttribute
     /// </summary>
 	
-    [CustomPropertyDrawer(typeof(EnableIfAttribute))]
-    public class EnableIfDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(EnableIfAttribute), true)]
+    public class EnableIfDrawer : GgPropertyDrawer
     {
-        #region Variables
-
-        private EnableIfAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        #region GgPropertyHeight
+        
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as EnableIfAttribute;
-            
-            PropertyDrawer customProperty = PropertyDrawerExtensions.Find(property);
-            if (customProperty != null)
-            {
-                // custom property
-                return customProperty.GetPropertyHeight(property, label);
-            }
-                
-            // 'built in' property
-            return EditorGUI.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
-
+        
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, label, property);
-
-            // cache default values
-            bool defaultGui = GUI.enabled;
-			
-            // draw property
-            GUI.enabled = GetConditionalResult(attributeAsType, property);
-            PropertyDrawer customDrawer = PropertyDrawerExtensions.Find(property);
-            if (customDrawer == null)
-            {
-                EditorGUI.PropertyField(position, property, label, true);
-            }
-            else
-            {
-                customDrawer.OnGUI(position, property, label);
-            }
-
-            // reset default values
-            GUI.enabled = defaultGui;
-            
-            // close property
-            EditorGUI.EndProperty();
+            GUI.enabled = GetConditionalResult(AttributeAsType<EnableIfAttribute>(), property);
+            GgGUI.CustomPropertyField(position, property, label);
         }
-
+        
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
+        
         #region Private Functions
 
         /// <summary>

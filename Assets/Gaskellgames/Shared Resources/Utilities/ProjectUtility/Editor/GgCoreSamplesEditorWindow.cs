@@ -34,8 +34,8 @@ namespace Gaskellgames.EditorOnly
         private Sample_Attribute_DisableInPlayMode sampleAttributeDisableInPlayMode;
         private Editor editor_EnableIf;
         private Sample_Attribute_EnableIf sampleAttributeEnableIf;
-        private Editor editor_EnumToggleButtons;
-        private Sample_Attribute_EnumToggleButtons sampleAttributeEnumToggleButtons;
+        private Editor editor_EnumButtons;
+        private Sample_Attribute_EnumButtons sampleAttributeEnumButtons;
         private Editor editor_FilePath;
         private Sample_Attribute_FilePath sampleAttributeFilePath;
         private Editor editor_FolderPath;
@@ -71,7 +71,11 @@ namespace Gaskellgames.EditorOnly
         private Editor editor_MinMax;
         private Sample_Attribute_MinMax sampleAttributeMinMax;
         private Editor editor_MinMaxSlider;
+        private Sample_Attribute_NavMeshMask sampleAttributeNavMeshMask;
+        private Editor editor_NavMeshMask;
         private Sample_Attribute_MinMaxSlider sampleAttributeMinMaxSlider;
+        private Editor editor_OnValueChanged;
+        private Sample_Attribute_OnValueChanged sampleAttributeOnValueChanged;
         private Editor editor_ProgressBar;
         private Sample_Attribute_ProgressBar sampleAttributeProgressBar;
         private Editor editor_Range;
@@ -105,13 +109,13 @@ namespace Gaskellgames.EditorOnly
 
         #region Menu Item
         
-        [MenuItem(MenuItemUtility.GgCoreSamples_ToolsMenu_Path, false, MenuItemUtility.GgCoreSamples_ToolsMenu_Priority)]
+        [MenuItem(MenuItemUtility.GgCoreSamples_ToolsMenu_Path, false, MenuItemUtility.GgCoreSamples_Priority)]
         private static void OpenWindow_ToolsMenu()
         {
             OpenWindow_WindowMenu();
         }
 
-        [MenuItem(MenuItemUtility.GgCoreSamples_WindowMenu_Path, false, MenuItemUtility.GgCoreSamples_WindowMenu_Priority)]
+        [MenuItem(MenuItemUtility.GgCoreSamples_WindowMenu_Path, false, MenuItemUtility.GgCoreSamples_Priority)]
         public static void OpenWindow_WindowMenu()
         {
             OpenWindow<GgCoreSamplesEditorWindow>("GgCore Samples", 500, 750, false, true, Placement.SceneView);
@@ -134,7 +138,7 @@ namespace Gaskellgames.EditorOnly
 
         protected override List<ToolbarItem> LeftToolbar()
         {
-            string copyright = isWindowWide ? "Copyright \u00a9 2024 Gaskellgames. All rights reserved." : "\u00a9 2024 Gaskellgames.";
+            string copyright = isWindowWide ? "Copyright \u00a9 2022-2025 Gaskellgames. All rights reserved." : "\u00a9 Gaskellgames.";
             List<ToolbarItem> leftToolbar = new List<ToolbarItem>
             {
                 new (null, new GUIContent(copyright)),
@@ -145,7 +149,7 @@ namespace Gaskellgames.EditorOnly
 
         protected override List<ToolbarItem> RightToolbar()
         {
-            string version = isWindowWide ? "Version 1.1.0" : "v1.1.0";
+            string version = isWindowWide ? "Version 1.2.4" : "v1.2.4";
             List<ToolbarItem> leftToolbar = new List<ToolbarItem>
             {
                 new (null, new GUIContent(version)),
@@ -180,7 +184,7 @@ namespace Gaskellgames.EditorOnly
                     new MenuTreePage(Page_DisableInEditMode, "DisableInEditMode"),
                     new MenuTreePage(Page_DisableInPlayMode, "DisableInPlayMode"),
                     new MenuTreePage(Page_EnableIf, "EnableIf"),
-                    new MenuTreePage(Page_EnumToggleButtons, "EnumToggleButtons"),
+                    new MenuTreePage(Page_EnumButtons, "EnumButtons"),
                     new MenuTreePage(Page_FilePath, "FilePath"),
                     new MenuTreePage(Page_FolderPath, "FolderPath"),
                     new MenuTreePage(Page_Graph, "Graph"),
@@ -199,6 +203,8 @@ namespace Gaskellgames.EditorOnly
                     new MenuTreePage(Page_Min, "Min"),
                     new MenuTreePage(Page_MinMax, "MinMax"),
                     new MenuTreePage(Page_MinMaxSlider, "MinMaxSlider"),
+                    new MenuTreePage(Page_NavMeshMask, "NavMeshMask"),
+                    new MenuTreePage(Page_OnValueChanged, "OnValueChanged"),
                     new MenuTreePage(Page_ProgressBar, "ProgressBar"),
                     new MenuTreePage(Page_Range, "Range"),
                     new MenuTreePage(Page_ReadOnly, "ReadOnly"),
@@ -319,12 +325,12 @@ namespace Gaskellgames.EditorOnly
             DrawPage(editor_EnableIf, header, description, code);
         }
 
-        private void Page_EnumToggleButtons()
+        private void Page_EnumButtons()
         {
-            string header = "EnumToggleButtons:";
-            string description = "The [EnumToggleButtons] attribute will show an enum as toggleable buttons in the inspector. This attribute can also be used on enum flags to allow easy multi-selection.";
-            string code = "\n        private enum ExampleEnum\n        {\n            One,\n            Two,\n            Three,\n            Four,\n        }\n\n        [Flags]\n        private enum ExampleEnumFlags\n        {\n            None = 0,\n            All = P1 | P2 | P3 | P4 | P5,\n\n            P1 = 1 << 0,\n            P2 = 1 << 1,\n            P3 = 1 << 2,\n            P4 = 1 << 3,\n            P5 = 1 << 4,\n        }\n\n        [Title(\"Enum Buttons\")]\n        [SerializeField, EnumToggleButtons]\n        private ExampleEnum enumButtons1;\n\n        [SerializeField, EnumToggleButtons(true)]\n        private ExampleEnum enumButtons2;\n\n        [Title(\"Enum Buttons: Flags\")]\n        [SerializeField, EnumToggleButtons(true, true, true, true)]\n        private ExampleEnumFlags enumFlags1;\n";
-            DrawPage(editor_EnumToggleButtons, header, description, code);
+            string header = "EnumButtons:";
+            string description = "The [EnumButtons] attribute will show an enum as toggleable buttons in the inspector. This attribute can also be used on enum flags to allow easy multi-selection.";
+            string code = "\n        private enum ExampleEnum\n        {\n            One,\n            Two,\n            Three,\n            Four,\n        }\n\n        [Flags]\n        private enum ExampleEnumFlags\n        {\n            None = 0,\n            All = P1 | P2 | P3 | P4 | P5, // also supports being defined as '~0'\n\n            P1 = 1 << 0,\n            P2 = 1 << 1,\n            P3 = 1 << 2,\n            P4 = 1 << 3,\n            P5 = 1 << 4,\n        }\n\n        [Title(\"Enum Buttons\")]\n        [SerializeField, EnumButtons]\n        private ExampleEnum enumButtons;\n        \n        [Title(\"Enum Buttons (No Label)\")]\n        [SerializeField, LabelText(\"\"), EnumButtons]\n        private ExampleEnum enumButtonsNoLabel;\n\n        [Title(\"Enum Buttons: Flags\")]\n        [SerializeField, EnumButtons(true)]\n        private ExampleEnumFlags enumFlags;\n";
+            DrawPage(editor_EnumButtons, header, description, code);
         }
 
         private void Page_FilePath()
@@ -469,6 +475,22 @@ namespace Gaskellgames.EditorOnly
             string description = "The [MinMaxSlider] attribute shows a Vector2 as a slider, where x is the min and y is the max value.";
             string code = "\n        [SerializeField, MinMaxSlider(0, 1)]\n        private Vector2 rangeMinMax = new Vector2(0.25f, 0.5f);\n\n        [SerializeField, MinMaxSlider(0, 1, \"Label 1\", \"Label 2\")]\n        private Vector2 rangeMinMax2 = new Vector2(0.25f, 0.75f);\n\n        [field: SerializeField, MinMaxSlider(0, 1, true)]\n        private Vector2 rangeMinMax3 { get; set; } = new Vector2(0.5f, 0.75f);\n";
             DrawPage(editor_MinMaxSlider, header, description, code);
+        }
+
+        private void Page_NavMeshMask()
+        {
+            string header = "NavMeshMask:";
+            string description = "The [NavMeshMask] attribute shows an int as a mask field, where the values of the mask are the NavMeshAreas.";
+            string code = "\n        [SerializeField, NavMeshMask]\n        private int navMeshMask;\n\n        [field: SerializeField, NavMeshMask]\n        private int NavMeshMask { get; set; }\n";
+            DrawPage(editor_NavMeshMask, header, description, code);
+        }
+
+        private void Page_OnValueChanged()
+        {
+            string header = "OnValueChanged:";
+            string description = "The [OnValueChanged] attribute invokes a method when the property changes value. This will only be applied when the property value is changed directly from the inspector. OnValueChanged allows method calls that OnValidate does not allow, such as DestroyImmediate().";
+            string code = "\n        [SerializeField, OnValueChanged(nameof(ExampleMethod))]\n        private int onValueChanged;\n\n        [field: SerializeField, OnValueChanged(nameof(ExampleMethod))]\n        private int OnValueChanged { get; set; }\n\n        private void ExampleMethod()\n        {\n            Debug.Log($\"ExampleMethod called by {name}\");\n        }\n";
+            DrawPage(editor_OnValueChanged, header, description, code);
         }
 
         private void Page_ProgressBar()
@@ -625,8 +647,8 @@ namespace Gaskellgames.EditorOnly
             sampleAttributeEnableIf = EditorExtensions.GetAssetByType<Sample_Attribute_EnableIf>();
             editor_EnableIf = sampleAttributeEnableIf ? Editor.CreateEditor(sampleAttributeEnableIf) : null;
             
-            sampleAttributeEnumToggleButtons = EditorExtensions.GetAssetByType<Sample_Attribute_EnumToggleButtons>();
-            editor_EnumToggleButtons = sampleAttributeEnumToggleButtons ? Editor.CreateEditor(sampleAttributeEnumToggleButtons) : null;
+            sampleAttributeEnumButtons = EditorExtensions.GetAssetByType<Sample_Attribute_EnumButtons>();
+            editor_EnumButtons = sampleAttributeEnumButtons ? Editor.CreateEditor(sampleAttributeEnumButtons) : null;
             
             sampleAttributeFilePath = EditorExtensions.GetAssetByType<Sample_Attribute_FilePath>();
             editor_FilePath = sampleAttributeFilePath ? Editor.CreateEditor(sampleAttributeFilePath) : null;
@@ -681,6 +703,12 @@ namespace Gaskellgames.EditorOnly
             
             sampleAttributeMinMaxSlider = EditorExtensions.GetAssetByType<Sample_Attribute_MinMaxSlider>();
             editor_MinMaxSlider = sampleAttributeMinMaxSlider ? Editor.CreateEditor(sampleAttributeMinMaxSlider) : null;
+            
+            sampleAttributeNavMeshMask = EditorExtensions.GetAssetByType<Sample_Attribute_NavMeshMask>();
+            editor_NavMeshMask = sampleAttributeNavMeshMask ? Editor.CreateEditor(sampleAttributeNavMeshMask) : null;
+            
+            sampleAttributeOnValueChanged = EditorExtensions.GetAssetByType<Sample_Attribute_OnValueChanged>();
+            editor_OnValueChanged = sampleAttributeOnValueChanged ? Editor.CreateEditor(sampleAttributeOnValueChanged) : null;
             
             sampleAttributeProgressBar = EditorExtensions.GetAssetByType<Sample_Attribute_ProgressBar>();
             editor_ProgressBar = sampleAttributeProgressBar ? Editor.CreateEditor(sampleAttributeProgressBar) : null;

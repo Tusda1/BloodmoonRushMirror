@@ -8,55 +8,39 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(IndentAttribute))]
-    public class IndentDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(IndentAttribute), true)]
+    public class IndentDrawer : GgPropertyDrawer
     {
-        #region Variables
-
-        private IndentAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        #region GgPropertyHeight
+        
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as IndentAttribute;
-            
-            return base.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
-
+        
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
-            
-            if (attributeAsType.specificIndentLevel)
+            if (AttributeAsType<IndentAttribute>().specificIndentLevel)
             {
-                int defaultIndent = EditorGUI.indentLevel;
-                EditorGUI.indentLevel = attributeAsType.indentLevel;
-                EditorGUI.PropertyField(position, property, label);
-                EditorGUI.indentLevel = defaultIndent;
+                int indentDelta = AttributeAsType<IndentAttribute>().indentLevel;
+                EditorGUI.indentLevel += indentDelta;
+                GgGUI.CustomPropertyField(position, property, label);
+                EditorGUI.indentLevel -= indentDelta;
             }
             else
             {
                 EditorGUI.indentLevel++;
-                EditorGUI.PropertyField(position, property, label);
+                GgGUI.CustomPropertyField(position, property, label);
                 EditorGUI.indentLevel--;
             }
-
-            // close property
-            EditorGUI.EndProperty();
         }
-
+        
         #endregion
 
     } // class end
