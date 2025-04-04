@@ -94,6 +94,10 @@ namespace UI.Settings {
 
         #region ---PrivateMethods---
         private void Deactivate(InputAction.CallbackContext obj) {
+            var panelElements = uiDocument.rootVisualElement.panel.visualTree;
+            var dropdownActive = panelElements.Q(className: "unity-base-dropdown") != null;
+            if (dropdownActive) return;
+            
             Deactivate();
         }
 
