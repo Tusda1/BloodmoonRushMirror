@@ -29,7 +29,6 @@ public class CharacterSays : Unit {
     public ValueInput DialogueDictionary;
     public ValueInput DialogueUIDataContainer;
     public ValueInput AudioManager;
-    public ValueInput AutoContinue;
     public ValueInput TextID;
     #endregion
 
@@ -37,24 +36,17 @@ public class CharacterSays : Unit {
     [DoNotSerialize] [PortLabelHidden] public ValueOutput DialogueDictionary_Output;
     [DoNotSerialize] [PortLabelHidden] public ValueOutput DialogueUIDataContainer_Output;
     [DoNotSerialize] [PortLabelHidden] public ValueOutput AudioManager_Output;
-    [DoNotSerialize] [PortLabelHidden] public ValueOutput AutoContinue_Output;
     #endregion
 
     #region ***---OverrideValues---***
     [Inspectable] public Sprite CharacterPortraitOverride;
-    [Inspectable] public string CharacterNameOverride;
     [Inspectable] public FontAsset CharacterNameFontAssetOverride;
     [Inspectable] public float CharacterNameSizeOverride;
     [Inspectable] public Color CharacterNameColorOverride;
     
     [Inspectable] public FontAsset TextFontAssetOverride;
-    [Inspectable] public float TextSpeedOverride;
     [Inspectable] public float TextSizeOverride;
     [Inspectable] public Color TextColorOverride;
-    [Inspectable] public string TextOverride;
-    [Inspectable] public string TalkSoundIDOverride;
-    [Inspectable] public bool OverrideWhenSFXIsPlayed;
-    [Inspectable] public WhenIsSfxPlayed WhenIsSFXPlayedOverride;
     #endregion
 
     private static CancellationTokenSource _typewriterTask;
@@ -72,7 +64,6 @@ public class CharacterSays : Unit {
         DialogueDictionary = ValueInput<DialogueDictionary>(nameof(DialogueDictionary), null);
         DialogueUIDataContainer = ValueInput<DialogueUI_DataContainer>(nameof(DialogueUIDataContainer), null);
         AudioManager = ValueInput<IAudioManager>(nameof(AudioManager), null);
-        AutoContinue = ValueInput(nameof(AutoContinue), false);
         TextID = ValueInput(nameof(TextID), string.Empty);
 
         DialogueDictionary_Output = ValueOutput(nameof(DialogueDictionary),
@@ -83,24 +74,22 @@ public class CharacterSays : Unit {
 
         AudioManager_Output = ValueOutput(nameof(AudioManager),
             flow => flow.GetValue<IAudioManager>(AudioManager));
-
-        AutoContinue_Output = ValueOutput(nameof(AutoContinue),
-            flow => flow.GetValue<bool>(AutoContinue));
     }
     
     private IEnumerator Action(Flow flow) {
         var dialogueDictionary = flow.GetValue<DialogueDictionary>(DialogueDictionary);
         var dialogueUIDataContainer = flow.GetValue<DialogueUI_DataContainer>(DialogueUIDataContainer);
         _audioManager = flow.GetValue<IAudioManager>(AudioManager);
-        var autoContinue = flow.GetValue<bool>(AutoContinue);
         var textID = flow.GetValue<string>(TextID);
         var dialogueCharacter = TextIDToCharacter(dialogueDictionary, textID);
         var end = false;
         _typewriterTask = new CancellationTokenSource();
 
+        var dialogueValues = dialogueDictionary.dialogueDictionary[textID];
+
         Initialize();
 
-        var fullText = TextOverride == string.Empty ? TextOverride : TextIDToText(dialogueDictionary, textID);
+        var fullText = TextIDToText(dialogueDictionary, textID);
 
         PlayerScript.SkipDialogueEvent += SkipTypewriter;
 
@@ -110,7 +99,7 @@ public class CharacterSays : Unit {
 
         PlayerScript.SkipDialogueEvent -= SkipTypewriter;
 
-        if (autoContinue) {
+        if (dialogueValues.autoContinue) {
             yield return new WaitForSeconds(AutoContinueExitDelay);
         }
         else {
@@ -133,9 +122,7 @@ public class CharacterSays : Unit {
             
             dialogueUIDataContainer.characterNameFontAsset = CharacterNameFontAssetOverride ?? dialogueCharacter.dialogueFont;
             
-            dialogueUIDataContainer.characterName = string.IsNullOrEmpty(CharacterNameOverride)
-                ? dialogueCharacter.characterName
-                : CharacterNameOverride;
+            dialogueUIDataContainer.characterName = dialogueValues.characterName;
 
             dialogueUIDataContainer.characterNameSize = CharacterNameSizeOverride == 0
                 ? dialogueCharacter.textSize
@@ -150,10 +137,8 @@ public class CharacterSays : Unit {
             dialogueUIDataContainer.textSize = TextSizeOverride == 0
                 ? dialogueCharacter.textSize
                 : TextSizeOverride;
-            
-            dialogueUIDataContainer.textSpeed = TextSpeedOverride == 0
-                ? dialogueCharacter.textSpeed
-                : TextSpeedOverride;
+
+            dialogueUIDataContainer.textSpeed = dialogueValues.textSpeed;
             
             dialogueUIDataContainer.textColor = TextColorOverride == default
                 ? dialogueCharacter.dialogueColor
@@ -161,13 +146,9 @@ public class CharacterSays : Unit {
             
             dialogueUIDataContainer.textFontAsset = TextFontAssetOverride ?? dialogueCharacter.dialogueFont;
 
-            _sfxSoundID = string.IsNullOrEmpty(TalkSoundIDOverride)
-                ? dialogueCharacter.talkSoundID
-                : TalkSoundIDOverride;
+            _sfxSoundID = dialogueValues.soundID;
 
-            ApplySoundToTypewriterEvents(OverrideWhenSFXIsPlayed
-                ? WhenIsSFXPlayedOverride
-                : dialogueCharacter.whenIsSFXPlayed);
+            ApplySoundToTypewriterEvents(dialogueValues.whereToPlaySFX);
 
             dialogueUIDataContainer.text = "";
             #endregion
@@ -213,8 +194,19 @@ public class CharacterSays : Unit {
 
             var textDelay = 1 / dialogueUIDataContainer.textSpeed;
             
+            var richTextTag = false;
+            
             foreach (var c in fulltext) {
                 dialogueUIDataContainer.text += c;
+
+                if (c == '<') richTextTag = true;
+
+                if (richTextTag) {
+                    if (c == '>') richTextTag = false;
+                    
+                    continue;
+                }
+                
                 if (char.IsWhiteSpace(c)) {
                     TypewriterOnNewWord.Invoke();
                     continue;
@@ -246,7 +238,7 @@ public class CharacterSays : Unit {
 #if UNITY_EDITOR
         try {
 #endif
-            return dialogueDictionary.dialogueDictionary[textID].dialogueCharacterSO;
+            return dialogueDictionary.dialogueDictionary[textID].character;
 #if UNITY_EDITOR
         }
         catch (KeyNotFoundException) {

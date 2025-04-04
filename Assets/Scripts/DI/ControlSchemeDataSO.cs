@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.U2D.Animation;
 #if UNITY_EDITOR
 using System.Linq;
 using ExtensionMethods;
@@ -16,14 +17,8 @@ public class ControlSchemeDataSO : ScriptableObject {
     public string id;
     public string controlScheme;
     #endregion
-
-    #region ---WizardText---
-    [Header("WizardText")]
-    public AnimationClip move_InputAnimation;
-    public AnimationClip jump_InputAnimation;
-    public AnimationClip attack_InputAnimation;
-    public AnimationClip dash_InputAnimation;
-    #endregion
+    
+    public SpriteLibraryAsset spriteLibrary;
 
     #region ---UI---
     [FormerlySerializedAs("controllerSettingPanel")] [Header("UI")] 

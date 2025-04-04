@@ -48,6 +48,12 @@ public class BombAttackState : DrucillaState
         _stage = BombAttackStage.Teleport;
     }
 
+    private void OnDisable()
+    {
+        _droppingBombs = false;
+        
+    }
+
     private void Update()
     {
         switch (_stage)

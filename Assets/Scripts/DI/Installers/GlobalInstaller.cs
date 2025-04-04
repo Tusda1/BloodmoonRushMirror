@@ -1,4 +1,3 @@
-using System;
 using Attributes;
 using FMODScripts;
 using SaveLoadSystem.Data;
@@ -14,6 +13,8 @@ using Encryption;
 
 public class GlobalInstaller : LifetimeScope {
     [SerializeField, Required] private DialogueDictionary dialogueDictionary;
+    [SerializeField, Required] private DialogueUI_DataContainer dialogueUIDataContainer;
+    
     [SerializeField, Required] private AudioDictionarySO audioDictionary;
     [SerializeField, Required] private SaveSlots saveSlots;
     [SerializeField, Required] private GameDataScrubGeneric<SaveGameData> newGameData;
@@ -27,6 +28,7 @@ public class GlobalInstaller : LifetimeScope {
         
         // --- Dialogue System --- \\
         builder.RegisterInstance(dialogueDictionary);
+        builder.RegisterInstance(dialogueUIDataContainer);
         
         // --- Pause System --- \\
         builder.RegisterInstance<IPauseManager>(new PauseManager(1));

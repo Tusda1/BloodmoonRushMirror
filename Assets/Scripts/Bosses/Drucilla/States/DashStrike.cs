@@ -11,10 +11,14 @@ public class DashStrike : DrucillaState
     [SerializeField] private AnimationClip lightningEnd;
     [SerializeField] private AnimationClip strikeAnimation;
     
+    [SerializeField] private Collider2D strikeHitBox;
+    [SerializeField] private Vector2 dashDestinationOffset;
+    [SerializeField] private Vector2 dashOriginOffset;
     [SerializeField] private float tooCloseDistance = 4f;
-    [SerializeField] private float lightningOriginHeight = 15f;
+    [SerializeField] private DamageInstance damageInstance;
     
     private Vector2 _teleportLocation;
+    private Vector2 _dashDestination;
     private bool _lightningDashStarted;
     
     [SerializeField] private LightningManager lightningManager = new();
@@ -47,8 +51,8 @@ public class DashStrike : DrucillaState
 
         if (Vector2.Distance(transform.position, _player.transform.position) < tooCloseDistance)
         {
-            var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
-            var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
+            var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
+            var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
 
             if (Vector2.Distance(leftCorner, _player.transform.position) < Vector2.Distance(rightCorner, _player.transform.position))
             {
@@ -108,7 +112,9 @@ public class DashStrike : DrucillaState
                 state.Events(this).OnEnd = () =>
                 {
                     state.Destroy();
-                    lightningManager.CreateLightning(position, _player.transform.position, OnLightningEnd);
+                    Boss.facingDirection = _player.transform.position.x > transform.position.x ? Vector2.right : Vector2.left;
+                    _dashDestination = _player.transform.position + (Vector3)(dashDestinationOffset * new Vector2(Boss.facingDirection.x, 1));
+                    lightningManager.CreateLightning(position + (Vector3)(dashOriginOffset * new Vector2(Boss.facingDirection.x, 1)), _dashDestination, OnLightningEnd);
                 };
             };
         }
@@ -116,20 +122,28 @@ public class DashStrike : DrucillaState
     
     private void OnLightningEnd()
     {
-        var playerPosition = _player.transform.position;
-        var tempTransform = transform;
-        tempTransform.position = playerPosition + (tempTransform.position - playerPosition).normalized * 1.5f;
+        transform.position = _dashDestination;
         var state = Boss.AnimancerComponent.Play(lightningEnd);
         state.Events(this).OnEnd = () =>
         {
             state.Destroy();
-            state = Boss.AnimancerComponent.Play(strikeAnimation);
-            state.Events(this).OnEnd = () =>
+            Strike();
+            var state2 = Boss.AnimancerComponent.Play(strikeAnimation);
+            state2.Events(this).OnEnd = () =>
             {
-                state.Destroy();
+                state2.Destroy();
                 Boss.AnimancerComponent.Play(idleAnimation);
                 EndState();
             };
         };
+    }
+
+    public void Strike()
+    {
+        // Use the confines of the box collider to cast an overlapbox to find the player
+        var hit = Physics2D.OverlapBox(strikeHitBox.bounds.center, strikeHitBox.bounds.size, 0, LayerMask.GetMask("Player"));
+        if (!hit) return;
+        damageInstance.knockback = Boss.facingDirection;
+        hit.GetComponent<IDamageable>().TakeDamage(damageInstance);
     }
 }

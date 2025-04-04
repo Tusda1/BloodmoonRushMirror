@@ -143,6 +143,7 @@ MonoBehaviour:
   keyObjects: []
   playerCanMove: {fileID: 11400000, guid: f2f25efabb8f0d74bbfdba92ceb38155, type: 2}
   debugLogger: {fileID: 11400000, guid: d3bd655274d5e854a91c4568b881d8dd, type: 2}
+  skipAction: {fileID: 0}
   gems: 0
   gemLostMethod: 0
   gemsLostOnDeath: 0
@@ -194,6 +195,8 @@ MonoBehaviour:
   player: {fileID: 3298925456892397176}
   boxCollider: {fileID: 6503705925884822905}
   inputVector: {x: 0, y: 0}
+  cutsceneMovementEnabled: 0
+  cutsceneMovement: {x: 0, y: 0}
   isDucking: 0
   isHoldingDuck: 0
   isFacingRight: 1

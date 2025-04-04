@@ -20,13 +20,16 @@ namespace Player {
         [Header("Player Movement")] 
         [SerializeField, ReadOnly] public Vector2 inputVector;
 
+        [HideInInspector] public bool cutsceneMovementEnabled;
+        [HideInInspector] public Vector2 cutsceneMovement;
+
         [ReadOnly] public bool isDucking;
         [ReadOnly] public bool isHoldingDuck;
         [ReadOnly] public bool isFacingRight = true;
         [ReadOnly] public bool isClimbing;
         public Vector2 affectingVelocity = Vector2.zero;
         [SerializeField] private float smoothTime;
-        [SerializeField] private float maxSpeed;
+        [SerializeField] public float maxSpeed;
         [SerializeField] public LayerMask whatIsLadder;
         [SerializeField] private LayerMask whatIsInvalidSpawnPoint;
         [SerializeField] public float climbSpeed;
@@ -225,11 +228,14 @@ namespace Player {
             
             if (PlayerLadderLogic.LadderLogic()) return;
             
-
             player.animator.SetBool(AnimatorIsHoldingJumpBool, isHoldingJump);
             player.animator.SetBool(AnimatorIsFallingBool, isFalling);
 
             if (!PlayerMovementEnabled) {
+                if (cutsceneMovementEnabled) {
+                    targetVelocity = cutsceneMovement;
+                    player.animator.SetFloat(AnimatorMovementFloat, 1);
+                }
                 player.animator.SetBool(AnimatorJumpBool, false);
                 return;
             }
@@ -425,7 +431,8 @@ namespace Player {
         }
         #endregion
 
-        public void ForceExitDuck() {   
+        public void ForceExitDuck() { 
+            if (_defaultBoxSize.x == 0) return;
             playerMovementDebugLogger.Log("exiting duck");
             isDucking = false;
             boxCollider.size = _defaultBoxSize;
