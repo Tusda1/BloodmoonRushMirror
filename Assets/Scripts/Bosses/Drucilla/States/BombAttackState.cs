@@ -112,6 +112,7 @@ public class BombAttackState : DrucillaState
     
     private void OnGroundSlamEnd()
     {
+        print("Ground slam end");
         EndState();
     }
     

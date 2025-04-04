@@ -13,6 +13,7 @@ public class VineScript : MonoBehaviour
     [SerializeField] private Collider2D positionCollider;
     [SerializeField] private float lureWaitTime = 1f;
     [SerializeField] private float activeTime = 3f;
+    [SerializeField] private DamageInstance damageInstance;
     
     private float _pivotToGroundDistance;
     private AnimancerComponent _animancerComponent;
@@ -72,5 +73,15 @@ public class VineScript : MonoBehaviour
             _collider.enabled = false;
             gameObject.SetActive(false);
         };
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            var directionToPlayer = (other.transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
+            damageInstance.knockback = directionToPlayer * damageInstance.knockbackStrength;
+            other.gameObject.GetComponent<IDamageable>().TakeDamage(damageInstance);
+        }
     }
 }

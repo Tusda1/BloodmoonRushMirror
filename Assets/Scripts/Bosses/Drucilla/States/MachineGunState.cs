@@ -10,6 +10,7 @@ public class MachineGunState : DrucillaState
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float shootCooldown = 0.1f;
     [SerializeField] private int projectileCount = 30;
+    [SerializeField] private Vector2 bulletOriginOffset;
     
     private Vector2 _teleportPosition;
     private float _shootTimer;
@@ -52,6 +53,7 @@ public class MachineGunState : DrucillaState
         
         var middle = new Vector2((leftCorner.x + rightCorner.x) / 2, leftCorner.y); // Find top middle of room
         _teleportPosition = middle;
+        _stage = MachineGunStage.Teleport;
     }
 
     private void OnDisable()
@@ -136,7 +138,7 @@ public class MachineGunState : DrucillaState
         var position = transform.position;
         var direction = (_player.transform.position - position).normalized;
         var projectile = _pooler.GetPooledObject().GetComponent<ProjectileDeflectable>();
-        projectile.transform.position = position;
+        projectile.transform.position = position + (Vector3)(bulletOriginOffset * new Vector2(Boss.facingDirection.x, 1f));
         projectile.velocityDirection = direction;
         projectile.shooter = gameObject;
         projectile.gameObject.SetActive(true);

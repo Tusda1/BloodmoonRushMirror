@@ -223,8 +223,15 @@ MonoBehaviour:
   vineIdle: {fileID: -3100369314251171874, guid: 4994e866c1a1c704dbee5433ee1a2841, type: 3}
   vineWithdraw: {fileID: 1859172942498712747, guid: 4994e866c1a1c704dbee5433ee1a2841, type: 3}
   positionCollider: {fileID: 1075329530244866927}
-  lureWaitTime: 1
+  lureWaitTime: 1.5
   activeTime: 3
+  damageInstance:
+    damage: 0
+    knockback: {x: 0, y: 0}
+    knockbackStrength: 0
+    staggerStrength: 0
+    ignoreInvincibility: 0
+    which: 0
 --- !u!95 &4292498874268739457
 Animator:
   serializedVersion: 7
