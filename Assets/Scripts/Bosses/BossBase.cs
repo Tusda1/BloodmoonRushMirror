@@ -164,7 +164,7 @@ public class BossBase : GravityObject, IDamageable
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        gameObject.GetComponentInParentOrChildren(ref animancer);
+        animancer = GetComponent<AnimancerComponent>();
     }
 #endif
 }

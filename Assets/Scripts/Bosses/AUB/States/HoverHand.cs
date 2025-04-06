@@ -3,8 +3,10 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class HoverHand : AUBState
+public class HoverHand : AUBHandState
 {
+    [SerializeField] private AnimationClip idleAnimation;
+    
     [SerializeField] private float distanceFromWall = 3f;
     [SerializeField] private float maxHoverDistance = 3f;
     [SerializeField] private float minHoverDistance = 1f;
@@ -23,6 +25,7 @@ public class HoverHand : AUBState
     private void OnEnable()
     {
         // Get position between bottom corner and top corner
+        Boss.AnimancerComponent.Play(idleAnimation);
         var top = _cornerFinder.GetCorner(transform.localScale.x < 0 ? CornerFinder.CornerType.TopLeft : CornerFinder.CornerType.TopRight);
         var bottom = _cornerFinder.GetCorner(transform.localScale.x < 0 ? CornerFinder.CornerType.BottomLeft : CornerFinder.CornerType.BottomRight);
         _hoverPosition = new Vector2(top.x, bottom.y + distanceFromWall);

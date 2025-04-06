@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class HandSlide : AUBState
+public class HandSlide : AUBHandState
 {
+    [SerializeField] private AnimationClip slamAnimation;
     [SerializeField] private AnimationClip slideAnimation;
     [SerializeField] private float slideSpeed = 5f;
     [SerializeField] private float slamSpeed = 10f;
@@ -16,6 +17,7 @@ public class HandSlide : AUBState
 
     private IEnumerator Slam()
     {
+        Boss.AnimancerComponent.Play(slamAnimation);
         while (!Boss.bossCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             Boss.Move(Vector2.down * slamSpeed);

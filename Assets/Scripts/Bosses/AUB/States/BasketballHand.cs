@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class BasketballHand : AUBState
+public class BasketballHand : AUBHandState
 {
+    [SerializeField] private AnimationClip slamAnimation;
     [SerializeField] private float horizontalSpeed = 5f;
     [SerializeField] private float verticalSpeed = 5f;
     [SerializeField] private float bounceHeight = 5f;
@@ -41,6 +42,7 @@ public class BasketballHand : AUBState
 
     private IEnumerator Slam()
     {
+        Boss.AnimancerComponent.Play(slamAnimation);
         while (!Boss.bossCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             Boss.Move(Vector2.down * verticalSpeed);

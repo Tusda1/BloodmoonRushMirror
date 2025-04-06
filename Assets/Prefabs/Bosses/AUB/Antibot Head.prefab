@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 4646299040916984817}
   - component: {fileID: 6765125391021624762}
   - component: {fileID: 2685403473347489127}
+  - component: {fileID: 1664127658631502418}
+  - component: {fileID: 3283317046519222219}
   m_Layer: 0
   m_Name: Antibot Head
   m_TagString: Untagged
@@ -112,7 +114,7 @@ MonoBehaviour:
   targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
   GravityModifier: 1
-  animancer: {fileID: 0}
+  animancer: {fileID: 4196514776086307726}
   _stateMachine:
     _CurrentState: {fileID: 0}
     _DefaultState: {fileID: 0}
@@ -234,6 +236,43 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 12.65, y: 15}
   m_EdgeRadius: 0
+--- !u!95 &1664127658631502418
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4911512659285843616}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3283317046519222219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4911512659285843616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad50f81b1d25c441943c37a89ba23f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Animator: {fileID: 1664127658631502418}
+  _Transitions: {fileID: 0}
+  _ActionOnDisable: 0
 --- !u!1 &7114757975436042078
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,6 +283,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6502390073614810727}
   - component: {fileID: 2844253037962227279}
+  - component: {fileID: 1465753150195928811}
+  - component: {fileID: 5590495611560451405}
+  - component: {fileID: 4196514776086307726}
   m_Layer: 0
   m_Name: Antibot Body
   m_TagString: Untagged
@@ -321,3 +363,57 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1465753150195928811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114757975436042078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05ca6ad7f02f3fd489f1e6cb093493ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationPairs:
+  - bodyAnimation: {fileID: 0}
+    headAnimation: {fileID: 0}
+  headAnimancer: {fileID: 4196514776086307726}
+  animancer: {fileID: 4196514776086307726}
+--- !u!95 &5590495611560451405
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114757975436042078}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4196514776086307726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114757975436042078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad50f81b1d25c441943c37a89ba23f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Animator: {fileID: 5590495611560451405}
+  _Transitions: {fileID: 0}
+  _ActionOnDisable: 0

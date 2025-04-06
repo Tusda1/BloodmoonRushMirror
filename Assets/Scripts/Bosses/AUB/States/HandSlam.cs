@@ -3,8 +3,9 @@ using System.Collections;
 using Player;
 using UnityEngine;
 
-public class HandSlam : AUBState
+public class HandSlam : AUBHandState
 {
+    [SerializeField] private AnimationClip slamAnimation;
     [SerializeField] private float heightAbovePlayer = 4f;
     [SerializeField] private float waitAfterSlam = 0.5f;
     [SerializeField] private float slamSpeed = 10f;
@@ -36,6 +37,7 @@ public class HandSlam : AUBState
     
     private IEnumerator Slam()
     {
+        Boss.AnimancerComponent.Play(slamAnimation);
         while (!Boss.bossCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             Boss.Move(Vector2.down * slamSpeed);

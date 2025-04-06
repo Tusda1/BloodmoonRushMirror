@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AUBState : BossState
+public class AUBHandState : BossState
 {
     [SerializeField] protected HoverHand hoverHand;
     

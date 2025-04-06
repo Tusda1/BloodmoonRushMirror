@@ -5,28 +5,41 @@ using UnityEngine;
 public class AUBBrain : MonoBehaviour {
     [SerializeField] private BossBase leftHand;
     [SerializeField] private BossBase rightHand;
-    [SerializeField] private float handUpdateInterval = 5f;
-
-    private float _handUpdateTimer;
-    private bool _handsDestroyed;
     
-    private AUBState[] _headStates;
-    private AUBState[] _rightHandStates;
-    private AUBState[] _leftHandStates;
+    private bool _handsDestroyed;
+    private bool _isFighting;
+    
+    private BossBase _boss;
+    private BossState[] _headStates;
+    private AUBHandState[] _rightHandStates;
+    private AUBHandState[] _leftHandStates;
     private HoverHand _rightHandHover;
     private HoverHand _leftHandHover;
 
     private void Awake()
     {
-        _headStates = GetComponents<AUBState>();
-        _rightHandStates = rightHand.GetComponents<AUBState>();
-        _leftHandStates = leftHand.GetComponents<AUBState>();
+        _headStates = GetComponents<BossState>();
+        _rightHandStates = rightHand.GetComponents<AUBHandState>();
+        _leftHandStates = leftHand.GetComponents<AUBHandState>();
         
         // Remove the hover hand components from the arrays and store them
         _rightHandHover = rightHand.GetComponent<HoverHand>();
         _leftHandHover = leftHand.GetComponent<HoverHand>();
         _rightHandStates = Array.FindAll(_rightHandStates, state => state is not HoverHand);
         _leftHandStates = Array.FindAll(_leftHandStates, state => state is not HoverHand);
+
+        foreach (var state in _headStates)
+        {
+            state.OnStateEnd += HeadLogic;
+        }
+        
+        _boss = GetComponent<BossBase>();
+        _boss.OnBattleStart += StartBattle;
+    }
+    
+    private void StartBattle()
+    {
+        _isFighting = true;
     }
 
     private void Update()
@@ -35,14 +48,12 @@ public class AUBBrain : MonoBehaviour {
         {
             HandLogic();
         }
-        else
-        {
-            HeadLogic();
-        }
     }
 
     private void HandLogic()
     {
+        if (!_isFighting) return;
+        
         if (_leftHandHover.enabled && _rightHandHover.enabled)
         {
             // Roll a dice to see if both hands will attack or only one
@@ -92,6 +103,11 @@ public class AUBBrain : MonoBehaviour {
     
     private void HeadLogic()
     {
+        if (!_isFighting) return;
         
+        // Pick a random state from the list of states
+        var nextState = _headStates[UnityEngine.Random.Range(0, _headStates.Length)];
+        // Force the head to play the next state
+        leftHand.StateMachine.ForceSetState(nextState);
     }
 }
