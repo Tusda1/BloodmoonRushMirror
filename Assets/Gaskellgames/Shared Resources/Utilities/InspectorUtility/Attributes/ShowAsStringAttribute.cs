@@ -3,18 +3,18 @@ using UnityEngine;
 
 namespace Gaskellgames
 {
-    // <summary>
-    // Code created by Gaskellgames
-    // </summary>
+    /// <summary>
+    /// Code created by Gaskellgames: https://github.com/Gaskellgames
+    /// </summary>
 
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class ShowAsStringAttribute : PropertyAttribute
     {
-        public bool readOnly;
+        public bool greyedOut;
 
-        public ShowAsStringAttribute(bool readOnly = false)
+        public ShowAsStringAttribute(bool greyedOut = false)
         {
-            this.readOnly = readOnly;
+            this.greyedOut = greyedOut;
         }
 
     } // class end

@@ -8,56 +8,33 @@ namespace Gaskellgames.EditorOnly
     // Code created by Gaskellgames: https://github.com/Gaskellgames?tab=repositories
     // </summary>
 
-    [CustomPropertyDrawer(typeof(ShowAsTagAttribute))]
-    public class ShowAsTagDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(ShowAsTagAttribute), true)]
+    public class ShowAsTagDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private ShowAsTagAttribute attributeAsType;
-        
-        private float singleLine = EditorGUIUtility.singleLineHeight;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as ShowAsTagAttribute;
-
-            return attributeAsType != null
-                ? EditorGUI.GetPropertyHeight(property, label) - (singleLine * 1.1f)
-                : EditorGUI.GetPropertyHeight(property, label);
+            return property.GetTypeValue() != null ? singleLineHeight + standardSpacing : propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
 
-        #region OnGUI
+        #region OnGgGUI
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
-            
-            if (property.propertyType == SerializedPropertyType.String)
+            if (property.GetTypeValue() != null)
             {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PrefixLabel(label);
-                GUILayout.Space(2);
-                EditorExtensions.DrawAsTag(property.stringValue);
-                EditorGUILayout.EndHorizontal();
+                Rect stringPosition = new Rect(position.x, position.y, position.width, singleLineHeight);
+                GgGUI.TagField(stringPosition, label, property.GetTypeValue().ToString(), property.hasMultipleDifferentValues);
             }
             else
             {
-                EditorGUI.PropertyField(position, property, label);
+                GgGUI.CustomPropertyField(position, property, label);
             }
-            
-            // close property
-            EditorGUI.EndProperty();
         }
 
         #endregion

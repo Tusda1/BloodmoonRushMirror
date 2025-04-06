@@ -159,45 +159,77 @@ namespace Gaskellgames.EditorOnly
         
         //----------------------------------------------------------------------------------------------------
 
-        #region Get Type
+        #region GetTypeValue
 
         /// <summary>
-        /// Gets the Type of a serialized property using reflection.
+        /// Get the Type value for a SerializedProperty (e.g if the SerializedPropertyType is Integer, an int value will be returned)
         /// </summary>
         /// <param name="property"></param>
-        /// <param name="flags"></param>
-        /// <returns></returns>
-        public static Type GetPropertyType(this SerializedProperty property, BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.Instance)
+        /// <returns> Null if not able to get value for SerializedProperty's type </returns>
+        public static object GetTypeValue(this SerializedProperty property)
         {
-            Type parentType = property.serializedObject.targetObject.GetType();
-            string[] splitPropertyPath = property.propertyPath.Split('.');
-            FieldInfo fieldInfo = parentType.GetField(splitPropertyPath[0], flags);
-            for (int i = 1; i < splitPropertyPath.Length; i++)
+            if (property == null) { return null; }
+
+            switch (property.propertyType)
             {
-                if (fieldInfo.FieldType.IsArray && i + 2 < splitPropertyPath.Length && splitPropertyPath[i] == "Array")
-                {
-                    string dataString = splitPropertyPath[i + 1];
-                    Regex pattern = new Regex(@"^data\[\d+\]$");
-                    Match match = pattern.Match(dataString);
-                    if (match.Success)
-                    {
-                        if (i + 1 == splitPropertyPath.Length - 1)
-                        {
-                            break;
-                        }
-                        
-                        Type arrayType = fieldInfo.FieldType.GetElementType();
-                        fieldInfo = arrayType.GetField(splitPropertyPath[i + 2], flags);
-                        i += 2;
-                    }
-                }
-                else
-                {
-                    fieldInfo = fieldInfo.FieldType.GetField(splitPropertyPath[i], flags);
-                }
+                case SerializedPropertyType.Generic:
+                    return null; // cannot handle Generic
+                case SerializedPropertyType.Integer:
+                    return property.intValue;
+                case SerializedPropertyType.Boolean:
+                    return property.boolValue;
+                case SerializedPropertyType.Float:
+                    return property.floatValue;
+                case SerializedPropertyType.String:
+                    return property.stringValue;
+                case SerializedPropertyType.Color:
+                    return (Color32)property.colorValue;
+                case SerializedPropertyType.ObjectReference:
+                    return property.objectReferenceValue;
+                case SerializedPropertyType.LayerMask:
+                    return (LayerMask)property.intValue;
+                case SerializedPropertyType.Enum:
+                    return property.enumValueIndex;
+                case SerializedPropertyType.Vector2:
+                    return property.vector2Value;
+                case SerializedPropertyType.Vector3:
+                    return property.vector3Value;
+                case SerializedPropertyType.Vector4:
+                    return property.vector4Value;
+                case SerializedPropertyType.Rect:
+                    return property.rectValue;
+                case SerializedPropertyType.ArraySize:
+                    return property.arraySize;
+                case SerializedPropertyType.Character:
+                    return (char)property.intValue;
+                case SerializedPropertyType.AnimationCurve:
+                    return property.animationCurveValue;
+                case SerializedPropertyType.Bounds:
+                    return property.boundsValue;
+                case SerializedPropertyType.Gradient:
+                    PropertyInfo propertyInfo = typeof(SerializedProperty).GetProperty("gradientValue", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    return propertyInfo?.GetValue(property, null) as Gradient;
+                case SerializedPropertyType.Quaternion:
+                    return property.quaternionValue;
+                case SerializedPropertyType.ExposedReference:
+                    return property.exposedReferenceValue;
+                case SerializedPropertyType.FixedBufferSize:
+                    return property.fixedBufferSize;
+                case SerializedPropertyType.Vector2Int:
+                    return property.vector2IntValue;
+                case SerializedPropertyType.Vector3Int:
+                    return property.vector3IntValue;
+                case SerializedPropertyType.RectInt:
+                    return property.rectIntValue;
+                case SerializedPropertyType.BoundsInt:
+                    return property.boundsIntValue;
+                case SerializedPropertyType.ManagedReference:
+                    return property.managedReferenceValue;
+                case SerializedPropertyType.Hash128:
+                    return property.hash128Value;
+                default:
+                    return null; // other?
             }
-			
-            return fieldInfo.FieldType;
         }
 
         #endregion
@@ -270,8 +302,7 @@ namespace Gaskellgames.EditorOnly
             }
         }
 
-        private static object GetFieldValue(string fieldName, object obj,
-            BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+        private static object GetFieldValue(string fieldName, object obj, BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
         {
             FieldInfo field = obj.GetType().GetField(fieldName, bindings);
             if (field != null)
@@ -282,8 +313,7 @@ namespace Gaskellgames.EditorOnly
             return default(object);
         }
 
-        private static object GetFieldValueWithIndex(string fieldName, object obj, int index,
-            BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+        private static object GetFieldValueWithIndex(string fieldName, object obj, int index, BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
         {
             FieldInfo field = obj.GetType().GetField(fieldName, bindings);
             if (field != null)
@@ -302,8 +332,7 @@ namespace Gaskellgames.EditorOnly
             return default(object);
         }
 
-        public static bool SetFieldValue(string fieldName, object obj, object value, bool includeAllBases = false,
-            BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+        public static bool SetFieldValue(string fieldName, object obj, object value, bool includeAllBases = false, BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
         {
             FieldInfo field = obj.GetType().GetField(fieldName, bindings);
             if (field != null)
@@ -315,8 +344,7 @@ namespace Gaskellgames.EditorOnly
             return false;
         }
 
-        public static bool SetFieldValueWithIndex(string fieldName, object obj, int index, object value, bool includeAllBases = false,
-            BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+        public static bool SetFieldValueWithIndex(string fieldName, object obj, int index, object value, bool includeAllBases = false, BindingFlags bindings = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
         {
             FieldInfo field = obj.GetType().GetField(fieldName, bindings);
             if (field != null)

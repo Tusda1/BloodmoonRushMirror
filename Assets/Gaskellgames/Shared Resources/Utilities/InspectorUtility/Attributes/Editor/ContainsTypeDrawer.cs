@@ -6,80 +6,57 @@ using Object = UnityEngine.Object;
 
 namespace Gaskellgames.EditorOnly
 {
-    // <summary>
-    // Code created by Gaskellgames: https://github.com/Gaskellgames?tab=repositories
-    // </summary>
+    /// <summary>
+    /// Code created by Gaskellgames: https://github.com/Gaskellgames
+    /// </summary>
     
-    [CustomPropertyDrawer(typeof(ContainsTypeAttribute))]
-    public class ContainsTypeDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(ContainsTypeAttribute), true)]
+    public class ContainsTypeDrawer : GgPropertyDrawer
     {
-        #region Variables
-
-        private ContainsTypeAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        #region GgPropertyHeight
+        
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as ContainsTypeAttribute;
-            
-            PropertyDrawer customProperty = PropertyDrawerExtensions.Find(property);
-            if (customProperty != null)
-            {
-                // custom property
-                return customProperty.GetPropertyHeight(property, label);
-            }
-                
-            // 'built in' property
-            return EditorGUI.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
-
-            if (property.propertyType == SerializedPropertyType.ObjectReference)
+            // quick return if wrong type
+            if (property.propertyType != SerializedPropertyType.ObjectReference)
             {
-                Object objectReference = EditorGUI.ObjectField(position, label, property.objectReferenceValue, fieldInfo.FieldType, true);
-                GameObject gameObjectReference = objectReference as GameObject;
-                
-                if (ContainsComponentOfType(attributeAsType.type, gameObjectReference))
+                EditorGUI.PropertyField(position, property, label);
+                return;
+            }
+            
+            if (GgGUI.ObjectField(position, label, property.objectReferenceValue, out Object outputValue, fieldInfo.FieldType, property.hasMultipleDifferentValues, AttributeAsType<ContainsTypeAttribute>().allowSceneObjects))
+            {
+                GameObject gameObjectReference = outputValue as GameObject;
+                if (ContainsComponentOfType(AttributeAsType<ContainsTypeAttribute>().type, gameObjectReference))
                 {
-                    property.objectReferenceValue = objectReference;
+                    property.objectReferenceValue = outputValue;
                 }
                 else if (gameObjectReference)
                 {
-                    VerboseLogs.Log($"Reference object [{gameObjectReference.name}] does not contain component of type [{attributeAsType.type}]", LogType.Warning);
+                    VerboseLogs.Log($"Reference object [{gameObjectReference.name}] does not contain component of type [{AttributeAsType<ContainsTypeAttribute>().type}]", LogType.Warning);
                 }
                 else
                 {
                     property.objectReferenceValue = null;
                 }
             }
-            else
-            {
-                EditorGUI.PropertyField(position, property, label);
-            }
-
-            // close property
-            EditorGUI.EndProperty();
         }
-
+        
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
+        
         #region Private Functions
 
         private bool ContainsComponentOfType(Type type, GameObject gameObject)

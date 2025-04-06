@@ -8,7 +8,7 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(LineSeparatorAttribute))]
+    [CustomPropertyDrawer(typeof(LineSeparatorAttribute), true)]
     public class LineSeparatorDrawer : DecoratorDrawer
     {
         #region Variables

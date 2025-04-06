@@ -9,53 +9,36 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(StringDropdownAttribute))]
-    public class StringDropdownDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(StringDropdownAttribute), true)]
+    public class StringDropdownDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private StringDropdownAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as StringDropdownAttribute;
-            
-            return EditorGUI.GetPropertyHeight(property, label, true);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
 
-        #region OnGUI
+        #region OnGgGUI
 
-        public override void OnGUI (Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            EditorGUI.BeginProperty(position, label, property);
-            
-            string[] list = attributeAsType.list;
-            
-            if (property.propertyType == SerializedPropertyType.String)
+            if (property.propertyType != SerializedPropertyType.String)
             {
-                // get selected index
-                int index = Mathf.Max(0, Array.IndexOf(list, property.stringValue));
-                index = EditorGUI.Popup(position, property.displayName, index, list);
-
-                // convert index to string value
-                property.stringValue = list[index];
-            }
-            else
-            {
-                EditorGUI.PropertyField(position, property, label);
+                GgGUI.CustomPropertyField(position, property, label);
+                return;
             }
             
-            EditorGUI.EndProperty();
+            string[] displayNames = AttributeAsType<StringDropdownAttribute>().list;
+            int index = Mathf.Max(0, Array.IndexOf(displayNames, property.stringValue));
+            if (GgGUI.EnumField(position, label, index, out int outputValue, displayNames, property.hasMultipleDifferentValues))
+            {
+                property.stringValue = displayNames[outputValue];
+            }
         }
 
         #endregion

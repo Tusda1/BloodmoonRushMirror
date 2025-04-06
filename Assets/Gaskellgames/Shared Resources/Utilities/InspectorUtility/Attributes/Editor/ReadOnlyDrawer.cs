@@ -8,43 +8,26 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
-    public class ReadOnlyDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(ReadOnlyAttribute), true)]
+    public class ReadOnlyDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private ReadOnlyAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as ReadOnlyAttribute;
-            
-            return EditorGUI.GetPropertyHeight(property, label, true);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
 
-        #region OnGUI
+        #region OnGgGUI
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
-            bool defaultGUI = GUI.enabled;
             GUI.enabled = false;
-            EditorGUI.PropertyField(position, property, label, true);
-            GUI.enabled = true;
-            GUI.enabled = defaultGUI;
-
-            EditorGUI.EndProperty();
+            GgGUI.CustomPropertyField(position, property, label);
         }
 
         #endregion

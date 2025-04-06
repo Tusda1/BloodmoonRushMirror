@@ -8,44 +8,28 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(DisableInEditModeAttribute))]
-    public class DisableInEditModeDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(DisableInEditModeAttribute), true)]
+    public class DisableInEditModeDrawer : GgPropertyDrawer
     {
-        #region Variables
-
-        private DisableInEditModeAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        #region GgPropertyHeight
+        
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as DisableInEditModeAttribute;
-            
-            return EditorGUI.GetPropertyHeight(property, label, true);
+            return propertyHeight;
         }
-
+        
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
-            bool defaultGUI = GUI.enabled;
             GUI.enabled = Application.isPlaying;
-            EditorGUI.PropertyField(position, property, label, true);
-            GUI.enabled = defaultGUI;
-
-            EditorGUI.EndProperty();
+            GgGUI.CustomPropertyField(position, property, label);
         }
-
+        
         #endregion
 
     } // class end

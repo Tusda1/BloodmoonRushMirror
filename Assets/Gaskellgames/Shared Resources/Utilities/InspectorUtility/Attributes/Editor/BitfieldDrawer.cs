@@ -8,82 +8,34 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(BitfieldAttribute))]
-    public class BitfieldDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(BitfieldAttribute), true)]
+    public class BitfieldDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private BitfieldAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as BitfieldAttribute;
-            
-            return base.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
 
-        #region OnGUI
+        #region OnGgGUI
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
-
-            if (property.propertyType == SerializedPropertyType.Integer)
-            {
-                bool defaultGui = GUI.enabled;
-                GUI.enabled = false;
-                
-                string bitfieldString = GgMaths.BitfieldAsString(property.intValue, attributeAsType.length);
-                float labelWidth = StringExtensions.GetStringWidth(label.text);
-                float contentWidth = StringExtensions.GetStringWidth(bitfieldString);
-                float defaultLabelWidth = EditorGUIUtility.labelWidth;
-                
-                if (defaultLabelWidth + contentWidth < position.width)
-                {
-                    // draw with label using defaultLabelWidth
-                    Rect labelRect = new Rect(position.x, position.y, defaultLabelWidth, position.height);
-                    Rect valueRect = new Rect(position.x + defaultLabelWidth, position.y, position.width - defaultLabelWidth, position.height);
-                    
-                    EditorGUI.PrefixLabel(labelRect, label);
-                    GUIContent tooltipContent = new GUIContent(bitfieldString, label.tooltip);
-                    EditorGUI.LabelField(valueRect, tooltipContent);
-                }
-                else if (labelWidth + contentWidth < position.width)
-                {
-                    // draw with label added to tooltip
-                    Rect labelRect = new Rect(position.x, position.y, Mathf.Max(0, position.width - contentWidth), position.height);
-                    Rect valueRect = new Rect(position.x + labelRect.width, position.y, contentWidth, position.height);
-                    
-                    EditorGUI.PrefixLabel(labelRect, label);
-                    GUIContent tooltipContent = new GUIContent(bitfieldString, label.tooltip);
-                    EditorGUI.LabelField(valueRect, tooltipContent);
-                }
-                else
-                {
-                    GUIContent hiddenLabel = new GUIContent(bitfieldString, $"{label.text}\n\n{label.tooltip}");
-                    EditorGUI.LabelField(position, hiddenLabel);
-                }
-                
-                GUI.enabled = defaultGui;
-            }
-            else
+            if (property.propertyType != SerializedPropertyType.Integer)
             {
                 EditorGUI.PropertyField(position, property, label);
+                return;
             }
-
-            // close property
-            EditorGUI.EndProperty();
+            
+            string bitfieldString = property.hasMultipleDifferentValues
+                ? "--------------------------------------"
+                : GgMaths.BitfieldAsString(property.intValue, AttributeAsType<BitfieldAttribute>().length);
+            GgGUI.StringField(position, label, bitfieldString, property.hasMultipleDifferentValues, true);
         }
 
         #endregion

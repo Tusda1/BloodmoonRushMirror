@@ -8,9 +8,9 @@ using UnityEngine.UIElements;
 namespace Gaskellgames.EditorOnly
 {
     [Overlay(typeof(SceneView), "GgCore")]
-    public class GGToolbar : ToolbarOverlay
+    public class GgToolbar : ToolbarOverlay
     {
-        GGToolbar() : base( AddComment.id, IEditorUpdateCount.id ) { }
+        GgToolbar() : base( AddComment.id, IEditorUpdateCount.id ) { }
 
     } // class end
     

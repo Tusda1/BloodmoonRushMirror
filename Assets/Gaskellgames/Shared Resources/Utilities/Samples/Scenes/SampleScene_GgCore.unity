@@ -386,8 +386,6 @@ GameObject:
   - component: {fileID: 1508087683}
   - component: {fileID: 1508087682}
   - component: {fileID: 1508087681}
-  - component: {fileID: 1508087686}
-  - component: {fileID: 1508087685}
   - component: {fileID: 1508087680}
   - component: {fileID: 1508087679}
   - component: {fileID: 1508087678}
@@ -443,7 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneData:
-    buildIndex: 6
+    buildIndex: -1
     sceneName: SampleScene
     sceneFilePath: Assets/Scenes/SampleScene.unity
     guid: 969d6f80aa42c6446966dd9a84924b21
@@ -627,47 +625,6 @@ MonoBehaviour:
     quality: 0
     sampleRateSetting: 0
   audioClipDataList: []
---- !u!114 &1508087685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1508087674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0f4860d2ca6e494f84b5ade6d35850e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bool6:
-    x: 0
-    y: 0
-    z: 0
-    w: 0
-    v: 0
-    u: 0
-  logicType: 7
-  output: 1
---- !u!114 &1508087686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1508087674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3a8e907e31117c4d8ac0b0be969c538, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bool5:
-    x: 0
-    y: 0
-    z: 0
-    w: 0
-    v: 0
-  logicType: 5
-  output: 1
 --- !u!1 &1593181082
 GameObject:
   m_ObjectHideFlags: 0

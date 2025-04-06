@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Gaskellgames
 {
-    // <summary>
-    // Code created by Gaskellgames
-    // </summary>
+    /// <summary>
+    /// Code created by Gaskellgames: https://github.com/Gaskellgames
+    /// </summary>
 
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class CustomCurveAttribute : PropertyAttribute
@@ -17,13 +17,13 @@ namespace Gaskellgames
  
         public CustomCurveAttribute()
         {
-            R = 050;
+            R = 000;
             G = 179;
             B = 000;
             A = 255;
         }
  
-        public CustomCurveAttribute(byte r = 000, byte g = 028, byte b = 045, byte a = 255)
+        public CustomCurveAttribute(byte r = 000, byte g = 000, byte b = 000, byte a = 255)
         {
             R = r;
             G = g;

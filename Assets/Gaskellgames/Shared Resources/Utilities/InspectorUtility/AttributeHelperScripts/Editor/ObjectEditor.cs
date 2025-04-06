@@ -22,6 +22,7 @@ namespace Gaskellgames.EditorOnly
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
+            EditorGUILayout.Space();
             buttonDrawer.DrawButtons(targets);
         }
         

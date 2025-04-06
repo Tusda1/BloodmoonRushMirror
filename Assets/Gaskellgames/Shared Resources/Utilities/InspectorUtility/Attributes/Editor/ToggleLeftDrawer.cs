@@ -8,48 +8,34 @@ namespace Gaskellgames.EditorOnly
     // Code created by Gaskellgames: https://github.com/Gaskellgames?tab=repositories
     // </summary>
     
-    [CustomPropertyDrawer(typeof(ToggleLeftAttribute))]
-    public class ToggleLeftDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(ToggleLeftAttribute), true)]
+    public class ToggleLeftDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private ToggleLeftAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as ToggleLeftAttribute;
-            
-            return EditorGUI.GetPropertyHeight(property, label, true);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
 
-        #region OnGUI
+        #region OnGgGUI
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
-
-            if (property.propertyType == SerializedPropertyType.Boolean)
+            if (property.propertyType != SerializedPropertyType.Boolean)
             {
-                property.boolValue = EditorGUI.ToggleLeft(position, label, property.boolValue);
+                GgGUI.CustomPropertyField(position, property, label);
+                return;
             }
-            else
+            
+            if (GgGUI.ToggleLeft(position, label, property.boolValue, out bool outputValue, property.hasMultipleDifferentValues))
             {
-                EditorGUI.PropertyField(position, property, label);
+                property.boolValue = outputValue;
             }
-
-            // close property
-            EditorGUI.EndProperty();
         }
 
         #endregion

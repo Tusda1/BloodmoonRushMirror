@@ -15,7 +15,6 @@ namespace Gaskellgames.EditorOnly
     public static class EditorUpdateLoop
     {
         internal static List<IEditorUpdate> iEditorUpdateList = new List<IEditorUpdate>();
-
         internal static Action OnIEditorUpdateListUpdated;
         
         /// <summary>
@@ -52,8 +51,9 @@ namespace Gaskellgames.EditorOnly
                 if (0 < iEditorUpdateList.Count) { UnsubscribeFromEditorUpdateLoop(); }
                 return;
             }
-            
-            if (ComponentListUpdated(out List<IEditorUpdate> addedComponents, out List<IEditorUpdate> removedComponents))
+
+            // Handle IEditorUpdate
+            if (ComponentListUpdated(ref iEditorUpdateList, out List<IEditorUpdate> addedComponents, out List<IEditorUpdate> removedComponents))
             {
                 foreach (IEditorUpdate removedComponent in removedComponents)
                 {
@@ -63,48 +63,8 @@ namespace Gaskellgames.EditorOnly
                 {
                     EditorApplication.update += addedComponent.HandleEditorUpdate;
                 }
-                
-                OnIEditorUpdateListUpdated.Invoke();
+                OnIEditorUpdateListUpdated?.Invoke();
             }
-        }
-
-        /// <summary>
-        /// Checks to see if the list of all IEditorUpdate has changed
-        /// </summary>
-        /// <returns>True if changed, False if not</returns>
-        private static bool ComponentListUpdated(out List<IEditorUpdate> addedComponents, out List<IEditorUpdate> removedComponents)
-        {
-            // get all 'component type' in open scenes
-            List<IEditorUpdate> newEditorUpdateList = new List<IEditorUpdate>();
-            List<GameObject> rootObjects = SceneExtensions.GetAllRootGameObjects();
-            foreach(GameObject root in rootObjects)
-            {
-                IEditorUpdate[] componentsArray = root.GetComponentsInChildren<IEditorUpdate>(true);
-                foreach (IEditorUpdate debugEvent in componentsArray)
-                {
-                    newEditorUpdateList.Add(debugEvent);
-                }
-            }
-        
-            // check to see if the list has been updated
-            bool updated = false;
-            addedComponents = new List<IEditorUpdate>();
-            removedComponents = new List<IEditorUpdate>();
-            foreach (IEditorUpdate editorUpdate in iEditorUpdateList)
-            {
-                if (newEditorUpdateList.Contains(editorUpdate)) { continue; }
-                removedComponents.Add(editorUpdate);
-                updated = true;
-            }
-            foreach (IEditorUpdate editorUpdate in newEditorUpdateList)
-            {
-                if (iEditorUpdateList.Contains(editorUpdate)) { continue; }
-                addedComponents.Add(editorUpdate);
-                updated = true;
-            }
-
-            if (updated) { iEditorUpdateList = newEditorUpdateList; }
-            return updated;
         }
 
         /// <summary>
@@ -118,6 +78,46 @@ namespace Gaskellgames.EditorOnly
                 EditorApplication.update -= editorUpdate.HandleEditorUpdate;
             }
             iEditorUpdateList.Clear();
+            OnIEditorUpdateListUpdated?.Invoke();
+        }
+
+        /// <summary>
+        /// Checks to see if the list of all IEditorUpdate has changed
+        /// </summary>
+        /// <returns>True if changed, False if not</returns>
+        private static bool ComponentListUpdated<T>(ref List<T> comparisonList, out List<T> addedComponents, out List<T> removedComponents)
+        {
+            // get all 'component type' in open scenes
+            List<T> newComponentList = new List<T>();
+            List<GameObject> rootObjects = SceneExtensions.GetAllRootGameObjects();
+            foreach(GameObject root in rootObjects)
+            {
+                T[] componentsArray = root.GetComponentsInChildren<T>(true);
+                foreach (T debugEvent in componentsArray)
+                {
+                    newComponentList.Add(debugEvent);
+                }
+            }
+        
+            // check to see if the list has been updated
+            bool updated = false;
+            addedComponents = new List<T>();
+            removedComponents = new List<T>();
+            foreach (T component in comparisonList)
+            {
+                if (newComponentList.Contains(component)) { continue; }
+                removedComponents.Add(component);
+                updated = true;
+            }
+            foreach (T component in newComponentList)
+            {
+                if (comparisonList.Contains(component)) { continue; }
+                addedComponents.Add(component);
+                updated = true;
+            }
+
+            if (updated) { comparisonList = newComponentList; }
+            return updated;
         }
 
     } // class end
