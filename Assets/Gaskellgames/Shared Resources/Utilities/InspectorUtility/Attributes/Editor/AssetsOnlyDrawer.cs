@@ -8,52 +8,39 @@ namespace Gaskellgames.EditorOnly
     // Code created by Gaskellgames: https://github.com/Gaskellgames?tab=repositories
     // </summary>
     
-    [CustomPropertyDrawer(typeof(AssetsOnlyAttribute))]
-    public class AssetsOnlyDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(AssetsOnlyAttribute), true)]
+    public class AssetsOnlyDrawer : GgPropertyDrawer
     {
-        #region Variables
-
-        private AssetsOnlyAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        #region GgPropertyHeight
+        
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as AssetsOnlyAttribute;
-            
-            return base.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
-
-            if (property.propertyType == SerializedPropertyType.ObjectReference)
-            {
-                property.objectReferenceValue = EditorGUI.ObjectField(position, label, property.objectReferenceValue, fieldInfo.FieldType, false);
-            }
-            else
+            // quick return if wrong type
+            if (property.propertyType != SerializedPropertyType.ObjectReference)
             {
                 EditorGUI.PropertyField(position, property, label);
+                return;
             }
-
-            // close property
-            EditorGUI.EndProperty();
+            
+            if (GgGUI.ObjectField(position, label, property.objectReferenceValue, out Object outputValue, fieldInfo.FieldType, property.hasMultipleDifferentValues, false))
+            {
+                property.objectReferenceValue = outputValue;
+            }
         }
-
+        
         #endregion
-
+        
     } // class end
 }
 #endif

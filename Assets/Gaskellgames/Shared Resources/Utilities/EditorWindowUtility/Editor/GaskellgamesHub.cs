@@ -66,13 +66,13 @@ namespace Gaskellgames.EditorOnly
 
         #region Menu Item
         
-        [MenuItem(MenuItemUtility.Hub_ToolsMenu_Path, false, MenuItemUtility.Hub_ToolsMenu_Priority)]
+        [MenuItem(MenuItemUtility.Hub_ToolsMenu_Path, false, MenuItemUtility.Hub_Priority)]
         private static void OpenWindow_ToolsMenu()
         {
             OpenWindow_WindowMenu();
         }
 
-        [MenuItem(MenuItemUtility.Hub_WindowMenu_Path, false, MenuItemUtility.Hub_WindowMenu_Priority)]
+        [MenuItem(MenuItemUtility.Hub_WindowMenu_Path, false, MenuItemUtility.Hub_Priority)]
         public static void OpenWindow_WindowMenu()
         {
             OpenWindow<GaskellgamesHub>("Gaskellgames Hub", windowWidth, windowHeight, true);
@@ -96,7 +96,7 @@ namespace Gaskellgames.EditorOnly
 
         protected override List<ToolbarItem> LeftToolbar()
         {
-            string copyright = isWindowWide ? "Copyright \u00a9 2024 Gaskellgames. All rights reserved." : "\u00a9 2024 Gaskellgames.";
+            string copyright = isWindowWide ? "Copyright \u00a9 2022-2025 Gaskellgames. All rights reserved." : "\u00a9 Gaskellgames.";
             List<ToolbarItem> leftToolbar = new List<ToolbarItem>
             {
                 new (null, new GUIContent(copyright)),
@@ -107,7 +107,7 @@ namespace Gaskellgames.EditorOnly
 
         protected override List<ToolbarItem> RightToolbar()
         {
-            string version = isWindowWide ? "Version 1.1.0" : "v1.1.0";
+            string version = isWindowWide ? "Version 1.2.4" : "v1.2.4";
             List<ToolbarItem> leftToolbar = new List<ToolbarItem>
             {
                 new (null, new GUIContent(version)),
@@ -188,38 +188,38 @@ namespace Gaskellgames.EditorOnly
         {
             string filePath = string.Empty;
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_GgCore, relativePath_GgCore, out filePath)) { return; }
-            icon_GgCore = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_GgCore.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_GgCore, relativePath_GgCore, out filePath))
+                icon_GgCore = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_GgCore.png", typeof(Texture));
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_AudioSystem, relativePath, out filePath)) { return; }
-            icon_AudioSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_AudioSystem.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_AudioSystem, relativePath, out filePath))
+                icon_AudioSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_AudioSystem.png", typeof(Texture));
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_CameraSystem, relativePath, out filePath)) { return; }
-            icon_CameraSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_CameraSystem.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_CameraSystem, relativePath, out filePath))
+                icon_CameraSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_CameraSystem.png", typeof(Texture));
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_CharacterController, relativePath, out filePath)) { return; }
-            icon_CharacterController = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_CharacterController.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_CharacterController, relativePath, out filePath))
+                icon_CharacterController = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_CharacterController.png", typeof(Texture));
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_FolderSystem, relativePath, out filePath)) { return; }
-            icon_FolderSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_HierarchyFolderSystem.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_FolderSystem, relativePath, out filePath))
+                icon_FolderSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_HierarchyFolderSystem.png", typeof(Texture));
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_InputEventSystem, relativePath, out filePath)) { return; }
-            icon_InputEventSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_InputEventSystem.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_InputEventSystem, relativePath, out filePath))
+                icon_InputEventSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_InputEventSystem.png", typeof(Texture));
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_LogicSystem, relativePath, out filePath)) { return; }
-            icon_LogicSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_LogicSystem.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_LogicSystem, relativePath, out filePath))
+                icon_LogicSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_LogicSystem.png", typeof(Texture));
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_PlatformController, relativePath, out filePath)) { return; }
-            icon_PlatformController = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_PlatformController.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_PlatformController, relativePath, out filePath))
+                icon_PlatformController = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_PlatformController.png", typeof(Texture));
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_PoolingSystem, relativePath, out filePath)) { return; }
-            icon_PoolingSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_PoolingSystem.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_PoolingSystem, relativePath, out filePath))
+                icon_PoolingSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_PoolingSystem.png", typeof(Texture));
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_SceneController, relativePath, out filePath)) { return; }
-            icon_SceneController = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_SceneController.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_SceneController, relativePath, out filePath))
+                icon_SceneController = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_SceneController.png", typeof(Texture));
             
-            if (!GgPathRef.TryGetFullFilePath(pathRefName_SplineSystem, relativePath, out filePath)) { return; }
-            icon_SplineSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_SplineSystem.png", typeof(Texture));
+            if (GgPathRef.TryGetFullFilePath(pathRefName_SplineSystem, relativePath, out filePath))
+                icon_SplineSystem = (Texture)AssetDatabase.LoadAssetAtPath(filePath + "Logo_SplineSystem.png", typeof(Texture));
         
         }
 

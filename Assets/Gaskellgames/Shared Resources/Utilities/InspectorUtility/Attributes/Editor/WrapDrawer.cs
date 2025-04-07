@@ -8,37 +8,25 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(WrapAttribute))]
-    public class WrapDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(WrapAttribute), true)]
+    public class WrapDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private WrapAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as WrapAttribute;
-            
-            return EditorGUI.GetPropertyHeight(property, label, true);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
+        
+        #region OnGgGUI
 
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
-
+            WrapAttribute attributeAsType = AttributeAsType<WrapAttribute>();
             if (property.propertyType == SerializedPropertyType.Float)
             {
                 float limitedValue = property.floatValue;
@@ -51,7 +39,10 @@ namespace Gaskellgames.EditorOnly
                     limitedValue = attributeAsType.max;
                 }
 
-                property.floatValue = EditorGUI.FloatField(position, label, limitedValue);
+                if (GgGUI.FloatField(position, label, limitedValue, out float outputValue, property.hasMultipleDifferentValues))
+                {
+                    property.floatValue = outputValue;
+                }
             }
             else if (property.propertyType == SerializedPropertyType.Integer)
             {
@@ -65,131 +56,131 @@ namespace Gaskellgames.EditorOnly
                     limitedValue = (int)attributeAsType.max;
                 }
 
-                property.intValue = EditorGUI.IntField(position, label, limitedValue);
+                if (GgGUI.IntField(position, label, limitedValue, out int outputValue, property.hasMultipleDifferentValues))
+                {
+                    property.intValue = outputValue;
+                }
             }
             else if (property.propertyType == SerializedPropertyType.Vector2)
             {
-                float limitedValueX = property.vector2Value.x;
+                Vector2 limitedValue = new Vector2(property.vector2Value.x, property.vector2Value.y);
                 if (attributeAsType.max < property.vector2Value.x)
                 {
-                    limitedValueX = attributeAsType.min;
+                    limitedValue.x = attributeAsType.min;
                 }
                 else if (property.vector2Value.x < attributeAsType.min)
                 {
-                    limitedValueX = attributeAsType.max;
+                    limitedValue.x = attributeAsType.max;
                 }
-                
-                float limitedValueY = property.vector2Value.y;
                 if (attributeAsType.max < property.vector2Value.y)
                 {
-                    limitedValueY = attributeAsType.min;
+                    limitedValue.y = attributeAsType.min;
                 }
                 else if (property.vector2Value.y < attributeAsType.min)
                 {
-                    limitedValueY = attributeAsType.max;
+                    limitedValue.y = attributeAsType.max;
                 }
 
-                property.vector2Value = EditorGUI.Vector2Field(position, label, new Vector2(limitedValueX, limitedValueY));
+                if (GgGUI.Vector2Field(position, label, limitedValue, out Vector2 outputValue, property.hasMultipleDifferentValues))
+                {
+                    property.vector2Value = outputValue;
+                }
             }
             else if (property.propertyType == SerializedPropertyType.Vector2Int)
             {
-                int limitedValueX = property.vector2IntValue.x;
-                if ((int)attributeAsType.max < property.vector2IntValue.x)
+                Vector2Int limitedValue = new Vector2Int(property.vector2IntValue.x, property.vector2IntValue.y);
+                if (attributeAsType.max < property.vector2IntValue.x)
                 {
-                    limitedValueX = (int)attributeAsType.min;
+                    limitedValue.x = (int)attributeAsType.min;
                 }
-                else if (property.vector2IntValue.x < (int)attributeAsType.min)
+                else if (property.vector2IntValue.x < attributeAsType.min)
                 {
-                    limitedValueX = (int)attributeAsType.max;
+                    limitedValue.x = (int)attributeAsType.max;
                 }
-                
-                int limitedValueY = property.vector2IntValue.y;
-                if ((int)attributeAsType.max < property.vector2IntValue.y)
+                if (attributeAsType.max < property.vector2IntValue.y)
                 {
-                    limitedValueY = (int)attributeAsType.min;
+                    limitedValue.y = (int)attributeAsType.min;
                 }
-                else if (property.vector2IntValue.y < (int)attributeAsType.min)
+                else if (property.vector2IntValue.y < attributeAsType.min)
                 {
-                    limitedValueY = (int)attributeAsType.max;
+                    limitedValue.y = (int)attributeAsType.max;
                 }
 
-                property.vector2IntValue = EditorGUI.Vector2IntField(position, label, new Vector2Int(limitedValueX, limitedValueY));
+                if (GgGUI.Vector2IntField(position, label, limitedValue, out Vector2Int outputValue, property.hasMultipleDifferentValues))
+                {
+                    property.vector2IntValue = outputValue;
+                }
             }
             else if (property.propertyType == SerializedPropertyType.Vector3)
             {
-                float limitedValueX = property.vector3Value.x;
+                Vector3 limitedValue = new Vector3(property.vector3Value.x, property.vector3Value.y);
                 if (attributeAsType.max < property.vector3Value.x)
                 {
-                    limitedValueX = attributeAsType.min;
+                    limitedValue.x = attributeAsType.min;
                 }
                 else if (property.vector3Value.x < attributeAsType.min)
                 {
-                    limitedValueX = attributeAsType.max;
+                    limitedValue.x = attributeAsType.max;
                 }
-                
-                float limitedValueY = property.vector3Value.y;
                 if (attributeAsType.max < property.vector3Value.y)
                 {
-                    limitedValueY = attributeAsType.min;
+                    limitedValue.y = attributeAsType.min;
                 }
                 else if (property.vector3Value.y < attributeAsType.min)
                 {
-                    limitedValueY = attributeAsType.max;
+                    limitedValue.y = attributeAsType.max;
                 }
-                
-                float limitedValueZ = property.vector3Value.z;
                 if (attributeAsType.max < property.vector3Value.z)
                 {
-                    limitedValueZ = attributeAsType.min;
+                    limitedValue.z = attributeAsType.min;
                 }
                 else if (property.vector3Value.z < attributeAsType.min)
                 {
-                    limitedValueZ = attributeAsType.max;
+                    limitedValue.z = attributeAsType.max;
                 }
 
-                property.vector3Value = EditorGUI.Vector3Field(position, label, new Vector3(limitedValueX, limitedValueY, limitedValueZ));
+                if (GgGUI.Vector3Field(position, label, limitedValue, out Vector3 outputValue, property.hasMultipleDifferentValues))
+                {
+                    property.vector3Value = outputValue;
+                }
             }
             else if (property.propertyType == SerializedPropertyType.Vector3Int)
             {
-                int limitedValueX = property.vector3IntValue.x;
-                if ((int)attributeAsType.max < property.vector3IntValue.x)
+                Vector3Int limitedValue = new Vector3Int(property.vector3IntValue.x, property.vector3IntValue.y);
+                if (attributeAsType.max < property.vector3IntValue.x)
                 {
-                    limitedValueX = (int)attributeAsType.min;
+                    limitedValue.x = (int)attributeAsType.min;
                 }
-                else if (property.vector3IntValue.x < (int)attributeAsType.min)
+                else if (property.vector3IntValue.x < attributeAsType.min)
                 {
-                    limitedValueX = (int)attributeAsType.max;
+                    limitedValue.x = (int)attributeAsType.max;
                 }
-                
-                int limitedValueY = property.vector3IntValue.y;
-                if ((int)attributeAsType.max < property.vector3IntValue.y)
+                if (attributeAsType.max < property.vector3IntValue.y)
                 {
-                    limitedValueY = (int)attributeAsType.min;
+                    limitedValue.y = (int)attributeAsType.min;
                 }
-                else if (property.vector3IntValue.y < (int)attributeAsType.min)
+                else if (property.vector3IntValue.y < attributeAsType.min)
                 {
-                    limitedValueY = (int)attributeAsType.max;
+                    limitedValue.y = (int)attributeAsType.max;
                 }
-                
-                int limitedValueZ = property.vector3IntValue.z;
                 if (attributeAsType.max < property.vector3IntValue.z)
                 {
-                    limitedValueZ = (int)attributeAsType.min;
+                    limitedValue.z = (int)attributeAsType.min;
                 }
                 else if (property.vector3IntValue.z < attributeAsType.min)
                 {
-                    limitedValueZ = (int)attributeAsType.max;
+                    limitedValue.z = (int)attributeAsType.max;
                 }
 
-                property.vector3IntValue = EditorGUI.Vector3IntField(position, label, new Vector3Int(limitedValueX, limitedValueY, limitedValueZ));
+                if (GgGUI.Vector3IntField(position, label, limitedValue, out Vector3Int outputValue, property.hasMultipleDifferentValues))
+                {
+                    property.vector3IntValue = outputValue;
+                }
             }
             else
             {
-                EditorGUI.PropertyField(position, property, label);
+                GgGUI.CustomPropertyField(position, property, label);
             }
-
-            // close property
-            EditorGUI.EndProperty();
         }
 
         #endregion

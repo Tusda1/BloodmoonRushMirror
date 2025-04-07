@@ -1,5 +1,3 @@
-using UnityEngine;
-
 #if UNITY_EDITOR
 
 namespace Gaskellgames.EditorOnly
@@ -8,7 +6,7 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
     
-    [CreateAssetMenu(fileName = "GaskellgamesHubSettings", menuName = "Gaskellgames/GaskellgamesHubSettings")]
+    //[CreateAssetMenu(fileName = "GaskellgamesHubSettings", menuName = "Gaskellgames/GaskellgamesHubSettings")]
     public class GaskellgamesHubSettings_SO : GGScriptableObject
     {
         #region Variables

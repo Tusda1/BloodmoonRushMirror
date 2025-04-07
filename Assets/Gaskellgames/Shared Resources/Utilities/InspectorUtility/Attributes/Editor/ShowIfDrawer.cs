@@ -9,76 +9,28 @@ namespace Gaskellgames.EditorOnly
     /// Original code created by ghysc: https://github.com/ghysc/SwitchAttribute
     /// </summary>
 	
-    [CustomPropertyDrawer(typeof(ShowIfAttribute))]
-    public class ShowIfDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(ShowIfAttribute), true)]
+    public class ShowIfDrawer : GgPropertyDrawer
     {
-        #region Variables
-
-        private ShowIfAttribute attributeAsType;
-        private readonly float removeSpacing = -EditorGUIUtility.standardVerticalSpacing;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        #region GgPropertyHeight
+        
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as ShowIfAttribute;
-            
-            if (GetConditionalResult(attributeAsType, property))
-            {
-                PropertyDrawer customProperty = PropertyDrawerExtensions.Find(property);
-                if (customProperty != null)
-                {
-                    // custom property
-                    return customProperty.GetPropertyHeight(property, label);
-                }
-                
-                // 'built in' property
-                return EditorGUI.GetPropertyHeight(property, label);
-            }
-            
-            // hidden
-            return removeSpacing;
+            return GetConditionalResult(AttributeAsType<ShowIfAttribute>(), property) ? propertyHeight : -standardSpacing;
         }
-
+        
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, label, property);
-
-            // cache default values
-            bool defaultGui = GUI.enabled;
-			
-            // draw property if not hidden
-            if (GetConditionalResult(attributeAsType, property))
-            {
-                PropertyDrawer customDrawer = PropertyDrawerExtensions.Find(property);
-                if (customDrawer == null)
-                {
-                    EditorGUI.PropertyField(position, property, label, true);
-                }
-                else
-                {
-                    customDrawer.OnGUI(position, property, label);
-                }
-            }
-
-            // reset default values
-            GUI.enabled = defaultGui;
-            
-            // close property
-            EditorGUI.EndProperty();
+            if (!GetConditionalResult(AttributeAsType<ShowIfAttribute>(), property)) { return; }
+            GgGUI.CustomPropertyField(position, property, label);
         }
-
+        
         #endregion
 
         //----------------------------------------------------------------------------------------------------

@@ -1,7 +1,6 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-
 namespace Gaskellgames.EditorOnly
 {
     [CustomPropertyDrawer(typeof(LayerDropdown))]
@@ -10,17 +9,17 @@ namespace Gaskellgames.EditorOnly
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, GUIContent.none, property);
-
             SerializedProperty layerIndex = property.FindPropertyRelative("m_LayerIndex");
-            position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
             if (layerIndex != null)
             {
-                layerIndex.intValue = EditorGUI.LayerField(position, layerIndex.intValue);
+                layerIndex.intValue = EditorGUI.LayerField(position, label, layerIndex.intValue);
             }
-
+            else
+            {
+                EditorGUI.PropertyField(position, property, label);
+            }
             EditorGUI.EndProperty();
         }
-
     } // class end
 }
 #endif

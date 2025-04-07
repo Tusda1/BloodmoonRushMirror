@@ -8,123 +8,68 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(MinMaxSliderAttribute))]
-    public class MinMaxSliderDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(MinMaxSliderAttribute), true)]
+    public class MinMaxSliderDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private MinMaxSliderAttribute attributeAsType;
-        
-        private readonly float singleLine = EditorGUIUtility.singleLineHeight;
-        private readonly float labelWidth = EditorGUIUtility.labelWidth;
-        private readonly int floatWidth = 50;
-        private readonly int gap = 4;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as MinMaxSliderAttribute;
-            
-            if (attributeAsType.subLabels)
-            {
-                return EditorGUI.GetPropertyHeight(property, label) + (singleLine * 0.4f);
-            }
-            else
-            {
-                return EditorGUI.GetPropertyHeight(property, label);
-            }
+            MinMaxSliderAttribute attributeAsType = AttributeAsType<MinMaxSliderAttribute>();
+            return attributeAsType != null && attributeAsType.subLabels ? propertyHeight + (singleLineHeight * 0.4f) : propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
+        
+        #region OnGgGUI
 
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
             // draw label, min max slider and float fields
             if (fieldInfo.FieldType == typeof(Vector2))
             {
-                // get value
-                Vector2 minMax = property.vector2Value;
-                
-                // label
-                EditorGUI.PrefixLabel(position, label);
-                    
-                // input field: min
-                float positionX = position.x + labelWidth + 2;
-                Rect minRect = new Rect(positionX, position.y, floatWidth, singleLine);
-                GUIContent minRectLabel = new GUIContent("", "Min Value");
-                minMax.x = GgMaths.RoundFloat(EditorGUI.FloatField(minRect, minRectLabel, minMax.x), 2);
-                    
-                // min max slider
-                positionX = minRect.xMax + gap;
-                float sliderWidth = position.width - (labelWidth + 2 + ((gap + floatWidth) * 2));
-                Rect sliderRect = new Rect(positionX, position.y, sliderWidth, singleLine);
-                EditorGUI.MinMaxSlider(sliderRect, ref minMax.x, ref minMax.y, attributeAsType.min, attributeAsType.max);
-
-                // input field: max
-                positionX = sliderRect.xMax + gap;
-                Rect maxRect = new Rect(positionX, position.y, floatWidth, singleLine);
-                GUIContent maxRectLabel = new GUIContent("", "Max Value");
-                minMax.y = GgMaths.RoundFloat(EditorGUI.FloatField(maxRect, maxRectLabel, minMax.y), 2);
-                    
-                // apply values
-                property.vector2Value = minMax;
-                    
-                // draw sub labels
-                Rect subLabelRect = new Rect(sliderRect.x, sliderRect.y + (singleLine * 0.75f), sliderRect.width, sliderRect.height);
-                EditorExtensions.DrawSubLabels(subLabelRect, attributeAsType.minLabel, attributeAsType.maxLabel, attributeAsType.subLabels);
+                MinMaxSliderAttribute attributeAsType = AttributeAsType<MinMaxSliderAttribute>();
+                Vector2 minMax = new Vector2(attributeAsType.min, attributeAsType.max);
+                if (GgGUI.MinMaxSlider(position, label, property.vector2Value, out Vector2 outputValue, minMax, property.hasMultipleDifferentValues))
+                {
+                    property.vector2Value = outputValue;
+                }
+                if (attributeAsType.subLabels) { DrawSubLabels(GetFieldPosition(position, label)); }
             }
             else if (fieldInfo.FieldType == typeof(Vector2Int))
             {
-                // get value
-                Vector2 minMax = property.vector2IntValue;
-                
-                // label
-                EditorGUI.PrefixLabel(position, label);
-                    
-                // input field: min
-                float positionX = position.x + labelWidth + 2;
-                Rect minRect = new Rect(positionX, position.y, floatWidth, singleLine);
-                GUIContent minRectLabel = new GUIContent("", "Min Value");
-                minMax.x = GgMaths.RoundFloat(EditorGUI.FloatField(minRect, minRectLabel, minMax.x), 0);
-                    
-                // min max slider
-                positionX = minRect.xMax + gap;
-                float sliderWidth = position.width - (labelWidth + 2 + ((gap + floatWidth) * 2));
-                Rect sliderRect = new Rect(positionX, position.y, sliderWidth, singleLine);
-                EditorGUI.MinMaxSlider(sliderRect, ref minMax.x, ref minMax.y, attributeAsType.min, attributeAsType.max);
-
-                // input field: max
-                positionX = sliderRect.xMax + gap;
-                Rect maxRect = new Rect(positionX, position.y, floatWidth, singleLine);
-                GUIContent maxRectLabel = new GUIContent("", "Max Value");
-                minMax.y = GgMaths.RoundFloat(EditorGUI.FloatField(maxRect, maxRectLabel, minMax.y), 0);
-                    
-                // apply values
-                property.vector2IntValue = new Vector2Int((int)minMax.x, (int)minMax.y);
-                    
-                // draw sub labels
-                Rect subLabelRect = new Rect(sliderRect.x, sliderRect.y + (singleLine * 0.75f), sliderRect.width, sliderRect.height);
-                EditorExtensions.DrawSubLabels(subLabelRect, attributeAsType.minLabel, attributeAsType.maxLabel, attributeAsType.subLabels);
+                MinMaxSliderAttribute attributeAsType = AttributeAsType<MinMaxSliderAttribute>();
+                Vector2Int minMax = new Vector2Int((int)attributeAsType.min, (int)attributeAsType.max);
+                if (GgGUI.MinMaxSliderInt(position, label, property.vector2IntValue, out Vector2Int outputValue, minMax, property.hasMultipleDifferentValues))
+                {
+                    property.vector2IntValue = outputValue;
+                }
+                if (attributeAsType.subLabels) { DrawSubLabels(GetFieldPosition(position, label)); }
             }
             else
             {
-                EditorGUI.PropertyField(position, property, label);
+                GgGUI.CustomPropertyField(position, property, label);
             }
-
-            EditorGUI.EndProperty();
         }
 
+        #endregion
+        
+        //----------------------------------------------------------------------------------------------------
+        
+        #region Private Functions
+        
+        private void DrawSubLabels(Rect fieldPosition)
+        {
+            MinMaxSliderAttribute attributeAsType = AttributeAsType<MinMaxSliderAttribute>();
+            float subLabelPositionX = fieldPosition.x + (miniFieldWidth + standardSpacing);
+            float subLabelPositionY = fieldPosition.y + (singleLineHeight * 0.75f);
+            float subLabelWidth = fieldPosition.width - ((miniFieldWidth + standardSpacing) * 2);
+            Rect subLabelRect = new Rect(subLabelPositionX, subLabelPositionY, subLabelWidth, singleLineHeight);
+            EditorExtensions.DrawSubLabels(subLabelRect, attributeAsType.minLabel, attributeAsType.maxLabel);
+        }
+        
         #endregion
         
     } // class end

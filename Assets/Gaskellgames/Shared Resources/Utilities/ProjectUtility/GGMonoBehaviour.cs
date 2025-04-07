@@ -5,6 +5,7 @@ namespace Gaskellgames
     /// <summary>
     /// Code created by Gaskellgames
     /// </summary>
+    
     public abstract class GGMonoBehaviour : MonoBehaviour
     {
         #region verboseLogs

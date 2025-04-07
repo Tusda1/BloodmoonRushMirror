@@ -34,6 +34,7 @@ public class GroundSlam
 
     public void ExecuteGroundSlam(ref Vector2 velocityReference, Action onGroundSlamEnd = null)
     {
+        Debug.Log(_groundSlamStage);
         switch (_groundSlamStage)
         {
             case 0:
@@ -89,7 +90,6 @@ public class GroundSlam
                             newState.Events(this).OnEnd = () =>
                             {
                                 newState.Destroy();
-                                onGroundSlamEnd?.Invoke();
                                 _groundSlamStage++;
                                 _timer = 0;
                                 _animancerComponent.Play(idleAnimation);

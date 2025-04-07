@@ -8,39 +8,27 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(MinMaxAttribute))]
-    public class MinMaxDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(MinMaxAttribute), true)]
+    public class MinMaxDrawer : GgPropertyDrawer
     {
-        #region Variables
+        #region GgPropertyHeight
 
-        private MinMaxAttribute attributeAsType;
-
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as MinMaxAttribute;
-            
-            return base.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
 
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
+        
+        #region OnGgGUI
 
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            // open property and get reference to attribute instance
-            EditorGUI.BeginProperty(position, GUIContent.none, property);
-
             if (property.propertyType == SerializedPropertyType.Float)
             {
+                MinMaxAttribute attributeAsType = AttributeAsType<MinMaxAttribute>();
                 float limitedValue = property.floatValue;
                 if (attributeAsType.max < property.floatValue)
                 {
@@ -51,10 +39,14 @@ namespace Gaskellgames.EditorOnly
                     limitedValue = attributeAsType.min;
                 }
 
-                property.floatValue = EditorGUI.FloatField(position, label, limitedValue);
+                if (GgGUI.FloatField(position, label, limitedValue, out float outputValue, property.hasMultipleDifferentValues))
+                {
+                    property.floatValue = outputValue;
+                }
             }
             else if (property.propertyType == SerializedPropertyType.Integer)
             {
+                MinMaxAttribute attributeAsType = AttributeAsType<MinMaxAttribute>();
                 int limitedValue = property.intValue;
                 if ((int)attributeAsType.max < property.intValue)
                 {
@@ -65,15 +57,15 @@ namespace Gaskellgames.EditorOnly
                     limitedValue = (int)attributeAsType.min;
                 }
 
-                property.intValue = EditorGUI.IntField(position, label, limitedValue);
+                if (GgGUI.IntField(position, label, limitedValue, out int outputValue, property.hasMultipleDifferentValues))
+                {
+                    property.intValue = outputValue;
+                }
             }
             else
             {
-                EditorGUI.PropertyField(position, property, label);
+                GgGUI.CustomPropertyField(position, property, label);
             }
-
-            // close property
-            EditorGUI.EndProperty();
         }
 
         #endregion

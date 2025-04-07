@@ -8,60 +8,41 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(InfoBoxAttribute))]
-    public class InfoBoxDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(InfoBoxAttribute), true)]
+    public class InfoBoxDrawer : GgPropertyDrawer
     {
         #region Variables
 
-        private InfoBoxAttribute attributeAsType;
-
         private static readonly int boxHeight = 20;
         private static readonly int boxHeightIcon = boxHeight + 5;
-        private readonly float spacing = EditorGUIUtility.standardVerticalSpacing;
 
         #endregion
 
         //----------------------------------------------------------------------------------------------------
 
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        #region GgPropertyHeight
+        
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as InfoBoxAttribute;
-
-            float offset = 0;
-            
-            if (GetConditionalResult(attributeAsType, property))
-            {
-                offset += GetBoxHeight(Screen.width);
-            }
-            
-            PropertyDrawer customProperty = PropertyDrawerExtensions.Find(property);
-            if (customProperty != null)
-            {
-                // custom property
-                return customProperty.GetPropertyHeight(property, label) + offset;
-            }
-                
-            // 'built in' property
-            return EditorGUI.GetPropertyHeight(property, label) + offset;
+            return GetConditionalResult(AttributeAsType<InfoBoxAttribute>(), property) ? propertyHeight + GetBoxHeight(Screen.width) : propertyHeight;
         }
-
+        
         #endregion
-
+        
         //----------------------------------------------------------------------------------------------------
-
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        
+        #region OnGgGUI
+        
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
             float height = GetBoxHeight(position.width);
             Rect infoBoxPosition = new Rect(position.xMin, position.yMin, position.width, height);
             Rect propertyPosition = new Rect(position.xMin, position.yMin, position.width, position.height);
+            InfoBoxAttribute attributeAsType = AttributeAsType<InfoBoxAttribute>();
 
             if (GetConditionalResult(attributeAsType, property))
             {
-                propertyPosition.yMin += height + spacing;
+                propertyPosition.yMin += height + standardSpacing;
                 switch (attributeAsType.messageType)
                 {
                     case InfoMessageType.None:
@@ -79,16 +60,7 @@ namespace Gaskellgames.EditorOnly
                 }
             }
             
-            // draw property
-            PropertyDrawer customDrawer = PropertyDrawerExtensions.Find(property);
-            if (customDrawer == null)
-            {
-                EditorGUI.PropertyField(propertyPosition, property, label, true);
-            }
-            else
-            {
-                customDrawer.OnGUI(propertyPosition, property, label);
-            }
+            GgGUI.CustomPropertyField(propertyPosition, property, label);
         }
 
         #endregion
@@ -99,6 +71,8 @@ namespace Gaskellgames.EditorOnly
 
         private float GetBoxHeight(float positionWidth)
         {
+            InfoBoxAttribute attributeAsType = AttributeAsType<InfoBoxAttribute>();
+            
             bool iconHidden = attributeAsType.messageType == InfoMessageType.None;
             float minHeight = iconHidden ? boxHeight : boxHeightIcon;
             float wrapHeight = StringExtensions.GetWrappedStringHeight(attributeAsType.message, iconHidden ? positionWidth : positionWidth + boxHeightIcon);
@@ -114,6 +88,7 @@ namespace Gaskellgames.EditorOnly
         private bool GetConditionalResult(InfoBoxAttribute condition, SerializedProperty property)
         {
             // skip checks
+            InfoBoxAttribute attributeAsType = AttributeAsType<InfoBoxAttribute>();
             if (!attributeAsType.isConditional) { return true; }
             
             // get the logic result from the first condition

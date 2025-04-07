@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Gaskellgames.EditorOnly
 {
-    // <summary>
-    // Code created by Gaskellgames
-    // </summary>
+    /// <summary>
+    /// Code created by Gaskellgames: https://github.com/Gaskellgames
+    /// </summary>
     
     [CustomPropertyDrawer(typeof(Password))]
     public class PasswordDrawer : PropertyDrawer

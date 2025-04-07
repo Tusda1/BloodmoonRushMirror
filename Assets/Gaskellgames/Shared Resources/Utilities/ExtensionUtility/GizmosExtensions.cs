@@ -106,75 +106,6 @@ namespace Gaskellgames
 
         //----------------------------------------------------------------------------------------------------
 
-        #region Circle & Arc
-
-        /// <summary>
-        /// Draws a complete circle in 3D space.
-        /// </summary>
-        /// <param name="center">The center of the circle in world space.</param>
-        /// <param name="normal">The normal of the circle in world space.</param>
-        /// <param name="radius">The radius of the circle in world space units.</param>
-        public static void DrawCircle(Vector3 center, Vector3 normal, float radius)
-        {
-#if UNITY_EDITOR
-            Color32 defaultColor = UnityEditor.Handles.color;
-        
-            UnityEditor.Handles.color = Gizmos.color;
-            UnityEditor.Handles.DrawWireDisc(center, normal, radius);
-        
-            // reset to default values
-            UnityEditor.Handles.color = defaultColor;
-#endif
-        }
-
-        /// <summary>
-        /// Draws a circular arc in 3D space.
-        /// </summary>
-        /// <param name="center">The center of the circle in world space.</param>
-        /// <param name="normal">The normal of the circle in world space.</param>
-        /// <param name="from">The direction of the point on the circle circumference, relative to the center, where the arc begins.</param>
-        /// <param name="angle">The angle of the arc, in degrees.</param>
-        /// <param name="radius">The radius of the circle in world space units.</param>
-        public static void DrawWireArc(Vector3 center, Vector3 normal, Vector3 from, float angle, float radius)
-        {
-#if UNITY_EDITOR
-            // cache defaults
-            Color32 defaultColor = UnityEditor.Handles.color;
-        
-            UnityEditor.Handles.color = Gizmos.color;
-            UnityEditor.Handles.DrawWireArc(center, normal, from, angle, radius);
-        
-            // reset to default values
-            UnityEditor.Handles.color = defaultColor;
-#endif
-        }
-        
-        /// <summary>
-        /// Draws a circular arc in 3D space.
-        /// </summary>
-        /// <param name="center">The center of the circle in world space.</param>
-        /// <param name="normal">The normal of the circle in world space.</param>
-        /// <param name="from">The direction of the point on the circle circumference, relative to the center, where the arc begins.</param>
-        /// <param name="angle">The angle of the arc, in degrees.</param>
-        /// <param name="radius">The radius of the circle in world space units.</param>
-        public static void DrawSolidArc(Vector3 center, Vector3 normal, Vector3 from, float angle, float radius)
-        {
-#if UNITY_EDITOR
-            // cache defaults
-            Color32 defaultColor = UnityEditor.Handles.color;
-        
-            UnityEditor.Handles.color = Gizmos.color;
-            UnityEditor.Handles.DrawSolidArc(center, normal, from, angle, radius);
-        
-            // reset to default values
-            UnityEditor.Handles.color = defaultColor;
-#endif
-        }
-        
-        #endregion
-
-        //----------------------------------------------------------------------------------------------------
-
         #region Rect & Plane
 
         /// <summary>
@@ -296,23 +227,99 @@ namespace Gaskellgames
 
         //----------------------------------------------------------------------------------------------------
 
-        #region Audio
-    
+        #region Circle & Arc
+
         /// <summary>
-        /// Draws the min and max distance visualisers from an AudioSource
+        /// Draws a complete circle in 3D space.
         /// </summary>
-        /// <param name="transform"></param>
-        /// <param name="minDistance"></param>
-        /// <param name="maxDistance"></param>
-        /// <param name="alpha"></param>
-        /// <param name="thickness"></param>
-        public static void DrawAudioSource(Transform transform, float minDistance, float maxDistance, float alpha = 0.2f, float thickness = 1)
+        /// <param name="center">The center of the circle in world space.</param>
+        /// <param name="normal">The normal of the circle in world space.</param>
+        /// <param name="radius">The radius of the circle in world space units.</param>
+        public static void DrawCircle(Vector3 center, Vector3 normal, float radius)
         {
-            DrawRadius_Handles(transform, minDistance, alpha, thickness);
-            DrawRadius_Handles(transform, maxDistance, alpha, thickness);
+#if UNITY_EDITOR
+            Color32 defaultColor = UnityEditor.Handles.color;
+        
+            UnityEditor.Handles.color = Gizmos.color;
+            UnityEditor.Handles.DrawWireDisc(center, normal, radius);
+        
+            // reset to default values
+            UnityEditor.Handles.color = defaultColor;
+#endif
+        }
+
+        /// <summary>
+        /// Draws a circular arc in 3D space.
+        /// </summary>
+        /// <param name="center">The center of the circle in world space.</param>
+        /// <param name="normal">The normal of the circle in world space.</param>
+        /// <param name="from">The direction of the point on the circle circumference, relative to the center, where the arc begins.</param>
+        /// <param name="angle">The angle of the arc, in degrees.</param>
+        /// <param name="radius">The radius of the circle in world space units.</param>
+        public static void DrawWireArc(Vector3 center, Vector3 normal, Vector3 from, float angle, float radius)
+        {
+#if UNITY_EDITOR
+            // cache defaults
+            Color32 defaultColor = UnityEditor.Handles.color;
+        
+            UnityEditor.Handles.color = Gizmos.color;
+            UnityEditor.Handles.DrawWireArc(center, normal, from, angle, radius);
+        
+            // reset to default values
+            UnityEditor.Handles.color = defaultColor;
+#endif
         }
         
-        private static void DrawRadius_Handles(Transform transform, float distance, float alpha = 0.2f, float thickness = 1)
+        /// <summary>
+        /// Draws a circular arc in 3D space.
+        /// </summary>
+        /// <param name="center">The center of the circle in world space.</param>
+        /// <param name="normal">The normal of the circle in world space.</param>
+        /// <param name="from">The direction of the point on the circle circumference, relative to the center, where the arc begins.</param>
+        /// <param name="angle">The angle of the arc, in degrees.</param>
+        /// <param name="radius">The radius of the circle in world space units.</param>
+        public static void DrawSolidArc(Vector3 center, Vector3 normal, Vector3 from, float angle, float radius)
+        {
+#if UNITY_EDITOR
+            // cache defaults
+            Color32 defaultColor = UnityEditor.Handles.color;
+        
+            UnityEditor.Handles.color = Gizmos.color;
+            UnityEditor.Handles.DrawSolidArc(center, normal, from, angle, radius);
+        
+            // reset to default values
+            UnityEditor.Handles.color = defaultColor;
+#endif
+        }
+        
+        #endregion
+
+        //----------------------------------------------------------------------------------------------------
+
+        #region Sphere
+    
+        /// <summary>
+        /// Draws a wire sphere with a set radius
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="radius"></param>
+        public static void DrawWireSphere(Transform transform, Vector3 offset, float radius)
+        {
+            DrawRadius_Handles(transform, offset, radius, false);
+        }
+    
+        /// <summary>
+        /// Draws a solid sphere with a set radius
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="radius"></param>
+        /// <param name="alpha"></param>
+        public static void DrawSolidSphere(Transform transform, Vector3 offset, float radius, float alpha = 0.2f)
+        {
+            DrawRadius_Handles(transform, offset, radius, true, alpha);
+        }
+        
+        private static void DrawRadius_Handles(Transform transform, Vector3 offset, float radius, bool solid, float alpha = 0.2f, float thickness = 1)
         {
 #if UNITY_EDITOR
             // cache defaults
@@ -324,36 +331,36 @@ namespace Gaskellgames
             UnityEditor.Handles.matrix = transform.localToWorldMatrix;
             Vector3 center;
             Vector3 normal;
-            float radius;
+            float diskRadius;
             if (Camera.current.orthographic)
             {
-                normal = Vector3.zero - UnityEditor.Handles.inverseMatrix.MultiplyVector(Camera.current.transform.forward);
-                radius = distance;
-                center = Vector3.zero;
+                normal = offset - UnityEditor.Handles.inverseMatrix.MultiplyVector(Camera.current.transform.forward);
+                diskRadius = radius;
+                center = offset;
             }
             else
             {
-                normal = Vector3.zero - UnityEditor.Handles.inverseMatrix.MultiplyPoint(Camera.current.transform.position);
+                normal = offset - UnityEditor.Handles.inverseMatrix.MultiplyPoint(Camera.current.transform.position);
                 float sqrMagnitude = normal.sqrMagnitude;
-                float a = distance * distance;
+                float a = radius * radius;
                 float b = a * a / sqrMagnitude;
 
-                radius = Mathf.Sqrt(a - b);
-                center = Vector3.zero - a * normal / sqrMagnitude;
+                diskRadius = Mathf.Sqrt(a - b);
+                center = offset - a * normal / sqrMagnitude;
             }
 
             // right (x)
-            DrawHandles_DepthTestedWireDisk(Vector3.zero, Vector3.right, distance, thickness);
+            DrawHandles_DepthTestedWireDisk(offset, Vector3.right, radius, thickness);
 
             // up (y)
-            DrawHandles_DepthTestedWireDisk(Vector3.zero, Vector3.up, distance, thickness);
+            DrawHandles_DepthTestedWireDisk(offset, Vector3.up, radius, thickness);
 
             // forward (z)
-            DrawHandles_DepthTestedWireDisk(Vector3.zero, Vector3.forward, distance, thickness);
+            DrawHandles_DepthTestedWireDisk(offset, Vector3.forward, radius, thickness);
             
             // camera
-            DrawHandles_DepthTestedWireDisk(center, normal, radius, thickness);
-            DrawHandles_DepthTestedDisk(center, normal, radius, alpha);
+            DrawHandles_DepthTestedWireDisk(center, normal, diskRadius, thickness);
+            if (solid) { DrawHandles_DepthTestedDisk(center, normal, diskRadius, alpha); }
 
             // reset to default values
             UnityEditor.Handles.matrix = defaultMatrix;
@@ -390,6 +397,25 @@ namespace Gaskellgames
             UnityEditor.Handles.zTest = CompareFunction.Greater;
             UnityEditor.Handles.DrawSolidDisc(center, normal, radius);
 #endif
+        }
+
+        #endregion
+
+        //----------------------------------------------------------------------------------------------------
+
+        #region Audio
+    
+        /// <summary>
+        /// Draws the min and max distance visualisers from an AudioSource
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="minDistance"></param>
+        /// <param name="maxDistance"></param>
+        /// <param name="alpha"></param>
+        public static void DrawAudioSource(Transform transform, float minDistance, float maxDistance, float alpha = 0.2f)
+        {
+            DrawSolidSphere(transform, Vector3.zero, minDistance, alpha);
+            DrawSolidSphere(transform, Vector3.zero, maxDistance, alpha);
         }
 
         #endregion

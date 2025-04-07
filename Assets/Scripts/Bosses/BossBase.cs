@@ -23,9 +23,12 @@ public class BossBase : GravityObject, IDamageable
     public event Action OnBattleStart;
     public event Action OnBattleEnd;
     public event Action TakenDamage;
+    public event Action OnDeath;
     
     [SerializeField] private AnimationClip[] takeDamageAnimation;
+    [SerializeField] private bool turnWhileMoving = true;
     [SerializeField] private DamageInstance bossDamageInstance;
+    [SerializeField] private SmoothDampScript smoothDampScript = new();
     
     [HideInInspector] public Vector2 facingDirection;
     [HideInInspector] public bool bossGrounded;
@@ -64,10 +67,13 @@ public class BossBase : GravityObject, IDamageable
     protected void LateUpdate()
     {
         bossGrounded = isGrounded;
+
+        if (turnWhileMoving)
+        {
+            if (targetVelocity.x != 0) facingDirection = targetVelocity.x > 0 ? Vector2.right : Vector2.left;
         
-        if (targetVelocity.x != 0) facingDirection = targetVelocity.x > 0 ? Vector2.right : Vector2.left;
-        
-        transform.localScale = new Vector3(-facingDirection.x, 1, 1);
+            transform.localScale = new Vector3(-facingDirection.x, 1, 1);
+        }
     }
     
     public void StartBattle()
@@ -85,6 +91,12 @@ public class BossBase : GravityObject, IDamageable
         GravityModifier = 0f;
     }
 
+    public void Move(Vector2 moveVectorGoal)
+    {
+        smoothDampScript.SetStartVelocity(velocity);
+        smoothDampScript.SmoothDampVector2(moveVectorGoal, ref targetVelocity);
+    }
+    
     public void MoveToNextPhase()
     {
         if (currentPhase + 1 == maxHealth.Length)
@@ -110,13 +122,20 @@ public class BossBase : GravityObject, IDamageable
             Die();
             return;
         }
-        
-        var state = animancer.Play(takeDamageAnimation[currentPhase]);
-        state.Events(this).OnEnd = () =>
+
+        if (takeDamageAnimation.Length > 0)
         {
-            state.Destroy();
+            var state = animancer.Play(takeDamageAnimation[currentPhase]);
+            state.Events(this).OnEnd = () =>
+            {
+                state.Destroy();
+                TakenDamage?.Invoke();
+            };
+        }
+        else
+        {
             TakenDamage?.Invoke();
-        };
+        }
     }
     
     private IEnumerator FlashWhite() {
@@ -129,7 +148,7 @@ public class BossBase : GravityObject, IDamageable
 
     private void Die()
     {
-        MoveToNextPhase();
+        OnDeath?.Invoke();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -145,7 +164,7 @@ public class BossBase : GravityObject, IDamageable
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        gameObject.GetComponentInParentOrChildren(ref animancer);
+        animancer = GetComponent<AnimancerComponent>();
     }
 #endif
 }

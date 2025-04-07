@@ -8,37 +8,34 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames
     /// </summary>
 
-    [CustomPropertyDrawer(typeof(ProgressBarAttribute))]
-    public class ProgressBarDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(ProgressBarAttribute), true)]
+    public class ProgressBarDrawer : GgPropertyDrawer
     {
         #region Variables
-
-        private ProgressBarAttribute attributeAsType;
+        
         private int controlID = -1;
-
+        
         #endregion
 
         //----------------------------------------------------------------------------------------------------
+        
+        #region GgPropertyHeight
 
-        #region Height
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        protected override float GgPropertyHeight(SerializedProperty property, float propertyHeight, float approxFieldWidth)
         {
-            attributeAsType = attribute as ProgressBarAttribute;
-            
-            return base.GetPropertyHeight(property, label);
+            return propertyHeight;
         }
 
         #endregion
         
         //----------------------------------------------------------------------------------------------------
+        
+        #region OnGgGUI
 
-        #region OnGUI
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        protected override void OnGgGUI(Rect position, SerializedProperty property, GUIContent label, GgGUIDefaults defaultCache)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
+            ProgressBarAttribute attributeAsType = AttributeAsType<ProgressBarAttribute>();
+            
             // set label
             string barLabel = attributeAsType.label;
             if (barLabel == "")
@@ -47,51 +44,56 @@ namespace Gaskellgames.EditorOnly
             }
             
             // cache defaults
-            bool defaultGui = GUI.enabled;
-            int floatWidth = 50;
-            int gap = 4;
-            float width = position.width - (floatWidth + gap);
+            float width = position.width - (miniFieldWidth + standardSpacing);
             Rect barBackground = new Rect(position.x, position.yMin, width, position.height);
-            Rect floatRect = new Rect(position.xMax - floatWidth, position.yMin, floatWidth, position.height);
+            Rect floatRect = new Rect(position.xMax - miniFieldWidth, position.yMin, miniFieldWidth, position.height);
             Color32 barColor = new Color32(attributeAsType.R, attributeAsType.G, attributeAsType.B, attributeAsType.A);
             
             // draw bar
-            if (fieldInfo.FieldType == typeof(int))
+            if (property.propertyType == SerializedPropertyType.Integer)
             {
                 if (!attributeAsType.readOnly)
                 {
-                    property.intValue = (int)(attributeAsType.maxValue * CalculateSliderPercent(barBackground, property, attributeAsType));
+                    if (HandleSliderInteraction(out float clickValue, barBackground, property, attributeAsType))
+                    {
+                        property.intValue = (int)GgMaths.RoundFloat(attributeAsType.maxValue * clickValue, 3);
+                    }
                 }
                 int value = property.intValue;
                 float barValue = value / attributeAsType.maxValue;
                 if (barValue < 0) { barValue = 0; }
                 else if (1 < barValue) { barValue = 1; }
-                ProgressBar(barBackground, barValue, barLabel, barColor);
+                DrawProgressBar(barBackground, barValue, barLabel, barColor, attributeAsType, property.hasMultipleDifferentValues);
                 if (attributeAsType.readOnly) { GUI.enabled = false; }
-                property.intValue = (int)EditorGUI.FloatField(floatRect, GUIContent.none, value);
-                GUI.enabled = defaultGui;
+                if (GgGUI.IntField(floatRect, GUIContent.none, value, out value, property.hasMultipleDifferentValues))
+                {
+                    property.intValue = value;
+                }
             }
-            else if (fieldInfo.FieldType == typeof(float))
+            else if (property.propertyType == SerializedPropertyType.Float)
             {
                 if (!attributeAsType.readOnly)
                 {
-                    property.floatValue = GgMaths.RoundFloat(attributeAsType.maxValue * CalculateSliderPercent(barBackground, property, attributeAsType), 3);
+                    if (HandleSliderInteraction(out float clickValue, barBackground, property, attributeAsType))
+                    {
+                        property.floatValue = GgMaths.RoundFloat(attributeAsType.maxValue * clickValue, 3);
+                    }
                 }
                 float value = property.floatValue;
                 float barValue = value / attributeAsType.maxValue;
                 if (barValue < 0) { barValue = 0; }
                 else if (1 < barValue) { barValue = 1; }
-                ProgressBar(barBackground, barValue, barLabel, barColor);
+                DrawProgressBar(barBackground, barValue, barLabel, barColor, attributeAsType, property.hasMultipleDifferentValues);
                 if (attributeAsType.readOnly) { GUI.enabled = false; }
-                property.floatValue = EditorGUI.FloatField(floatRect, GUIContent.none, value);
-                GUI.enabled = defaultGui;
+                if (GgGUI.FloatField(floatRect, GUIContent.none, value, out value, property.hasMultipleDifferentValues))
+                {
+                    property.floatValue = value;
+                }
             }
             else
             {
-                EditorGUI.PropertyField(position, property, label);
+                GgGUI.CustomPropertyField(position, property, label);
             }
-            
-            EditorGUI.EndProperty();
         }
 
         #endregion
@@ -100,9 +102,9 @@ namespace Gaskellgames.EditorOnly
 
         #region Private Functions
 
-        private float CalculateSliderPercent(Rect barPosition, SerializedProperty property, ProgressBarAttribute progressBar)
+        private bool HandleSliderInteraction(out float value, Rect barPosition, SerializedProperty property, ProgressBarAttribute attributeAsType)
         {
-            // update mouse style while inside barbackground
+            // update mouse style while inside bar background
             EditorGUIUtility.AddCursorRect(barPosition, MouseCursor.ResizeHorizontal);
             Event currentEvent = Event.current;
             
@@ -129,31 +131,32 @@ namespace Gaskellgames.EditorOnly
                 if (currentEvent.isMouse && currentEvent.button == 0 && GUI.enabled)
                 {
                     // calculate x value
-                    float value;
                     if (currentEvent.mousePosition.x < barPosition.xMin) { value = 0; }
                     else if (barPosition.xMax < currentEvent.mousePosition.x) { value = 1; }
                     else { value = (currentEvent.mousePosition.x - barPosition.xMin) / barPosition.width; }
 					
                     currentEvent.Use();
-                    return value;
+                    return true;
                 }
             }
-            
-            if (fieldInfo.FieldType == typeof(int))
+
+            switch (property.propertyType)
             {
-                return property.intValue / progressBar.maxValue;
-            }
-            else if (fieldInfo.FieldType == typeof(float))
-            {
-                return property.floatValue / progressBar.maxValue;
-            }
-            else
-            {
-                return 0;
+                case SerializedPropertyType.Float:
+                    value = property.floatValue / attributeAsType.maxValue;
+                    return false;
+                
+                case SerializedPropertyType.Integer:
+                    value = property.intValue / attributeAsType.maxValue;
+                    return false;
+                
+                default:
+                    value = 0;
+                    return false;
             }
         }
         
-        private void ProgressBar(Rect barPosition, float fillPercent, string label, Color barColor)
+        private void DrawProgressBar(Rect barPosition, float fillPercent, string label, Color barColor, ProgressBarAttribute attributeAsType, bool propertyHasMultipleDifferentValues)
         {
             // create inner barPosition
             int border = 1;
@@ -164,12 +167,25 @@ namespace Gaskellgames.EditorOnly
             EditorGUI.DrawRect(barPositionInner, new Color32(045, 045, 045, 255));
             
             // draw bar
-            Rect fillRect = new Rect(barPositionInner.xMin, barPositionInner.yMin, barPositionInner.width * fillPercent, barPositionInner.height);
-            EditorGUI.DrawRect(fillRect, barColor);
-            fillRect = new Rect(barPositionInner.xMin, barPositionInner.yMin, barPositionInner.width * fillPercent, 2);
-            EditorGUI.DrawRect(fillRect, barColor * 1.1f);
-            fillRect = new Rect(barPositionInner.xMin, barPositionInner.yMax - 2 , barPositionInner.width * fillPercent, 2);
-            EditorGUI.DrawRect(fillRect, barColor * 0.9f);
+            if (propertyHasMultipleDifferentValues)
+            {
+                float multiSelectPositionX = barPositionInner.x + standardSpacing;
+                float multiSelectPositionY = barPositionInner.y + (barPositionInner.height * 0.5f);
+                float multiSelectPositionWidth = 12;
+                float multiSelectPositionHeight = standardSpacing * 0.5f;
+                
+                Rect fillRect = new Rect(multiSelectPositionX, multiSelectPositionY, multiSelectPositionWidth, multiSelectPositionHeight);
+                EditorGUI.DrawRect(fillRect, InspectorExtensions.textDisabledColor);
+            }
+            else
+            {
+                Rect fillRect = new Rect(barPositionInner.xMin, barPositionInner.yMin, barPositionInner.width * fillPercent, barPositionInner.height);
+                EditorGUI.DrawRect(fillRect, barColor);
+                fillRect = new Rect(barPositionInner.xMin, barPositionInner.yMin, barPositionInner.width * fillPercent, 2);
+                EditorGUI.DrawRect(fillRect, barColor * 1.1f);
+                fillRect = new Rect(barPositionInner.xMin, barPositionInner.yMax - 2 , barPositionInner.width * fillPercent, 2);
+                EditorGUI.DrawRect(fillRect, barColor * 0.9f);
+            }
 
             // set label alignment
             TextAnchor defaultAlignment = GUI.skin.label.alignment;

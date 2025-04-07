@@ -8,7 +8,7 @@ namespace Gaskellgames.EditorOnly
     /// Code created by Gaskellgames: https://github.com/Gaskellgames
     /// </summary>
     
-    [CustomPropertyDrawer(typeof(TitleAttribute))]
+    [CustomPropertyDrawer(typeof(TitleAttribute), true)]
     public class TitleDecorator : DecoratorDrawer
     {
         #region Variables
