@@ -11,7 +11,6 @@ public class DrucillaIntroduction : MonoBehaviour, IDamageable {
     [GetOrAddComponent, SerializeField, HideInInspector] private ScriptMachine cutsceneGraph;
     
     [SerializeField, Required] private SceneCollectionSO nextLevelSceneCollection;
-    [SerializeField, Required] private SceneCollectionSO endDemoSceneCollection;
     [SerializeField] private DamageInstance drucillaDamageInstance = new() { knockback = Vector2.left };
     
     private Vector3 _startPosition;
@@ -50,10 +49,6 @@ public class DrucillaIntroduction : MonoBehaviour, IDamageable {
 
     [UnityEngine.Scripting.Preserve]
     public void EndDialogue() {
-#if DEMO_BUILD
-        _cameraEffects.FadeLoadScene(endDemoSceneCollection);
-#else
         _cameraEffects.FadeLoadScene(nextLevelSceneCollection);
-#endif
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using Player;
 using SceneCollections;
 using Triggers;
 using Unity.VisualScripting;
@@ -8,7 +6,8 @@ using VContainer;
 
 public class EndTheDungeons : TriggerBox {
     #region ---Fields---
-    [SerializeField] private SceneCollectionSO endSceneCollection;
+    [SerializeField] private SceneCollectionSO nextLevelSceneCollection;
+    [SerializeField] private SceneCollectionSO endDemoSceneCollection;
     [SerializeField] private ScriptMachine cutsceneGraph;
     
     private CameraEffects _cameraEffects;
@@ -25,13 +24,11 @@ public class EndTheDungeons : TriggerBox {
         cutsceneGraph.TriggerUnityEvent("Start");
     }
 
-    public static IEnumerator PlayerWalk(float speed, float time, GravityObjectPlayerMovement playerMovement) {
-        playerMovement.cutsceneMovement.x = speed;
-        playerMovement.cutsceneMovementEnabled = true;
-        
-        yield return new WaitForSeconds(time);
-        
-        playerMovement.cutsceneMovement.x = 0;
-        playerMovement.cutsceneMovementEnabled = false;
+    public void EndLevel() {
+#if DEMO_BUILD
+        _cameraEffects.FadeLoadScene(endDemoSceneCollection);
+#else
+        _cameraEffects.FadeLoadScene(nextLevelSceneCollection);
+#endif
     }
 }
