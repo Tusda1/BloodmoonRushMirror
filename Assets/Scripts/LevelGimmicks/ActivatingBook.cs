@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using ExtensionMethods;
 using PlayerLoopTimer;
 using TetraCreations.Attributes;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class ActivatingBook : MonoBehaviour, IDamageable {
     [SerializeField] private GameObject book;
     [SerializeField] private Animator animator;
     #endregion
-
+    
     private void Start() {
         _activationTimer = new CountdownTimer(activationTime);
         _activationTimer.OnComplete += CloseBooks;
@@ -62,6 +63,8 @@ public class ActivatingBook : MonoBehaviour, IDamageable {
 #if UNITY_EDITOR
     private void OnValidate() {
         if (_activationTimer != null) _activationTimer.Duration = activationTime;
+        bookList.Clear();
+        bookList.AddRange(transform.GetImmediateChildren());
     }
 #endif
 }
