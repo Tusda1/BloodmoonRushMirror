@@ -21,7 +21,12 @@ public class EndTheDungeons : TriggerBox {
     #endregion
     
     protected override void TriggeredAction(Collider2D other) {
+#if DEMO_BUILD
+        cutsceneGraph.TriggerUnityEvent("Demo_Start");
+#else
         cutsceneGraph.TriggerUnityEvent("Start");
+#endif
+        
     }
 
     public void EndLevel() {

@@ -16,7 +16,7 @@ MonoBehaviour:
     _serializedList:
     - Key: David_Ellipsis
       Value:
-        text: . . .
+        text: ...
         character: {fileID: 11400000, guid: 206a9c7f94fa46a4bb93deab729f915c, type: 2}
         whereToPlaySFX: 4
         autoContinue: 0
@@ -29,9 +29,54 @@ MonoBehaviour:
         character: {fileID: 11400000, guid: 206a9c7f94fa46a4bb93deab729f915c, type: 2}
         whereToPlaySFX: 1
         autoContinue: 0
-        textSpeed: 2
+        textSpeed: 32
         soundID: David_Shocked
         characterName: David
+    - Key: Dracula_AfterBossFight_01
+      Value:
+        text: "You\u2026"
+        character: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Dracula
+        characterName: Dracula
+    - Key: Dracula_AfterBossFight_02
+      Value:
+        text: "\u2026"
+        character: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Dracula
+        characterName: Dracula
+    - Key: Dracula_AfterBossFight_03
+      Value:
+        text: "You\u2019ve defeated me\u2026"
+        character: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Dracula
+        characterName: Dracula
+    - Key: Dracula_AfterBossFight_04
+      Value:
+        text: "\u2026"
+        character: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Dracula
+        characterName: Dracula
+    - Key: Dracula_AfterBossFight_05
+      Value:
+        text: Take your damned Car and get out of my sight!
+        character: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Dracula
+        characterName: Dracula
     - Key: Dracula_BeforeBossFight_01
       Value:
         text: You entertained Druscilla well enough, but you hurt her and I can not
@@ -117,8 +162,8 @@ MonoBehaviour:
         characterName: Dracula
     - Key: Dracula_OpeningDialogue_01
       Value:
-        text: Ah... What a predictable outcome. A mere human, brash, reckless and 
-          utterly lacking in grace as usual. Smashing through my ancient, irreplaceable 
+        text: Ah... What a predictable outcome. A mere human, brash, reckless and
+          utterly lacking in grace as usual. Smashing through my ancient, irreplaceable
           castle walls with... this.
         character: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
         whereToPlaySFX: 2
@@ -129,7 +174,7 @@ MonoBehaviour:
     - Key: Dracula_OpeningDialogue_02
       Value:
         text: Well, since you seem so eager to part with your possessions... I shall
-          take this.
+          take it.
         character: {fileID: 11400000, guid: a54d4654070a69049a3e01a6c5e78d7f, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -167,7 +212,7 @@ MonoBehaviour:
     - Key: Drucilla_AfterBossFight_02
       Value:
         text: "I do not lose! Do you have any idea who I am?! I am Drucilla! Daughter
-          of Dracula! Heir to the night! Daddy\u2019s litttle prinsess!"
+          of Dracula! Heir to the night! Daddy\u2019s little princess!"
         character: {fileID: 11400000, guid: 7afd6b2200475f747aa660368f34970a, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -357,7 +402,7 @@ MonoBehaviour:
         characterName: Drucilla
     - Key: Oswald_CastleMain_Checkpoint1_01
       Value:
-        text: 
+        text: "HellooOooOOo\u2026"
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -366,7 +411,25 @@ MonoBehaviour:
         characterName: Oswald
     - Key: Oswald_CastleMain_Checkpoint1_02
       Value:
-        text: 
+        text: "So you\u2019ve probably noticed that the place is a little haunted."
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_CastleMain_Checkpoint1_03
+      Value:
+        text: No problem for you though, right?
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_CastleMain_Checkpoint1_04
+      Value:
+        text: Oh! That could work!
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -375,7 +438,7 @@ MonoBehaviour:
         characterName: Oswald
     - Key: Oswald_CastleMain_Checkpoint2_01
       Value:
-        text: Ahh the memories, up ahead is the library.
+        text: Ahh the memories.
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -383,6 +446,15 @@ MonoBehaviour:
         soundID: Talk_Oswald
         characterName: Oswald
     - Key: Oswald_CastleMain_Checkpoint2_02
+      Value:
+        text: 'Up ahead is the library. '
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_CastleMain_Checkpoint2_03
       Value:
         text: I used to read all the books available to me and nothing could stop
           me, I even made a little system of magical book platforms to help me manoeuvre
@@ -393,16 +465,16 @@ MonoBehaviour:
         textSpeed: 32
         soundID: Talk_Oswald
         characterName: Oswald
-    - Key: Oswald_CastleMain_Checkpoint2_03
+    - Key: Oswald_CastleMain_Checkpoint2_04
       Value:
-        text: "You\u2019ll probably have use of that!"
+        text: "You\u2019ll probably make use of that!"
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
         soundID: Talk_Oswald
         characterName: Oswald
-    - Key: Oswald_CastleMain_Checkpoint2_04
+    - Key: Oswald_CastleMain_Checkpoint2_05
       Value:
         text: "There was this one book I\u2019ve been looking forward to reading
           once I get freed, maybe you could find it?"
@@ -412,7 +484,7 @@ MonoBehaviour:
         textSpeed: 32
         soundID: Talk_Oswald
         characterName: Oswald
-    - Key: Oswald_CastleMain_Checkpoint2_05
+    - Key: Oswald_CastleMain_Checkpoint2_06
       Value:
         text: "No\u2026"
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
@@ -421,9 +493,10 @@ MonoBehaviour:
         textSpeed: 32
         soundID: Talk_Oswald
         characterName: Oswald
-    - Key: Oswald_CastleMain_Checkpoint2_06
+    - Key: Oswald_CastleMain_Checkpoint2_07
       Value:
-        text: Ok, well -
+        text: Ok, so another fun fact. Me and the big man used to be on quite the
+          good terms so we worked a lot together-
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -442,7 +515,7 @@ MonoBehaviour:
         characterName: Oswald
     - Key: Oswald_CastleMain_Checkpoint3_02
       Value:
-        text: "Anyway I see you\u2019ve reached Drucilla\u2019s wing of the castle,"
+        text: "Anyway I see you\u2019ve reached Drucilla\u2019s wing of the castle."
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -458,9 +531,81 @@ MonoBehaviour:
         textSpeed: 32
         soundID: Talk_Oswald
         characterName: Oswald
+    - Key: Oswald_CastleMain_Checkpoint3_04
+      Value:
+        text: "But you\u2019ll figure it out, like you did the boiler and the dungeon. "
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_CastleMain_Checkpoint3_05
+      Value:
+        text: No problem for you, right?
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
     - Key: Oswald_CastleMain_Checkpoint4_01
       Value:
-        text: 
+        text: WELCOME EVERYBODY STEP RIGHT UP AND WITNESS THE DEFEAT OF A PRINCESS!
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_CastleMain_Checkpoint4_02
+      Value:
+        text: What do you think? You like my lil announcer voice?
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_CastleMain_Checkpoint4_03
+      Value:
+        text: "The theatre what I would do to watch a play again\u2026"
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_CastleMain_Checkpoint4_04
+      Value:
+        text: Anyway I do believe Drucilla has arranged the stage for an epic performance.
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_CastleMain_Checkpoint4_05
+      Value:
+        text: No problem for you though! Good luck!
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_CastleMain_Ending_01
+      Value:
+        text: "Well I can\u2019t see any other way of continuing onwards\u2026"
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_CastleMain_Ending_02
+      Value:
+        text: "I\u2019m sure we can figure something out, let me just try something\u2026"
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -469,7 +614,7 @@ MonoBehaviour:
         characterName: Oswald
     - Key: Oswald_CastleMain_Intro_01
       Value:
-        text: Wowza! That was amazing that thing has been a thorn in my side when
+        text: Wowza! That was amazing, that thing has been a thorn in my side when
           it comes to communication!
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
@@ -661,8 +806,8 @@ MonoBehaviour:
     - Key: Oswald_OswaldIntroduction_06
       Value:
         text: More good news! I've scattered some magical tips around the castle.
-          Call it... wizard graffiti, if you will. Keep your eyes peeled! And don't
-          worry, I'll check in from time to time.
+          Call it... wizard graffiti, if you will. And don't worry, I'll check in
+          from time to time.
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -689,8 +834,8 @@ MonoBehaviour:
         characterName: Oswald
     - Key: Oswald_TheBoiler_Checkpoint1_02
       Value:
-        text: "So fun fact these are the machines that makes the castle move around,
-          it used to be my job but alas i could not bear the guilt of following Dracula\u2019s
+        text: "So fun fact these are the machines that make the castle move around,
+          it used to be my job but alas I could not bear the guilt of following Dracula\u2019s
           scheme."
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
@@ -736,7 +881,7 @@ MonoBehaviour:
         characterName: Oswald
     - Key: Oswald_TheBoiler_Checkpoint2_02
       Value:
-        text: Just some sharp hinderances ahead but you got this!
+        text: Just some sharp hindrances ahead but you got this!
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -752,7 +897,7 @@ MonoBehaviour:
         textSpeed: 32
         soundID: Talk_Oswald
         characterName: Oswald
-    - Key: Oswald_TheBoiler_Checkpoint3_01
+    - Key: Oswald_TheBoiler_Checkpoint3
       Value:
         text: bzzzzzzz* zzz **** bzz*
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
@@ -828,8 +973,8 @@ MonoBehaviour:
         characterName: Oswald
     - Key: Oswald_TheDungeons_Checkpoint1_01
       Value:
-        text: "Sooo it looks like you\u2019re quite the way bellow there bud, a couple
-          levels bellow the main floors at least."
+        text: "Sooo it looks like you\u2019re quite the way below the main floor
+          there bud, a couple levels at least. "
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -882,6 +1027,69 @@ MonoBehaviour:
         textSpeed: 32
         soundID: Talk_Oswald
         characterName: Oswald
+    - Key: Oswald_TheDungeons_DemoEnding_01
+      Value:
+        text: "Oh\u2026 I'm supposed to get you past here huh?"
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_TheDungeons_DemoEnding_02
+      Value:
+        text: Buuuuuuuuuuuut I'm not.
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_TheDungeons_DemoEnding_03
+      Value:
+        text: Too tired.
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_TheDungeons_DemoEnding_04
+      Value:
+        text: I'mma snooze real quick.
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_TheDungeons_DemoEnding_05
+      Value:
+        text: See ya in May for the full release. :P
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_TheDungeons_Ending_01
+      Value:
+        text: Oh yeah, I don't think there is a key for this door.
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_TheDungeons_Ending_02
+      Value:
+        text: "Don\u2019t worry though, let me just try something!"
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
     - Key: Oswald_TheDungeons_Intro_01
       Value:
         text: Oh... and watch out for that landing.
@@ -900,18 +1108,95 @@ MonoBehaviour:
         textSpeed: 32
         soundID: Talk_Oswald
         characterName: Oswald
-    - Key: Oswald_ToweringHeights_Chackpoint1_01
+    - Key: Oswald_ToweringHeights_Checkpoint1_01
       Value:
-        text: 
+        text: "Heh I came up with a pretty nice catchphrase there \u201Ckeep a lookout
+          for anything\u201D heck yeah I'm so smart."
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
         textSpeed: 32
         soundID: Talk_Oswald
         characterName: Oswald
-    - Key: Oswald_ToweringHeights_Chackpoint2_01
+    - Key: Oswald_ToweringHeights_Checkpoint1_02
       Value:
-        text: 
+        text: "Oh yeah by the way you\u2019re getting close to the big man so it\u2019s
+          not going to be easy traversing there. "
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Checkpoint1_03
+      Value:
+        text: "You\u2019ll figure it out, I believe in you champ!"
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Checkpoint1_04
+      Value:
+        text: 'But do keep a lookout for anything. '
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Checkpoint2_01
+      Value:
+        text: "Heh soo up a head you\u2019ll probably be chased by some winged creatures\u2026"
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Checkpoint2_02
+      Value:
+        text: 'The big guy sent out the harpies so just a heads up they are fast
+          but you can still hurt them! '
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Checkpoint2_03
+      Value:
+        text: Just keep a lookout for them!
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Ending_01
+      Value:
+        text: "Wowie, that\u2019s a big gap! You probably won\u2019t be able to jump
+          that\u2026 "
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Ending_02
+      Value:
+        text: "Here I\u2019ll help ya but I\u2019ll be out of commission after this,
+          so won\u2019t be of much help to ya. "
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Ending_03
+      Value:
+        text: You got this champ! See you on the other side!
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
@@ -920,7 +1205,36 @@ MonoBehaviour:
         characterName: Oswald
     - Key: Oswald_ToweringHeights_Intro_01
       Value:
-        text: 
+        text: 'That worked but man was it exhausting, phew '
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Intro_02
+      Value:
+        text: "Now you\u2019re outside so better watch your step. It\u2019s a long
+          way down if you fall. "
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Intro_03
+      Value:
+        text: "Alsooooo watch out for \u201Cfalling\u201D rocks, there might be gargoyles
+          on watch!"
+        character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
+        whereToPlaySFX: 2
+        autoContinue: 0
+        textSpeed: 32
+        soundID: Talk_Oswald
+        characterName: Oswald
+    - Key: Oswald_ToweringHeights_Intro_04
+      Value:
+        text: 'Sooo keep a lookout for anything! '
         character: {fileID: 11400000, guid: 6090bbc712dfde848b703d0993ec28a3, type: 2}
         whereToPlaySFX: 2
         autoContinue: 0
