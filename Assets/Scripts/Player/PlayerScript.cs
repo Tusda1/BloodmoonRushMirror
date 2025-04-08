@@ -178,6 +178,7 @@ namespace Player {
         }
 
         private void OnActionOnperformed(InputAction.CallbackContext _) {
+            if (_pauseManager.Paused) return;
             SkipDialogueEvent.Invoke();
         }
 
@@ -207,11 +208,10 @@ namespace Player {
             var hitCount = Physics2D.OverlapCircleAll(transform.position, 2);
             return hitCount.Any(x => x.transform.CompareTag("Ladder"));
         }
-
-
+        
         #region ***---InputActions---***
         public void OnSkipDialogue(InputValue inputValue) {
-            if (!inputValue.isPressed) return;
+            if (!inputValue.isPressed || _pauseManager.Paused) return;
             SkipDialogueEvent.Invoke();
         }
 

@@ -16,6 +16,8 @@ public class DialogueUI_DataContainer : ScriptableObject {
     public FontAsset characterNameFontAsset;
     public float characterNameSize;
     public Color characterNameColor;
+    public SpriteAnimation spriteAnimation;
+    public float staticSpriteOpacity;
     #endregion
     
     #region ---TextData---

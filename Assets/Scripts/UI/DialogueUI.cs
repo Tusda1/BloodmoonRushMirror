@@ -14,12 +14,14 @@ namespace UI {
 
         private VisualElement _root;
         private SkipDialogueButton_Animated _skipDialogueButton;
+        private SkipDialogueButton_Animated _wizardStatic;
         
         private float _textSpeed;
 
         private IControlSchemeChanger _controlSchemeChanger;
         
         private Awaitable _animationTask;
+        private Awaitable _animationTask2;
         #endregion
 
         #region ---Initialization---
@@ -32,7 +34,8 @@ namespace UI {
             base.Awake();
 
             _root = uiDocument.rootVisualElement;
-            _skipDialogueButton = _root.Q<SkipDialogueButton_Animated>();
+            _skipDialogueButton = _root.Q<SkipDialogueButton_Animated>("SkipDialogueButton");
+            _wizardStatic = _root.Q<SkipDialogueButton_Animated>("WizardStatic");
         }
 
         private void Start() {
@@ -40,11 +43,14 @@ namespace UI {
             _controlSchemeChanger.OnControlSchemeChanged += OnControlSchemeChanged;
             OnControlSchemeChanged(_controlSchemeChanger.CurrentControlSchemeData);
             _animationTask = _skipDialogueButton.Animate();
+            _wizardStatic.SpriteAnimation = dialogueUIDataContainer.spriteAnimation;
+            _animationTask2 = _wizardStatic.Animate();
         }
 
         protected override void OnDestroy() {
             _controlSchemeChanger.OnControlSchemeChanged -= OnControlSchemeChanged;
             _animationTask?.Cancel();
+            _animationTask2?.Cancel();
         }
         #endregion
 

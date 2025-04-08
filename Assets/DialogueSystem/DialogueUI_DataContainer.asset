@@ -12,14 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d504b106ea0dcc2429e3225383b75e56, type: 3}
   m_Name: DialogueUI_DataContainer
   m_EditorClassIdentifier: 
-  uiDocumentVisible: 0
-  characterPortrait: {fileID: -431085107, guid: a1873a41348d9734fa2d25bce4263306, type: 3}
-  characterName: David
-  characterNameFontAsset: {fileID: 11400000, guid: e27ada88c2ee2fe44ab4192a860fe409, type: 2}
+  uiDocumentVisible: 1
+  characterPortrait: {fileID: 690025863, guid: 2c554f9faf4726c46a90b1004eaf3476, type: 3}
+  characterName: Oswald
+  characterNameFontAsset: {fileID: 11400000, guid: 160108ed286fee54dbe191673ed44fd8, type: 2}
   characterNameSize: 16
   characterNameColor: {r: 0, g: 0, b: 0, a: 1}
-  text: ...<color=red>Red</color>
-  textFontAsset: {fileID: 11400000, guid: e27ada88c2ee2fe44ab4192a860fe409, type: 2}
+  spriteAnimation:
+    autoSetTexture: {fileID: 0}
+    secondsPerFrame: 0.25
+    frames:
+    - {fileID: -746634608713195320, guid: 0b7c261a71d28254c8fc49fd21a43f73, type: 3}
+    - {fileID: 2062157206922100385, guid: 11cf0484bd4598345bd2b5cd0436a885, type: 3}
+  staticSpriteOpacity: 0
+  text: Off you go kiddo!
+  textFontAsset: {fileID: 11400000, guid: 160108ed286fee54dbe191673ed44fd8, type: 2}
   textSize: 16
-  textSpeed: 3
+  textSpeed: 32
   textColor: {r: 1, g: 1, b: 1, a: 1}

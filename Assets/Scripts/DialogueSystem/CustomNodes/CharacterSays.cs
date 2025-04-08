@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Player;
+using UI.Settings;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -144,7 +145,9 @@ public class CharacterSays : Unit {
                 ? dialogueCharacter.dialogueColor
                 : TextColorOverride;
             
-            dialogueUIDataContainer.textFontAsset = TextFontAssetOverride ?? dialogueCharacter.dialogueFont;
+            dialogueUIDataContainer.textFontAsset = SettingsMenu.UseSingleFont ? 
+                SettingsMenu.SingleFont
+                : TextFontAssetOverride ?? dialogueCharacter.dialogueFont;
 
             _sfxSoundID = dialogueValues.soundID;
 
