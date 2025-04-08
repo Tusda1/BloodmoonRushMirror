@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 864012920811873523}
   - component: {fileID: 978309185833296357}
   - component: {fileID: 6485913443875156579}
+  - component: {fileID: 5283944323537521910}
   - component: {fileID: 7021801742264955943}
   m_Layer: 0
   m_Name: Antibot Hand
@@ -36,9 +37,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1115.52, y: 43.98, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6857578967029567055}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3711243230745409948
@@ -114,13 +116,13 @@ MonoBehaviour:
   lockToAxis: 0
   targetVelocity: {x: 0, y: 0}
   velocity: {x: 0, y: 0}
-  GravityModifier: 1
+  GravityModifier: 0
   animancer: {fileID: 7021801742264955943}
   _stateMachine:
     _CurrentState: {fileID: 978309185833296357}
     _DefaultState: {fileID: 978309185833296357}
   currentPhase: 0
-  maxHealth: 
+  maxHealth: 08000000
   takeDamageAnimation: []
   turnWhileMoving: 0
   bossDamageInstance:
@@ -131,10 +133,10 @@ MonoBehaviour:
     ignoreInvincibility: 0
     which: 0
   smoothDampScript:
-    smoothTime: 0.1
+    smoothTime: 0.05
+  bossCollider: {fileID: 7055704960020471173}
   facingDirection: {x: 0, y: 0}
   bossGrounded: 0
-  bossCollider: {fileID: 0}
   canTakeDamage: 1
   canDoDamage: 1
 --- !u!50 &2572263557304099360
@@ -226,11 +228,15 @@ MonoBehaviour:
   statePhase: 1
   hoverHand: {fileID: 978309185833296357}
   canBeMirrored: 0
-  slamAnimation: {fileID: 0}
   horizontalSpeed: 5
   verticalSpeed: 5
   bounceHeight: 5
   endDistanceFromWall: 4
+  shakeIntensity: {x: 0.3, y: 0.3}
+  handSlamLogic:
+    slamAnimation: {fileID: 2725528668127962582, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
+    slamHitAnimation: {fileID: -4339295783172464084, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
+    slamSpeed: 20
 --- !u!114 &6299390414575335715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,10 +253,13 @@ MonoBehaviour:
   statePhase: 1
   hoverHand: {fileID: 978309185833296357}
   canBeMirrored: 0
-  slamAnimation: {fileID: 0}
-  heightAbovePlayer: 4
+  heightAbovePlayer: 10
   waitAfterSlam: 0.5
-  slamSpeed: 10
+  moveSpeed: 10
+  handSlamLogic:
+    slamAnimation: {fileID: 2725528668127962582, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
+    slamHitAnimation: {fileID: -4339295783172464084, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
+    slamSpeed: 20
 --- !u!114 &864012920811873523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,11 +276,14 @@ MonoBehaviour:
   statePhase: 1
   hoverHand: {fileID: 978309185833296357}
   canBeMirrored: 0
-  slamAnimation: {fileID: 0}
-  slideAnimation: {fileID: 0}
-  slideSpeed: 5
-  slamSpeed: 10
+  slideAnimation: {fileID: -2101293955645152505, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
+  slideSpeed: 15
   waitTimeAfterWallHit: 1
+  shakeIntensity: {x: 0.5, y: 0.5}
+  handSlamLogic:
+    slamAnimation: {fileID: 2725528668127962582, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
+    slamHitAnimation: {fileID: -4339295783172464084, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
+    slamSpeed: 20
 --- !u!114 &978309185833296357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,12 +300,13 @@ MonoBehaviour:
   statePhase: 1
   hoverHand: {fileID: 978309185833296357}
   canBeMirrored: 0
-  idleAnimation: {fileID: 0}
-  distanceFromWall: 3
-  maxHoverDistance: 3
+  idleAnimation: {fileID: 8472446013106085115, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
+  distanceFromWall: 2
+  maxHoverDistance: 2
   minHoverDistance: 1
   moveSpeed: 10
-  hoverSpeed: 4
+  hoverSpeed: 2
+  isHovering: 0
 --- !u!95 &6485913443875156579
 Animator:
   serializedVersion: 7
@@ -316,6 +329,25 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5283944323537521910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5202046595945405582}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a2b693236d2c746b6eb2f60f152e65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 480420048392317565}
+  statePhase: 1
+  brokenAnimation: {fileID: 3750904758434366777, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
+  deathAnimation: {fileID: 359162945896292318, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
+  bossHead: {fileID: 0}
+  speed: 10
+  explosionDistanceFromBossFace: 2
 --- !u!114 &7021801742264955943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,3 +363,81 @@ MonoBehaviour:
   _Animator: {fileID: 6485913443875156579}
   _Transitions: {fileID: 0}
   _ActionOnDisable: 0
+--- !u!1 &5248134640450002309
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6857578967029567055}
+  - component: {fileID: 3223690407216850111}
+  m_Layer: 12
+  m_Name: PhysicalCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6857578967029567055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5248134640450002309}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6890023380359849017}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &3223690407216850111
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5248134640450002309}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 3.5}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5686274, y: 0.012121212}
+    oldSize: {x: 5.1, y: 8.25}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 4.5, y: 5}
+  m_EdgeRadius: 0

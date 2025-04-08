@@ -4,7 +4,7 @@ using Animancer;
 using UnityEngine;
 using Animancer.FSM;
 
-[DefaultExecutionOrder(-10000)]
+[DefaultExecutionOrder(-1)]
 public class BossBase : GravityObject, IDamageable
 {
     [SerializeField] private AnimancerComponent animancer;
@@ -30,9 +30,10 @@ public class BossBase : GravityObject, IDamageable
     [SerializeField] private DamageInstance bossDamageInstance;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
     
+    public Collider2D bossCollider;
+    
     [HideInInspector] public Vector2 facingDirection;
     [HideInInspector] public bool bossGrounded;
-    [HideInInspector] public Collider2D bossCollider;
     [HideInInspector] public bool canTakeDamage = true;
     [HideInInspector] public bool canDoDamage = true;
     private Material _whiteMaterial;
@@ -52,7 +53,6 @@ public class BossBase : GravityObject, IDamageable
     protected override void Start()
     {
         base.Start();
-        bossCollider = GetComponent<Collider2D>();
         
         StartCoroutine(LateActivation());
     }
@@ -165,6 +165,7 @@ public class BossBase : GravityObject, IDamageable
     private void OnValidate()
     {
         animancer = GetComponent<AnimancerComponent>();
+        bossCollider = GetComponent<Collider2D>();
     }
 #endif
 }

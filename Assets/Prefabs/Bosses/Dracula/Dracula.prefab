@@ -129,11 +129,12 @@ MonoBehaviour:
   _stateMachine:
     _CurrentState: {fileID: 0}
     _DefaultState: {fileID: 0}
-  currentPhase: 1
+  currentPhase: 0
   maxHealth: 0300000005000000
   takeDamageAnimation:
   - {fileID: 364215676251682367, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   - {fileID: 7631652414612097155, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  turnWhileMoving: 1
   bossDamageInstance:
     damage: 1
     knockback: {x: 0, y: 0}
@@ -141,9 +142,11 @@ MonoBehaviour:
     staggerStrength: 0
     ignoreInvincibility: 0
     which: 0
+  smoothDampScript:
+    smoothTime: 0.1
+  bossCollider: {fileID: 5451803804019656113}
   facingDirection: {x: 0, y: 0}
   bossGrounded: 0
-  bossCollider: {fileID: 0}
   canTakeDamage: 1
   canDoDamage: 1
 --- !u!114 &1116447291052204353
@@ -159,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 9200508711738700960}
-  baseAttackQueueSize: 0300000003000000
+  baseAttackQueueSize: 0400000005000000
   attackQueueSizeIncreaseFactor: 0100000001000000
 --- !u!50 &7499902071793897444
 Rigidbody2D:
@@ -412,8 +415,8 @@ MonoBehaviour:
   idleAnimation: {fileID: -7867424926479658243, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   batAttackStart: {fileID: -3781141145384401387, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   batAttack: {fileID: 1327577401423468341, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
-  attackLength: 1
-  batSpawnRate: 0.1
+  attackLength: 0.8
+  batSpawnRate: 0.05
   batPrefab: {fileID: 6075747610459885566, guid: 4963866cb476cc542853cdc2e00b1198, type: 3}
 --- !u!114 &3912667724118841212
 MonoBehaviour:
@@ -439,7 +442,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6075747610459885566, guid: 4963866cb476cc542853cdc2e00b1198, type: 3}
   projectileOriginOffset: {x: 0, y: 0}
   swoop:
-    swoopDuration: 2
+    swoopDuration: 1.8
     easePower: 2
     swoopStartAnimation: {fileID: 6739208800350545136, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
     swoopAnimation: {fileID: -6980055594635598164, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
@@ -463,9 +466,9 @@ MonoBehaviour:
   teleportExit: {fileID: -5148104871102379313, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   idleAnimation: {fileID: -7867424926479658243, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   dashAnimation: {fileID: 3974765427502214097, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
-  dashAmount: 5
-  dashSpeed: 20
-  dashCooldown: 1
+  dashAmount: 3
+  dashSpeed: 25
+  dashCooldown: 0.25
   easeStrength: 1
 --- !u!114 &2284434785147536232
 MonoBehaviour:

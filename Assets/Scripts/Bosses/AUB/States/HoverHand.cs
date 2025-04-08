@@ -13,29 +13,32 @@ public class HoverHand : AUBHandState
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float hoverSpeed = 4f;
     
+    [HideInInspector] public bool isHovering;
+    
     private Vector2 _hoverPosition;
+    private Vector2 top;
+    private Vector2 bottom;
     
     private CornerFinder _cornerFinder;
     
     private void Awake()
     {
-        _cornerFinder = GetComponent<CornerFinder>();
+        _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
+        top = _cornerFinder.GetCorner(transform.localScale.x < 0 ? CornerFinder.CornerType.TopLeft : CornerFinder.CornerType.TopRight);
+        bottom = _cornerFinder.GetCorner(transform.localScale.x < 0 ? CornerFinder.CornerType.BottomLeft : CornerFinder.CornerType.BottomRight);
+        _hoverPosition = new Vector2(top.x + distanceFromWall * -transform.localScale.x, (bottom.y + top.y) / 2);
     }
 
     private void OnEnable()
     {
-        // Get position between bottom corner and top corner
         Boss.AnimancerComponent.Play(idleAnimation);
-        var top = _cornerFinder.GetCorner(transform.localScale.x < 0 ? CornerFinder.CornerType.TopLeft : CornerFinder.CornerType.TopRight);
-        var bottom = _cornerFinder.GetCorner(transform.localScale.x < 0 ? CornerFinder.CornerType.BottomLeft : CornerFinder.CornerType.BottomRight);
-        _hoverPosition = new Vector2(top.x, bottom.y + distanceFromWall);
-        _hoverPosition.y += Boss.bossCollider.bounds.center.y - transform.position.y;
 
         StartCoroutine(MoveToHoverPosition());
     }
 
     private void OnDisable()
     {
+        isHovering = false;
         StopAllCoroutines();
     }
 
@@ -52,6 +55,8 @@ public class HoverHand : AUBHandState
 
     private IEnumerator Hover()
     {
+        isHovering = true;
+        
         while (true)
         {
             var hoverDestination = Vector2.zero;
@@ -61,11 +66,13 @@ public class HoverHand : AUBHandState
             }
             hoverDestination += _hoverPosition;
             
-            while (Vector2.Distance(transform.position, hoverDestination) > 1f)
+            while (Vector2.Distance(transform.position, hoverDestination) > 0.5f)
             {
                 Boss.Move((hoverDestination - (Vector2)transform.position).normalized * hoverSpeed);
                 yield return null;
             }
+
+            yield return null;
         }
     }
 }

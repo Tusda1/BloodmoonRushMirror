@@ -68,6 +68,7 @@ public partial class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
         _audioManager.PlayOneShotAttached(CheckpointReached_SoundID, gameObject);
 
         CheckpointReached.Invoke();
+        _playerScript.GetComponent<GravityObjectPlayerMovement>().lastPlatformCheckpoint = transform.position;
 
         var state = animancerComponent.Play(activeStart);
         state.Events(this).OnEnd = () => animancerComponent.Play(activeIdle);

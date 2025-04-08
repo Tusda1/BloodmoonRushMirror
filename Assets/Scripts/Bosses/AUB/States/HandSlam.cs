@@ -2,24 +2,32 @@ using System;
 using System.Collections;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
+using VContainer;
 
+[DefaultExecutionOrder(1)]
 public class HandSlam : AUBHandState
 {
-    [SerializeField] private AnimationClip slamAnimation;
     [SerializeField] private float heightAbovePlayer = 4f;
     [SerializeField] private float waitAfterSlam = 0.5f;
-    [SerializeField] private float slamSpeed = 10f;
+    [SerializeField] private float moveSpeed = 10f;
     
     private PlayerScript _playerScript;
-
-    private void Awake()
-    {
-        _playerScript = ServiceLocator.Get<PlayerScript>();
-    }
+    [SerializeField] private HandSlamLogic handSlamLogic = new();
+    [Inject] private CameraEffects _cameraEffects;
 
     private void OnEnable()
     {
+        handSlamLogic.Initialize(Boss, _cameraEffects);
+        
+        if (_playerScript == null) _playerScript = ServiceLocator.Get<PlayerScript>();
+        
         StartCoroutine(MoveToSlamPosition());
+    }
+    
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 
     private IEnumerator MoveToSlamPosition()
@@ -28,7 +36,7 @@ public class HandSlam : AUBHandState
         while (Vector2.Distance(Boss.bossCollider.bounds.center, destination) > 0.5f)
         {
             destination = new Vector2(_playerScript.transform.position.x, _playerScript.transform.position.y + heightAbovePlayer);
-            Boss.Move(destination - (Vector2)Boss.bossCollider.bounds.center);
+            Boss.Move((destination - (Vector2)Boss.bossCollider.bounds.center).normalized * moveSpeed);
             yield return null;
         }
         
@@ -37,10 +45,8 @@ public class HandSlam : AUBHandState
     
     private IEnumerator Slam()
     {
-        Boss.AnimancerComponent.Play(slamAnimation);
-        while (!Boss.bossCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        while (!handSlamLogic.ExecuteHandSlamLogic())
         {
-            Boss.Move(Vector2.down * slamSpeed);
             yield return null;
         }
         

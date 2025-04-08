@@ -36,7 +36,5 @@ public class BodyAnimationMirror : MonoBehaviour
                 return;
             }
         }
-        
-        Debug.LogError("No matching body animation found for the current head animation.");
     }
 }
