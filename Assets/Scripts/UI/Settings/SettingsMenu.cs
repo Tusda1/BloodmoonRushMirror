@@ -3,6 +3,7 @@ using Attributes;
 using UI_Toolkit;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 using Utilities;
 using VContainer;
@@ -21,6 +22,7 @@ namespace UI.Settings {
         
         [SerializeField] private InputActionReference tabNavigateAction;
         [SerializeField] private InputActionReference backAction;
+        [SerializeField] private FontAsset singleFont;
 
         public event Action OnMenuActivated = delegate { };
         public event Action OnMenuDeactivated = delegate { };
@@ -38,6 +40,9 @@ namespace UI.Settings {
         private IAudioManager _audioManager;
         
         private const string GenericMenuSound_SoundID = "UI_GenericMenuSound";
+
+        public static bool UseSingleFont;
+        public static FontAsset SingleFont;
         #endregion
 
         #region ---Initialization---
@@ -68,6 +73,14 @@ namespace UI.Settings {
 
             _settingsMenuRoot.AddToClassList("down");
             _settingsMenuRoot.SetEnabled(false);
+
+            SingleFont = singleFont;
+            var singleFontToggle = _root.Q<Toggle>("SingleFont");
+                singleFontToggle.RegisterValueChangedCallback(evt => {
+                    UseSingleFont = evt.newValue;
+                    PlayerPrefs.SetInt("UseSingleFont", UseSingleFont ? 1 : 0);
+                });
+            singleFontToggle.value = PlayerPrefs.GetInt("UseSingleFont", 0) == 1;
         }
         #endregion
 

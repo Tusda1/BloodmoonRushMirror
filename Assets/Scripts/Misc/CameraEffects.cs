@@ -167,13 +167,12 @@ public class CameraEffects : MonoBehaviour {
                 Time.timeScale = 0;
                 _ = SceneCollectionManager.LoadSceneCollectionAsync(sceneCollection,
                     () => {
-                        CircleFadeIn(1);
-                        Time.timeScale = 1;
+                        CircleFadeIn(1, () => 
+                            Time.timeScale = 1);
                         callback?.Invoke();
                     });
             });
     }
-
 #if UNITY_EDITOR
     [ContextMenu(nameof(TestMoveCamera))]
     private void TestMoveCamera() {
