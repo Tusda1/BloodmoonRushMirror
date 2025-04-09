@@ -7,7 +7,9 @@ using UnityEngine.UIElements;
     fileName = nameof(DialogueUI_DataContainer), 
     menuName = "Scriptable Objects/Create " + nameof(DialogueUI_DataContainer))]
 public class DialogueUI_DataContainer : ScriptableObject {
-    [Header("Data")] public DisplayStyle uiDocumentVisible;
+    [Header("Data")] 
+    public DisplayStyle uiDocumentVisible;
+    public DisplayStyle playerUIDocumentVisible;
 
     #region ---CharacterData---
     [Header("Character Data")]

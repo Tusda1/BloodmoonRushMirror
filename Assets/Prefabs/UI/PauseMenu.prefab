@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5374934496155650533}
   - component: {fileID: 235634749262730801}
   - component: {fileID: 1544288664208109252}
+  - component: {fileID: 1875648969748251021}
   m_Layer: 0
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -90,6 +91,7 @@ MonoBehaviour:
   audioSettingsMenu: {fileID: 5374934496155650533}
   videoSettingsMenu: {fileID: 5169826130637135154}
   controlsSettingsMenu: {fileID: 235634749262730801}
+  accessibilitySettingsSettingsMenu: {fileID: 0}
   tabNavigateAction: {fileID: 7896978939624929561, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
   backAction: {fileID: 7727032971491509709, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
 --- !u!114 &5169826130637135154
@@ -148,3 +150,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiDocument: {fileID: 1344609031287201620}
+--- !u!114 &1875648969748251021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4875595237995187263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d13aa8afeb64fbb96d1ec2211fce905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiDocument: {fileID: 0}
+  singleFont: {fileID: 11400000, guid: 62fa15c6f26712947a7759c48af42805, type: 2}

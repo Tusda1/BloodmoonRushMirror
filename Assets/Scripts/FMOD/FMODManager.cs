@@ -109,6 +109,12 @@ namespace FMODScripts {
                 _debugLogger.Log($"Playing SFX: {id} attached to {gameObject.name}");
             }
         }
+        
+        public EventInstance CreateEventInstance(string id) {
+            var path = IDToPath(id);
+
+            return RuntimeManager.CreateInstance(path);
+        }
 
         public void PlayMusic(string id) {
             if (CheckIfStringIsEmpty(id)) return;

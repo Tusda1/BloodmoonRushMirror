@@ -3,26 +3,34 @@ using Attributes;
 using UI_Toolkit;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 using Utilities;
 using VContainer;
 
 namespace UI.Settings {
     [RequireComponent(typeof(VideoSettingsMenu), typeof(AudioSettingsMenu), typeof(ControlsSettingsMenu))]
-    [RequireComponent(typeof(UITKWorldSpaceInteractive))]
+    [RequireComponent(typeof(UITKWorldSpaceInteractive), typeof(AccessibilitySettingsMenu))]
     public class SettingsMenu : MonoBehaviour, IMenu {
         #region ---Fields---
         #region ***---GetOrAddComponents---***
-        [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
-        [GetOrAddComponent, SerializeField, HideInInspector] private AudioSettingsMenu audioSettingsMenu; 
-        [GetOrAddComponent, SerializeField, HideInInspector] private VideoSettingsMenu videoSettingsMenu;
-        [GetOrAddComponent, SerializeField, HideInInspector] private ControlsSettingsMenu controlsSettingsMenu;
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private UIDocument uiDocument;
+
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private AudioSettingsMenu audioSettingsMenu;
+
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private VideoSettingsMenu videoSettingsMenu;
+
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private ControlsSettingsMenu controlsSettingsMenu;
+
+        [GetOrAddComponent, SerializeField, HideInInspector]
+        private AccessibilitySettingsMenu accessibilitySettingsSettingsMenu;
         #endregion
-        
+
         [SerializeField] private InputActionReference tabNavigateAction;
         [SerializeField] private InputActionReference backAction;
-        [SerializeField] private FontAsset singleFont;
 
         public event Action OnMenuActivated = delegate { };
         public event Action OnMenuDeactivated = delegate { };
@@ -36,13 +44,10 @@ namespace UI.Settings {
         private BatArrow _leftBat;
         private BatArrow _rightBat;
         #endregion
-        
-        private IAudioManager _audioManager;
-        
-        private const string GenericMenuSound_SoundID = "UI_GenericMenuSound";
 
-        public static bool UseSingleFont;
-        public static FontAsset SingleFont;
+        private IAudioManager _audioManager;
+
+        private const string GenericMenuSound_SoundID = "UI_GenericMenuSound";
         #endregion
 
         #region ---Initialization---
@@ -50,7 +55,7 @@ namespace UI.Settings {
         public void Construct(IObjectResolver container) {
             _audioManager = container.Resolve<IAudioManager>();
         }
-        
+
         private void Awake() {
             _root = uiDocument.rootVisualElement;
             _settingsMenuRoot = _root.Q<VisualElement>("SettingsMenuRoot");
@@ -59,7 +64,7 @@ namespace UI.Settings {
         }
 
         private void Start() {
-            var menus = new IMenu[] { audioSettingsMenu, videoSettingsMenu, controlsSettingsMenu };
+            var menus = new IMenu[] { audioSettingsMenu, videoSettingsMenu, controlsSettingsMenu, accessibilitySettingsSettingsMenu };
             _menus = new IndexedArray<IMenu>(menus);
 
             _leftBat.SetOnClickAction(_menus.DecreaseIndex);
@@ -73,14 +78,6 @@ namespace UI.Settings {
 
             _settingsMenuRoot.AddToClassList("down");
             _settingsMenuRoot.SetEnabled(false);
-
-            SingleFont = singleFont;
-            var singleFontToggle = _root.Q<Toggle>("SingleFont");
-                singleFontToggle.RegisterValueChangedCallback(evt => {
-                    UseSingleFont = evt.newValue;
-                    PlayerPrefs.SetInt("UseSingleFont", UseSingleFont ? 1 : 0);
-                });
-            singleFontToggle.value = PlayerPrefs.GetInt("UseSingleFont", 0) == 1;
         }
         #endregion
 
@@ -110,7 +107,7 @@ namespace UI.Settings {
             var panelElements = uiDocument.rootVisualElement.panel.visualTree;
             var dropdownActive = panelElements.Q(className: "unity-base-dropdown") != null;
             if (dropdownActive) return;
-            
+
             Deactivate();
         }
 
@@ -131,7 +128,7 @@ namespace UI.Settings {
         private void SetActiveMenu(IMenu currentMenu, IMenu previousMenu, bool indexIncreased) {
             previousMenu.Deactivate(indexIncreased ? "left" : "right");
             currentMenu.Activate();
-            
+
             _audioManager.PlayOneShot(GenericMenuSound_SoundID);
         }
         #endregion

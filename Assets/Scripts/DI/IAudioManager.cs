@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using FMOD.Studio;
+using UnityEngine;
 
 public interface IAudioManager {
     string CurrentMusicID { get; }
@@ -6,6 +7,8 @@ public interface IAudioManager {
     #region ---Play---
     void PlayOneShot(string id);
     void PlayOneShotAttached(string id, GameObject gameObject);
+
+    EventInstance CreateEventInstance(string id);
 
     void PlayMusic(string id);
     void PlayMusicAttached(string id, GameObject gameObject);

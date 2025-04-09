@@ -145,8 +145,8 @@ public class CharacterSays : Unit {
                 ? dialogueCharacter.dialogueColor
                 : TextColorOverride;
             
-            dialogueUIDataContainer.textFontAsset = SettingsMenu.UseSingleFont ? 
-                SettingsMenu.SingleFont
+            dialogueUIDataContainer.textFontAsset = AccessibilitySettingsMenu.UseSingleFont ? 
+                AccessibilitySettingsMenu.SingleFont
                 : TextFontAssetOverride ?? dialogueCharacter.dialogueFont;
 
             _sfxSoundID = dialogueValues.soundID;
