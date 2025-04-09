@@ -13,6 +13,12 @@ public class HeadHitByHandState : BossState
     {
         StartCoroutine(PlayHitAnimation());
     }
+    
+    private void OnDisable()
+    {
+        // Stop the coroutine when the state is disabled
+        StopAllCoroutines();
+    }
 
     private IEnumerator PlayHitAnimation()
     {

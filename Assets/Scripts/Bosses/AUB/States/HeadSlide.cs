@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using VContainer;
 using Random = UnityEngine.Random;
 
 public class HeadSlide : BossState
@@ -20,6 +21,8 @@ public class HeadSlide : BossState
     private AnimationClip _currentWarningAnimation;
     private AnimationClip _currentHeadSlideAnimation;
     private AnimationClip _currentHeadSlideEndAnimation;
+    
+    [Inject] private CameraEffects _cameraEffects;
 
     private void OnEnable()
     {
@@ -49,17 +52,33 @@ public class HeadSlide : BossState
         };
         
         yield return new WaitForSeconds(state.Duration + postWarningWaitTime);
+
+        Boss.bossCollider.enabled = true;
+        var waitOver = false;
+        var state4 = Boss.AnimancerComponent.Play(headSlamAnimation);
+        state4.Events(this).OnEnd = () =>
+        {
+            state4.Destroy();
+            _ = _cameraEffects.ShakeCamera(0.5f, 0.5f);
+            waitOver = true;
+        };
         
-        Boss.AnimancerComponent.Play(headSlamAnimation);
-        
-        yield return new WaitForSeconds(headSlamAnimation.length + postSlamWaitTime);
+        yield return new WaitUntil(() => waitOver);
         
         var state2 = Boss.AnimancerComponent.Play(_currentHeadSlideAnimation);
         state2.Events(this).OnEnd = () =>
         {
             state2.Destroy();
-            Boss.AnimancerComponent.Play(_currentHeadSlideEndAnimation);
-            EndState();
+            
+            _ = _cameraEffects.ShakeCamera(0.5f, 0.5f);
+            
+            var state3 = Boss.AnimancerComponent.Play(_currentHeadSlideEndAnimation);
+            state3.Events(this).OnEnd = () =>
+            {
+                state3.Destroy();
+                Boss.bossCollider.enabled = false;
+                EndState();
+            };
         };
     }
 }

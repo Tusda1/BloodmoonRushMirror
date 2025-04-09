@@ -25,6 +25,11 @@ public class AUBBrain : MonoBehaviour {
         _rightHandStates = rightHand.GetComponents<AUBHandState>();
         _leftHandStates = leftHand.GetComponents<AUBHandState>();
         
+        foreach (var state in _headStates)
+        {
+            state.OnStateEnd += HeadLogic;
+        }
+        
         // Remove the hover hand components from the arrays and store them
         _rightHandHover = rightHand.GetComponent<HoverHand>();
         _leftHandHover = leftHand.GetComponent<HoverHand>();
@@ -33,11 +38,7 @@ public class AUBBrain : MonoBehaviour {
         _rightHandStates = Array.FindAll(_rightHandStates, state => state is not HoverHand);
         _leftHandStates = Array.FindAll(_leftHandStates, state => state is not HoverHand);
         _headStates = Array.FindAll(_headStates, state => state is not IdleHeadState);
-
-        foreach (var state in _headStates)
-        {
-            state.OnStateEnd += HeadLogic;
-        }
+        _headStates = Array.FindAll(_headStates, state => state is not HeadHitByHandState);
         
         _boss = GetComponent<BossBase>();
         _boss.OnBattleStart += StartBattle;
@@ -77,12 +78,12 @@ public class AUBBrain : MonoBehaviour {
             return;
         }
         
-        if (!leftHand.enabled)
+        if (!leftHand.gameObject.activeSelf && _rightHandHover.isHovering)
         {
             var rightNextState = _rightHandStates[UnityEngine.Random.Range(0, _rightHandStates.Length)];
             rightHand.StateMachine.ForceSetState(rightNextState);
         }
-        else if (!rightHand.enabled)
+        else if (!rightHand.gameObject.activeSelf && _leftHandHover.isHovering)
         {
             var leftNextState = _leftHandStates[UnityEngine.Random.Range(0, _leftHandStates.Length)];
             leftHand.StateMachine.ForceSetState(leftNextState);
@@ -134,12 +135,17 @@ public class AUBBrain : MonoBehaviour {
     
     private void HeadLogic()
     {
+        if (!leftHand.gameObject.activeSelf && !rightHand.gameObject.activeSelf)
+        {
+            _handsDestroyed = true;
+        }
+        
         if (!_handsDestroyed || !_isFighting)
         {
             _boss.StateMachine.ForceSetDefaultState();
             return;
         }
-        
+      
         // Pick a random state from the list of states
         var nextState = _headStates[UnityEngine.Random.Range(0, _headStates.Length)];
         // Force the head to play the next state
@@ -148,7 +154,7 @@ public class AUBBrain : MonoBehaviour {
 
     private void StartHandKillSequence()
     {
-        if (leftHand.enabled && leftHand.CurrentHealth <= 0)
+        if (leftHand.gameObject.activeSelf && leftHand.CurrentHealth <= 0)
         {
             if (leftHand.StateMachine.CurrentState is not HandKilledState)
             {
@@ -161,7 +167,7 @@ public class AUBBrain : MonoBehaviour {
             leftHand.StateMachine.ForceSetState(_leftHandHover);
         }
         
-        if (rightHand.enabled && rightHand.CurrentHealth <= 0)
+        if (rightHand.gameObject.activeSelf && rightHand.CurrentHealth <= 0)
         {
             if (rightHand.StateMachine.CurrentState is not HandKilledState)
             {
@@ -178,9 +184,5 @@ public class AUBBrain : MonoBehaviour {
     private void HandHitScreen()
     {
         _boss.StateMachine.ForceSetState(GetComponent<HeadHitByHandState>());
-        if (!leftHand.enabled && !rightHand.enabled)
-        {
-            _handsDestroyed = true;
-        }
     }
 }

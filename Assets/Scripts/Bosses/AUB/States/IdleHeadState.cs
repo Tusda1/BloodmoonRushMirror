@@ -17,6 +17,12 @@ public class IdleHeadState : BossState
         StartCoroutine(RandomizeFace());
     }
 
+    private void OnDisable()
+    {
+        // Stop the coroutine when the state is disabled
+        StopAllCoroutines();
+    }
+
     private IEnumerator RandomizeFace()
     {
         while (true)

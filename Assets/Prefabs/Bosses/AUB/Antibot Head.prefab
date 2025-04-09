@@ -181,6 +181,13 @@ MonoBehaviour:
   boss: {fileID: 8681157068678436256}
   statePhase: 1
   idleAnimation: {fileID: -7083309093028432908, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
+  faceAnimations:
+  - {fileID: -2553267667869102205, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
+  - {fileID: -7304515478203810059, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
+  - {fileID: -3090564346262154932, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
+  - {fileID: -7083309093028432908, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
+  minWaitBetweenSwap: 3
+  maxWaitBetweenSwap: 5
 --- !u!114 &5665637596844805087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,12 +205,12 @@ MonoBehaviour:
   idle: {fileID: -7590300791715473322, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
   headSlamAnimation: {fileID: -56902096176325631, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
   warningAnimationRight: {fileID: -7685437098881964438, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
-  warningAnimationLeft: {fileID: -210297351453030208, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
+  warningAnimationLeft: {fileID: -7911344904017646616, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
   headSlideAnimationRight: {fileID: 2655315825969913074, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
   headSlideEndAnimationRight: {fileID: 1997527503922652754, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
   headSlideAnimationLeft: {fileID: 181480853419787388, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
   headSlideEndAnimationLeft: {fileID: 7580248498274276683, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
-  postWarningWaitTime: 4
+  postWarningWaitTime: 1
   postSlamWaitTime: 2
 --- !u!114 &4547598872901045848
 MonoBehaviour:
@@ -278,7 +285,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
