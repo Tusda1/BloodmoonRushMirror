@@ -17,11 +17,16 @@ public class Ghost : ReactiveBase
     
     private bool _withdrawing;
     private Vector2 _withdrawPosition;
+    private Collider2D _targetCollider;
+
+    private GhostAnimations _ghostAnimations;
     
     protected override void Start()
     {
         base.Start();
         GravityModifier = 0;
+        _ghostAnimations = enemyAnimationBase as GhostAnimations;
+        _ghostAnimations?.PlayDefaultAnimation();
     }
 
     protected override void ComputeVelocity()
@@ -38,7 +43,12 @@ public class Ghost : ReactiveBase
     {
         if (sucked)
         {
+            facingDirection = targetVelocity.x > 0 ? Vector2.left : Vector2.right;
             sucked = false;
+        }
+        else
+        {
+            facingDirection = targetVelocity.x > 0 ? Vector2.right : Vector2.left;
         }
     }
 
@@ -74,11 +84,13 @@ public class Ghost : ReactiveBase
     
     private void AttackPlayer()
     {
-        if (targetObject == null) return;
+        if (!targetObject) return;
+
+        if (!_targetCollider) _targetCollider = targetObject.GetComponent<Collider2D>();
         
-        MoveToTarget(targetObject.position);
+        MoveToTarget(_targetCollider.bounds.center);
         
-        if (Vector2.Distance(transform.position, targetObject.position + Vector3.up) < attackDistance)
+        if (Vector2.Distance(transform.position, _targetCollider.bounds.center) < attackDistance)
         {
             _withdrawing = true;
         }
@@ -95,7 +107,7 @@ public class Ghost : ReactiveBase
                 randomPosition = Random.insideUnitCircle * maxWithdrawDistance;
             }
 
-            _withdrawPosition = (Vector2)targetObject.position + randomPosition;
+            _withdrawPosition = (Vector2)_targetCollider.bounds.center + randomPosition;
         }
         
         MoveToTarget(_withdrawPosition);
@@ -126,12 +138,13 @@ public class Ghost : ReactiveBase
     
     private void EscapeSuck()
     {
-       // create an escape vector pointing away from the altar
-       var direction = (-suckVelocity).normalized * moveSpeed;
-       var tempVelocity = Vector2.zero;
-       smoothDampScript.SmoothDampVector2(direction, ref tempVelocity);
-       //targetVelocity += tempVelocity;
-       targetVelocity += suckVelocity;
+        _ghostAnimations.PlayGettingSuckedAnimation();
+        // create an escape vector pointing away from the altar
+        var direction = (-suckVelocity).normalized * moveSpeed;
+        var tempVelocity = Vector2.zero;
+        smoothDampScript.SmoothDampVector2(direction, ref tempVelocity);
+        //targetVelocity += tempVelocity;
+        targetVelocity += suckVelocity;
     }
 
     public void Execute()
@@ -141,5 +154,6 @@ public class Ghost : ReactiveBase
         smoothDampScript.SetStartVelocity(Vector2.zero);
         ResetMovement(Axis.XAxis);
         ResetMovement(Axis.YAxis);
+        _ghostAnimations.PlayDefaultAnimation();
     }
 }

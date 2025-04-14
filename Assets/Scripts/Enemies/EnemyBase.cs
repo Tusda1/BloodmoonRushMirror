@@ -304,14 +304,14 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     protected virtual void Attack() {
+        if (player == null) return;
+        
         var playerObject = player.gameObject;
-        if (player != null) {
-            Vector2 directionToPlayer = (playerObject.transform.position - transform.position).normalized;
-            Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
+        Vector2 directionToPlayer = (playerObject.transform.position - transform.position).normalized;
+        Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
 
-            enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * enemyDamageInstance.knockbackStrength;
-            player.TakeDamage(enemyDamageInstance);
-        }
+        enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * enemyDamageInstance.knockbackStrength;
+        player.TakeDamage(enemyDamageInstance);
     }
 
     protected Vector2 GetBottomPosition() {

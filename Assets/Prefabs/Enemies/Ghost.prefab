@@ -11,8 +11,11 @@ GameObject:
   - component: {fileID: 1842942010747067516}
   - component: {fileID: 2160370680381285407}
   - component: {fileID: 1225311169531353959}
+  - component: {fileID: -8807280388438682234}
   - component: {fileID: 7424737010724291516}
   - component: {fileID: 3639957345326562303}
+  - component: {fileID: 5536845990172395225}
+  - component: {fileID: 8799192277837772226}
   m_Layer: 8
   m_Name: Ghost
   m_TagString: Ghost
@@ -79,8 +82,8 @@ SpriteRenderer:
   m_SortingLayerID: -448917167
   m_SortingLayer: 1
   m_SortingOrder: 22
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 0.7216981, b: 0.7216981, a: 1}
+  m_Sprite: {fileID: 192029810093263605, guid: 4f54d2522e35cbf4d927ab3d9c194618, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -152,6 +155,22 @@ MonoBehaviour:
     smoothTime: 0.2
   sucked: 0
   suckVelocity: {x: 0, y: 0}
+--- !u!114 &-8807280388438682234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9101476482127223980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38af06584e26a7f48833be69ee40c9d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathAnimation: {fileID: 0}
+  hitAnimation: {fileID: 0}
+  floatingAnimation: {fileID: -8036071749760235936, guid: 4f54d2522e35cbf4d927ab3d9c194618, type: 3}
+  gettingSuckedAnimation: {fileID: -3980135872864644227, guid: 4f54d2522e35cbf4d927ab3d9c194618, type: 3}
 --- !u!50 &7424737010724291516
 Rigidbody2D:
   serializedVersion: 5
@@ -213,5 +232,42 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Offset: {x: 0.050000012, y: 0.050000012}
+  m_Radius: 0.95
+--- !u!95 &5536845990172395225
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9101476482127223980}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8799192277837772226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9101476482127223980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad50f81b1d25c441943c37a89ba23f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Animator: {fileID: 5536845990172395225}
+  _Transitions: {fileID: 0}
+  _ActionOnDisable: 0
