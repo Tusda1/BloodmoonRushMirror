@@ -20,13 +20,12 @@ public class Ghost : ReactiveBase
     private Collider2D _targetCollider;
 
     private GhostAnimations _ghostAnimations;
-    
-    protected override void Start()
+
+    protected new void Awake()
     {
-        base.Start();
+        base.Awake();
+        _ghostAnimations = GetComponent<GhostAnimations>();
         GravityModifier = 0;
-        _ghostAnimations = enemyAnimationBase as GhostAnimations;
-        _ghostAnimations?.PlayDefaultAnimation();
     }
 
     protected override void ComputeVelocity()
@@ -39,8 +38,10 @@ public class Ghost : ReactiveBase
         }
     }
 
-    private void LateUpdate()
+    protected override void LateUpdate()
     {
+        base.LateUpdate();
+        
         if (sucked)
         {
             facingDirection = targetVelocity.x > 0 ? Vector2.left : Vector2.right;
@@ -54,8 +55,6 @@ public class Ghost : ReactiveBase
 
     protected override void Action()
     {
-        RepelGhosts();
-        
         if (sucked) return;
         
         if (!_withdrawing)
@@ -65,20 +64,6 @@ public class Ghost : ReactiveBase
         else
         {
             Withdraw();
-        }
-    }
-
-    private void RepelGhosts()
-    {
-        // Use overlapcircle to see if there are any ghosts nearby
-        var ghost = Physics2D.OverlapCircle(transform.position, 1f, LayerMask.GetMask("Enemy"));
-        if (!ghost || !ghost.TryGetComponent(out Ghost ghostComponent)) return;
-            
-        // make the ghost move a little away from the other ghosts
-        if (Vector2.Distance(ghostComponent.transform.position, transform.position) != 0)
-        {
-            var direction = (ghostComponent.transform.position - transform.position).normalized;
-            targetVelocity += -(Vector2)direction;
         }
     }
     

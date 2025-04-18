@@ -7,6 +7,14 @@ public class Ghoul : ReactiveBase
     
     private bool _isJumping;
     
+    private GhoulAnimations _animations;
+
+    protected new void Awake()
+    {
+        base.Awake();
+        _animations = GetComponent<GhoulAnimations>();
+    }
+    
     protected override void Scan()
     {
         // Check for a player in close proximity
@@ -15,7 +23,7 @@ public class Ghoul : ReactiveBase
         {
             // Return the direction to the player
             facingDirection = (hitClose.transform.position.x > transform.position.x) ? Vector2.right : Vector2.left;
-            currentState = EnemyState.Action;
+            SwapToAction();
             return;
         }
 
@@ -25,7 +33,7 @@ public class Ghoul : ReactiveBase
         {
             // Return the direction to the player
             facingDirection = Vector2.right;
-            currentState = EnemyState.Action;
+            SwapToAction();
             return;
         }
 
@@ -35,8 +43,14 @@ public class Ghoul : ReactiveBase
         {
             // Return the direction to the player
             facingDirection = Vector2.left;
-            currentState = EnemyState.Action;
+            SwapToAction();
         }
+    }
+
+    private void SwapToAction()
+    {
+        currentState = EnemyState.Action;
+        _animations.PlayRunAnimation();
     }
 
     protected override void Action()
@@ -44,13 +58,14 @@ public class Ghoul : ReactiveBase
         targetVelocity = facingDirection * moveSpeed;
         
         // Detect if the Ghoul charges into a wall
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, 1.5f, enemyAndGroundLayerMask);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, 1f, LayerMask.GetMask("Ground"));
         if (hit.collider != null)
         {
             // If the Ghoul charges into a wall, stop charging and start scanning
             targetVelocity = Vector2.zero;
-                
             currentState = EnemyState.Scanning;
+            _animations.PlayDefaultAnimation();
+            return;
         }
             
         if (!_isJumping)
@@ -61,12 +76,13 @@ public class Ghoul : ReactiveBase
                 // If the ghoul is about to fall off a ledge, jump off the ledge
                 velocity.y = jumpForce;
                 _isJumping = true;
+                _animations.PlayJumpAnimation();
             }
         }
-        
         else if (isGrounded)
         {
             _isJumping = false;
+            _animations.PlayRunAnimation();
         }
     }
 }
