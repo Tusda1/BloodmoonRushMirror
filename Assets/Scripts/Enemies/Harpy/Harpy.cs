@@ -23,10 +23,14 @@ public class Harpy : ReactiveBase
     private int _currentWaypoint;
     private Seeker _seeker;
     private bool _swooping;
+    private Vector2 force;
     
-    protected override void Start()
+    private HarpyAnimations _animations;
+
+    private new void Awake()
     {
-        base.Start();
+        base.Awake();
+        _animations = GetComponent<HarpyAnimations>();
         _seeker = GetComponent<Seeker>();
         GravityModifier = 0;
     }
@@ -52,6 +56,8 @@ public class Harpy : ReactiveBase
         {
             Swoop();
         }
+        
+        facingDirection = force.x > 0 ? Vector2.right : Vector2.left;
     }
     
     private void FollowPlayer()
@@ -62,7 +68,7 @@ public class Harpy : ReactiveBase
         {
             if  (Random.value < swoopChance)
             {
-                _swooping = true;
+                StartSwoop();
             }
             else
             {
@@ -84,7 +90,7 @@ public class Harpy : ReactiveBase
         }
         
         Vector2 direction = (_path.vectorPath[_currentWaypoint] - transform.position).normalized;
-        Vector2 force = direction * moveSpeed;
+        force = direction * moveSpeed;
         
         smoothDampScript.SmoothDampVector2(force, ref targetVelocity);
         
@@ -109,7 +115,7 @@ public class Harpy : ReactiveBase
         
         // Swoop towards the player
         Vector2 direction = (targetObject.position + Vector3.up * yAttackPositionOffset - transform.position).normalized;
-        Vector2 force = direction * swoopSpeed;
+        force = direction * swoopSpeed;
         
         smoothDampScript.SmoothDampVector2(force, ref targetVelocity);
         
@@ -121,9 +127,16 @@ public class Harpy : ReactiveBase
 
     private void StartFollow()
     {
+        _animations.PlayDefaultAnimation();
         _swooping = false;
         _swoopTimer = 0;
         StartPath();
+    }
+
+    private void StartSwoop()
+    {
+        _swooping = true;
+        _animations.PlaySwoopAnimation();
     }
     
     private void StartPath()
