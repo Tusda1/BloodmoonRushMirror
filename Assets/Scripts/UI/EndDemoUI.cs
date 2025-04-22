@@ -17,6 +17,7 @@ public class EndDemoUI : MonoBehaviour {
     
     private CameraEffects _cameraEffects;
     private IAudioManager _audioManager;
+    private ISaveLoadSystemManager _saveLoadSystemManager;
 
     private const string EndDemoMusic_SoundID = "Music_EndDemo";
     #endregion
@@ -25,6 +26,7 @@ public class EndDemoUI : MonoBehaviour {
     public void Construct(IObjectResolver container) {
         _cameraEffects = container.Resolve<CameraEffects>();
         _audioManager = container.Resolve<IAudioManager>();
+        _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
     }
 
     private void Awake() {
@@ -43,5 +45,7 @@ public class EndDemoUI : MonoBehaviour {
         };
         
         _backToMainMenuButton.Focus();
+        
+        _saveLoadSystemManager.DataService.DeleteByName("Demo");
     }
 }

@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 8997323462501667901}
   - component: {fileID: 5362099384220636458}
   - component: {fileID: 7915231638684790343}
+  - component: {fileID: 312670096618892842}
+  - component: {fileID: 8957704664186889061}
   - component: {fileID: 57086895106306956}
   - component: {fileID: 2395060478557711334}
-  - component: {fileID: -6509785287745150072}
   - component: {fileID: 2863428128846249552}
   - component: {fileID: -8818369028990380775}
   m_Layer: 8
@@ -83,8 +84,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.7303716, g: 0.9811321, b: 0.5507298, a: 1}
+  m_Sprite: {fileID: -4278013628659570295, guid: 36ed580f7e96a644d9add3329bad8487, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -135,7 +136,10 @@ MonoBehaviour:
   bloodSplatter: {fileID: 0}
   isImmortal: 0
   canTakeKnockback: 1
-  <ID>k__BackingField: 
+  entityCrammingAllowed: 0
+  hitSoundID: 
+  deathSoundID: 
+  <ID>k__BackingField: 4339e529-9132-42f4-a84f-7e85ee3e1775
   <SaveSystemData>k__BackingField:
     name: 
     <ID>k__BackingField: 
@@ -143,10 +147,41 @@ MonoBehaviour:
     health: 0
     gemsContaining: 0
     position: {x: 0, y: 0, z: 0}
-  death_SoundID: 
   detectionDistance: 10
   jumpForce: 15
   universalAgroDistance: 2
+--- !u!114 &312670096618892842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717654059041883480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78de7d95f4744214485b2031057fba05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathAnimation: {fileID: -8779322871524450083, guid: 36ed580f7e96a644d9add3329bad8487, type: 3}
+  hitAnimation: {fileID: 1554666803105832031, guid: 36ed580f7e96a644d9add3329bad8487, type: 3}
+  idle: {fileID: -6024621191166534562, guid: 36ed580f7e96a644d9add3329bad8487, type: 3}
+  run: {fileID: 2671568943448220078, guid: 36ed580f7e96a644d9add3329bad8487, type: 3}
+  jump: {fileID: -4144417000477283336, guid: 36ed580f7e96a644d9add3329bad8487, type: 3}
+--- !u!114 &8957704664186889061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717654059041883480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ad54900b8dd7d2458ebc3be12446659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderOffsetAddon: 0
+  colliderSizeAddonX: 0
+  colliderSizeAddonY: 0
 --- !u!50 &57086895106306956
 Rigidbody2D:
   serializedVersion: 5
@@ -208,32 +243,18 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.21133333}
+  m_Offset: {x: 0.100000024, y: 0.675}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.41666663, y: 0}
+    oldSize: {x: 1.2, y: 1.35}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.2, y: 1.35}
   m_EdgeRadius: 0
---- !u!114 &-6509785287745150072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1717654059041883480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6323bfd0d68967643adf1ebbc5efd4bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deathAnimation: {fileID: 7400000, guid: 4a3fad6588ecb9743836828e18fe9937, type: 2}
-  hitAnimation: {fileID: 0}
 --- !u!114 &2863428128846249552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,15 +358,15 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.21133333}
+  m_Offset: {x: 0.100000024, y: 0.675}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.41666663, y: 0}
+    oldSize: {x: 1.2, y: 1.35}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.2, y: 1.35}
   m_EdgeRadius: 0

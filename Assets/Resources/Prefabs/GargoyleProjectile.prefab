@@ -80,8 +80,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: -447638097069406037, guid: c82217d6de4f4ed4c98fda17c4e32e89, type: 3}
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 492797542776899328, guid: 4ecbb22eff2eb884ca885244f953760c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -110,9 +110,12 @@ MonoBehaviour:
     knockbackStrength: 0
     staggerStrength: 0
     ignoreInvincibility: 0
-  baseAnimation: {fileID: -3108721250375967657, guid: c82217d6de4f4ed4c98fda17c4e32e89, type: 3}
-  hitAnimation: {fileID: -267422994381161688, guid: c82217d6de4f4ed4c98fda17c4e32e89, type: 3}
+    which: 0
+  baseAnimation: {fileID: 0}
+  hitAnimation: {fileID: 0}
   speed: 10
+  isNotDeflectable: 0
+  lifetime: 10
   shooter: {fileID: 0}
   velocityDirection: {x: 0, y: 0}
 --- !u!58 &2016502086384890106
@@ -149,8 +152,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.2}
-  m_Radius: 0.175
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.375
 --- !u!50 &7056509664297486186
 Rigidbody2D:
   serializedVersion: 5

@@ -7,6 +7,7 @@ using UnityEngine;
 [UnitCategory("DialogueUI")]
 public class PlayerWalk : WaitUnit {
     public ValueInput PlayerMovement;
+    public ValueInput WalkRight;
     public ValueInput Speed;
     public ValueInput Time;
 
@@ -14,13 +15,15 @@ public class PlayerWalk : WaitUnit {
         base.Definition();
 
         PlayerMovement = ValueInput<GravityObjectPlayerMovement>(nameof(PlayerMovement), null);
+        WalkRight = ValueInput(nameof(WalkRight), true);
         Speed = ValueInput(nameof(Speed), 0f);
         Time = ValueInput(nameof(Time), 0f);
     }
 
     protected override IEnumerator Await(Flow flow) {
         var playerMovement = flow.GetValue<GravityObjectPlayerMovement>(PlayerMovement);
-        var speed = flow.GetValue<float>(Speed);
+        var walkRight = flow.GetValue<bool>(WalkRight);
+        var speed = flow.GetValue<float>(Speed) * (walkRight ? 1 : -1);
         var time = flow.GetValue<float>(Time);
 
         playerMovement.cutsceneMovement.x = speed;

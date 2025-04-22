@@ -167,8 +167,8 @@ public class CameraEffects : MonoBehaviour {
                 Time.timeScale = 0;
                 _ = SceneCollectionManager.LoadSceneCollectionAsync(sceneCollection,
                     () => {
-                        CircleFadeIn(1, () => 
-                            Time.timeScale = 1);
+                        ClearAllRenderTextures();
+                        CircleFadeIn(1, () => Time.timeScale = 1);
                         callback?.Invoke();
                     });
             });
