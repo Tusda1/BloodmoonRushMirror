@@ -171,6 +171,7 @@ public class DashAndSwoopState : DraculaState
     {
         if (!_dashStarted)
         {
+            // TODO : Play loop sound. ID = "Drac_Swoop"
             _dashStarted = true;
             Boss.EnableGravity();
             
@@ -183,6 +184,7 @@ public class DashAndSwoopState : DraculaState
         // Check if the boss crossed the finish line
         if (transform.position.x * direction.x + dashDestinationOffset > _dashTarget.x * direction.x)
         {
+            // TODO : End loop sound. ID = "Drac_Swoop"
             if (_loopCount != _stages.Count - 1)
             {
                 StageTransition();  

@@ -61,6 +61,14 @@ public class Boomerang : GravityObject
         _downVelocity = -Mathf.Abs(_initialPosition.y - _floorPosition.y) / timeBeforeSwap;
         _upVelocity = -_downVelocity * 3f;
         StartCoroutine(SwapVerticalVelocity(timeBeforeSwap));
+        
+        // TODO : Add looping sound. ID = "Drac_Boomerang_In_Air"
+    }
+
+    private void OnDisable()
+    {
+        // TODO : End looping sound. ID = "Drac_Boomerang_In_Air"
+        // TODO : Play one shot. ID = "Drac_Boomerang_Catch"
     }
 
     protected override void ComputeVelocity()

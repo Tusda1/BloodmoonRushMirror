@@ -107,6 +107,7 @@ public class DashAttackState : DraculaState
     {
         if (!_isDashing)
         {
+            // TODO : Play loop sound. ID = "Drac_Swoop"
             _isDashing = true;
             Boss.AnimancerComponent.Play(dashAnimation);
             _dashStartTime = Time.time;
@@ -118,6 +119,7 @@ public class DashAttackState : DraculaState
 
         if (t >= 1f)
         {
+            // TODO : End loop sound. ID = "Drac_Swoop"
             transform.position = _dashTarget;
             _dashCount++;
             _dashState = DashState.Cooldown;
