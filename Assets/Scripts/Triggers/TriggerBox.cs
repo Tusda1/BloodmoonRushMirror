@@ -15,8 +15,8 @@ namespace Triggers {
             if (hasBeenTriggered && triggerOnlyOnce) return;
             if (colliderTag != null && !other.CompareTag(colliderTag)) return;
 
-            TriggeredAction(other);
             hasBeenTriggered = true;
+            TriggeredAction(other);
         }
 
         protected abstract void TriggeredAction(Collider2D other);
