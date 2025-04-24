@@ -2,29 +2,38 @@ using UnityEngine;
 
 public class AnimationColliderUpdater : MonoBehaviour 
 {
-    [SerializeField] private float colliderOffsetAddon = 0.475f;
-    [SerializeField] private float colliderSizeAddonX = -3f;
-    [SerializeField] private float colliderSizeAddonY;
+    [SerializeField] protected float colliderOffsetAddon = 0.475f;
+    [SerializeField] protected float colliderSizeAddonX = -3f;
+    [SerializeField] protected float colliderSizeAddonY;
 
-    private SpriteRenderer _renderer;
-    private BoxCollider2D _collider;
+    protected SpriteRenderer objectRenderer;
+    protected BoxCollider2D objectCollider;
 
     private void Awake()
     {
-        _collider = GetComponent<BoxCollider2D>();
-        _renderer = GetComponent<SpriteRenderer>();
+        objectCollider = GetComponent<BoxCollider2D>();
+        objectRenderer = GetComponent<SpriteRenderer>();
     }
     
     private void Update()
     {
-        // Use bounds.size to get the correct size of the sprite
-        _collider.size = new Vector2(_renderer.bounds.size.x + colliderSizeAddonX, _renderer.bounds.size.y + colliderSizeAddonY);
+        SetColliderSize();
+        SetColliderOffset();
+    }
 
+    protected virtual void SetColliderSize()
+    {
+        // Use bounds.size to get the correct size of the sprite
+        objectCollider.size = new Vector2(objectRenderer.bounds.size.x + colliderSizeAddonX, objectRenderer.bounds.size.y + colliderSizeAddonY);
+    }
+    
+    protected virtual void SetColliderOffset()
+    {
         // Calculate the offset
-        var offset = _renderer.bounds.center - transform.position;
+        var offset = objectRenderer.bounds.center - transform.position;
         offset.x += colliderOffsetAddon;
         offset.x *= transform.localScale.x;
         offset.y *= transform.localScale.y;
-        _collider.offset = offset;
+        objectCollider.offset = offset;
     }
 }

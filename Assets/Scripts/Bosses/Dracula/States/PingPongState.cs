@@ -41,8 +41,6 @@ public class PingPongState : DraculaState
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
         _pongPongInstance = Instantiate(_pingPongCircle, transform.position, Quaternion.identity).GetComponent<PingPongScript>();
         
-        
-        
         _pongPongInstance.gameObject.SetActive(false);
     }
 
