@@ -14,7 +14,7 @@ using Guid = Pathfinding.Util.Guid;
 public class ConversationTrigger : TriggerBox, IBind<TriggerData> {
     #region ---Fields---
     #region ***---GetOrAddComponents---***
-    [GetOrAddComponent, SerializeField, HideInInspector] private ScriptMachine cutsceneGraph;
+    [GetOrAddComponent, SerializeField, HideInInspector] protected ScriptMachine cutsceneGraph;
     #endregion
 
     #region ***---DataBindingVariables---***
