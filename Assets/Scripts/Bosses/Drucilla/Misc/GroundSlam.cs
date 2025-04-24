@@ -34,7 +34,6 @@ public class GroundSlam
 
     public void ExecuteGroundSlam(ref Vector2 velocityReference, Action onGroundSlamEnd = null)
     {
-        Debug.Log(_groundSlamStage);
         switch (_groundSlamStage)
         {
             case 0:
@@ -56,7 +55,6 @@ public class GroundSlam
             case 1:
                 if (_collider.IsTouchingLayers(LayerMask.GetMask("Ground")))
                 {
-                    Debug.Log("Touching");
                     if (!_animancerComponent.IsPlaying(groundSlamSlam))
                     {
                         var state = _animancerComponent.Play(groundSlamSlam);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -28,6 +29,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     [SerializeField] private ParticleSystem bloodSplatter;
     [SerializeField] private bool isImmortal;
     [SerializeField] private bool canTakeKnockback = true;
+    [SerializeField] private bool entityCrammingAllowed = true;
     #endregion
 
     #region ***---PrivateFields---***
@@ -118,6 +120,36 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
     protected virtual void SetVisualFacingDirection() {
         visualFacingDirection = facingDirection;
+    }
+
+    protected virtual void LateUpdate()
+    {
+        RepelEntity();
+    }
+
+    private void RepelEntity()
+    {
+        if (entityCrammingAllowed || isDead || isStunned || isKnockedUp) return;
+        
+        ContactFilter2D contactFilter = new ContactFilter2D();
+        contactFilter.SetLayerMask(LayerMask.GetMask("Enemy"));
+        contactFilter.useTriggers = true;
+        var enemies = new List<Collider2D>();
+        Physics2D.OverlapCircle(enemyCollider.bounds.center, 1f, contactFilter, enemies);
+        foreach (var enemy in enemies)
+        {
+            if (enemy.gameObject == gameObject) return;
+            
+            if (Vector2.Distance(enemy.bounds.center, transform.position) != 0)
+            {
+                var direction = (enemy.bounds.center - transform.position).normalized;
+                targetVelocity += -(Vector2)direction;
+            }
+            else
+            {
+                targetVelocity += Vector2.right;
+            }
+        }
     }
 
     public void TakeDamage(DamageInstance damageInstance) {
@@ -304,14 +336,14 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     protected virtual void Attack() {
+        if (player == null) return;
+        
         var playerObject = player.gameObject;
-        if (player != null) {
-            Vector2 directionToPlayer = (playerObject.transform.position - transform.position).normalized;
-            Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
+        Vector2 directionToPlayer = (playerObject.transform.position - transform.position).normalized;
+        Vector2 knockbackDirection = directionToPlayer.x > 0 ? Vector2.right : Vector2.left;
 
-            enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * enemyDamageInstance.knockbackStrength;
-            player.TakeDamage(enemyDamageInstance);
-        }
+        enemyDamageInstance.knockback = (knockbackDirection + Vector2.up * 0.5f).normalized * enemyDamageInstance.knockbackStrength;
+        player.TakeDamage(enemyDamageInstance);
     }
 
     protected Vector2 GetBottomPosition() {

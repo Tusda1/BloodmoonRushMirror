@@ -130,18 +130,6 @@ namespace UI {
             VirtualCameraSwitch.ActiveVirtualCameraSwitch = null;
 #if LEVEL_SELECT
             levelSelectMenu.Activate();
-#elif DEMO_BUILD
-            var pathToSaveFile = _saveLoadSystemManager.DataService.GetPathToSaveFile("Demo");
-            if (!File.Exists(pathToSaveFile)) {
-                _saveLoadSystemManager.SetCurrentGameDataFromTemplate("Demo");
-            }
-            else {
-                _saveLoadSystemManager.CurrentGameData = _saveLoadSystemManager.DataService.LoadByPath(pathToSaveFile);
-            }
-            
-            var sceneCollectionToLoad = _saveLoadSystemManager.GetCurrentSceneCollection();
-            
-            _cameraEffects.FadeLoadScene(sceneCollectionToLoad);
 #elif SAVESYSTEM_ACTIVE
             savesMenu.Activate();
 #else

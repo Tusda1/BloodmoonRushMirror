@@ -11,6 +11,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     [SerializeField] private AnimationClip hitAnimation;
     [SerializeField] private float speed;
     [SerializeField] private bool isNotDeflectable;
+    [SerializeField] private float lifetime = 20f;
     
     [HideInInspector] public GameObject shooter;
     [HideInInspector] public Vector2 velocityDirection;
@@ -19,6 +20,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     private Rigidbody2D rb2d;
     private bool _isDeflected;
     private GameObject _spawnRoom;
+    private float _spawnTime;
 
     private float _colliderRadius;
     private CircleCollider2D _circleCollider2D;
@@ -49,6 +51,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         rb2d.linearVelocity = velocityDirection * speed;
         
         transform.localScale = velocityDirection.x > 0 ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+        _spawnTime = Time.time;
     }
 
     private void OnDisable()
@@ -61,6 +64,11 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     private void Update()
     {
         if (_spawnRoom != VirtualCameraSwitch.ActiveVirtualCameraSwitch.gameObject)
+        {
+            gameObject.SetActive(false);
+        }
+        
+        if (Time.time - _spawnTime > lifetime)
         {
             gameObject.SetActive(false);
         }
@@ -113,7 +121,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         
         rb2d.linearVelocity = Vector2.zero;
         
-        if (baseAnimation != null)
+        if (hitAnimation != null)
         {
             var state = _animancerComponent.Play(hitAnimation);
             state.Events(this).OnEnd = () => gameObject.SetActive(false);

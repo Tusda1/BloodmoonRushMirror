@@ -11,6 +11,7 @@ public class Gargoyle : ReactiveBase
     private Pooler _projectilePooler;
     private Transform _playerTransform;
     private VirtualCameraSwitch _virtualCameraSwitch;
+    private GargoyleAnimations _animations;
     
     protected override void Start()
     {
@@ -21,6 +22,7 @@ public class Gargoyle : ReactiveBase
         _projectilePrefab = Resources.Load<GameObject>("Prefabs/GargoyleProjectile");
         _playerTransform = ServiceLocator.Get<PlayerScript>().transform;
         _projectilePooler = TryGetCommunityPooler.TryGetPooler(_projectilePrefab, _objectResolver);
+        _animations = GetComponent<GargoyleAnimations>();
         
         var hit = Physics2D.OverlapCircle(transform.position, 1f, LayerMask.GetMask("Room"));
         if (hit == null)
@@ -62,10 +64,14 @@ public class Gargoyle : ReactiveBase
     
     private void StartAttack()
     {
+        _animations.PlayThrowRockAnimation(ThrowRock);
+    }
+
+    private void ThrowRock()
+    {
         var position = transform.position;
         var spawnPosition = new Vector2(position.x, position.y + YOffset);
         
-        // Shoot a projectile in the facingdirection. Spawn it so that it is outside of the collider of the spitter
         GameObject projectile = _projectilePooler.GetPooledObject();
         projectile.transform.position = spawnPosition;
         var projectileScript = projectile.GetComponent<ProjectileDeflectable>();

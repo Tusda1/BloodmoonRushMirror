@@ -1,6 +1,8 @@
 using System;
 using Animancer;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 public class DraculaBatScript : GravityObject
 {
@@ -13,6 +15,16 @@ public class DraculaBatScript : GravityObject
 
     private AnimancerComponent _animancerComponent;
     
+    private IObjectResolver _objectResolver;
+    private IAudioManager _audioManager;
+
+    [Inject]
+    public void Construct(LifetimeScope currentScope)
+    {
+        _objectResolver = currentScope.Container;
+        _audioManager = _objectResolver.Resolve<IAudioManager>();
+    }
+
     protected new void Awake()
     {
         base.Awake();
@@ -23,6 +35,7 @@ public class DraculaBatScript : GravityObject
 
     private void OnEnable()
     {
+        // TODO : Add looping bat sound. ID = "Drac_Bat"
         if (targetVector == Vector2.zero)
         {
             gameObject.SetActive(false);
@@ -39,6 +52,7 @@ public class DraculaBatScript : GravityObject
 
     private void OnDisable()
     {
+        // TODO : End looping bat sound. ID = "Drac_Bat"
         targetVector = Vector2.zero;
     }
     

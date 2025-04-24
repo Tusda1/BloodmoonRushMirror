@@ -37,6 +37,7 @@ public class Swoop
             _externalBoss.facingDirection = swoopTarget.x > swoopOrigin.x ? Vector2.right : Vector2.left;
             _swoopStarted = true;
             _swoopStartTime = Time.time;
+            // TODO : Play loop sound. ID = "Drac_Swoop"
         }
 
         if (!_swoopStartPlayed && playAnimation)

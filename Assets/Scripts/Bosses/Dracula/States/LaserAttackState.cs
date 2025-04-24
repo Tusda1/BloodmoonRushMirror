@@ -99,6 +99,7 @@ public class LaserAttackState : DraculaState
     {
         Boss.AnimancerComponent.Play(idleAnimation);
         stage = LaserAttackStage.Tracking;
+        // TODO : Play one shot. ID = "Drac_Lazer_Fire"
     }
     
     private void Tracking()
@@ -116,6 +117,7 @@ public class LaserAttackState : DraculaState
                 Destroy(_trackerObject);
                 _timer = 0;
                 Boss.AnimancerComponent.Play(idleAnimation);
+                // TODO : Play one shot. ID = "Drac_Lazer_Hold"
             };
         }
        
@@ -157,6 +159,7 @@ public class LaserAttackState : DraculaState
         _timer += Time.deltaTime;
         if (_timer >= firingTime)
         {
+            // TODO : End one shot. ID = "Drac_Lazer_Hold"
             _laserObject.SetActive(false);
             EndState();
             _timer = 0;
