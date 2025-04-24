@@ -1,8 +1,11 @@
 using System;
 using Animancer;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class DraculaBatScript : GravityObject
 {
@@ -13,17 +16,8 @@ public class DraculaBatScript : GravityObject
 
     [HideInInspector] public Vector2 targetVector = Vector2.zero;
 
+    private EventInstance _batSoundInstance;
     private AnimancerComponent _animancerComponent;
-    
-    private IObjectResolver _objectResolver;
-    private IAudioManager _audioManager;
-
-    [Inject]
-    public void Construct(LifetimeScope currentScope)
-    {
-        _objectResolver = currentScope.Container;
-        _audioManager = _objectResolver.Resolve<IAudioManager>();
-    }
 
     protected new void Awake()
     {
@@ -35,7 +29,9 @@ public class DraculaBatScript : GravityObject
 
     private void OnEnable()
     {
-        // TODO : Add looping bat sound. ID = "Drac_Bat"
+        _batSoundInstance = RuntimeManager.CreateInstance("event:/Sfx/Boss/Dracula/Drac_bat");
+        _batSoundInstance.start();
+        
         if (targetVector == Vector2.zero)
         {
             gameObject.SetActive(false);
@@ -52,7 +48,7 @@ public class DraculaBatScript : GravityObject
 
     private void OnDisable()
     {
-        // TODO : End looping bat sound. ID = "Drac_Bat"
+        _batSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
         targetVector = Vector2.zero;
     }
     

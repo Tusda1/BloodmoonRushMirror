@@ -186,6 +186,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8997323462501667901, guid: 41e1ad0bbc0ab8f4c9894ed5323d552c, type: 3}
   m_PrefabInstance: {fileID: 125703608}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &125703610 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1717654059041883480, guid: 41e1ad0bbc0ab8f4c9894ed5323d552c, type: 3}
+  m_PrefabInstance: {fileID: 125703608}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &198714248
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -246,6 +251,11 @@ PrefabInstance:
 --- !u!4 &198714249 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8997323462501667901, guid: 41e1ad0bbc0ab8f4c9894ed5323d552c, type: 3}
+  m_PrefabInstance: {fileID: 198714248}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &198714250 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1717654059041883480, guid: 41e1ad0bbc0ab8f4c9894ed5323d552c, type: 3}
   m_PrefabInstance: {fileID: 198714248}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &219505202 stripped
@@ -374,6 +384,11 @@ PrefabInstance:
 --- !u!4 &684583644 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8997323462501667901, guid: 41e1ad0bbc0ab8f4c9894ed5323d552c, type: 3}
+  m_PrefabInstance: {fileID: 684583643}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &684583645 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1717654059041883480, guid: 41e1ad0bbc0ab8f4c9894ed5323d552c, type: 3}
   m_PrefabInstance: {fileID: 684583643}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &742937763 stripped
@@ -507,6 +522,10 @@ PrefabInstance:
     - target: {fileID: 480420048392317565, guid: 8d339093a35c52f44a1ed8771a47d522, type: 3}
       propertyPath: GravityModifier
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 480420048392317565, guid: 8d339093a35c52f44a1ed8771a47d522, type: 3}
+      propertyPath: 'maxHealth.Array.data[0]'
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1943711010495588360, guid: 8d339093a35c52f44a1ed8771a47d522, type: 3}
       propertyPath: slamAnimation
@@ -880,6 +899,31 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+--- !u!1 &3033302205021506159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6492833304716451411, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+  m_PrefabInstance: {fileID: 3033302205021506158}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3033302205021506160 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3982639286516955395, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+  m_PrefabInstance: {fileID: 3033302205021506158}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3033302205021506161 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1958056070185392317, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+  m_PrefabInstance: {fileID: 3033302205021506158}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3033302205021506162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6999460484702723885, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+  m_PrefabInstance: {fileID: 3033302205021506158}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3033302205021506163 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5658957801762101859, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+  m_PrefabInstance: {fileID: 3033302205021506158}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4041129429515161005
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -888,6 +932,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 480420048392317565, guid: 8d339093a35c52f44a1ed8771a47d522, type: 3}
+      propertyPath: 'maxHealth.Array.data[0]'
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 5202046595945405582, guid: 8d339093a35c52f44a1ed8771a47d522, type: 3}
       propertyPath: m_Name
       value: Antibot Hand R
@@ -963,464 +1011,464 @@ PrefabInstance:
       objectReference: {fileID: 462326525}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: autoInjectGameObjects.Array.size
-      value: 119
+      value: 114
       objectReference: {fileID: 0}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 5158702354565610344}
+      objectReference: {fileID: 5158702354565610311}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[1]'
       value: 
-      objectReference: {fileID: 742937763}
+      objectReference: {fileID: 764177701}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[2]'
       value: 
-      objectReference: {fileID: 5158702354565610315}
+      objectReference: {fileID: 770922076}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[3]'
       value: 
-      objectReference: {fileID: 958504370}
+      objectReference: {fileID: 5158702354565610360}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[4]'
       value: 
-      objectReference: {fileID: 5158702354565610326}
+      objectReference: {fileID: 1236307385}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[5]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1402609423}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[6]'
       value: 
-      objectReference: {fileID: 1820617863}
+      objectReference: {fileID: 5158702354565610320}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[7]'
       value: 
-      objectReference: {fileID: 5158702354565610343}
+      objectReference: {fileID: 5158702354565610309}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[8]'
       value: 
-      objectReference: {fileID: 5158702354565610305}
+      objectReference: {fileID: 986308218}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[9]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5158702354565610324}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[10]'
       value: 
-      objectReference: {fileID: 4722951124652816740}
+      objectReference: {fileID: 5158702354565610358}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[11]'
       value: 
-      objectReference: {fileID: 75662413}
+      objectReference: {fileID: 5158702354565610306}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[12]'
       value: 
-      objectReference: {fileID: 5158702354565610359}
+      objectReference: {fileID: 5158702354565610312}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[13]'
       value: 
-      objectReference: {fileID: 2087136019}
+      objectReference: {fileID: 958504370}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[14]'
       value: 
-      objectReference: {fileID: 953621998}
+      objectReference: {fileID: 441012887}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[15]'
       value: 
-      objectReference: {fileID: 1231205858}
+      objectReference: {fileID: 954514711}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[16]'
       value: 
-      objectReference: {fileID: 1166093346}
+      objectReference: {fileID: 5158702354565610329}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[17]'
       value: 
-      objectReference: {fileID: 5158702354565610353}
+      objectReference: {fileID: 5158702354565610318}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[18]'
       value: 
-      objectReference: {fileID: 522907676}
+      objectReference: {fileID: 5158702354565610331}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[19]'
       value: 
-      objectReference: {fileID: 397431260}
+      objectReference: {fileID: 385385644}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[20]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 522907676}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[21]'
       value: 
-      objectReference: {fileID: 5158702354565610331}
+      objectReference: {fileID: 1340603298}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[22]'
       value: 
-      objectReference: {fileID: 5158702354565610336}
+      objectReference: {fileID: 1490684940}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[23]'
       value: 
-      objectReference: {fileID: 5158702354565610321}
+      objectReference: {fileID: 5158702354565610364}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[24]'
       value: 
-      objectReference: {fileID: 978079646}
+      objectReference: {fileID: 822980547}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[25]'
       value: 
-      objectReference: {fileID: 1215264756}
+      objectReference: {fileID: 1598325391}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[26]'
       value: 
-      objectReference: {fileID: 5158702354565610354}
+      objectReference: {fileID: 1565534467}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[27]'
       value: 
-      objectReference: {fileID: 5158702354565610360}
+      objectReference: {fileID: 5158702354565610303}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[28]'
       value: 
-      objectReference: {fileID: 5158702354565610309}
+      objectReference: {fileID: 1677664961}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[29]'
       value: 
-      objectReference: {fileID: 5158702354565610322}
+      objectReference: {fileID: 3033302205021506161}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[30]'
       value: 
-      objectReference: {fileID: 5158702354565610303}
+      objectReference: {fileID: 5158702354565610317}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[31]'
       value: 
-      objectReference: {fileID: 5158702354565610310}
+      objectReference: {fileID: 5158702354565610361}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[32]'
       value: 
-      objectReference: {fileID: 4596464102216798894}
+      objectReference: {fileID: 5158702354565610304}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[33]'
       value: 
-      objectReference: {fileID: 963206631}
+      objectReference: {fileID: 3033302205021506159}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[34]'
       value: 
-      objectReference: {fileID: 1521830122}
+      objectReference: {fileID: 5158702354565610355}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[35]'
       value: 
-      objectReference: {fileID: 5158702354565610356}
+      objectReference: {fileID: 5158702354565610351}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[36]'
       value: 
-      objectReference: {fileID: 460243496}
+      objectReference: {fileID: 953621998}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[37]'
       value: 
-      objectReference: {fileID: 5158702354565610319}
+      objectReference: {fileID: 5158702354565610353}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[38]'
       value: 
-      objectReference: {fileID: 261519150}
+      objectReference: {fileID: 5158702354565610363}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[39]'
       value: 
-      objectReference: {fileID: 1763020504}
+      objectReference: {fileID: 1395533279}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[40]'
       value: 
-      objectReference: {fileID: 5158702354565610351}
+      objectReference: {fileID: 5158702354565610365}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[41]'
       value: 
-      objectReference: {fileID: 1236307385}
+      objectReference: {fileID: 5158702354565610367}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[42]'
       value: 
-      objectReference: {fileID: 5158702354565610366}
+      objectReference: {fileID: 978079646}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[43]'
       value: 
-      objectReference: {fileID: 441012887}
+      objectReference: {fileID: 75662413}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[44]'
       value: 
-      objectReference: {fileID: 5158702354565610345}
+      objectReference: {fileID: 5158702354565610325}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[45]'
       value: 
-      objectReference: {fileID: 1565534467}
+      objectReference: {fileID: 1360756755}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[46]'
       value: 
-      objectReference: {fileID: 1914727170}
+      objectReference: {fileID: 5158702354565610315}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[47]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1614064759}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[48]'
       value: 
-      objectReference: {fileID: 1490684940}
+      objectReference: {fileID: 3033302205021506163}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[49]'
       value: 
-      objectReference: {fileID: 1402609423}
+      objectReference: {fileID: 5158702354565610322}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[50]'
       value: 
-      objectReference: {fileID: 5158702354565610352}
+      objectReference: {fileID: 5158702354565610344}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[51]'
       value: 
-      objectReference: {fileID: 5158702354565610329}
+      objectReference: {fileID: 4596464102216798894}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[52]'
       value: 
-      objectReference: {fileID: 5158702354565610314}
+      objectReference: {fileID: 5158702354565610333}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[53]'
       value: 
-      objectReference: {fileID: 770922076}
+      objectReference: {fileID: 943836010}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[54]'
       value: 
-      objectReference: {fileID: 954514711}
+      objectReference: {fileID: 1064741388}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[55]'
       value: 
-      objectReference: {fileID: 5158702354565610304}
+      objectReference: {fileID: 5158702354565610337}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[56]'
       value: 
-      objectReference: {fileID: 5158702354565610333}
+      objectReference: {fileID: 1543037520}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[57]'
       value: 
-      objectReference: {fileID: 219505202}
+      objectReference: {fileID: 1448903626}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[58]'
       value: 
-      objectReference: {fileID: 554499932}
+      objectReference: {fileID: 5158702354565610345}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[59]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1306765377}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[60]'
       value: 
-      objectReference: {fileID: 5158702354565610340}
+      objectReference: {fileID: 1159594412}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[61]'
       value: 
-      objectReference: {fileID: 1448903626}
+      objectReference: {fileID: 5158702354565610307}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[62]'
       value: 
-      objectReference: {fileID: 5158702354565610337}
+      objectReference: {fileID: 5158702354565610308}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[63]'
       value: 
-      objectReference: {fileID: 5158702354565610338}
+      objectReference: {fileID: 5158702354565610305}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[64]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2024269256}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[65]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5158702354565610340}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[66]'
       value: 
-      objectReference: {fileID: 1159623565}
+      objectReference: {fileID: 5158702354565610339}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[67]'
       value: 
-      objectReference: {fileID: 1614064759}
+      objectReference: {fileID: 1820617863}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[68]'
       value: 
-      objectReference: {fileID: 5158702354565610318}
+      objectReference: {fileID: 4722951124652816740}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[69]'
       value: 
-      objectReference: {fileID: 5158702354565610306}
+      objectReference: {fileID: 5158702354565610357}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[70]'
       value: 
-      objectReference: {fileID: 5158702354565610325}
+      objectReference: {fileID: 742937763}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[71]'
       value: 
-      objectReference: {fileID: 5158702354565610308}
+      objectReference: {fileID: 1521830122}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[72]'
       value: 
-      objectReference: {fileID: 1598325391}
+      objectReference: {fileID: 680095606}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[73]'
       value: 
-      objectReference: {fileID: 680095606}
+      objectReference: {fileID: 5158702354565610347}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[74]'
       value: 
-      objectReference: {fileID: 5158702354565610364}
+      objectReference: {fileID: 219505202}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[75]'
       value: 
-      objectReference: {fileID: 986308218}
+      objectReference: {fileID: 1028682174}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[76]'
       value: 
-      objectReference: {fileID: 943836010}
+      objectReference: {fileID: 5158702354565610354}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[77]'
       value: 
-      objectReference: {fileID: 5158702354565610355}
+      objectReference: {fileID: 198714250}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[78]'
       value: 
-      objectReference: {fileID: 5158702354565610328}
+      objectReference: {fileID: 554499932}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[79]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5158702354565610321}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[80]'
       value: 
-      objectReference: {fileID: 1677664961}
+      objectReference: {fileID: 5158702354565610328}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[81]'
       value: 
-      objectReference: {fileID: 5158702354565610367}
+      objectReference: {fileID: 2064734820}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[82]'
       value: 
-      objectReference: {fileID: 1360756755}
+      objectReference: {fileID: 5158702354565610356}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[83]'
       value: 
-      objectReference: {fileID: 764177701}
+      objectReference: {fileID: 261519150}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[84]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5158702354565610352}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[85]'
       value: 
-      objectReference: {fileID: 5158702354565610312}
+      objectReference: {fileID: 5158702354565610314}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[86]'
       value: 
-      objectReference: {fileID: 1028682174}
+      objectReference: {fileID: 5158702354565610310}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[87]'
       value: 
-      objectReference: {fileID: 5158702354565610349}
+      objectReference: {fileID: 5158702354565610343}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[88]'
       value: 
-      objectReference: {fileID: 5158702354565610357}
+      objectReference: {fileID: 5158702354565610349}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[89]'
       value: 
-      objectReference: {fileID: 822980547}
+      objectReference: {fileID: 5158702354565610319}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[90]'
       value: 
-      objectReference: {fileID: 5158702354565610358}
+      objectReference: {fileID: 4596464102216798895}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[91]'
       value: 
-      objectReference: {fileID: 1340603298}
+      objectReference: {fileID: 397431260}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[92]'
       value: 
-      objectReference: {fileID: 1159594412}
+      objectReference: {fileID: 2056871706}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[93]'
       value: 
-      objectReference: {fileID: 5158702354565610307}
+      objectReference: {fileID: 1231205858}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[94]'
       value: 
-      objectReference: {fileID: 385385644}
+      objectReference: {fileID: 1215264756}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[95]'
       value: 
-      objectReference: {fileID: 5158702354565610311}
+      objectReference: {fileID: 125703610}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[96]'
       value: 
-      objectReference: {fileID: 5158702354565610361}
+      objectReference: {fileID: 5158702354565610350}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[97]'
       value: 
-      objectReference: {fileID: 5158702354565610365}
+      objectReference: {fileID: 2075446984}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[98]'
       value: 
-      objectReference: {fileID: 5158702354565610317}
+      objectReference: {fileID: 5158702354565610338}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[99]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1914727170}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[100]'
       value: 
-      objectReference: {fileID: 1928437364}
+      objectReference: {fileID: 1763020504}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[101]'
       value: 
-      objectReference: {fileID: 4596464102216798895}
+      objectReference: {fileID: 1159623565}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[102]'
       value: 
-      objectReference: {fileID: 1395533279}
+      objectReference: {fileID: 1166093346}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[103]'
       value: 
-      objectReference: {fileID: 5158702354565610350}
+      objectReference: {fileID: 2087136019}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[104]'
       value: 
-      objectReference: {fileID: 1543037520}
+      objectReference: {fileID: 684583645}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[105]'
       value: 
-      objectReference: {fileID: 2056871706}
+      objectReference: {fileID: 5158702354565610366}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[106]'
       value: 
-      objectReference: {fileID: 5158702354565610339}
+      objectReference: {fileID: 5158702354565610326}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[107]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3033302205021506160}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[108]'
       value: 
-      objectReference: {fileID: 5158702354565610324}
+      objectReference: {fileID: 3033302205021506162}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[109]'
       value: 
-      objectReference: {fileID: 2024269256}
+      objectReference: {fileID: 963206631}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[110]'
       value: 
-      objectReference: {fileID: 1064741388}
+      objectReference: {fileID: 460243496}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[111]'
       value: 
-      objectReference: {fileID: 5158702354565610347}
+      objectReference: {fileID: 1928437364}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[112]'
       value: 
-      objectReference: {fileID: 1306765377}
+      objectReference: {fileID: 5158702354565610336}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[113]'
       value: 
-      objectReference: {fileID: 2075446984}
+      objectReference: {fileID: 5158702354565610359}
     - target: {fileID: 2417514217709895664, guid: 166c2963a48965a4aa902b096f8d7eae, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[114]'
       value: 
@@ -742045,9 +742093,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5665637596844805087, guid: 481e80a73e5ef9b4285e536fef3b6ffe, type: 3}
-      propertyPath: postWarningWaitTime
-      value: 1
+    - target: {fileID: 8681157068678436256, guid: 481e80a73e5ef9b4285e536fef3b6ffe, type: 3}
+      propertyPath: 'maxHealth.Array.data[0]'
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9087546792395721109, guid: 481e80a73e5ef9b4285e536fef3b6ffe, type: 3}
       propertyPath: leftHand

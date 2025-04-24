@@ -51,10 +51,12 @@ public class BossState : StateBehaviour
     }
 
     protected IObjectResolver ObjectResolver;
+    protected IAudioManager audioManager;
 
     [Inject]
     public void Construct(IObjectResolver container) {
         ObjectResolver = container;
+        audioManager = container.Resolve<IAudioManager>();
     }
     
 #if UNITY_EDITOR

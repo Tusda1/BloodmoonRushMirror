@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class Boomerang : GravityObject
 {
@@ -20,6 +23,7 @@ public class Boomerang : GravityObject
     private Vector2 _verticalVelocity;
     private float _downVelocity;
     private float _upVelocity;
+    private EventInstance _boomerangSoundInstance;
     
     private readonly SmoothDampScript _smoothDampScript = new();
 
@@ -62,13 +66,15 @@ public class Boomerang : GravityObject
         _upVelocity = -_downVelocity * 3f;
         StartCoroutine(SwapVerticalVelocity(timeBeforeSwap));
         
-        // TODO : Add looping sound. ID = "Drac_Boomerang_In_Air"
+        
+        _boomerangSoundInstance = RuntimeManager.CreateInstance("event:/Sfx/Boss/Dracula/Drac_boomerang_in_air");
     }
 
     private void OnDisable()
     {
-        // TODO : End looping sound. ID = "Drac_Boomerang_In_Air"
-        // TODO : Play one shot. ID = "Drac_Boomerang_Catch"
+        _boomerangSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        
+        RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Dracula/Drac_boomerang_catch", gameObject);
     }
 
     protected override void ComputeVelocity()

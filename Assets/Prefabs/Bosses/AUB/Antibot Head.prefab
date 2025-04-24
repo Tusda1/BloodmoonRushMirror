@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7911915434459705900}
   - component: {fileID: 8681157068678436256}
   - component: {fileID: 9087546792395721109}
-  - component: {fileID: 4646299040916984817}
+  - component: {fileID: 6951321722163631109}
   - component: {fileID: 3226211747440525493}
   - component: {fileID: 5665637596844805087}
   - component: {fileID: 4547598872901045848}
@@ -122,7 +122,7 @@ MonoBehaviour:
     _CurrentState: {fileID: 3226211747440525493}
     _DefaultState: {fileID: 3226211747440525493}
   currentPhase: 0
-  maxHealth: 04000000
+  maxHealth: 05000000
   takeDamageAnimation: []
   turnWhileMoving: 1
   bossDamageInstance:
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
---- !u!114 &4646299040916984817
+--- !u!114 &6951321722163631109
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,10 +162,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4911512659285843616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ad54900b8dd7d2458ebc3be12446659, type: 3}
+  m_Script: {fileID: 11500000, guid: 41e75bf65be44464b80799b367137948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderOffsetAddon: 0.475
+  colliderOffsetAddon: 0
+  colliderSizeAddonX: 2
+  colliderSizeAddonY: 0
 --- !u!114 &3226211747440525493
 MonoBehaviour:
   m_ObjectHideFlags: 0

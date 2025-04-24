@@ -1,4 +1,5 @@
 using System;
+using FMODUnity;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
@@ -27,6 +28,8 @@ public class PingPongScript : GravityObject, IDamageable
             projectileDamageInstance.knockback = knockbackDirection * projectileDamageInstance.knockbackStrength;
         
             other.GetComponent<IDamageable>().TakeDamage(projectileDamageInstance);
+            // Play sound
+            RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Dracula/Drac_pingpong_damage", gameObject);
         
             gameObject.SetActive(false);
         }
@@ -34,6 +37,7 @@ public class PingPongScript : GravityObject, IDamageable
     
     public void TakeDamage(DamageInstance damageInstance)
     {
+        RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Dracula/Drac_pingpong_hit", gameObject);
         setVelocity.x = Mathf.Abs(setVelocity.x) + 5f;
         // If knocked back, reverse direction
         if (damageInstance.knockback.x > 0)
