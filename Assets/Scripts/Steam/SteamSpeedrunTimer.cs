@@ -55,6 +55,7 @@ public partial class SteamSpeedrunTimer : ISpeedrunTimer, IBind<LevelTimerData>,
 #endif
     }
 
+
     public void StopTimer() {
         if (!_timerEnabled) return;
 
