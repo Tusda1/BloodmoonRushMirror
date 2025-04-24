@@ -27,9 +27,9 @@ public class PlayerLadderLogic : IPlayerLadderLogic {
     public LadderBottom LadderBottom { get; set; }
 
     #region ---PlayerMovementShortcuts---
-    private bool IsClimbing {
+    public bool IsClimbing {
         get => _playerMovement.isClimbing;
-        set => _playerMovement.isClimbing = value;
+        private set => _playerMovement.isClimbing = value;
     }
 
     private Vector2 InputVector => _playerMovement.inputVector;
