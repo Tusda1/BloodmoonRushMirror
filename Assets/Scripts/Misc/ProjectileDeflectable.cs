@@ -135,15 +135,15 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
     public void TakeDamage(DamageInstance damageInstance)
     {
         if (_isDeflected || isNotDeflectable) return;
-        
+    
         _isDeflected = true;
-        
+    
         Vector2 velocity = rb2d.linearVelocity;
-        
+        float totalSpeed = velocity.magnitude; // Calculate the total speed (magnitude of velocity)
+
         // If knocked back, reverse direction
         if (damageInstance.knockback.x > 0)
         {
-            // Reverse velocity
             velocity.x = Mathf.Abs(velocity.x);
         }
         else if (damageInstance.knockback.x < 0)
@@ -151,9 +151,9 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
             velocity.x = -Mathf.Abs(velocity.x);
         }
 
-        velocity.y = 0;
-        
-        rb2d.linearVelocity = velocity * 3;
+        // Normalize velocity and apply total speed
+        velocity = velocity.normalized * totalSpeed * 3;
+        rb2d.linearVelocity = velocity;
         velocityDirection = rb2d.linearVelocity.normalized;
     }
 }

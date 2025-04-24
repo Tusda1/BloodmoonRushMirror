@@ -194,8 +194,15 @@ namespace Player {
 
         private void Update() {
             var offset = 0f;
-            if (_isLookingUp && Mathf.Abs(playerMovement.inputVector.x) <= 0.2) offset += lookahead;
-            if (_isLookingDown && Mathf.Abs(playerMovement.inputVector.x) <= 0.2) offset -= lookahead;
+            if (_isLookingUp && Mathf.Abs(playerMovement.inputVector.x) <= 0.2
+                             && !playerMovement.PlayerLadderLogic.IsClimbing) {
+                offset += lookahead;
+            }
+
+            if (_isLookingDown && Mathf.Abs(playerMovement.inputVector.x) <= 0.2
+                               && !playerMovement.PlayerLadderLogic.IsClimbing) {
+                offset -= lookahead;
+            }
             cameraFollowTransform.position = transform.position.WithOffset(y: offset);
 
             if (OverlapLadder()) return;

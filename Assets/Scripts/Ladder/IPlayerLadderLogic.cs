@@ -1,4 +1,6 @@
 ﻿public interface IPlayerLadderLogic {
+    public bool IsClimbing { get; }
+    
     public LadderTop LadderTop { get; set; }
     public LadderMiddle LadderMiddle { get; set; }
     public LadderBottom LadderBottom { get; set; }
