@@ -1,4 +1,3 @@
-using System.Collections;
 using Attributes;
 using SaveLoadSystem;
 using SaveLoadSystem.Data;
@@ -23,12 +22,12 @@ public partial class OpeningDialogue : MonoBehaviour, IBind<TriggerData> {
         _levelDataManager = container.Resolve<LevelDataManager>();
     }
 
-    private IEnumerator Start() {
+    private void Start() {
         Bind();
 #if UNITY_EDITOR
-        if (_levelDataManager.startedInLevel && !forcePlayOnStart) yield break;
+        if (_levelDataManager.startedInLevel && !forcePlayOnStart) return;
 #endif
-        if (hasBeenTriggered || (!string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointID) && !forcePlayOnStart)) yield break;
+        if (hasBeenTriggered || (!string.IsNullOrEmpty(_levelDataManager.CurrentCheckpointID) && !forcePlayOnStart)) return;
         
         cutsceneGraph.TriggerUnityEvent("Start");
         hasBeenTriggered = true;
