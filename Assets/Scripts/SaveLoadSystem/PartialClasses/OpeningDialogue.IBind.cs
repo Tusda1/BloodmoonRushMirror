@@ -21,6 +21,7 @@ public partial class OpeningDialogue {
     #region ---DataBindingMethods---
     public void Bind() {
         _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+        hasBeenTriggered = SaveSystemData.hasBeenTriggered;
     }
 
     public void Unbind() {
