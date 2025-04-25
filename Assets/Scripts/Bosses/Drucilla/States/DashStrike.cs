@@ -114,7 +114,8 @@ public class DashStrike : DrucillaState
                     state.Destroy();
                     Boss.facingDirection = _player.transform.position.x > transform.position.x ? Vector2.right : Vector2.left;
                     _dashDestination = _player.transform.position + (Vector3)(dashDestinationOffset * new Vector2(Boss.facingDirection.x, 1));
-                    lightningManager.CreateLightning(position + (Vector3)(dashOriginOffset * new Vector2(Boss.facingDirection.x, 1)), _dashDestination, OnLightningEnd);
+                    lightningManager.CreateLightning(position + (Vector3)(dashOriginOffset * new Vector2(Boss.facingDirection.x, 1)), _dashDestination);
+                    OnLightningEnd();
                 };
             };
         }
@@ -138,7 +139,7 @@ public class DashStrike : DrucillaState
         };
     }
 
-    public void Strike()
+    private void Strike()
     {
         // Use the confines of the box collider to cast an overlapbox to find the player
         var hit = Physics2D.OverlapBox(strikeHitBox.bounds.center, strikeHitBox.bounds.size, 0, LayerMask.GetMask("Player"));
