@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 using VContainer;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class DiscoBall : MonoBehaviour 
 {
@@ -18,15 +21,18 @@ public class DiscoBall : MonoBehaviour
     private float _currentRotation;
     private bool _isFiring;
     private bool _isActive;
+    private EventInstance _discoBallSoundInstance;
     
     private GameObject _laserPrefab;
     private Pooler _pooler;
     private Coroutine _moveCoroutine;
     private IObjectResolver _objectResolver;
+    private IAudioManager _audioManager;
 
     [Inject]
     public void Construct(IObjectResolver container) {
         _objectResolver = container;
+        _audioManager = container.Resolve<IAudioManager>();
     }
 
     private void Awake()
@@ -39,6 +45,7 @@ public class DiscoBall : MonoBehaviour
 
     private void Start() {
         _pooler = TryGetCommunityPooler.TryGetPooler(_laserPrefab, _objectResolver);
+        _discoBallSoundInstance = RuntimeManager.CreateInstance("event:/Sfx/Boss/Dracula/Drac_disco_lower");
     }
 
     public void Activate()
@@ -85,12 +92,15 @@ public class DiscoBall : MonoBehaviour
 
     private IEnumerator LowerDiscoBall()
     {
+        _discoBallSoundInstance.start();
+        
         while (transform.position.y > _lowPointPosition.y)
         {
             transform.position += Vector3.down * (loweringSpeed * Time.deltaTime);
             yield return null;
         }
         
+        _discoBallSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
         _isActive = true;
         _moveCoroutine = null;
         EnableLaser();
@@ -98,12 +108,15 @@ public class DiscoBall : MonoBehaviour
     
     private IEnumerator RaiseDiscoBall()
     {
+        _discoBallSoundInstance.start();
+        
         while (transform.position.y < _highPointPosition.y)
         {
             transform.position += Vector3.up * (loweringSpeed * Time.deltaTime);
             yield return null;
         }
         
+        _discoBallSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
         _moveCoroutine = null;
     }
     
@@ -127,5 +140,6 @@ public class DiscoBall : MonoBehaviour
         laser.transform.position = transform.position;
         laser.GetComponent<ProjectileNotSolid>().targetVector = direction;
         laser.SetActive(true);
+        _audioManager.PlayOneShotAttached("Drac_Disco_Shoot", gameObject);
     }
 }

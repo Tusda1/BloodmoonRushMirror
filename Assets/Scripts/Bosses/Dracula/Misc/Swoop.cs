@@ -1,7 +1,8 @@
 using System;
 using Animancer;
+using FMOD.Studio;
 using UnityEngine;
-using UnityEngine.Serialization;
+using FMODUnity;
 
 [Serializable]
 public class Swoop
@@ -37,7 +38,7 @@ public class Swoop
             _externalBoss.facingDirection = swoopTarget.x > swoopOrigin.x ? Vector2.right : Vector2.left;
             _swoopStarted = true;
             _swoopStartTime = Time.time;
-            // TODO : Play loop sound. ID = "Drac_Swoop"
+            RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Dracula/Drac_Swoop", _externalBoss.gameObject);
         }
 
         if (!_swoopStartPlayed && playAnimation)

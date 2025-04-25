@@ -61,6 +61,7 @@ public class DiscoBallActivation : DraculaState
             state.Destroy();
             Boss.AnimancerComponent.Play(idleAnimation);
             discoBall.EnableLaser();
+            audioManager.PlayOneShotAttached("Drac_Disco_Activate", gameObject);
             EndState();
         };
     }

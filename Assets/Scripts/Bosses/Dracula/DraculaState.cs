@@ -13,7 +13,7 @@ public class DraculaState : BossState
 
     protected virtual void Awake()
     {
-        teleport = new Teleport(transform, Boss.AnimancerComponent, OnTeleportEnd);
+        teleport = new Teleport(transform, Boss.AnimancerComponent, OnTeleportEnd, "event:/Sfx/Boss/Dracula/Drac_tp_out", "event:/Sfx/Boss/Dracula/Drac_tp_in");
     }
     
     protected virtual void OnTeleportEnd()
