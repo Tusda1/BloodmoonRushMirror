@@ -172,7 +172,7 @@ namespace Player {
                     if (!isGrounded) return;
                     isJumping = true;
                     ForceExitDuck();
-                    _minJumpTimer.StartTimer();
+                    _minJumpTimer.RestartTimer();
                     _jumpBufferTimer.StopTimer();
                 })
                 .WithOnComplete(() => isJumping = false)
@@ -251,7 +251,7 @@ namespace Player {
             // } else
             if (doubleJumping && isJumping) {
                 MovingPlatformExit();
-                ResetMovement(Axis.YAxis);
+                ResetMovement(Axis.XAxis | Axis.YAxis);
                 isDashing = false;
                 velocity.y = jumpForce;
                 // targetVelocity.y = jumpForce;
@@ -263,6 +263,7 @@ namespace Player {
                 // player.animator.SetBool(AnimatorIsFallingBool, true);
             }
             else if (isJumping) {
+                isDashing = false;
                 MovingPlatformExit();
                 velocity.y = jumpForce;
                 player.animator.SetBool(AnimatorJumpBool, true);
@@ -270,6 +271,7 @@ namespace Player {
             }
 
             if (isDashing) {
+                ResetMovement(Axis.XAxis | Axis.YAxis);
                 targetVelocity.x = dashForce;
                 _smoothMovement = Vector2.SmoothDamp(_smoothMovement, new Vector2(dashForce, 0).normalized,
                     ref _referenceSmoothVelocity, smoothTime);
@@ -348,11 +350,12 @@ namespace Player {
             ForceExitDuck();
             PlayerLadderLogic.ExitLadder();
              if (isGrounded || killCharges > 0) {
+                DashTimer.StopTimer();
                 isDashing = false;
                 lockToAxis = Axis.None;
                 ResetMovement(Axis.None);
                 isJumping = true;
-                _minJumpTimer.StartTimer();
+                _minJumpTimer.RestartTimer();
                 _coyoteTimer.StopTimer();
                 player.animator.SetBool(AnimatorJumpBool, true);
 
@@ -367,7 +370,7 @@ namespace Player {
                 }
             }
             else {
-                _jumpBufferTimer.StartTimer();
+                _jumpBufferTimer.RestartTimer();
             }
         }
 
@@ -408,11 +411,12 @@ namespace Player {
             PlayerLadderLogic.ExitLadder();
             ForceExitDuck();
             isDashing = true;
-            DashCooldownTimer.StartTimer();
+            DashCooldownTimer.RestartTimer();
             player.AudioManager.PlayOneShot(PlayerScript.PlayerDash_SoundID);
             canDash = false;
             lockToAxis = Axis.XAxis;
-            DashTimer.StartTimer();
+            
+            DashTimer.RestartTimer();
 
             if (inputVector.x > 0.1f)
                 dashForce = Mathf.Abs(dashForce);
@@ -457,7 +461,7 @@ namespace Player {
 
             _knockbackVector = argumentKnockback;
             
-            _knockbackTimer.StartTimer();
+            _knockbackTimer.RestartTimer();
         }
 
         private void SpikeStunStart() {
@@ -477,7 +481,7 @@ namespace Player {
 
         public void SpikeReset() {
             ResetMovement(0);
-            _spikeStunTimer.StartTimer();
+            _spikeStunTimer.RestartTimer();
             isDashing = false;
         }
 
