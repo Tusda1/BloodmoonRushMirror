@@ -306,7 +306,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             var rubyObject = _rubyPooler.GetPooledObject();
             rubyObject.transform.position = spawnPosition;
             rubyObject.SetActive(true);
-            var betterRuby = rubyObject.GetComponent<BetterRuby>();
+            var betterRuby = rubyObject.GetComponent<ItemPickupBase>();
             betterRuby.fall = true;
             betterRuby.enabled = true;
         }

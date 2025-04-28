@@ -4,28 +4,28 @@ using Player;
 using UnityEngine;
 using VContainer;
 
-public class BetterRuby : GravityObject
+public class ItemPickupBase : GravityObject
 {
-    [SerializeField] private float groundDistance;
+    [SerializeField] private float groundDistance = 1f;
     [SerializeField] private float hoverSpeed = 2f; // Speed of the hover motion
-    [SerializeField] private float hoverHeight = 0.5f; // Height of the hover motion
-    [SerializeField] private float despawnDistance = 0.1f; // Distance from the player at which the Ruby despawns
-    [SerializeField] private float moveSpeed = 5f; // Speed at which the Ruby moves towards the player
-    [SerializeField] private float accelerationFactor = 2f; // Factor by which the move speed increases over time
-    [SerializeField] private float pickupableTime = 0.2f; // Time after which the Ruby can be picked up
-    public bool fall; // Whether the Ruby should fall to the ground or hover in place
+    [SerializeField] private float hoverHeight = 0.3f; // Height of the hover motion
+    [SerializeField] private float despawnDistance = 0.2f; // Distance from the player at which the Ruby despawns
+    [SerializeField] private float moveSpeed = 3f; // Speed at which the Ruby moves towards the player
+    [SerializeField] private float accelerationFactor = 3f; // Factor by which the move speed increases over time
+    [SerializeField] private float pickupableTime = 0.4f; // Time after which the Ruby can be picked up
+    public bool fall = true; // Whether the Ruby should fall to the ground or hover in place
     
     private float _initialY;
     private float _initialGravityModifier;
     private float _initialMoveSpeed;
     private float _spawnTime;
     private bool _startedMoving;
-    private PlayerScript _player;
     private ParticleSystem _particleSystem;
     private GameObject _spriteGameObject;
     
-    [Inject] private IAudioManager _audioManager;
-    [SerializeField] private string pickupSoundID = "Misc_Gem_Get";
+    protected PlayerScript player;
+    [Inject] protected IAudioManager audioManager;
+    [SerializeField] protected string pickupSoundID = "Misc_Gem_Get";
     
     private enum RubyState
     {
@@ -119,7 +119,7 @@ public class BetterRuby : GravityObject
     
     private void Move()
     {
-        var playerPosition = _player.transform.position + (Vector3)Vector2.up;
+        var playerPosition = player.transform.position + (Vector3)Vector2.up;
         
         if (Time.time - _spawnTime < pickupableTime) return;
         
@@ -136,17 +136,19 @@ public class BetterRuby : GravityObject
         }
         else
         {
-            _audioManager.PlayOneShot(pickupSoundID);
-            _player.gems++;
-            enabled = false;
+            Pickup();
         }
+    }
+    
+    protected virtual void Pickup()
+    {
     }
     
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            _player = other.GetComponent<PlayerScript>();
+            player = other.GetComponent<PlayerScript>();
             _state = RubyState.Moving;
         }
     }

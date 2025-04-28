@@ -2,6 +2,7 @@ using System;
 using Animancer;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Object = UnityEngine.Object;
 
 [Serializable]
 public class GroundSlam 
@@ -23,6 +24,7 @@ public class GroundSlam
     private int _groundSlamStage;
     private float _timer;
     
+    private GameObject _shockwavePrefab;
     private Collider2D _collider;
     private AnimancerComponent _animancerComponent;
     
@@ -30,6 +32,7 @@ public class GroundSlam
     {
         _collider = externalCollider;
         _animancerComponent = externalAnimancerComponent;
+        _shockwavePrefab = Resources.Load<GameObject>("Prefabs/DrucillaShockwave");
     }
 
     public void ExecuteGroundSlam(ref Vector2 velocityReference, Action onGroundSlamEnd = null)
@@ -91,6 +94,7 @@ public class GroundSlam
                                 _groundSlamStage++;
                                 _timer = 0;
                                 _animancerComponent.Play(idleAnimation);
+                                
                             };
                         };
                     }
@@ -119,5 +123,13 @@ public class GroundSlam
                 Debug.LogError("GroundSlamStage is out of bounds");
                 break;
         }
+    }
+
+    private void StartShockwave()
+    {
+        // Send a raycast from the center of the collider to the ground
+        RaycastHit2D hit = Physics2D.Raycast(_collider.bounds.center, Vector2.down, 100, LayerMask.GetMask("Ground"));
+        
+        Object.Instantiate(_shockwavePrefab, hit.point, Quaternion.identity);
     }
 }

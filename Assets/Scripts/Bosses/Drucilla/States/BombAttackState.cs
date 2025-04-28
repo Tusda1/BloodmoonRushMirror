@@ -51,7 +51,7 @@ public class BombAttackState : DrucillaState
     private void OnDisable()
     {
         _droppingBombs = false;
-        
+        _smoothDampScript.SetStartVelocity(Vector2.zero);
     }
 
     private void Update()
