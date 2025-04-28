@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 367411730068349}
   - component: {fileID: 4709458564733395111}
   - component: {fileID: 3539446349966311831}
+  - component: {fileID: 1953906913864608860}
   m_Layer: 0
   m_Name: MenuUI
   m_TagString: Untagged
@@ -78,6 +79,7 @@ MonoBehaviour:
   firstSceneCollection: {fileID: 11400000, guid: f51d01d20f1c275488c8b74588e2f6b5, type: 2}
   backgroundAnimator: {fileID: 0}
   playerCanMove: {fileID: 11400000, guid: f2f25efabb8f0d74bbfdba92ceb38155, type: 2}
+  colorSwitcherAnimator: {fileID: 0}
 --- !u!114 &5538277227840435238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,6 +96,7 @@ MonoBehaviour:
   audioSettingsMenu: {fileID: 367411730068349}
   videoSettingsMenu: {fileID: 4752074436187100403}
   controlsSettingsMenu: {fileID: 4709458564733395111}
+  accessibilitySettingsSettingsMenu: {fileID: 1953906913864608860}
   tabNavigateAction: {fileID: 7896978939624929561, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
   backAction: {fileID: 7727032971491509709, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
 --- !u!114 &70565424184537130
@@ -187,3 +190,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiDocument: {fileID: 1723220102761852235}
+--- !u!114 &1953906913864608860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3623942027125754274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d13aa8afeb64fbb96d1ec2211fce905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiDocument: {fileID: 1723220102761852235}
+  singleFont: {fileID: 11400000, guid: 62fa15c6f26712947a7759c48af42805, type: 2}
