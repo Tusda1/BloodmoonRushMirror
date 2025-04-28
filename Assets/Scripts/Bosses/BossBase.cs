@@ -61,7 +61,7 @@ public class BossBase : GravityObject, IDamageable
     {
         yield return new WaitForSeconds(1f);
         
-        StartBattle();
+        // StartBattle();
     }
 
     protected void LateUpdate()

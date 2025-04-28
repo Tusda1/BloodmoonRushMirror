@@ -436,7 +436,7 @@ namespace Player {
         public void CheckpointHealing() {
             checkpointTextEmitter.Play();
             
-            if (healthComponent.Health == healthComponent.maxTempHealth) {
+            if (healthComponent.Health == healthComponent.maxHealth) {
                 healthComponent.TempHealth += 1;
             }
             else {

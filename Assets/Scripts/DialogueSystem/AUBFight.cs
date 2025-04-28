@@ -1,9 +1,14 @@
+using UnityEngine;
+
 public class AUBFight : ConversationTrigger {
-    public void TriggerFightBreakConversation() {
-        cutsceneGraph.TriggerUnityEvent("FightBreak");
+    [Header("Dependencies")]
+    [SerializeField] private BossBase bossBase;
+
+    private void Awake() {
+        bossBase.OnBattleEnd += TriggerFightEndConversation;
     }
 
-    public void TriggerFightEndConversation() {
+    private void TriggerFightEndConversation() {
         cutsceneGraph.TriggerUnityEvent("FightEnd");
     }
 }
