@@ -18,6 +18,7 @@ public class DrucillaIntroduction : MonoBehaviour, IDamageable {
     private CameraEffects _cameraEffects;
     private PlayerScript _playerScript;
     private ISpeedrunTimer _speedrunTimer;
+    private IAchievementManager _achievementManager;
     #endregion
 
     [Inject]
@@ -25,6 +26,7 @@ public class DrucillaIntroduction : MonoBehaviour, IDamageable {
         _cameraEffects = container.Resolve<CameraEffects>();
         _playerScript = container.Resolve<PlayerScript>();
         _speedrunTimer = container.Resolve<ISpeedrunTimer>();
+        _achievementManager = container.Resolve<IAchievementManager>();
     }
 
     private void Start() {
@@ -49,6 +51,7 @@ public class DrucillaIntroduction : MonoBehaviour, IDamageable {
 
     [UnityEngine.Scripting.Preserve]
     public void EndDialogue() {
+        _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_EntranceHall);
         _cameraEffects.FadeLoadScene(nextLevelSceneCollection);
     }
 }

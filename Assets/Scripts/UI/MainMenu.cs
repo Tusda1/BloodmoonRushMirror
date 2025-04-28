@@ -145,7 +145,7 @@ namespace UI {
             colorSwitcherAnimator.SetBool(CreditsActive, true);
             _creditsActive = true;
             _buttons.AddToClassList("down");
-                
+            
             _audioManager.PlayOneShot(ShowCredits_SoundID);
             _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 1);
         }
@@ -156,7 +156,7 @@ namespace UI {
             _buttons.RemoveFromClassList("down");
                     
             _startButton.Focus();
-            _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 0);
+            _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 0, true);
         }
 
         private void StartButtonClicked() {
