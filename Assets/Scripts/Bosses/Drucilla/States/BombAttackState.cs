@@ -70,7 +70,7 @@ public class BombAttackState : DrucillaState
                 if (!teleport.IsTeleporting)
                 {
                     var hit = Physics2D.Raycast(_player.transform.position, Vector2.up, 100f, LayerMask.GetMask("Ground"));
-                    _teleportPosition = hit.point + Vector2.down * 2.5f;
+                    _teleportPosition = hit.point + Vector2.down * 4f;
                     teleport.TeleportToLocation(_teleportPosition, DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit);
                 }
                 break;

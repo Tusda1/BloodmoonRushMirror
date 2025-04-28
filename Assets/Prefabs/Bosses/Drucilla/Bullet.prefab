@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2208722411177281718}
   - component: {fileID: 5265870804836754397}
-  - component: {fileID: 5386418063587326054}
+  - component: {fileID: -1873412402743000019}
   - component: {fileID: 5993823144150821911}
   - component: {fileID: 5774719124247700376}
   m_Layer: 0
@@ -90,7 +90,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5386418063587326054
+--- !u!114 &-1873412402743000019
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,9 +99,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 2749816408624752823}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebbbaf9427076094e895ef5231f166bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 06928964bcd213d47bb5a16441339673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb2d: {fileID: 5774719124247700376}
+  isGrounded: 0
+  isFalling: 0
+  lockToAxis: 0
+  targetVelocity: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
+  GravityModifier: 1
+  target: {fileID: 0}
+  initialDirection: {x: 0, y: 0}
+  launchDistance: 3
+  launchSpeed: 5
+  homingSpeed: 5
+  projectileAnimation: {fileID: 0}
   damageInstance:
     damage: 1
     knockback: {x: 0, y: 0}
@@ -109,13 +122,8 @@ MonoBehaviour:
     staggerStrength: 0
     ignoreInvincibility: 0
     which: 0
-  baseAnimation: {fileID: 0}
-  hitAnimation: {fileID: 0}
-  speed: 20
-  isNotDeflectable: 0
-  lifetime: 20
-  shooter: {fileID: 0}
-  velocityDirection: {x: 0, y: 0}
+  smoothDampScript:
+    smoothTime: 0.1
 --- !u!58 &5993823144150821911
 CircleCollider2D:
   m_ObjectHideFlags: 0
