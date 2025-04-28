@@ -36,7 +36,7 @@ public class VineAttack : DrucillaState
     {
         _cornerOne = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
         _cornerTwo = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
-        teleport.TeleportToLocation(new Vector2(Random.Range(_cornerOne.x + 1, _cornerTwo.x - 1), _cornerOne.y - 4), DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit);
+        teleport.TeleportToLocation(new Vector2(Random.Range(_cornerOne.x + 1, _cornerTwo.x - 1), _cornerOne.y - 5), DrucillaReference.TeleportEnter, DrucillaReference.TeleportExit);
         
         _vinesToSpawn = Random.Range(minVines, maxVines + 1);
     }

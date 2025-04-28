@@ -1,4 +1,5 @@
 using System;
+using Animancer;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,12 +15,18 @@ public class HomingProjectile : GravityObject
     private bool _hasLaunched;
     private Vector2 _initialPosition;
     
+    private AnimancerComponent _animancerComponent;
+    [SerializeField] private AnimationClip projectileAnimation;
+    [SerializeField] private DamageInstance damageInstance;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
 
     private new void Awake()
     {
         base.Awake();
         GravityModifier = 0f;
+        
+        _animancerComponent = GetComponent<AnimancerComponent>();
+        if (projectileAnimation != null) _animancerComponent.Play(projectileAnimation);
     }
 
     private void OnEnable()
@@ -52,5 +59,17 @@ public class HomingProjectile : GravityObject
         }
         
         transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(targetVelocity.y, targetVelocity.x) * Mathf.Rad2Deg - 90);
+    }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<IDamageable>()?.TakeDamage(damageInstance);
+        }
+        else if (other.CompareTag("ground"))
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

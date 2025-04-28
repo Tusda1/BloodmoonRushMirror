@@ -58,12 +58,14 @@ public class DashStrike : DrucillaState
             {
                 leftCorner.x += 1;
                 leftCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
+                leftCorner.y -= 5f;
                 _teleportLocation = leftCorner;
             }
             else
             {
                 rightCorner.x -= 1;
                 rightCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
+                rightCorner.y -= 5f;
                 _teleportLocation = rightCorner;
             }
             

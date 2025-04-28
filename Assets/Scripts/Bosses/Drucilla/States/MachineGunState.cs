@@ -137,10 +137,10 @@ public class MachineGunState : DrucillaState
     {
         var position = transform.position;
         var direction = (_player.transform.position - position).normalized;
-        var projectile = _pooler.GetPooledObject().GetComponent<ProjectileDeflectable>();
+        var projectile = _pooler.GetPooledObject().GetComponent<HomingProjectile>();
         projectile.transform.position = position + (Vector3)(bulletOriginOffset * new Vector2(Boss.facingDirection.x, 1f));
-        projectile.velocityDirection = direction;
-        projectile.shooter = gameObject;
+        projectile.target = _player.gameObject;
+        projectile.initialDirection = direction;
         projectile.gameObject.SetActive(true);
     }
 }

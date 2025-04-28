@@ -9,6 +9,7 @@ public class ProjectileNotSolid : GravityObject
     [HideInInspector] public Vector2 targetVector = Vector2.zero;
 
     private AnimancerComponent _animancerComponent;
+    [SerializeField] private AnimationClip projectileAnimation;
     
     protected new void Awake()
     {
@@ -16,6 +17,8 @@ public class ProjectileNotSolid : GravityObject
         
         GravityModifier = 0;
         _animancerComponent = GetComponent<AnimancerComponent>();
+        
+        if (projectileAnimation != null) _animancerComponent.Play(projectileAnimation);
     }
 
     private void OnEnable()
