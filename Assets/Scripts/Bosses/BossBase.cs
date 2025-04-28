@@ -28,7 +28,7 @@ public class BossBase : GravityObject, IDamageable
     [SerializeField] private AnimationClip[] takeDamageAnimation;
     [SerializeField] private bool turnWhileMoving = true;
     [SerializeField] private DamageInstance bossDamageInstance;
-    [SerializeField] private SmoothDampScript smoothDampScript = new();
+    [SerializeField] public SmoothDampScript smoothDampScript = new();
     
     public Collider2D bossCollider;
     

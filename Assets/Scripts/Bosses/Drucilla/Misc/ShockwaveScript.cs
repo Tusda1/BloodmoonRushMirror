@@ -8,10 +8,6 @@ public class ShockwaveScript : MonoBehaviour
     private AnimancerComponent _animancerComponent;
     private GameObject _shockwaveSpriteObject;
     private GameObject _shockwaveExtensionPrefab;
-    private GameObject _rightShockWave;
-    private GameObject _leftShockWave;
-    private GameObject _rightAnimancer;
-    private GameObject _leftAnimancer;
     
     private void Awake()
     {
@@ -24,12 +20,10 @@ public class ShockwaveScript : MonoBehaviour
         {
             state.Destroy();
             _shockwaveSpriteObject.SetActive(false);
-            var position = transform.position;
-            _rightShockWave = Instantiate(_shockwaveExtensionPrefab , position, Quaternion.identity);
-            _leftShockWave = Instantiate(_shockwaveExtensionPrefab, position, Quaternion.identity);
-            Vector3 localScale = _leftShockWave.transform.localScale;
-            localScale.x = -1;
-            _leftShockWave.transform.localScale = localScale;
+            var position = transform.position; 
+            Instantiate(_shockwaveExtensionPrefab, position, Quaternion.identity);
+            Instantiate(_shockwaveExtensionPrefab, position, Quaternion.identity).transform.localScale = new Vector3(-1, 1, 1);
+            Destroy(gameObject);
         };
     }
 }

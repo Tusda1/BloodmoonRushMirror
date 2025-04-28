@@ -17,11 +17,11 @@ public class BombAttackState : DrucillaState
     private float _bombTimer;
     private Vector2 _teleportPosition;
     private bool _droppingBombs;
+    private float _groundHeight;
     
     private PlayerScript _player;
     
     [SerializeField] private GroundSlam groundSlam = new();
-    private SmoothDampScript _smoothDampScript = new();
     private Pooler _bombPooler;
     
     private enum BombAttackStage
@@ -45,13 +45,21 @@ public class BombAttackState : DrucillaState
     private void OnEnable()
     {
         _bombTimer = 0;
+        
+        // send raycast to find the ground height
+        var hit = Physics2D.Raycast(transform.position, Vector2.down, 100f, LayerMask.GetMask("Ground"));
+        if (hit.collider != null)
+        {
+            _groundHeight = hit.point.y;
+        }
+        
         _stage = BombAttackStage.Teleport;
     }
 
     private void OnDisable()
     {
         _droppingBombs = false;
-        _smoothDampScript.SetStartVelocity(Vector2.zero);
+        Boss.smoothDampScript.SetStartVelocity(Vector2.zero);
     }
 
     private void Update()
@@ -100,11 +108,9 @@ public class BombAttackState : DrucillaState
         
         var direction = (_player.transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
         
-        _smoothDampScript.SmoothDampVector2(direction * glideSpeed, ref Boss.targetVelocity);
-        
-        Boss.targetVelocity.y = glideFallVelocity;
+        Boss.Move(new Vector2(direction.x * glideSpeed, glideFallVelocity));
 
-        if (Vector2.Distance(transform.position, _player.transform.position) < groundSlamDistanceThreshold)
+        if (transform.position.y - _groundHeight < groundSlamDistanceThreshold)
         {
             _stage = BombAttackStage.GroundSlam;
         }
@@ -112,7 +118,6 @@ public class BombAttackState : DrucillaState
     
     private void OnGroundSlamEnd()
     {
-        print("Ground slam end");
         EndState();
     }
     

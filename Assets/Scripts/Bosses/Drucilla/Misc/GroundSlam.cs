@@ -66,7 +66,7 @@ public class GroundSlam
                             state.Destroy();
                             _animancerComponent.Play(groundSlamStuck);
                             _groundSlamStage++;
-                            // TODO : Add explosion type thing when slamming
+                            StartShockwave();
                         };
                     }
                     velocityReference.y = 0;
@@ -94,7 +94,6 @@ public class GroundSlam
                                 _groundSlamStage++;
                                 _timer = 0;
                                 _animancerComponent.Play(idleAnimation);
-                                
                             };
                         };
                     }

@@ -7,28 +7,38 @@ public class ShockwaveExtensionScript : MonoBehaviour
     [SerializeField] private float shockWaveMoveDistance = 4f;
     [SerializeField] private AnimationClip shockwaveAnimation;
     private AnimancerComponent _animancerComponent;
+    private Vector2 direction;
     
-    private void Awake()
+    private void Start()
     {
         _animancerComponent = GetComponent<AnimancerComponent>();
-        var direction = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+        direction = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
         transform.position += (Vector3)direction * 4f;
-        
-        var state = _animancerComponent.Play(shockwaveAnimation);
-        state.Events(this).OnEnd = () =>
+    }
+
+    private void Update()
+    {
+        if (!_animancerComponent.IsPlaying(shockwaveAnimation))
         {
-            // Use raycast to check if there is a wall in localscale.x direction
-            
-            var hit = Physics2D.Raycast(transform.position + Vector3.up * 0.1f, direction, shockWaveMoveDistance + 1f, LayerMask.GetMask("Ground"));
-            if (hit.collider != null)
+            var state = _animancerComponent.Play(shockwaveAnimation);
+            state.Events(this).OnEnd = () =>
             {
-                state.Destroy();
-                Destroy(gameObject);
-            }
-            else
-            {
-                transform.position += (Vector3)direction * shockWaveMoveDistance;
-            }
-        };
+                // Use raycast to check if there is a wall in localscale.x direction
+                Debug.DrawRay(transform.position + Vector3.up * 0.1f, direction * (shockWaveMoveDistance + 1f), Color.red, 2f);
+                var hit = Physics2D.Raycast(transform.position + Vector3.up * 0.1f, direction, shockWaveMoveDistance + 1f, LayerMask.GetMask("Ground"));
+                if (hit.collider != null)
+                {
+                    state.Destroy();
+                    _animancerComponent.Stop();
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    state.Destroy();
+                    _animancerComponent.Stop();
+                    transform.position += (Vector3)direction * shockWaveMoveDistance;
+                }
+            };
+        }
     }
 }
