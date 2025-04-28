@@ -25,6 +25,8 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     [SerializeField] protected int rubyDropAmount = 3;
     [SerializeField] private float rubySpawnHeight = 0.8f;
     [SerializeField] private float rubySpawnDelay = 0.2f;
+    [SerializeField] private float healthItemSpawnChancePercentage = 10f;
+    [SerializeField] private float lifeItemSpawnChancePercentage = 1f;
     [SerializeField] private SmoothDampScript knockbackSmoothDampScript = new();
     [SerializeField] private ParticleSystem bloodSplatter;
     [SerializeField] private bool isImmortal;
@@ -50,10 +52,14 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected PlayerScript player;
     
     private GameObject _rubyPrefab;
+    private GameObject _healthItemPrefab;
+    private GameObject _lifeItemPrefab;
     private Material _whiteMaterial;
     private Material _defaultMaterial;
     private SpriteRenderer _spriteRenderer;
     private Pooler _rubyPooler;
+    private Pooler _healthItemPooler;
+    private Pooler _lifeItemPooler;
     #endregion
     
     #region ***---Events---***
@@ -82,6 +88,9 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected override void Start() {
         base.Start();
 
+        healthItemSpawnChancePercentage /= 100f;
+        lifeItemSpawnChancePercentage /= 100f;
+        
         startPosition = transform.position;
 
         currentHealth = maxHealth;
@@ -95,13 +104,22 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         player = ServiceLocator.Get<PlayerScript>();
         enemyCollider = GetComponent<Collider2D>();
         _rubyPrefab = Resources.Load<GameObject>("Prefabs/Ruby");
+        _healthItemPrefab = Resources.Load<GameObject>("Prefabs/HeartPickup");
+        _lifeItemPrefab = Resources.Load<GameObject>("Prefabs/LifePickup");
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        
-        _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab, _objectResolver);
-        
-        // _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab);
+
+
+        if (_rubyPrefab != null && _healthItemPrefab != null && _lifeItemPrefab != null) 
+        {
+            _rubyPooler = TryGetCommunityPooler.TryGetPooler(_rubyPrefab, _objectResolver);
+            _healthItemPooler = TryGetCommunityPooler.TryGetPooler(_healthItemPrefab, _objectResolver);
+            _lifeItemPooler = TryGetCommunityPooler.TryGetPooler(_lifeItemPrefab, _objectResolver);
+        }
+        else {
+            Debug.LogError("One or more prefabs are null");
+        }
         
         Bind();
     }
@@ -262,6 +280,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     {
         isDead = true;
         DropRubies();
+        DropItems();
         AudioManager.PlayOneShotAttached(deathSoundID, gameObject);
         if (enemyAnimationBase != null) enemyAnimationBase.PlayDeathAnimation(rubySpawnDelay, OnDeath);
     }
@@ -271,47 +290,72 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         gameObject.SetActive(false);
     }
 
-    private void DropRubies() {
-        if (_rubyPrefab == null) {
-            Debug.LogError("Ruby prefab not found");
-            return;
-        }
-
-        Vector3 positionBase = GetBottomPosition() + Vector2.up * rubySpawnHeight;
-
+    private void DropRubies() 
+    {
+        if (_rubyPooler == null) return;
+        
         //Drop as many rubies as the RubyDropAmount
         for (int i = 0; i < rubyDropAmount; i++) {
-            bool acceptablePosition = false;
-            Vector3 spawnPosition = Vector3.zero;
-            int attempts = 0;
-
-            while (acceptablePosition == false) {
-                attempts++;
-                // Generate a small random offset
-                var offset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0.4f, 0.6f), 0);
-                // Add the offset to the enemy's position
-                spawnPosition = positionBase + offset;
-                // Check if the position is valid
-                var hit = Physics2D.OverlapCircle(spawnPosition, 0.4f, LayerMask.GetMask("Ground"));
-
-                if (hit == null) {
-                    acceptablePosition = true;
-                }
-
-                if (attempts > 10) {
-                    acceptablePosition = true;
-                }
-            }
-
-            var rubyObject = _rubyPooler.GetPooledObject();
-            rubyObject.transform.position = spawnPosition;
-            rubyObject.SetActive(true);
-            var betterRuby = rubyObject.GetComponent<ItemPickupBase>();
-            betterRuby.fall = true;
-            betterRuby.enabled = true;
+            SpawnItem(_rubyPooler);
         }
 
         rubyDropAmount = 0;
+    }
+
+    private void DropItems()
+    {
+        if (_healthItemPooler == null || _lifeItemPooler == null) return;
+        
+        var willDropHealthItem = Random.Range(0f, 1f) <= healthItemSpawnChancePercentage;
+        var willDropLifeItem = Random.Range(0f, 1f) <= lifeItemSpawnChancePercentage;
+        
+        if (willDropHealthItem)
+        {
+            SpawnItem(_healthItemPooler);
+        }
+        
+        if (willDropLifeItem)
+        {
+            SpawnItem(_lifeItemPooler);
+        }
+    }
+
+    private Vector3 FindAcceptablePosition()
+    {
+        Vector3 positionBase = GetBottomPosition() + Vector2.up * rubySpawnHeight;
+        Vector3 spawnPosition = Vector3.zero;
+        bool acceptablePosition = false;
+        int attempts = 0;
+        
+        while (acceptablePosition == false) {
+            attempts++;
+            // Generate a small random offset
+            var offset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0.4f, 0.6f), 0);
+            // Add the offset to the enemy's position
+            spawnPosition = positionBase + offset;
+            // Check if the position is valid
+            var hit = Physics2D.OverlapCircle(spawnPosition, 0.4f, LayerMask.GetMask("Ground"));
+
+            if (hit == null) {
+                acceptablePosition = true;
+            }
+
+            if (attempts > 10) {
+                acceptablePosition = true;
+            }
+        }
+        
+        return spawnPosition;
+    }
+
+    private void SpawnItem(Pooler prefabPooler)
+    {
+        var item = prefabPooler.GetPooledObject();
+        item.transform.position = FindAcceptablePosition();
+        item.SetActive(true);
+        var itemScript = item.GetComponent<ItemPickupBase>();
+        itemScript.fall = true;
+        itemScript.enabled = true;
     }
 
     public virtual void Respawn() {

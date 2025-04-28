@@ -1,4 +1,5 @@
 using System;
+using Animancer;
 using FMODScripts;
 using Player;
 using UnityEngine;
@@ -23,8 +24,10 @@ public class ItemPickupBase : GravityObject
     private ParticleSystem _particleSystem;
     private GameObject _spriteGameObject;
     
+    private AnimancerComponent _animancerComponent;
     protected PlayerScript player;
     [Inject] protected IAudioManager audioManager;
+    [SerializeField] protected AnimationClip hoverAnimation;
     [SerializeField] protected string pickupSoundID = "Misc_Gem_Get";
     
     private enum RubyState
@@ -39,6 +42,12 @@ public class ItemPickupBase : GravityObject
     protected new void Awake()
     {
         base.Awake();
+
+        _animancerComponent = GetComponentInChildren<AnimancerComponent>();
+        if (hoverAnimation != null && _animancerComponent != null)
+        {
+            _animancerComponent.Play(hoverAnimation);
+        }
         
         _initialMoveSpeed = moveSpeed;
         _particleSystem = GetComponentInParent<ParticleSystem>();
@@ -142,6 +151,8 @@ public class ItemPickupBase : GravityObject
     
     protected virtual void Pickup()
     {
+        audioManager.PlayOneShot(pickupSoundID);
+        enabled = false;
     }
     
     private void OnTriggerEnter2D(Collider2D other)
