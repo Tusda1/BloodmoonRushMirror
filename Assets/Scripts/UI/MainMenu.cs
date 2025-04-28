@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using Attributes;
 using Consensus;
 using SceneCollections;
@@ -26,6 +25,7 @@ namespace UI {
         [SerializeField, Required] private SceneCollectionSO firstSceneCollection;
         [SerializeField, Required] private Animator backgroundAnimator;
         [SerializeField] private AllInFavourConsensusSO playerCanMove;
+        [SerializeField] private Animator colorSwitcherAnimator;
 
         #region ***---PrivateFields---***
         private VisualElement _rootElement;
@@ -38,12 +38,16 @@ namespace UI {
         private Button _quitButton;
         private Button _creditsButton;
 
+        private VisualElement _buttons;
+
         private IAudioManager _audioManager;
         private DebugLoggerSO _debugLoggerSO;
         private CameraEffects _cameraEffects;
         private ISaveLoadSystemManager _saveLoadSystemManager;
 
         private Action _updateActions = delegate { };
+        
+        private bool _creditsActive;
         #endregion
 
         #region ***---SoundID---***
@@ -54,6 +58,8 @@ namespace UI {
         
         private const string AnyKeyPressed_SoundID = "Player_Respawn";
         #endregion
+        
+        private static readonly int CreditsActive = Animator.StringToHash("CreditsActive");
         #endregion
 
         #region ---Initialization---
@@ -75,6 +81,8 @@ namespace UI {
             _settingsButton = _rootElement.Q<Button>("SettingsButton");
             _quitButton = _rootElement.Q<Button>("QuitButton");
             _creditsButton = _rootElement.Q<Button>("CreditsButton");
+            
+            _buttons = _mainMenuRoot.Q<VisualElement>("Buttons");
 
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -118,12 +126,37 @@ namespace UI {
                     _startButton.focusController.IgnoreEvent(evt);
                     evt.StopPropagation();
                     
-                    _startButton.Focus();
-                    _audioManager.PlayMusic(MainMenuMusic_SoundID);
+                    if (_creditsActive) {
+                        ExitCredits();
+                    }
                 }
             });
+            _creditsButton.clicked += CreditsButtonClicked;
 
             _cameraEffects.ResetCameraMove();
+        }
+
+        private void CreditsButtonClicked() {
+            if (_creditsActive) {
+                ExitCredits();
+                return;
+            }
+            
+            colorSwitcherAnimator.SetBool(CreditsActive, true);
+            _creditsActive = true;
+            _buttons.AddToClassList("down");
+            
+            _audioManager.PlayOneShot(ShowCredits_SoundID);
+            _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 1);
+        }
+
+        private void ExitCredits() {
+            colorSwitcherAnimator.SetBool(CreditsActive, false);
+            _creditsActive = false;
+            _buttons.RemoveFromClassList("down");
+                    
+            _startButton.Focus();
+            _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 0, true);
         }
 
         private void StartButtonClicked() {
@@ -152,9 +185,6 @@ namespace UI {
                 _startButton.focusController.IgnoreEvent(evt);
                 evt.StopPropagation();
                 _creditsButton.Focus();
-                
-                _audioManager.StopAllMusic();
-                _audioManager.PlayOneShot(ShowCredits_SoundID);
             }
         }
 

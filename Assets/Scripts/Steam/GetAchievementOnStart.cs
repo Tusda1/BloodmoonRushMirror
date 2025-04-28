@@ -3,14 +3,17 @@ using VContainer;
 
 public class GetAchievementOnStart : MonoBehaviour {
     #region ---Fields---
-    [SerializeField] private string achievementId = "First";
+    [SerializeField] private string achievementID = "FIRST";
     
-    [Inject] private IAchievementManager _achievementManager;
+    private IAchievementManager _achievementManager;
     #endregion
 
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _achievementManager = container.Resolve<IAchievementManager>();
+    }
+
     private void Start() {
-        if (!_achievementManager.IsAchievementUnlocked(achievementId)) {
-            _achievementManager.UnlockAchievement(achievementId);
-        }
+        _achievementManager.TryUnlockAchievement(achievementID);
     }
 }

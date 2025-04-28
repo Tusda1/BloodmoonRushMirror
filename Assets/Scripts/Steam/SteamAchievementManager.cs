@@ -29,6 +29,12 @@ public class SteamAchievementManager : IAchievementManager {
         return achieved;
 #endif
         Debug.LogWarning("NB! NOT CONNECTED TO STEAM");
-        return false;
+        return true;
+    }
+
+    public void TryUnlockAchievement(string id) {
+        if (!IsAchievementUnlocked(id)) {
+            UnlockAchievement(id);
+        }
     }
 }
