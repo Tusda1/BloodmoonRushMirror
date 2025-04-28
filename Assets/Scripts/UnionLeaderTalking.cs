@@ -14,6 +14,7 @@ public class UnionLeaderTalking : MonoBehaviour {
     private CancellationTokenSource _cancellationTokenSource;
     
     private IAudioManager _audioManager;
+    private CameraEffects _cameraEffects;
 
     private const string SoundID = "UnionLeaderTalking";
     #endregion
@@ -22,6 +23,7 @@ public class UnionLeaderTalking : MonoBehaviour {
     [Inject]
     public void Construct(IObjectResolver container) {
         _audioManager = container.Resolve<IAudioManager>();
+        _cameraEffects = container.Resolve<CameraEffects>();
     }
     #endregion
     
@@ -36,11 +38,31 @@ public class UnionLeaderTalking : MonoBehaviour {
         _ = TypewriterEffect(endLine, () => Invoke(nameof(NewMethod), 0.5f));
     }
 
+    public void TriggerStomping(float seconds, AnimationCurve intensityCurve) {
+        _ = Stomp(seconds, intensityCurve);
+    }
+    
+    private async Awaitable Stomp(float seconds, AnimationCurve intensityCurve) {
+        var elapsedTime = 0f;
+        const float frequency = 1.5f;
+    
+        while (elapsedTime < seconds) {
+            await Awaitable.WaitForSecondsAsync(frequency);
+            elapsedTime += frequency;
+        
+            var intensity = intensityCurve.Evaluate(elapsedTime / seconds);
+            _ = _cameraEffects.ShakeCamera(intensity * 0.5f, 0.5f);
+            
+            // TODO: Set volume of stomping sound
+            _audioManager.PlayOneShot("AUB_Stomp");
+        }
+    }
+
+
     private void NewMethod() {
         gameObject.SetActive(false);
     }
 
-    #region ---PrivateMethods---
     private async Awaitable StartLineLoop() {
         while (!_cancellationTokenSource.IsCancellationRequested) {
             foreach (var line in lines) {
@@ -63,5 +85,4 @@ public class UnionLeaderTalking : MonoBehaviour {
         
         onComplete?.Invoke();
     }
-    #endregion
 }

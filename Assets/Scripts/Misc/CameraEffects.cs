@@ -27,6 +27,7 @@ public class CameraEffects : MonoBehaviour {
     [SerializeField] private RenderTexture uiNonPixelated;
 
     private const float FadeCircleDefaultSize = 2.5f;
+    private Vector3 _originalPosition;
     
     private CancellationTokenSource _cancellationTokenSource = new();
     private CancellationTokenSource _timeSlow = new();
@@ -49,6 +50,8 @@ public class CameraEffects : MonoBehaviour {
     private void Start() {
         cameraVolume.profile.TryGet(out _chromaticAberration);
         _chromaticAberration.intensity.value = 0;
+        
+        _originalPosition = transform.position;
         
         _pauseManager.OnPause += () => {
             _timeSlow.Cancel();
@@ -76,8 +79,6 @@ public class CameraEffects : MonoBehaviour {
     public async Awaitable ShakeCamera(float intensity, float duration) {
         float currentProgress = 0;
 
-        var originalPosition = transform.position;
-
         while (currentProgress < duration) {
             currentProgress += Time.unscaledDeltaTime;
 
@@ -85,12 +86,12 @@ public class CameraEffects : MonoBehaviour {
             var offsetY = Random.Range(-1f, 1f) * intensity * (1 - currentProgress);
 
             var newOffset = new Vector3(offsetX, offsetY, 0);
-            transform.position = originalPosition + newOffset;
+            transform.position = _originalPosition + newOffset;
             
             await Awaitable.NextFrameAsync(_cancellationTokenSource.Token);
         }
 
-        transform.position = originalPosition;
+        transform.position = _originalPosition;
     }
 
     public async Awaitable TimeSlow(float duration, AnimationCurve curve = null) {

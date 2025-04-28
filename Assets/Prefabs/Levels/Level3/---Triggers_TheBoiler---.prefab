@@ -281,7 +281,7 @@ MonoBehaviour:
     - {fileID: 2215484045768757909}
     - {fileID: 5366654969519468576}
     - {fileID: 0}
-    - {fileID: 3639265300214637510}
+    - {fileID: 0}
     - {fileID: 6951074393003031438}
 --- !u!114 &6916609617032570704
 MonoBehaviour:
@@ -420,8 +420,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 462.5, y: -247.50003}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 551.24634, y: -299.99994}
+  m_SizeDelta: {x: 417.5, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7921966041075034579
 CanvasRenderer:
@@ -478,19 +478,19 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 3.5
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -516,7 +516,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -4.559326, y: 0.5065918, z: -70.75806, w: -97.82925}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -645,7 +645,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.15, y: 10.450001}
+  m_AnchoredPosition: {x: 0, y: 10.75}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4753725897088576847
@@ -665,11 +665,11 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: -1470689367
-  m_SortingOrder: 0
+  m_SortingOrder: 2300
   m_TargetDisplay: 0
 --- !u!114 &7129360054620203005
 MonoBehaviour:
@@ -684,7 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
+  m_ReferencePixelsPerUnit: 20
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
@@ -692,7 +692,7 @@ MonoBehaviour:
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
+  m_DynamicPixelsPerUnit: 20
   m_PresetInfoIsWorld: 1
 --- !u!114 &6883559162000305788
 MonoBehaviour:
@@ -1038,10 +1038,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textField: {fileID: 4560533999035160625}
-  textSpeed: 32
+  textSpeed: 38
   lines:
-  - 
-  endLine: They're here!!! Everyone Scram!
+  - 'Brothers and sisters of the night! '
+  - 'Tonight! we rise, not from graves or coffins, but for our rights! '
+  - Without us, Dracula would be just a weird old guy in a disheveled old tower.
+  - 'We demand fair livable wages! '
+  - 'We demand safe working conditions. '
+  - 'Why are there even so many spikes and hazards everywhere. '
+  - 'It makes it almost impossible to get around. '
+  - So tonight, we do not bow. Tonight, we do not cower. Tonight we stand together.
+  endLine: They're here!!! Everyone SCRAM!
 --- !u!1001 &5924832558982182062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1056,7 +1063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2253911629886400664, guid: 55c6e519b9868ea458514cd251bff255, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 55c6e519b9868ea458514cd251bff255, type: 3}
       propertyPath: m_Sprite
@@ -1107,11 +1114,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: -8435245712485981826, guid: 55c6e519b9868ea458514cd251bff255, type: 3}
---- !u!1 &3639265300214637510 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -2253911629886400664, guid: 55c6e519b9868ea458514cd251bff255, type: 3}
-  m_PrefabInstance: {fileID: 5924832558982182062}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4570236688423799715 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: 55c6e519b9868ea458514cd251bff255, type: 3}
