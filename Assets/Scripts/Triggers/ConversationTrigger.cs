@@ -39,7 +39,7 @@ public class ConversationTrigger : TriggerBox, IBind<TriggerData> {
 
     #region ---Initialization---
     [Inject]
-    public void Construct(IObjectResolver container) {
+    public virtual void Construct(IObjectResolver container) {
         _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
         _levelDataManager = container.Resolve<LevelDataManager>();
     }

@@ -9,14 +9,16 @@ public class EndTheDungeons : TriggerBox {
     [SerializeField] private SceneCollectionSO nextLevelSceneCollection;
     [SerializeField] private SceneCollectionSO endDemoSceneCollection;
     [SerializeField] private ScriptMachine cutsceneGraph;
-    
+
     private CameraEffects _cameraEffects;
+    private IAchievementManager _achievementManager;
     #endregion
 
     #region ---Initialization---
     [Inject]
     public void Construct(IObjectResolver container) {
         _cameraEffects = container.Resolve<CameraEffects>();
+        _achievementManager = container.Resolve<IAchievementManager>();
     }
     #endregion
     
@@ -26,7 +28,6 @@ public class EndTheDungeons : TriggerBox {
 #else
         cutsceneGraph.TriggerUnityEvent("Start");
 #endif
-        
     }
 
     public void EndLevel() {
@@ -34,6 +35,7 @@ public class EndTheDungeons : TriggerBox {
         _cameraEffects.FadeLoadScene(endDemoSceneCollection);
 #else
         _cameraEffects.FadeLoadScene(nextLevelSceneCollection);
+        _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_TheDungeons);
 #endif
     }
 }

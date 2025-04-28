@@ -1,10 +1,10 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/PlayerUI.uss?fileID=7433441132597879392&amp;guid=9e04902db799f384096cdc67d60b347b&amp;type=3#PlayerUI" />
-    <engine:VisualElement data-source-type="Player.PlayerScript, Assembly-CSharp" data-source="project://database/Assets/DialogueSystem/DialogueUI_DataContainer.asset?fileID=11400000&amp;guid=207c2a36488570e4ebcd26dd738bd2c2&amp;type=2#DialogueUI_DataContainer" style="flex-grow: 1; height: 60px; width: 640px; position: absolute; flex-direction: row; align-items: center; opacity: 1; display: flex; border-left-color: rgb(26, 17, 26); border-right-color: rgb(26, 17, 26); border-top-color: rgb(26, 17, 26); border-bottom-color: rgb(26, 17, 26); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; min-height: 60px; max-height: 60px; background-image: url(&quot;project://database/Assets/Art/PlayerUI/Player_Ui.png?fileID=-797506432&amp;guid=ab571c25ce68ab945ae98f3e0d68de72&amp;type=3#Player_Ui_6&quot;); background-color: rgb(33, 24, 34); max-width: 640px; min-width: 640px;">
+    <engine:VisualElement data-source-type="Player.PlayerScript, Assembly-CSharp" style="flex-grow: 1; height: 60px; width: 640px; position: absolute; flex-direction: row; align-items: center; opacity: 1; display: flex; border-left-color: rgb(26, 17, 26); border-right-color: rgb(26, 17, 26); border-top-color: rgb(26, 17, 26); border-bottom-color: rgb(26, 17, 26); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; min-height: 60px; max-height: 60px; background-image: url(&quot;project://database/Assets/Art/PlayerUI/Player_Ui.png?fileID=-797506432&amp;guid=ab571c25ce68ab945ae98f3e0d68de72&amp;type=3#Player_Ui_6&quot;); background-color: rgb(33, 24, 34); max-width: 640px; min-width: 640px;">
         <engine:VisualElement name="Lives" style="flex-grow: 1; position: absolute; top: 35px; left: 115px; flex-direction: row;">
             <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/PlayerUI/Player_Ui.png?fileID=-84555833&amp;guid=ab571c25ce68ab945ae98f3e0d68de72&amp;type=3#Player_Ui_0" />
             <engine:Label text="x" name="x" class="davidLabel" />
-            <engine:Label text="05" class="davidLabel">
+            <engine:Label text="05" data-source-type="Player.PlayerScript, Assembly-CSharp" class="davidLabel">
                 <Bindings>
                     <engine:DataBinding property="text" data-source-path="playerLives" binding-mode="ToTarget" source-to-ui-converters="Int To String With Two Digits" />
                 </Bindings>
@@ -13,7 +13,7 @@
         <engine:VisualElement name="Gems" style="flex-grow: 1; position: absolute; top: 9px; left: 121px; flex-direction: row;">
             <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/PlayerUI/Player_Ui.png?fileID=-324675689&amp;guid=ab571c25ce68ab945ae98f3e0d68de72&amp;type=3#Player_Ui_1" />
             <engine:Label text="x" name="x" class="davidLabel" />
-            <engine:Label text="00" class="davidLabel">
+            <engine:Label text="00" data-source-type="Player.PlayerScript, Assembly-CSharp" class="davidLabel">
                 <Bindings>
                     <engine:DataBinding property="text" data-source-path="gems" binding-mode="ToTarget" source-to-ui-converters="Int To String With Two Digits" />
                 </Bindings>
@@ -22,7 +22,7 @@
         <engine:VisualElement name="Style" style="flex-grow: 1; position: absolute; top: 9px; left: 185px; flex-direction: row;">
             <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/PlayerUI/Player_Ui.png?fileID=916296404&amp;guid=ab571c25ce68ab945ae98f3e0d68de72&amp;type=3#Player_Ui_2" />
             <engine:Label text="x" name="x" class="davidLabel" />
-            <engine:Label text="00" class="davidLabel">
+            <engine:Label text="00" data-source-type="Player.PlayerScript, Assembly-CSharp" class="davidLabel">
                 <Bindings>
                     <engine:DataBinding property="text" data-source-path="playerMovement.killCharges" binding-mode="ToTarget" source-to-ui-converters="Int To String With Two Digits" />
                 </Bindings>
@@ -30,7 +30,7 @@
         </engine:VisualElement>
         <UI_Toolkit.PlayerHearts heart-container="project://database/Assets/Art/PlayerUI/Player_Ui.png?fileID=-1228103296&amp;guid=ab571c25ce68ab945ae98f3e0d68de72&amp;type=3#Player_Ui_8" default-heart="project://database/Assets/Art/PlayerUI/Player_Ui.png?fileID=1191375666&amp;guid=ab571c25ce68ab945ae98f3e0d68de72&amp;type=3#Player_Ui_5" temp-heart="project://database/Assets/Art/PlayerUI/Player_Ui.png?fileID=-1058414943&amp;guid=ab571c25ce68ab945ae98f3e0d68de72&amp;type=3#Player_Ui_4" heart-container-count="7" default-heart-count="22" temp-heart-count="2" name="PlayerHearts" style="flex-direction: row; position: absolute; top: 36px; left: 185px;" />
         <Bindings>
-            <engine:DataBinding property="style.display" data-source-path="playerUIDocumentVisible" binding-mode="ToTarget" />
+            <engine:DataBinding property="style.display" data-source-path="playerUIDocumentVisible" binding-mode="ToTarget" data-source="project://database/Assets/DialogueSystem/DialogueUI_DataContainer.asset?fileID=11400000&amp;guid=207c2a36488570e4ebcd26dd738bd2c2&amp;type=2#DialogueUI_DataContainer" />
         </Bindings>
     </engine:VisualElement>
 </engine:UXML>
