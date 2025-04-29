@@ -24,8 +24,15 @@ namespace UI {
         private VisualElement _levelSelectMenuRoot;
         private VisualElement _levelSelectButtonContainer;
         
-        [Inject] private CameraEffects _cameraEffects;
+        private CameraEffects _cameraEffects;
+        private ISaveLoadSystemManager _saveLoadSystemManager;
         #endregion
+
+        [Inject]
+        public void Construct(IObjectResolver container) {
+            _cameraEffects = container.Resolve<CameraEffects>();
+            _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
+        }
 
         #region ---EventFunctions---
         private void Awake() {
@@ -84,9 +91,9 @@ namespace UI {
         private void LoadLevel(SceneCollectionSO scene) {
             _levelSelectMenuRoot.enabledSelf = false;
             
-            _cameraEffects.CircleFadeOut(1,
-                () => _ = SceneCollectionManager.LoadSceneCollectionAsync(scene,
-                    () => _cameraEffects.CircleFadeIn(1)));
+            _saveLoadSystemManager.SetCurrentGameDataFromTemplate("LEVEL_SELECT");
+            
+            _cameraEffects.FadeLoadScene(scene);
         }
     }
 }

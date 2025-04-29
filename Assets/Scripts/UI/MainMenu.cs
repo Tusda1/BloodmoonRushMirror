@@ -147,7 +147,7 @@ namespace UI {
             _buttons.AddToClassList("down");
             
             _audioManager.PlayOneShot(ShowCredits_SoundID);
-            _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 1);
+            _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 1, true);
         }
 
         private void ExitCredits() {
