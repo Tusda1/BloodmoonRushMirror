@@ -58,9 +58,9 @@ public class UnionLeaderTalking : MonoBehaviour {
         }
     }
 
-
     private void NewMethod() {
         gameObject.SetActive(false);
+        _cancellationTokenSource?.Cancel();
     }
 
     private async Awaitable StartLineLoop() {
@@ -76,9 +76,15 @@ public class UnionLeaderTalking : MonoBehaviour {
         var delay = 1 / textSpeed;
         textField.text = line;
 
+        _audioManager.PlayOneShotAttached(SoundID, gameObject);
+        
         for (var i = 0; i < line.Length; i++) {
             textField.maxVisibleCharacters = i;
             _audioManager.PlayOneShotAttached(SoundID, gameObject);
+
+            if (line[i] == ' ') {
+                _audioManager.PlayOneShotAttached(SoundID, gameObject);
+            }
             
             await Awaitable.WaitForSecondsAsync(delay, _cancellationTokenSource.Token);
         }
