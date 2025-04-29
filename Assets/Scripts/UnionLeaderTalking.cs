@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-using SceneCollections;
 using TMPro;
 using UnityEngine;
 using VContainer;
@@ -54,7 +53,7 @@ public class UnionLeaderTalking : MonoBehaviour {
             var intensity = intensityCurve.Evaluate(elapsedTime / seconds);
             _ = _cameraEffects.ShakeCamera(intensity * 0.5f, 0.5f);
             
-            // TODO: Set volume of stomping sound
+            _audioManager.SetParameterValue("step_volume", intensity);
             _audioManager.PlayOneShot("AUB_Stomp");
         }
     }
@@ -85,23 +84,5 @@ public class UnionLeaderTalking : MonoBehaviour {
         }
         
         onComplete?.Invoke();
-    }
-}
-
-public class ExitBoilerLadder : MonoBehaviour {
-    #region ---Fields---
-    [SerializeField] private SceneCollectionSO nextLevelSceneCollection;
-    private CameraEffects _cameraEffects;
-    #endregion
-    
-    [Inject]
-    public void Construct(IObjectResolver container) {
-        _cameraEffects = container.Resolve<CameraEffects>();
-    }
-    
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Player")) {
-            _cameraEffects.FadeLoadScene(nextLevelSceneCollection);
-        }
     }
 }
