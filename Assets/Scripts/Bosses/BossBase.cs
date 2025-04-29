@@ -36,6 +36,7 @@ public class BossBase : GravityObject, IDamageable
     [HideInInspector] public bool bossGrounded;
     [HideInInspector] public bool canTakeDamage = true;
     [HideInInspector] public bool canDoDamage = true;
+    [HideInInspector] public bool isDead;
     private Material _whiteMaterial;
     private Material _defaultMaterial;
     
@@ -79,6 +80,11 @@ public class BossBase : GravityObject, IDamageable
     public void StartBattle()
     {
         OnBattleStart?.Invoke();
+    }
+
+    public void EndBattle()
+    {
+        OnBattleEnd?.Invoke();
     }
     
     public void EnableGravity()
@@ -148,6 +154,7 @@ public class BossBase : GravityObject, IDamageable
 
     private void Die()
     {
+        isDead = true;
         OnDeath?.Invoke();
     }
 
