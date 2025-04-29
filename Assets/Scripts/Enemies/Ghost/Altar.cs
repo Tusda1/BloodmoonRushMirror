@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Altar : MonoBehaviour 
@@ -11,11 +12,18 @@ public class Altar : MonoBehaviour
      private void Update()
      {
           // Check if a gameobject with ghost tag is within range
-          Collider2D[] ghosts = Physics2D.OverlapCircleAll(transform.position, maxSuckRange, LayerMask.GetMask("Enemy"));
+          ContactFilter2D contactFilter = new ContactFilter2D();
+          contactFilter.SetLayerMask(LayerMask.GetMask("Enemy"));
+          contactFilter.useTriggers = true;
+          var ghosts = new List<Collider2D>();
+          
+          Physics2D.OverlapCircle(transform.position, maxSuckRange, contactFilter, ghosts);
           foreach (var ghost in ghosts)
           {
                if (!ghost.TryGetComponent(out Ghost ghostComponent)) continue;
-
+               
+               if (Vector2.Distance(ghost.transform.position, transform.position) > maxSuckRange) continue;
+               
                if (Vector2.Distance(transform.position, ghost.transform.position) < executeRange)
                {
                     ghostComponent.Execute();
