@@ -279,6 +279,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     private void Die() 
     {
         isDead = true;
+        enemyCollider.enabled = false;
         DropRubies();
         DropItems();
         AudioManager.PlayOneShotAttached(deathSoundID, gameObject);
@@ -362,6 +363,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         isDead = false;
         isVulnerable = false;
         isStunned = false;
+        enemyCollider.enabled = true;
         gameObject.SetActive(true);
         currentHealth = maxHealth;
         transform.position = startPosition;
