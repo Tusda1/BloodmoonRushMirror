@@ -18,7 +18,7 @@ public class Ghoul : ReactiveBase
     protected override void Scan()
     {
         // Check for a player in close proximity
-        Collider2D hitClose = Physics2D.OverlapCircle(transform.position, universalAgroDistance, LayerMask.GetMask("Player"));
+        Collider2D hitClose = Physics2D.OverlapCircle(enemyCollider.bounds.center, universalAgroDistance, LayerMask.GetMask("Player"));
         if (hitClose != null)
         {
             // Return the direction to the player
@@ -28,8 +28,8 @@ public class Ghoul : ReactiveBase
         }
 
         // Cast a ray to the right
-        RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, detectionDistance, LayerMask.GetMask("Player"));
-        if (hitRight.collider != null)
+        RaycastHit2D hitRight = Physics2D.Raycast(enemyCollider.bounds.center, Vector2.right, detectionDistance, enemyAndGroundLayerMask);
+        if (hitRight && hitRight.collider.CompareTag("Player"))
         {
             // Return the direction to the player
             facingDirection = Vector2.right;
@@ -38,8 +38,8 @@ public class Ghoul : ReactiveBase
         }
 
         // Cast a ray to the left
-        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, detectionDistance, LayerMask.GetMask("Player"));
-        if (hitLeft.collider != null)
+        RaycastHit2D hitLeft = Physics2D.Raycast(enemyCollider.bounds.center, Vector2.left, detectionDistance, enemyAndGroundLayerMask);
+        if (hitLeft && hitLeft.collider.CompareTag("Player"))
         {
             // Return the direction to the player
             facingDirection = Vector2.left;
