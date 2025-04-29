@@ -37,7 +37,7 @@ public class UnionLeaderTalking : MonoBehaviour {
         _cancellationTokenSource = new CancellationTokenSource();
         _ = TypewriterEffect(endLine, () => Invoke(nameof(NewMethod), 0.5f));
     }
-
+    
     public void TriggerStomping(float seconds, AnimationCurve intensityCurve) {
         _ = Stomp(seconds, intensityCurve);
     }
@@ -45,7 +45,7 @@ public class UnionLeaderTalking : MonoBehaviour {
     private async Awaitable Stomp(float seconds, AnimationCurve intensityCurve) {
         var elapsedTime = 0f;
         const float frequency = 1.5f;
-    
+        
         while (elapsedTime < seconds) {
             await Awaitable.WaitForSecondsAsync(frequency);
             elapsedTime += frequency;
@@ -67,7 +67,7 @@ public class UnionLeaderTalking : MonoBehaviour {
         while (!_cancellationTokenSource.IsCancellationRequested) {
             foreach (var line in lines) {
                 await TypewriterEffect(line);
-                await Awaitable.WaitForSecondsAsync(0.5f);
+                await Awaitable.WaitForSecondsAsync(2);
             }
         }
     }
