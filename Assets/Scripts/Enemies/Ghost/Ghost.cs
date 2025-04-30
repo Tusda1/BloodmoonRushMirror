@@ -117,9 +117,9 @@ public class Ghost : ReactiveBase
         {
             // Get random distance from the player
             Vector2 randomPosition = Vector2.zero;
-            while (randomPosition.magnitude < minWithdrawDistance)
+            while (randomPosition.magnitude < minWithdraw)
             {
-                randomPosition = Random.insideUnitCircle * maxWithdrawDistance;
+                randomPosition = Random.insideUnitCircle * maxWithdraw;
             }
 
             _withdrawPosition = (Vector2)_targetCollider.bounds.center + randomPosition;

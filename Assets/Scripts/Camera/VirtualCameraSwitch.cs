@@ -131,7 +131,6 @@ public class VirtualCameraSwitch : MonoBehaviour {
     private void ManualDeactivation() {
         areaGameObjects.SetActive(false);
         //enemyGameObject.SetActive(false);
-        isActiveRoom = false;
     }
 
     public void EnemyDeactivation() {
@@ -142,6 +141,7 @@ public class VirtualCameraSwitch : MonoBehaviour {
     private IEnumerator DelayedDeactivation() {
         cinemachineCamera.Priority = 0;
         onDisable.Invoke();
+        isActiveRoom = false;
         _isDeactivating = true;
         yield return new WaitForSeconds(_cinemachineBrain.DefaultBlend.Time);
         if (!_isDeactivating) {
