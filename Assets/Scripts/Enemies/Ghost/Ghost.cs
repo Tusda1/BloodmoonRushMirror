@@ -1,3 +1,4 @@
+using System;
 using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -29,14 +30,30 @@ public class Ghost : ReactiveBase
         base.Awake();
         _ghostAnimations = GetComponent<GhostAnimations>();
         GravityModifier = 0;
+
+        var playerRef = ServiceLocator.Get<PlayerScript>();
+        
+        _playerMovement = playerRef.GetComponent<GravityObjectPlayerMovement>();
+        _targetCollider = playerRef.GetComponent<Collider2D>();
     }
     
-    protected override void Start()
+    private void OnEnable()
     {
-        base.Start();
+        // Subscribe to the event
+        _playerMovement.OnPlayerSpikeDeath += OnPlayerSpikeReset;
         
-        _playerMovement = player.GetComponent<GravityObjectPlayerMovement>();
-        _targetCollider = player.GetComponent<Collider2D>();
+        // Reset the state
+        _playerDiedToSpike = false;
+        _withdrawing = false;
+        _withdrawPosition = Vector2.zero;
+        sucked = false;
+        _ghostAnimations.PlayDefaultAnimation();
+    }
+    
+    private void OnDisable()
+    {
+        // Unsubscribe from the event
+        _playerMovement.OnPlayerSpikeDeath -= OnPlayerSpikeReset;
     }
 
     protected override void ComputeVelocity()
@@ -100,9 +117,9 @@ public class Ghost : ReactiveBase
         {
             // Get random distance from the player
             Vector2 randomPosition = Vector2.zero;
-            while (randomPosition.magnitude < minWithdrawDistance)
+            while (randomPosition.magnitude < minWithdraw)
             {
-                randomPosition = Random.insideUnitCircle * maxWithdrawDistance;
+                randomPosition = Random.insideUnitCircle * maxWithdraw;
             }
 
             _withdrawPosition = (Vector2)_targetCollider.bounds.center + randomPosition;
