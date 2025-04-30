@@ -56,8 +56,8 @@ public class GlobalInstaller : LifetimeScope {
         builder.RegisterInstance(newGameData);
         builder.Register<FileDataService<SaveGameData>>(Lifetime.Singleton)
             .As<IDataService<SaveGameData>>();
-#if STEAM_BUILD && !DEVELOPMENT_BUILD
-        builder.Register<EncryptedSerializer>(Lifetime.Singleton)
+#if false &&  STEAM_BUILD && !DEVELOPMENT_BUILD
+        builder.RegisterInstance(new EncryptedSerializer())
             .As<ISerializer>();
 #else
         builder.Register<JSONSerializer>(Lifetime.Singleton)

@@ -14,8 +14,6 @@ public class SteamAchievementManager : IAchievementManager {
     
     public void UnlockAchievement(string id) {
 #if STEAM_BUILD
-        if (!SteamManager.Initialized) return;
-
         SteamUserStats.SetAchievement(id);
         SteamUserStats.StoreStats();
         

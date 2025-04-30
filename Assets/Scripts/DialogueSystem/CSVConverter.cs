@@ -52,11 +52,7 @@ namespace DialogueSystem {
                 var characterName = values[characterNameIndex] != string.Empty
                     ? values[characterNameIndex]
                     : character.characterName;
-
-                text = text
-                    .Replace("\\u2019", "\\'")
-                    .Replace("\\u2026", "...");
-
+                
                 so.dialogueDictionary.Add(id, new DialogueDictionaryValue(
                     character,
                     text,
