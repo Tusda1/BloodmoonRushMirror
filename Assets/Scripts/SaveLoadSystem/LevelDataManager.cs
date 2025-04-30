@@ -7,6 +7,7 @@ using VContainer;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
 using ExtensionMethods;
 using System.Collections;
+using Steamworks;
 #endif
 
 namespace SaveLoadSystem {
@@ -67,8 +68,18 @@ namespace SaveLoadSystem {
             }
             if (Input.GetKeyDown(KeyCode.F4) && otherLevel != null) {
                 _saveLoadSystemManager.CurrentGameData = null;
-                _saveLoadSystemManager.SetCurrentGameDataFromTemplate("NOSAVESYSTEM");
+                _saveLoadSystemManager.SetCurrentGameDataFromTemplate("NO_SAVE_SYSTEM");
                 _cameraEffects.FadeLoadScene(otherLevel);
+            }
+
+            if (Input.GetKeyDown(KeyCode.F10)) {
+                SteamUserStats.ClearAchievement(IAchievementManager.AchievementID_First);
+                SteamUserStats.ClearAchievement(IAchievementManager.AchievementID_EntranceHall);
+                SteamUserStats.ClearAchievement(IAchievementManager.AchievementID_TheDungeons);
+                SteamUserStats.ClearAchievement(IAchievementManager.AchievementID_TheBoiler);
+                SteamUserStats.ClearAchievement(IAchievementManager.AchievementID_CastleMain);
+                SteamUserStats.ClearAchievement(IAchievementManager.AchievementID_ToweringHeights);
+                SteamUserStats.ClearAchievement(IAchievementManager.AchievementID_DraculasOffice);
             }
         }
 
