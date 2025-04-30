@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,14 +19,24 @@ public class Ghost : ReactiveBase
     private bool _withdrawing;
     private Vector2 _withdrawPosition;
     private Collider2D _targetCollider;
+    private bool _playerDiedToSpike;
 
     private GhostAnimations _ghostAnimations;
+    private GravityObjectPlayerMovement _playerMovement;
 
     protected new void Awake()
     {
         base.Awake();
         _ghostAnimations = GetComponent<GhostAnimations>();
         GravityModifier = 0;
+    }
+    
+    protected override void Start()
+    {
+        base.Start();
+        
+        _playerMovement = player.GetComponent<GravityObjectPlayerMovement>();
+        _targetCollider = player.GetComponent<Collider2D>();
     }
 
     protected override void ComputeVelocity()
@@ -56,22 +67,24 @@ public class Ghost : ReactiveBase
     protected override void Action()
     {
         if (sucked) return;
-        
-        if (!_withdrawing)
+
+        if (_playerDiedToSpike)
         {
-            AttackPlayer();
+            Withdraw(10f, 10f);
+        }
+        else if (_withdrawing)
+        {
+            Withdraw(minWithdrawDistance, maxWithdrawDistance);
         }
         else
         {
-            Withdraw();
+            AttackPlayer();
         }
     }
     
     private void AttackPlayer()
     {
         if (!targetObject) return;
-
-        if (!_targetCollider) _targetCollider = targetObject.GetComponent<Collider2D>();
         
         MoveToTarget(_targetCollider.bounds.center);
         
@@ -81,7 +94,7 @@ public class Ghost : ReactiveBase
         }
     }
     
-    private void Withdraw()
+    private void Withdraw(float minWithdraw, float maxWithdraw)
     {
         if (_withdrawPosition == Vector2.zero)
         {
@@ -100,6 +113,7 @@ public class Ghost : ReactiveBase
         if (Vector2.Distance(transform.position, _withdrawPosition) < 0.5f)
         {
             _withdrawing = false;
+            _playerDiedToSpike = false;
             _withdrawPosition = Vector2.zero;
         }
     }
@@ -140,5 +154,10 @@ public class Ghost : ReactiveBase
         ResetMovement(Axis.XAxis);
         ResetMovement(Axis.YAxis);
         _ghostAnimations.PlayDefaultAnimation();
+    }
+
+    private void OnPlayerSpikeReset()
+    {
+        _playerDiedToSpike = true;
     }
 }
