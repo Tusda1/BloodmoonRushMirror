@@ -1,5 +1,6 @@
 using System;
 using Animancer;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
@@ -43,6 +44,7 @@ public class GroundSlam
 
                 if (!_animancerComponent.IsPlaying(groundSlamEnter))
                 {
+                    RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_groundslam_start", _animancerComponent.gameObject);
                     var state = _animancerComponent.Play(groundSlamEnter);
                     state.Events(this).OnEnd ??= () =>
                     {
@@ -64,6 +66,7 @@ public class GroundSlam
                         state.Events(this).OnEnd = () =>
                         {
                             state.Destroy();
+                            RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_groundslam_impact", _animancerComponent.gameObject);
                             _animancerComponent.Play(groundSlamStuck);
                             _groundSlamStage++;
                             StartShockwave();

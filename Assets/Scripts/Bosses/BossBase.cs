@@ -3,6 +3,7 @@ using System.Collections;
 using Animancer;
 using UnityEngine;
 using Animancer.FSM;
+using VContainer;
 
 [DefaultExecutionOrder(-1)]
 public class BossBase : GravityObject, IDamageable
@@ -39,6 +40,9 @@ public class BossBase : GravityObject, IDamageable
     [HideInInspector] public bool isDead;
     private Material _whiteMaterial;
     private Material _defaultMaterial;
+
+    [SerializeField] private string hurtSoundID;
+    [Inject] private IAudioManager _audioManager;
     
     protected new void Awake()
     {
@@ -121,6 +125,7 @@ public class BossBase : GravityObject, IDamageable
         
         CurrentHealth -= damageInstance.damage;
 
+        if(!string.IsNullOrEmpty(hurtSoundID))_audioManager.PlayOneShotAttached(hurtSoundID, gameObject);
         StartCoroutine(FlashWhite());
         
         if (CurrentHealth <= 0)

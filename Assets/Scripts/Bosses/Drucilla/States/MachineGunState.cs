@@ -135,6 +135,7 @@ public class MachineGunState : DrucillaState
     
     private void Shoot()
     {
+        audioManager.PlayOneShotAttached("Druc_Gun_Fire", gameObject);
         var position = transform.position;
         var direction = (_player.transform.position - position).normalized;
         var projectile = _pooler.GetPooledObject().GetComponent<HomingProjectile>();

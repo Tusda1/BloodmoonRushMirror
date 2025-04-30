@@ -1,5 +1,6 @@
 using System;
 using Animancer;
+using FMODUnity;
 using UnityEngine;
 
 public class Icicle : GravityObject
@@ -31,6 +32,7 @@ public class Icicle : GravityObject
             other.gameObject.GetComponent<IDamageable>().TakeDamage(damageInstance);
         }
         
+        RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_ice_break", gameObject);
         var state = _animancerComponent.Play(icicleImpact);
         state.Events(this).OnEnd = () =>
         {

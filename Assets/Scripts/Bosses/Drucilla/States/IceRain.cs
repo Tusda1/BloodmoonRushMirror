@@ -67,6 +67,7 @@ public class IceRain : DrucillaState
         {
             if (!Boss.AnimancerComponent.IsPlaying(iceRainAnimation))
             {
+                audioManager.PlayOneShotAttached("Druc_Icerain_Activate", Boss.gameObject);
                 var state = Boss.AnimancerComponent.Play(iceRainAnimation);
                 state.Events(this).OnEnd = () =>
                 {

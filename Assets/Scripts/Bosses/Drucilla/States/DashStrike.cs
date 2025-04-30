@@ -131,6 +131,7 @@ public class DashStrike : DrucillaState
         {
             state.Destroy();
             Strike();
+            audioManager.PlayOneShotAttached("Druc_Melee", gameObject);
             var state2 = Boss.AnimancerComponent.Play(strikeAnimation);
             state2.Events(this).OnEnd = () =>
             {
