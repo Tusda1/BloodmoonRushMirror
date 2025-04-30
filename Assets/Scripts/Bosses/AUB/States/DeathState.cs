@@ -7,6 +7,7 @@ public class DeathState : BossState
     
     private void OnEnable()
     {
+        audioManager.PlayOneShotAttached("AUB_Head_Break", gameObject);
         var state = Boss.AnimancerComponent.Play(deathAnimation);
         state.Events(this).OnEnd = () =>
         {

@@ -59,6 +59,7 @@ public class HeadSlide : BossState
         state4.Events(this).OnEnd = () =>
         {
             state4.Destroy();
+            audioManager.PlayOneShotAttached("AUB_Head_Slam", gameObject);
             _ = _cameraEffects.ShakeCamera(0.5f, 0.5f);
             waitOver = true;
         };

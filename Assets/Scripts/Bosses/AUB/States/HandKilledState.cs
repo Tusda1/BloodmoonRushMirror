@@ -14,6 +14,7 @@ public class HandKilledState : BossState
 
     private void OnEnable()
     {
+        audioManager.PlayOneShotAttached("AUB_Hand_Break", gameObject);
         Boss.AnimancerComponent.Play(brokenAnimation);
         
         // Start the coroutine to hit the boss

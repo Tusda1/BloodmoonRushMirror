@@ -127,9 +127,9 @@ MonoBehaviour:
   takeDamageAnimation: []
   turnWhileMoving: 1
   bossDamageInstance:
-    damage: 0
+    damage: 1
     knockback: {x: 0, y: 0}
-    knockbackStrength: 0
+    knockbackStrength: 1
     staggerStrength: 0
     ignoreInvincibility: 0
     which: 0
@@ -141,6 +141,7 @@ MonoBehaviour:
   canTakeDamage: 1
   canDoDamage: 1
   isDead: 0
+  hurtSoundID: AUB_Hurt
 --- !u!114 &9087546792395721109
 MonoBehaviour:
   m_ObjectHideFlags: 0

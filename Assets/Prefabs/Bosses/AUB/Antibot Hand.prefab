@@ -122,11 +122,11 @@ MonoBehaviour:
     _CurrentState: {fileID: 978309185833296357}
     _DefaultState: {fileID: 978309185833296357}
   currentPhase: 0
-  maxHealth: 1e000000
+  maxHealth: 19000000
   takeDamageAnimation: []
   turnWhileMoving: 0
   bossDamageInstance:
-    damage: 0
+    damage: 1
     knockback: {x: 0, y: 0}
     knockbackStrength: 0
     staggerStrength: 0
@@ -140,6 +140,7 @@ MonoBehaviour:
   canTakeDamage: 1
   canDoDamage: 1
   isDead: 0
+  hurtSoundID: AUB_Hurt
 --- !u!50 &2572263557304099360
 Rigidbody2D:
   serializedVersion: 5
