@@ -24,15 +24,15 @@ namespace FMODScripts {
         public string CurrentMusicID { get; private set; }
 
         #region ***---Consts---***
-        private const string BusPath = "bus:/";
-        private const string SFXBusPath = BusPath + "Sfx Bus";
-        private const string MusicBusPath = BusPath + "Music Bus";
+        private const string BUS_PATH = "bus:/";
+        private const string SFX_BUS_PATH = BUS_PATH + "Sfx Bus";
+        private const string MUSIC_BUS_PATH = BUS_PATH + "Music Bus";
 
-        private const string MasterPlayerPrefsKey = "MasterVolume";
-        private const string SFXPlayerPrefsKey = "SFXVolume";
-        private const string MusicPlayerPrefsKey = "MusicVolume";
+        private const string MASTER_PLAYER_PREFS_KEY = "MasterVolume";
+        private const string SFX_PLAYER_PREFS_KEY = "SFXVolume";
+        private const string MUSIC_PLAYER_PREFS_KEY = "MusicVolume";
 
-        private const float DefaultVolume = 1.0f;
+        private const float DEFAULT_VOLUME = 1.0f;
         #endregion
         #endregion
 
@@ -56,17 +56,17 @@ namespace FMODScripts {
 
             _debugLogger.Log("RuntimeManager initialized");
 
-            _masterBus = RuntimeManager.GetBus(BusPath);
-            _sfxBus = RuntimeManager.GetBus(SFXBusPath);
-            _musicBus = RuntimeManager.GetBus(MusicBusPath);
+            _masterBus = RuntimeManager.GetBus(BUS_PATH);
+            _sfxBus = RuntimeManager.GetBus(SFX_BUS_PATH);
+            _musicBus = RuntimeManager.GetBus(MUSIC_BUS_PATH);
 
             if (_masterBus.Equals(default) || _sfxBus.Equals(default) || _musicBus.Equals(default)) {
                 _debugLogger.Log("Busses are not valid");
             }
 
-            MasterVolume = GetVolumeFromPlayerPrefs(MasterPlayerPrefsKey);
-            SFXVolume = GetVolumeFromPlayerPrefs(SFXPlayerPrefsKey);
-            MusicVolume = GetVolumeFromPlayerPrefs(MusicPlayerPrefsKey, 0.5f);
+            MasterVolume = GetVolumeFromPlayerPrefs(MASTER_PLAYER_PREFS_KEY);
+            SFXVolume = GetVolumeFromPlayerPrefs(SFX_PLAYER_PREFS_KEY);
+            MusicVolume = GetVolumeFromPlayerPrefs(MUSIC_PLAYER_PREFS_KEY, 0.5f);
         }
 
         private static float GetVolumeFromPlayerPrefs(string name, float defaultValue = 1) {
@@ -74,8 +74,8 @@ namespace FMODScripts {
                 return PlayerPrefs.GetFloat(name);
             }
 
-            PlayerPrefs.SetFloat(name, DefaultVolume);
-            return DefaultVolume;
+            PlayerPrefs.SetFloat(name, DEFAULT_VOLUME);
+            return DEFAULT_VOLUME;
         }
         #endregion
 
@@ -196,7 +196,7 @@ namespace FMODScripts {
                 _masterVolume = Mathf.Clamp01(value);
                 
                 _masterBus.setVolume(MasterVolume);
-                PlayerPrefs.SetFloat(MasterPlayerPrefsKey, MasterVolume);
+                PlayerPrefs.SetFloat(MASTER_PLAYER_PREFS_KEY, MasterVolume);
             }
         }
         
@@ -206,7 +206,7 @@ namespace FMODScripts {
                 _sfxVolume = Mathf.Clamp01(value);
 
                 _sfxBus.setVolume(SFXVolume);
-                PlayerPrefs.SetFloat(SFXPlayerPrefsKey, SFXVolume);
+                PlayerPrefs.SetFloat(SFX_PLAYER_PREFS_KEY, SFXVolume);
             }
         }
 
@@ -216,7 +216,7 @@ namespace FMODScripts {
                 _musicVolume = Mathf.Clamp01(value);
 
                 _musicBus.setVolume(MusicVolume);
-                PlayerPrefs.SetFloat(MusicPlayerPrefsKey, MusicVolume);
+                PlayerPrefs.SetFloat(MUSIC_PLAYER_PREFS_KEY, MusicVolume);
             }
         }
 

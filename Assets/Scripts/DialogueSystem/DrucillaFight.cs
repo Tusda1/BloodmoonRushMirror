@@ -9,6 +9,7 @@ public class DrucillaFight : ConversationTrigger {
     
     private CameraEffects _cameraEffects;
     private IAchievementManager _achievementManager;
+    private ISpeedrunTimer _speedrunTimer;
     #endregion
 
     #region ---Initialization---
@@ -18,6 +19,7 @@ public class DrucillaFight : ConversationTrigger {
         
         _cameraEffects = container.Resolve<CameraEffects>();
         _achievementManager = container.Resolve<IAchievementManager>();
+        _speedrunTimer = container.Resolve<ISpeedrunTimer>();
     }
     #endregion
     
@@ -28,5 +30,7 @@ public class DrucillaFight : ConversationTrigger {
     public void EndLevel() {
         _cameraEffects.FadeLoadScene(nextScene);
         _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_TheDungeons);
+        _speedrunTimer.StopTimer();
+        
     }
 }
