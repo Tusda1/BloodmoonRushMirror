@@ -1,11 +1,13 @@
 using System;
 using Attributes;
+using FMODScripts;
 using Player;
 using PlayerLoopTimer;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using VContainer;
 
 public class KeyScript : GravityObject {
     #region ---Fields---
@@ -18,7 +20,13 @@ public class KeyScript : GravityObject {
     [SerializeField] private float smoothTime;
     [SerializeField] public float followSpeed;
     private CountdownTimer _destructionTimer;
+    private IAudioManager _audioManager;
     #endregion
+
+    [Inject]
+    public void Construct(IAudioManager audioManager) {
+        _audioManager = audioManager;
+    }
     
     protected override void ComputeVelocity() {
         if (!isCollected) return;
@@ -36,8 +44,11 @@ public class KeyScript : GravityObject {
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player"))
-            if (other.TryGetComponent<PlayerScript>(out var playerScript))
+            if (other.TryGetComponent<PlayerScript>(out var playerScript)) {
                 playerScript.GetKey(gameObject);
+                _audioManager.PlayOneShot("Key_Get");
+            }
+        
     }
 
     public void StartDestructionTimer(float destructionTime) {
@@ -52,6 +63,7 @@ public class KeyScript : GravityObject {
     }
 
     private void UseKey() {
+        _audioManager.PlayOneShot("Key_Use");
         Destroy(gameObject);
     }
     
