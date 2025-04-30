@@ -152,7 +152,6 @@ namespace Player {
                 .WithOnStop(() => {
                     isDashing = false;
                     lockToAxis = Axis.None;
-                    ResetMovement(Axis.YAxis);
                     player.healthComponent.HasInvincibilityFrames = false;
                     player.animator.SetBool(AnimatorDashBool, false);
                 })
