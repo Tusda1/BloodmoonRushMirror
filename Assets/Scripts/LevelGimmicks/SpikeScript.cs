@@ -1,8 +1,14 @@
+using System;
 using Player;
 using UnityEngine;
 
 public class SpikeScript : MonoBehaviour {
     [SerializeField] private DamageInstance damageInstance = new();
+    [SerializeField] private DamageInstance enemyDamage = new();
+
+    private void Start() {
+        enemyDamage.damage = 99;
+    } 
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (!other.transform.TryGetComponent<IDamageable>(out var damageable)) return;
@@ -15,9 +21,7 @@ public class SpikeScript : MonoBehaviour {
             case EnemyBase enemyBase:
                 if (!enemyBase.takesSpikeDamage) return;
                 
-                damageInstance.damage = 99;
-                enemyBase.TakeDamage(damageInstance);
-                damageInstance.damage = 1;
+                enemyBase.TakeDamage(enemyDamage);
                 break;
         }
     }
