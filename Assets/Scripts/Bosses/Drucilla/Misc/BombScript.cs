@@ -1,4 +1,5 @@
 using System;
+using FMODUnity;
 using UnityEngine;
 
 public class BombScript : GravityObject
@@ -16,6 +17,8 @@ public class BombScript : GravityObject
 
     private void Explode()
     {
+        // Play explosion sound
+        RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_bomb_explode", gameObject);
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.SetLayerMask(LayerMask.GetMask("Player"));
         Collider2D[] colliders = new Collider2D[10]; // Adjust the size as needed

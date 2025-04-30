@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
 using Animancer;
+using VContainer;
 
 public class EnemyAnimationBase : MonoBehaviour
 {
     [SerializeField] private AnimationClip deathAnimation;
     [SerializeField] private AnimationClip hitAnimation;
 
+    [Inject] protected IAudioManager audioManager;
+    
     protected AnimancerComponent animancerComponent { get; private set; }
     
     protected virtual void Awake()
