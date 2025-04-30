@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WheelOfDeathScript : MonoBehaviour, IDamageable
 {
+    [SerializeField] private bool drawTrail;
     [SerializeField] private Transform centerPoint; // The center point around which the object will move
     [SerializeField] private float radius = 5f; // The radius of the circular path
     [SerializeField] private float speed = 1f; // The speed of the circular motion
@@ -38,10 +39,13 @@ public class WheelOfDeathScript : MonoBehaviour, IDamageable
         // Update the position of the object
         transform.position = new Vector2(x, y);
 
-        // Update the LineRenderer to draw the path
-        positionCount++;
-        lineRenderer.positionCount = positionCount;
-        lineRenderer.SetPosition(positionCount - 1, transform.position);
+        if (drawTrail)
+        {
+            // Update the LineRenderer to draw the path
+            positionCount++;
+            lineRenderer.positionCount = positionCount;
+            lineRenderer.SetPosition(positionCount - 1, transform.position);
+        }
     }
     
     public void TakeDamage(DamageInstance enemyDamageInstance)

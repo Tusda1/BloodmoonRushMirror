@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Animancer;
 using UnityEngine;
 
@@ -36,19 +37,23 @@ public class Altar : MonoBehaviour
           contactFilter.useTriggers = true;
           var ghosts = new List<Collider2D>();
           
-          Physics2D.OverlapCircle(transform.position, maxSuckRange, contactFilter, ghosts);
-          foreach (var ghost in ghosts)
+          Physics2D.OverlapCircle(_collider.bounds.center, maxSuckRange, contactFilter, ghosts);
+          
+          // Filter out non-ghosts using LINQ
+          var filteredGhosts = ghosts.Where(ghost => ghost.CompareTag("Ghost")).ToList();
+          
+          foreach (var ghost in filteredGhosts)
           {
                if (!ghost.TryGetComponent(out Ghost ghostComponent)) continue;
                
-               if (Vector2.Distance(ghost.transform.position, transform.position) > maxSuckRange) continue;
+               if (Vector2.Distance(ghost.transform.position, _collider.bounds.center) > maxSuckRange) continue;
                
-               if (Vector2.Distance(transform.position, ghost.transform.position) < executeRange)
+               if (Vector2.Distance(_collider.bounds.center, ghost.transform.position) < executeRange)
                {
                     ghostComponent.Execute();
-
+                    
                     // check if this ghost is last in the list
-                    if (!_sucking && ghosts[^1] == ghost)
+                    if (!_sucking && filteredGhosts[^1] == ghost)
                     {
                          // Play the caught ghost animation
                          _animationCoroutine = StartCoroutine(PlayCaughtGhostAnimation());
@@ -58,7 +63,7 @@ public class Altar : MonoBehaviour
                }
                
                // Calculate the distance between the altar and the ghost
-               float distance = Vector2.Distance(transform.position, ghost.transform.position);
+               float distance = Vector2.Distance(_collider.bounds.center, ghost.transform.position);
 
                // Calculate the speed of the ghost based on the distance
                float speed = Mathf.Lerp(maxSuckSpeed, minSuckSpeed, distance / maxSuckRange);
