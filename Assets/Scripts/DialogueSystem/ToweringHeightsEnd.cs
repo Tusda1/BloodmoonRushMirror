@@ -9,6 +9,7 @@ public class ToweringHeightsEnd : ConversationTrigger {
     
     private CameraEffects _cameraEffects;
     private IAchievementManager _achievementManager;
+    private ISpeedrunTimer _speedrunTimer;
     #endregion
 
     #region ---Initialization---
@@ -18,11 +19,13 @@ public class ToweringHeightsEnd : ConversationTrigger {
         
         _cameraEffects = container.Resolve<CameraEffects>();
         _achievementManager = container.Resolve<IAchievementManager>();
+        _speedrunTimer = container.Resolve<ISpeedrunTimer>();
     }
     #endregion
     
     public void EndLevel() {
         _cameraEffects.FadeLoadScene(nextScene);
         _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_ToweringHeights);
+        _speedrunTimer.StopTimer();
     }
 }

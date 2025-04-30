@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using Animancer;
 using UnityEngine;
 
 public class Altar : MonoBehaviour 
@@ -7,18 +10,50 @@ public class Altar : MonoBehaviour
      [SerializeField] private float minSuckSpeed = 5f;
      [SerializeField] private float maxSuckSpeed = 20f;
      [SerializeField] private float executeRange = 1f;
+     [SerializeField] private AnimationClip idle;
+     [SerializeField] private AnimationClip suck;
+     [SerializeField] private AnimationClip caughtGhost;
+     
+     private bool _sucking;
+     private Coroutine _animationCoroutine;
+     private AnimancerComponent _animancerComponent;
+     private Collider2D _collider;
+
+     private void Awake()
+     {
+          _collider = GetComponent<Collider2D>();
+          _animancerComponent = GetComponent<AnimancerComponent>();
+          _animancerComponent.Play(idle);
+     }
 
      private void Update()
      {
+          _sucking = false;
+          
           // Check if a gameobject with ghost tag is within range
-          Collider2D[] ghosts = Physics2D.OverlapCircleAll(transform.position, maxSuckRange, LayerMask.GetMask("Enemy"));
+          ContactFilter2D contactFilter = new ContactFilter2D();
+          contactFilter.SetLayerMask(LayerMask.GetMask("Enemy"));
+          contactFilter.useTriggers = true;
+          var ghosts = new List<Collider2D>();
+          
+          Physics2D.OverlapCircle(transform.position, maxSuckRange, contactFilter, ghosts);
           foreach (var ghost in ghosts)
           {
                if (!ghost.TryGetComponent(out Ghost ghostComponent)) continue;
-
+               
+               if (Vector2.Distance(ghost.transform.position, transform.position) > maxSuckRange) continue;
+               
                if (Vector2.Distance(transform.position, ghost.transform.position) < executeRange)
                {
                     ghostComponent.Execute();
+
+                    // check if this ghost is last in the list
+                    if (!_sucking && ghosts[^1] == ghost)
+                    {
+                         // Play the caught ghost animation
+                         _animationCoroutine = StartCoroutine(PlayCaughtGhostAnimation());
+                    }
+                    
                     continue;
                }
                
@@ -29,11 +64,35 @@ public class Altar : MonoBehaviour
                float speed = Mathf.Lerp(maxSuckSpeed, minSuckSpeed, distance / maxSuckRange);
 
                // Set the direction of the ghost towards the altar
-               Vector2 direction = (transform.position - ghost.transform.position).normalized * speed;
+               Vector2 direction = (_collider.bounds.center - ghost.transform.position).normalized * speed;
 
                // Move the ghost towards the altar
                ghostComponent.sucked = true;
                ghostComponent.suckVelocity = direction;
+               _sucking = true;
+               PlaySuckAnimation();
           }
+     }
+     
+     private IEnumerator PlayCaughtGhostAnimation()
+     {
+          _animancerComponent.Play(caughtGhost);
+
+          yield return new WaitForSeconds(1f);
+          
+          _animancerComponent.Play(idle);
+     }
+
+     private void PlaySuckAnimation()
+     {
+          if (_animancerComponent.IsPlaying(suck)) return;
+          
+          if (_animationCoroutine != null)
+          {
+               StopCoroutine(_animationCoroutine);
+               _animationCoroutine = null;
+          }
+          
+          _animancerComponent.Play(suck);
      }
 }

@@ -42,6 +42,7 @@ public class AUBBrain : MonoBehaviour {
         
         _boss = GetComponent<BossBase>();
         _boss.OnBattleStart += StartBattle;
+        _boss.OnDeath += EndBattle;
         leftHand.OnDeath += StartHandKillSequence;
         rightHand.OnDeath += StartHandKillSequence;
         _leftHandKilledState.OnHandKilled += HandHitScreen;
@@ -51,6 +52,13 @@ public class AUBBrain : MonoBehaviour {
     private void StartBattle()
     {
         _isFighting = true;
+    }
+    
+    private void EndBattle()
+    {
+        _isFighting = false;
+        var deathState = GetComponent<DeathState>();
+        _boss.StateMachine.ForceSetState(deathState);
     }
 
     private void Update()
@@ -135,6 +143,8 @@ public class AUBBrain : MonoBehaviour {
     
     private void HeadLogic()
     {
+        if (_boss.isDead) return;
+        
         if (!leftHand.gameObject.activeSelf && !rightHand.gameObject.activeSelf)
         {
             _handsDestroyed = true;

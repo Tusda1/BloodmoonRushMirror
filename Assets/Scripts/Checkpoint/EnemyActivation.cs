@@ -30,12 +30,13 @@ namespace Checkpoint {
         }
 
         private void OnRespawn() {
-            foreach (var enemy in _enemies) {
-                print(enemy.gameObject.name);
+            foreach (var enemy in _enemies) 
+            {
                 enemy.Respawn();
             }
 
-            foreach (var room in _rooms) {
+            foreach (var room in _rooms) 
+            {
                 room.GetComponent<VirtualCameraSwitch>().EnemyDeactivation();
             }
         }

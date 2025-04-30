@@ -1,3 +1,4 @@
+using System;
 using Attributes;
 using Consensus;
 using ExtensionMethods;
@@ -53,6 +54,8 @@ namespace Player {
         [SerializeField] private float fallSpeed;
         [SerializeField] private LayerMask whatIsGround;
         public bool isActuallyGrounded;
+
+        public event Action OnPlayerSpikeDeath;
 
         [Header("Knockback")] [ReadOnly] public bool isTakingKnockback;
         [SerializeField] private float knockBackTime;
@@ -188,6 +191,7 @@ namespace Player {
                     else {
                         if (player.healthComponent.TotalHealth <= 0) return;
                         gameObject.transform.position = lastPlatformCheckpoint;
+                        OnPlayerSpikeDeath?.Invoke();
                         player.animator.SetTrigger(AnimatorRespawnTrigger);
                     }
                 })

@@ -12,6 +12,7 @@ public class EndTheDungeons : TriggerBox {
 
     private CameraEffects _cameraEffects;
     private IAchievementManager _achievementManager;
+    private ISpeedrunTimer _speedrunTimer;
     #endregion
 
     #region ---Initialization---
@@ -19,6 +20,7 @@ public class EndTheDungeons : TriggerBox {
     public void Construct(IObjectResolver container) {
         _cameraEffects = container.Resolve<CameraEffects>();
         _achievementManager = container.Resolve<IAchievementManager>();
+        _speedrunTimer = container.Resolve<ISpeedrunTimer>();
     }
     #endregion
     
@@ -36,6 +38,7 @@ public class EndTheDungeons : TriggerBox {
 #else
         _cameraEffects.FadeLoadScene(nextLevelSceneCollection);
         _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_TheDungeons);
+        _speedrunTimer.StopTimer();
 #endif
     }
 }

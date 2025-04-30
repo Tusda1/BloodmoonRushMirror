@@ -14,16 +14,18 @@ public partial class OpeningDialogue : MonoBehaviour, IBind<TriggerData> {
 
     private ISaveLoadSystemManager _saveLoadSystemManager;
     private LevelDataManager _levelDataManager;
+    private ISpeedrunTimer _speedrunTimer;
     #endregion
 
     [Inject]
     public void Construct(IObjectResolver container) {
         _saveLoadSystemManager = container.Resolve<ISaveLoadSystemManager>();
         _levelDataManager = container.Resolve<LevelDataManager>();
+        _speedrunTimer = container.Resolve<ISpeedrunTimer>();
     }
 
     private void Start() {
-        Bind();
+        Bind(); 
 #if UNITY_EDITOR
         if (_levelDataManager.startedInLevel && !forcePlayOnStart) return;
 #endif
@@ -31,6 +33,7 @@ public partial class OpeningDialogue : MonoBehaviour, IBind<TriggerData> {
         
         cutsceneGraph.TriggerUnityEvent("Start");
         hasBeenTriggered = true;
+        _speedrunTimer.StartTimer();
     }
 
     private void OnDestroy() {

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6951321722163631109}
   - component: {fileID: 3226211747440525493}
   - component: {fileID: 5665637596844805087}
+  - component: {fileID: 7256631352599850897}
   - component: {fileID: 4547598872901045848}
   - component: {fileID: 6765125391021624762}
   - component: {fileID: 2685403473347489127}
@@ -139,6 +140,7 @@ MonoBehaviour:
   bossGrounded: 0
   canTakeDamage: 1
   canDoDamage: 1
+  isDead: 0
 --- !u!114 &9087546792395721109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +216,21 @@ MonoBehaviour:
   headSlideEndAnimationLeft: {fileID: 7580248498274276683, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
   postWarningWaitTime: 1
   postSlamWaitTime: 2
+--- !u!114 &7256631352599850897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4911512659285843616}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1869d2aae47024ead9472c790dc831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 8681157068678436256}
+  statePhase: 1
+  deathAnimation: {fileID: -1394145010372274145, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
 --- !u!114 &4547598872901045848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,7 +463,7 @@ MonoBehaviour:
   - bodyAnimation: {fileID: 1820972039943217167, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
     headAnimation: {fileID: -4054001473770279582, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
   - bodyAnimation: {fileID: 4493504706407391857, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
-    headAnimation: {fileID: -210297351453030208, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
+    headAnimation: {fileID: -7911344904017646616, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
   - bodyAnimation: {fileID: -196039398468519642, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
     headAnimation: {fileID: -7685437098881964438, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
   - bodyAnimation: {fileID: 1828935479824696581, guid: 310f4a74e24b8c449bff2f11d47bec38, type: 3}
