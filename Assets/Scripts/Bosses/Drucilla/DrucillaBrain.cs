@@ -34,7 +34,7 @@ public class DrucillaBrain : MonoBehaviour
         }
     }
     
-    private void StartFighting()
+    public void StartFighting()
     {
         // Play the boss music
         _audioManager.PlayMusic("Drucilla_FightTheme");
