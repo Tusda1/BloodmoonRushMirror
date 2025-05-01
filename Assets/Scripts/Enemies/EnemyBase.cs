@@ -363,11 +363,13 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         isDead = false;
         isVulnerable = false;
         isStunned = false;
+        isKnockedUp = false;
         enemyCollider.enabled = true;
         gameObject.SetActive(true);
         currentHealth = maxHealth;
         transform.position = startPosition;
         _spriteRenderer.material = _defaultMaterial;
+        facingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
     }
 
     private void OnTriggerStay2D(Collider2D other) {
