@@ -11,6 +11,7 @@ public class HomingProjectile : GravityObject
     
     [SerializeField] private float launchSpeed = 5f;
     [SerializeField] private float homingSpeed = 5f;
+    [SerializeField] private float startAngle = 90f; // Default angle facing up
     
     private bool _hasLaunched;
     private Vector2 _initialPosition;
@@ -33,7 +34,7 @@ public class HomingProjectile : GravityObject
     {
         _initialPosition = transform.position;
     }
-    
+
     protected override void ComputeVelocity()
     {
         if (target == null) gameObject.SetActive(false);
@@ -53,14 +54,13 @@ public class HomingProjectile : GravityObject
         }
         else
         {
-            // Create a vector pointing from the current position to the target position
             Vector2 direction = target.transform.position - transform.position;
             smoothDampScript.SmoothDampVector2(direction.normalized * homingSpeed, ref targetVelocity);
         }
-        
-        transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(targetVelocity.y, targetVelocity.x) * Mathf.Rad2Deg - 90);
+
+        transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(targetVelocity.y, targetVelocity.x) * Mathf.Rad2Deg + startAngle);
     }
-    
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
