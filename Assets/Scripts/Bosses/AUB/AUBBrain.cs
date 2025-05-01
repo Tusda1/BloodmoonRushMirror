@@ -49,7 +49,7 @@ public class AUBBrain : MonoBehaviour {
         _leftHandKilledState.OnHandKilled += HandHitScreen;
         _rightHandKilledState.OnHandKilled += HandHitScreen;
     }
-    
+
     private void StartBattle()
     {
         _isFighting = true;
