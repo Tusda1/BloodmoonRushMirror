@@ -28,7 +28,7 @@ public class Ghoul : ReactiveBase
         }
 
         // Cast a ray to the right
-        RaycastHit2D hitRight = Physics2D.Raycast(enemyCollider.bounds.center, Vector2.right, detectionDistance, enemyAndGroundLayerMask);
+        RaycastHit2D hitRight = Physics2D.Raycast(enemyCollider.bounds.center, Vector2.right, detectionDistance, LayerMask.GetMask("Player", "Ground"));
         if (hitRight && hitRight.collider.CompareTag("Player"))
         {
             // Return the direction to the player
@@ -38,7 +38,7 @@ public class Ghoul : ReactiveBase
         }
 
         // Cast a ray to the left
-        RaycastHit2D hitLeft = Physics2D.Raycast(enemyCollider.bounds.center, Vector2.left, detectionDistance, enemyAndGroundLayerMask);
+        RaycastHit2D hitLeft = Physics2D.Raycast(enemyCollider.bounds.center, Vector2.left, detectionDistance, LayerMask.GetMask("Player", "Ground"));
         if (hitLeft && hitLeft.collider.CompareTag("Player"))
         {
             // Return the direction to the player

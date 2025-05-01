@@ -46,7 +46,7 @@ public class KeyScript : GravityObject {
         if (other.CompareTag("Player"))
             if (other.TryGetComponent<PlayerScript>(out var playerScript)) {
                 playerScript.GetKey(gameObject);
-                _audioManager.PlayOneShot("Key_Get");
+                
             }
         
     }
