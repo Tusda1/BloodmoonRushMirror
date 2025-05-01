@@ -30,18 +30,10 @@ public class Ghost : ReactiveBase
         base.Awake();
         _ghostAnimations = GetComponent<GhostAnimations>();
         GravityModifier = 0;
-
-        var playerRef = ServiceLocator.Get<PlayerScript>();
-        
-        _playerMovement = playerRef.GetComponent<GravityObjectPlayerMovement>();
-        _targetCollider = playerRef.GetComponent<Collider2D>();
     }
     
     private void OnEnable()
     {
-        // Subscribe to the event
-        _playerMovement.OnPlayerSpikeDeath += OnPlayerSpikeReset;
-        
         // Reset the state
         _playerDiedToSpike = false;
         _withdrawing = false;
@@ -49,7 +41,20 @@ public class Ghost : ReactiveBase
         sucked = false;
         _ghostAnimations.PlayDefaultAnimation();
     }
-    
+
+    protected override void Start()
+    {
+        base.Start();
+        
+        var playerRef = ServiceLocator.Get<PlayerScript>();
+        
+        _playerMovement = playerRef.GetComponent<GravityObjectPlayerMovement>();
+        _targetCollider = playerRef.GetComponent<Collider2D>();
+        
+        // Subscribe to the event
+        _playerMovement.OnPlayerSpikeDeath += OnPlayerSpikeReset;
+    }
+
     private void OnDisable()
     {
         // Unsubscribe from the event
