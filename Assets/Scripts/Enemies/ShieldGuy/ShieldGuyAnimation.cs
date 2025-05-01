@@ -9,7 +9,6 @@ public class ShieldGuyAnimation : EnemyAnimationBase
     [SerializeField] private AnimationClip recoverAnimation;
     [SerializeField] private AnimationClip blockAnimation;
     [SerializeField] private AnimationClip stunHitAnimation;
-    [SerializeField] private AnimationClip getStunnedAnimation;
     [SerializeField] private AnimationClip stunnedAnimation;
     [SerializeField] private AnimationClip walkAnimation;
     
@@ -66,12 +65,7 @@ public class ShieldGuyAnimation : EnemyAnimationBase
     public void Stun()
     {
         isExecutingAnAction = false;
-        var state = animancerComponent.Play(getStunnedAnimation);
-        state.Events(this).OnEnd = () =>
-        {
-            state.Destroy();
-            animancerComponent.Play(stunnedAnimation);
-        };
+        animancerComponent.Play(stunnedAnimation);
     }
 
     public void Walk()

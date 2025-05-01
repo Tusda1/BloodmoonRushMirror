@@ -1,17 +1,26 @@
 using System;
+using Animancer;
 using FMODUnity;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
 public class PingPongScript : GravityObject, IDamageable
 {
+    [SerializeField] private AnimationClip inAir;
+    [SerializeField] private AnimationClip hitAnimation;
+    [SerializeField] private AnimationClip hitEndAnimation;
     [SerializeField] private DamageInstance projectileDamageInstance;
     
     public Vector2 setVelocity;
+    
+    private AnimancerComponent _animancerComponent;
 
-    private void OnEnable()
+    private new void Awake()
     {
-        GravityModifier = 0;
+        base.Awake();
+        GravityModifier = 0f;
+        _animancerComponent = GetComponent<AnimancerComponent>();
+        _animancerComponent.Play(inAir);
     }
 
     protected override void ComputeVelocity()
@@ -49,5 +58,17 @@ public class PingPongScript : GravityObject, IDamageable
         {
             setVelocity.x = -Mathf.Abs(setVelocity.x);
         }
+        
+        var state = _animancerComponent.Play(hitAnimation);
+        state.Events(this).OnEnd = () =>
+        {
+            state.Destroy();
+            var hitEndState = _animancerComponent.Play(hitEndAnimation);
+            hitEndState.Events(this).OnEnd = () =>
+            {
+                hitEndState.Destroy();
+                _animancerComponent.Play(inAir);
+            };
+        };
     }
 }

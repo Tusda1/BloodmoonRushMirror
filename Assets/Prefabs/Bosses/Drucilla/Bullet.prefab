@@ -113,8 +113,8 @@ MonoBehaviour:
   initialDirection: {x: 0, y: 0}
   launchDistance: 3
   launchSpeed: 5
-  homingSpeed: 5
-  startAngle: 90
+  homingSpeed: 15
+  startAngle: 315
   projectileAnimation: {fileID: 0}
   damageInstance:
     damage: 1
@@ -155,7 +155,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

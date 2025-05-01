@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Ghoul : ReactiveBase
@@ -14,7 +15,15 @@ public class Ghoul : ReactiveBase
         base.Awake();
         _animations = GetComponent<GhoulAnimations>();
     }
-    
+
+    private void OnEnable()
+    {
+        // Reset the state
+        _isJumping = false;
+        targetVelocity = Vector2.zero;
+        _animations.PlayDefaultAnimation();
+    }
+
     protected override void Scan()
     {
         // Check for a player in close proximity
@@ -50,6 +59,18 @@ public class Ghoul : ReactiveBase
     private void SwapToAction()
     {
         currentState = EnemyState.Action;
+        
+        // Detect if the Ghoul charges into a wall
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, facingDirection, 1f, LayerMask.GetMask("Ground"));
+        if (hit.collider != null)
+        {
+            // If the Ghoul charges into a wall, stop charging and start scanning
+            targetVelocity = Vector2.zero;
+            currentState = EnemyState.Scanning;
+            _animations.PlayDefaultAnimation();
+            return;
+        }
+        
         _animations.PlayRunAnimation();
     }
 

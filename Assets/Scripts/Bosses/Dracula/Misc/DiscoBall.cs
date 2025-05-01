@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Animancer;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class DiscoBall : MonoBehaviour
     [SerializeField] private float narrowFireAngle = 15f;
     [SerializeField] private GameObject lowPoint;
     [SerializeField] private GameObject highPoint;
+    [SerializeField] private AnimationClip discoBallSpinAnimation;
     
     private Vector2 _lowPointPosition;
     private Vector2 _highPointPosition;
@@ -28,6 +30,7 @@ public class DiscoBall : MonoBehaviour
     private Coroutine _moveCoroutine;
     private IObjectResolver _objectResolver;
     private IAudioManager _audioManager;
+    private AnimancerComponent _animancerComponent;
 
     [Inject]
     public void Construct(IObjectResolver container) {
@@ -41,6 +44,7 @@ public class DiscoBall : MonoBehaviour
         _highPointPosition = highPoint.transform.position;
         transform.position = _highPointPosition;
         _laserPrefab = Resources.Load<GameObject>("Prefabs/Laser");
+        _animancerComponent = GetComponent<AnimancerComponent>();
     }
 
     private void Start() {
@@ -81,12 +85,14 @@ public class DiscoBall : MonoBehaviour
         
         _isFiring = true;
         _currentRotation = narrowFireAngle;
+        _animancerComponent.Play(discoBallSpinAnimation);
         StartCoroutine(RotateDiscoBall());
     }
     
     private void DisableLaser()
     {
         _currentRotation = 0;
+        _animancerComponent.Stop(discoBallSpinAnimation);
         _isFiring = false;
     }
 
