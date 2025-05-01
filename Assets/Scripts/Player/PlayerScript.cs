@@ -400,6 +400,7 @@ namespace Player {
 
         public void GetKey(GameObject key) {
             if (key.GetComponent<KeyScript>().isCollected) return;
+            AudioManager.PlayOneShot("Key_Get");
             key.GetComponent<KeyScript>().isCollected = true;
             keyAmount++;
             keyObjects.Add(key);
