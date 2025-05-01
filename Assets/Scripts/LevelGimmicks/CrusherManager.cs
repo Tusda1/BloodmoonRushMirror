@@ -11,6 +11,7 @@ public class CrusherManager : MonoBehaviour {
     [SerializeField] private Tilemap coverTilemap;
     [SerializeField] private RuleTile crusherTile;
     [SerializeField] private RuleTile coverTile;
+    [SerializeField] private bool repaint = false;
     [Header("Size")]
     [SerializeField] private Vector2Int crusherSize;
     [FormerlySerializedAs("crusherUpSpeed")]
@@ -54,17 +55,19 @@ public class CrusherManager : MonoBehaviour {
     public void GenerateCrusherTiles() {
         crusherTilemap.transform.position = - new Vector3(crusherSize.x - 1, crusherSize.y, 0)/2 + transform.position;
         coverTilemap.transform.position = - new Vector3(crusherSize.x, crusherSize.y, 0)/2 + transform.position;
-        
-        coverTilemap.ClearAllTiles();
-        crusherTilemap.ClearAllTiles();
-        for (int x = 0; x < crusherSize.x; x++) {
-            for (int y = 0; y < crusherSize.y; y++) {
-                coverTilemap.SetTile(new Vector3Int(x, y, 0), coverTile);
+
+        if (repaint) {
+            coverTilemap.ClearAllTiles();
+            crusherTilemap.ClearAllTiles();
+            for (int x = 0; x < crusherSize.x; x++) {
+                for (int y = 0; y < crusherSize.y; y++) {
+                    coverTilemap.SetTile(new Vector3Int(x, y, 0), coverTile);
+                }
             }
-        }
-        for (int x = 0; x < crusherSize.x - 1; x++) {
-            for (int y = 0; y < crusherSize.y; y++) {
-                crusherTilemap.SetTile(new Vector3Int(x, y, 0), crusherTile);
+            for (int x = 0; x < crusherSize.x - 1; x++) {
+                for (int y = 0; y < crusherSize.y; y++) {
+                    crusherTilemap.SetTile(new Vector3Int(x, y, 0), crusherTile);
+                }
             }
         }
 
