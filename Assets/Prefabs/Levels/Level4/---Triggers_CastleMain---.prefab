@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1088211416460434455}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 807.64, y: 61.89, z: 0}
+  m_LocalPosition: {x: 813.74, y: 61.89, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -117,6 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data:
     _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"DrucillaFight","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"DrucillaFight,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"DrucillaBrain","value":null,"typeHandle":{"Identification":"DrucillaBrain,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 3112347024931497843}
@@ -536,6 +537,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8771831841054944257}
     m_Modifications:
+    - target: {fileID: 26182808013452521, guid: 6a780bb6de4b33145b1393cbb6c0cdc8, type: 3}
+      propertyPath: forcePlayOnStart
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 26182808013452521, guid: 6a780bb6de4b33145b1393cbb6c0cdc8, type: 3}
       propertyPath: <ID>k__BackingField
       value: faf0d385-4a73-4fe0-bedb-022a239c47db
