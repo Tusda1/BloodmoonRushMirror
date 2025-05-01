@@ -51,7 +51,7 @@ public partial class SteamSpeedrunTimer : ISpeedrunTimer, IBind<LevelTimerData>,
         _timerEnabled = true;
         IsRunning = true;
 #if STEAM_BUILD
-        _fetchLeaderboardTask = SteamLeaderboardHelper.FindLeaderboardAsync(leaderboardID);
+        _fetchLeaderboardTask = SteamLeaderboardHelper.FindLeaderboardAsync(_leaderboardID);
 #endif
     }
 

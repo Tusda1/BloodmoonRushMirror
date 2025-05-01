@@ -1,5 +1,6 @@
 using System;
 using Animancer;
+using FMODUnity;
 using UnityEngine;
 
 public class ShockwaveExtensionScript : MonoBehaviour 
@@ -20,6 +21,7 @@ public class ShockwaveExtensionScript : MonoBehaviour
     {
         if (!_animancerComponent.IsPlaying(shockwaveAnimation))
         {
+            RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_shockwave", gameObject);
             var state = _animancerComponent.Play(shockwaveAnimation);
             state.Events(this).OnEnd = () =>
             {

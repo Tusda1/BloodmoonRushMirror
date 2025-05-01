@@ -1,5 +1,6 @@
 using System;
 using Animancer;
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.Serialization;
 using VContainer;
@@ -48,5 +49,8 @@ public class LightningManager
                 lightning.SetActive(false);
             };
         }
+        
+        // Play the sound effect
+        RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_lightning_strike", exampleLightning);
     }
 }

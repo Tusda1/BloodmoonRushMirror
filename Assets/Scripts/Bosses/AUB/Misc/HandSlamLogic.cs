@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using FMODUnity;
 using UnityEngine;
 
 [Serializable]
@@ -34,6 +35,7 @@ public class HandSlamLogic
             return false;
         }
         
+        RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Bot/AUB_hand_slam", _boss.gameObject);
         _boss.AnimancerComponent.Play(slamHitAnimation);
         _ = _cameraEffects.ShakeCamera(0.5f, 0.5f);
         return true;

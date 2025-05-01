@@ -152,7 +152,6 @@ namespace Player {
                 .WithOnStop(() => {
                     isDashing = false;
                     lockToAxis = Axis.None;
-                    ResetMovement(Axis.YAxis);
                     player.healthComponent.HasInvincibilityFrames = false;
                     player.animator.SetBool(AnimatorDashBool, false);
                 })
@@ -267,7 +266,8 @@ namespace Player {
                 // player.animator.SetBool(AnimatorIsFallingBool, true);
             }
             else if (isJumping) {
-                isDashing = false;
+                //isDashing = false;
+                //DashTimer.StopTimer();
                 MovingPlatformExit();
                 velocity.y = jumpForce;
                 player.animator.SetBool(AnimatorJumpBool, true);
@@ -350,6 +350,10 @@ namespace Player {
         public void OnJump(InputValue inputValue) {
             isHoldingJump = inputValue.isPressed;
             if (!isHoldingJump) return;
+
+            if (isDashing) {
+                if (killCharges < 1) return;
+            }
             
             ForceExitDuck();
             PlayerLadderLogic.ExitLadder();

@@ -167,6 +167,7 @@ public class PingPongState : DraculaState
         }
         else
         {
+            audioManager.PlayOneShotAttached("Drac_Pingpong_Damage", gameObject);
             _pongPongInstance.gameObject.SetActive(false);
             var vulnerableStates = GetComponents<VulnerableState>();
             var vulnerableState = vulnerableStates.FirstOrDefault(state => state.StatePhase == StatePhase);

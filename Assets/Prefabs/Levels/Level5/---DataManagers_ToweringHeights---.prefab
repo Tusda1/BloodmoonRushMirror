@@ -77,6 +77,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
+--- !u!114 &1355275374719805243 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1541314127066406298, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
+  m_PrefabInstance: {fileID: 553167381910239905}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ff5ab81a9acef94c825225ea9b8b189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7376197392578569030 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7057345946494523879, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
@@ -90,6 +101,19 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2028127883361844915, guid: 555d1d155b6e3fe46a91b2fcce83b184, type: 3}
+      propertyPath: _data._json
+      value: '{"declarations":{"Kind":"Scene","collection":{"$content":[{"name":"LifetimeScope","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"VContainer.Unity.LifetimeScope,
+        VContainer, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028127883361844915, guid: 555d1d155b6e3fe46a91b2fcce83b184, type: 3}
+      propertyPath: _data._objectReferences.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028127883361844915, guid: 555d1d155b6e3fe46a91b2fcce83b184, type: 3}
+      propertyPath: '_data._objectReferences.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1355275374719805243}
     - target: {fileID: 3789093122311148684, guid: 555d1d155b6e3fe46a91b2fcce83b184, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

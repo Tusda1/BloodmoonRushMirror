@@ -123,6 +123,7 @@ public class BombAttackState : DrucillaState
     
     private void SpawnBomb()
     {
+        audioManager.PlayOneShotAttached("Druc_Bomb_Drop", gameObject);
         var bomb = _bombPooler.GetPooledObject();
         bomb.transform.position = transform.position;
         bomb.SetActive(true);

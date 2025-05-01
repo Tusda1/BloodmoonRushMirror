@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Animancer;
+using FMODUnity;
 using UnityEngine;
 
 public class VineScript : MonoBehaviour
@@ -55,6 +56,7 @@ public class VineScript : MonoBehaviour
         
         yield return new WaitForSeconds(lureWaitTime);
 
+        RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_vine_sprout", gameObject);
         var state = _animancerComponent.Play(vineAttack);
         state.Events(this).OnEnd = () =>
         {

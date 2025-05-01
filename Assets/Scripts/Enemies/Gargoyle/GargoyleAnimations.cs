@@ -19,6 +19,7 @@ public class GargoyleAnimations : EnemyAnimationBase
         {
             state.Destroy();
             onEnd?.Invoke();
+            PlayDefaultAnimation();
         };
     }
 }
