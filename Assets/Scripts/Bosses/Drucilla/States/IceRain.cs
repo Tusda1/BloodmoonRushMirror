@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,7 @@ public class IceRain : DrucillaState
     private bool _iceRainActive;
     private Vector2 cornerOne;
     private Vector2 cornerTwo;
+    private Coroutine _waitOnEndCoroutine;
     
     private Pooler _bigPooler;
     private Pooler _smallPooler;
@@ -83,7 +85,10 @@ public class IceRain : DrucillaState
         if (_timer > duration)
         {
             _timer = 0;
-            EndState();
+            if (_waitOnEndCoroutine == null)
+            {
+                _waitOnEndCoroutine = StartCoroutine(WaitOnEnd());
+            }
             return;
         }
 
@@ -115,5 +120,12 @@ public class IceRain : DrucillaState
     protected override void OnTeleportEnd()
     {
         _hasTeleported = true;
+    }
+
+    private IEnumerator WaitOnEnd()
+    {
+        yield return new WaitForSeconds(1f);
+        _waitOnEndCoroutine = null;
+        EndState();
     }
 }
