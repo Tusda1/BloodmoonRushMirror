@@ -9,8 +9,8 @@ public class CrusherManager : MonoBehaviour {
     [Header("Tiles")]
     [SerializeField] private Tilemap crusherTilemap;
     [SerializeField] private Tilemap coverTilemap;
-    [SerializeField] private Tile crusherTile;
-    [SerializeField] private Tile coverTile;
+    [SerializeField] private RuleTile crusherTile;
+    [SerializeField] private RuleTile coverTile;
     [Header("Size")]
     [SerializeField] private Vector2Int crusherSize;
     [FormerlySerializedAs("crusherUpSpeed")]
