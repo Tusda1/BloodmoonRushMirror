@@ -78,9 +78,9 @@ SpriteMask:
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_MaskAlphaCutoff: 0
-  m_FrontSortingLayerID: -1470689367
+  m_FrontSortingLayerID: 0
   m_BackSortingLayerID: 489182687
-  m_FrontSortingLayer: 2
+  m_FrontSortingLayer: 0
   m_BackSortingLayer: -2
   m_FrontSortingOrder: 100
   m_BackSortingOrder: 0
@@ -525,9 +525,9 @@ SpriteMask:
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_MaskAlphaCutoff: 0
-  m_FrontSortingLayerID: -1470689367
+  m_FrontSortingLayerID: 0
   m_BackSortingLayerID: 489182687
-  m_FrontSortingLayer: 2
+  m_FrontSortingLayer: 0
   m_BackSortingLayer: -2
   m_FrontSortingOrder: 100
   m_BackSortingOrder: 0
@@ -1022,9 +1022,9 @@ SpriteMask:
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_MaskAlphaCutoff: 0
-  m_FrontSortingLayerID: -1470689367
+  m_FrontSortingLayerID: 0
   m_BackSortingLayerID: 489182687
-  m_FrontSortingLayer: 2
+  m_FrontSortingLayer: 0
   m_BackSortingLayer: -2
   m_FrontSortingOrder: 100
   m_BackSortingOrder: 0
@@ -1440,9 +1440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dd115699dea420409af848db8946150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 179283514714786841}
-  animator: {fileID: 3719902326129582002}
-  fieldNameInSO: jumpButtonAnimation
+  spriteLibrary: {fileID: 0}
 --- !u!212 &179283514714786841
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8948,8 +8946,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 502880736392430846}
     m_Modifications:
     - target: {fileID: 8971206082523950, guid: 81c0c95dcfd204445ad5de41f6d5640a, type: 3}
+      propertyPath: enableDataBinding
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971206082523950, guid: 81c0c95dcfd204445ad5de41f6d5640a, type: 3}
       propertyPath: <ID>k__BackingField
       value: 0871c553-764f-45b6-bd16-4150ce9339ac
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971206082523950, guid: 81c0c95dcfd204445ad5de41f6d5640a, type: 3}
+      propertyPath: parallaxElements.Array.data[1].xAxisEffectMultiplier
+      value: -0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971206082523950, guid: 81c0c95dcfd204445ad5de41f6d5640a, type: 3}
+      propertyPath: parallaxElements.Array.data[1].yAxisEffectMultiplier
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2167466902412480774, guid: 81c0c95dcfd204445ad5de41f6d5640a, type: 3}
       propertyPath: m_Name
@@ -8994,6 +9004,10 @@ PrefabInstance:
     - target: {fileID: 4307802241055366204, guid: 81c0c95dcfd204445ad5de41f6d5640a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9050134641809302180, guid: 81c0c95dcfd204445ad5de41f6d5640a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15448,8 +15462,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1866330993603617668, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866330993603617668, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
-      value: 0.8823529
+      value: 0.57142854
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866330993603617668, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866330993603617668, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 3163266781814347160, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
       propertyPath: _data._json
@@ -15510,6 +15536,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Drucilla
       objectReference: {fileID: 0}
+    - target: {fileID: 7589048197982333553, guid: 99aec81216d35ab4292b5a2abb34c41f, type: 3}
+      propertyPath: nextLevelSceneCollection
+      value: 
+      objectReference: {fileID: 11400000, guid: 37732741e35e226418ae4156b65beb04, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
