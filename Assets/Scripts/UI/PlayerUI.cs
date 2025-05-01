@@ -8,6 +8,8 @@ namespace Player {
     public class PlayerUI : MonoBehaviour {
         #region ---Fields---
         [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+        
+        [SerializeField] private DialogueUI_DataContainer dialogueUI;
 
         private VisualElement _root;
         private PlayerHearts _playerHearts;
@@ -22,6 +24,8 @@ namespace Player {
 
         private void Start() {
             _root = uiDocument.rootVisualElement;
+
+            dialogueUI.playerUIDocumentVisible = DisplayStyle.Flex;
 
             _playerHearts = _root.Q<PlayerHearts>("PlayerHearts");
             
