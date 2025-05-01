@@ -39,6 +39,7 @@ public class AUBBrain : MonoBehaviour {
         _leftHandStates = Array.FindAll(_leftHandStates, state => state is not HoverHand);
         _headStates = Array.FindAll(_headStates, state => state is not IdleHeadState);
         _headStates = Array.FindAll(_headStates, state => state is not HeadHitByHandState);
+        _headStates = Array.FindAll(_headStates, state => state is not DeathState);
         
         _boss = GetComponent<BossBase>();
         _boss.OnBattleStart += StartBattle;

@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 85904818139864274}
   - component: {fileID: 2914922834258410414}
   - component: {fileID: 4257012985258620797}
+  - component: {fileID: 7208768216903791614}
   - component: {fileID: 5891487225574882615}
   - component: {fileID: 7747629417346462394}
   m_Layer: 0
@@ -471,6 +472,20 @@ MonoBehaviour:
   maxVines: 4
   minVines: 2
   distanceBetweenVines: 2.5
+--- !u!114 &7208768216903791614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4026781224135266417}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed90c9912cd656e48bcf62552e1bb52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 9061734949686521096}
+  statePhase: 1
 --- !u!95 &5891487225574882615
 Animator:
   serializedVersion: 7
