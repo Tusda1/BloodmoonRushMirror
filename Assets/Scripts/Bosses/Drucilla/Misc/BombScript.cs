@@ -1,4 +1,5 @@
 using System;
+using Animancer;
 using FMODUnity;
 using UnityEngine;
 
@@ -6,7 +7,22 @@ public class BombScript : GravityObject
 {
     [SerializeField] private float explosionRadius = 1f;
     [SerializeField] private DamageInstance damageInstance;
+    [SerializeField] private AnimationClip bombAnimation;
+    [SerializeField] private AnimationClip explosionAnimation;
     
+    private AnimancerComponent _animancerComponent;
+
+    private new void Awake()
+    {
+        base.Awake();
+        _animancerComponent = GetComponent<AnimancerComponent>();
+    }
+    
+    private void OnEnable()
+    {
+        _animancerComponent.Play(bombAnimation);
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Ground"))
@@ -18,6 +34,7 @@ public class BombScript : GravityObject
     private void Explode()
     {
         // Play explosion sound
+        
         RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_bomb_explode", gameObject);
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.SetLayerMask(LayerMask.GetMask("Player"));
@@ -32,6 +49,10 @@ public class BombScript : GravityObject
                 colliders[i].GetComponent<IDamageable>().TakeDamage(damageInstance);
             }
         }
-        gameObject.SetActive(false);
+        var state = _animancerComponent.Play(explosionAnimation);
+        state.Events(this).OnEnd = () =>
+        {
+            gameObject.SetActive(false);
+        };
     }
 }
