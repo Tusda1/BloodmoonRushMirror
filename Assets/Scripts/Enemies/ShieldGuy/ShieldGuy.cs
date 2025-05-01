@@ -11,6 +11,7 @@ public class ShieldGuy : ReactiveBase
     [SerializeField] private float waitBeforeStrike = 2.5f;
     [SerializeField] private float distanceToCancelStrike = 3f;
     [SerializeField] private float keepAgroDistance = 2f;
+    [SerializeField] private float stunnedTime = 1.7f;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
 
     private float _timer;
@@ -92,11 +93,6 @@ public class ShieldGuy : ReactiveBase
         }
     }
 
-    protected override void SetVisualFacingDirection()
-    {
-        visualFacingDirection = -facingDirection;
-    }
-
     protected override bool CanBeDamaged(DamageInstance damageInstance)
     {
         if (isStunned) return true;
@@ -116,7 +112,7 @@ public class ShieldGuy : ReactiveBase
         CancelWaitThenStrike();
         isVulnerable = true;
         isStunned = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(stunnedTime);
         isVulnerable = false;
         isStunned = false;
         
