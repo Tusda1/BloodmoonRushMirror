@@ -121,7 +121,7 @@ public class BossBase : GravityObject, IDamageable
 
     public void TakeDamage(DamageInstance damageInstance)
     {
-        if (!canTakeDamage) return;
+        if (!canTakeDamage || isDead) return;
         
         CurrentHealth -= damageInstance.damage;
 

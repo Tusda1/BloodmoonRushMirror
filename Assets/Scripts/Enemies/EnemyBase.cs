@@ -125,7 +125,6 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     protected virtual void OnDisable() {
-        print(gameObject);
         StopAllCoroutines();
     }
 
