@@ -37,7 +37,6 @@ public class DashAndSwoopState : DraculaState
     private Vector2 _swoopTarget;
     
     [SerializeField] private Swoop swoop = new();
-    private PlayerScript _player;
     private CornerFinder _cornerFinder;
     
     private enum Stage
@@ -55,11 +54,6 @@ public class DashAndSwoopState : DraculaState
         base.Awake();
         swoop.InitializeSwoop(SwoopEnd, Boss);
         _cornerFinder = new CornerFinder(transform, LayerMask.GetMask("Ground"));
-    }
-
-    private void Start()
-    {
-        _player = ServiceLocator.Get<PlayerScript>();
     }
 
     private void OnEnable()
@@ -108,6 +102,10 @@ public class DashAndSwoopState : DraculaState
         swoop.ResetSwoop();
         _loopCount = 0;
         _stages.Clear();
+        _endStateCoroutine = null;
+        _dashStarted = false;
+        _swoopStarted = false;
+        Boss.DisableGravity();
     }
 
     private void Update()

@@ -14,7 +14,7 @@ public class SwoopAttackState : DraculaState
     private Vector2 _swoopOrigin;
     private Vector2 _swoopTarget;
     private Vector2 _swoopArcBottom;
-    private int swoopCount;
+    private int _swoopCount;
     private float _shootTimer;
     private float _shotCounter;
     private Vector2 _temporaryPosition;
@@ -81,7 +81,7 @@ public class SwoopAttackState : DraculaState
     private void OnDisable()
     {
         _shotCounter = 0;
-        swoopCount = 0;
+        _swoopCount = 0;
     }
 
     private void Update()
@@ -114,7 +114,7 @@ public class SwoopAttackState : DraculaState
         swoop.ResetSwoop();
         Boss.transform.rotation = Quaternion.identity;
         _swoopState = SwoopState.Shooting;
-        swoopCount++;
+        _swoopCount++;
         (_swoopOrigin, _swoopTarget) = (_swoopTarget, _swoopOrigin);
         Boss.AnimancerComponent.Play(idleAnimation);
     }
@@ -124,7 +124,7 @@ public class SwoopAttackState : DraculaState
         // If the shoot duration has passed, switch to the next swoop
         if (_shotCounter >= shootAmount)
         {
-            if (swoopCount >= swoopAmount)
+            if (_swoopCount >= swoopAmount)
             {
                 EndState();
             }
