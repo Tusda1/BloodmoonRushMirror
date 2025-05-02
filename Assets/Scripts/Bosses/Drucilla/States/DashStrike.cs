@@ -56,16 +56,16 @@ public class DashStrike : DrucillaState
 
             if (Vector2.Distance(leftCorner, _player.transform.position) < Vector2.Distance(rightCorner, _player.transform.position))
             {
-                leftCorner.x += 1;
+                leftCorner.x += 3;
                 leftCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
-                leftCorner.y -= 5f;
+                leftCorner.y -= 6f;
                 _teleportLocation = leftCorner;
             }
             else
             {
-                rightCorner.x -= 1;
+                rightCorner.x -= 3;
                 rightCorner.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
-                rightCorner.y -= 5f;
+                rightCorner.y -= 6f;
                 _teleportLocation = rightCorner;
             }
             

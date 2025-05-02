@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 85904818139864274}
   - component: {fileID: 2914922834258410414}
   - component: {fileID: 4257012985258620797}
+  - component: {fileID: 112023301293336818}
   - component: {fileID: 7208768216903791614}
   - component: {fileID: 5891487225574882615}
   - component: {fileID: 7747629417346462394}
@@ -217,7 +218,7 @@ MonoBehaviour:
     _CurrentState: {fileID: 0}
     _DefaultState: {fileID: 0}
   currentPhase: 0
-  maxHealth: 03000000
+  maxHealth: 28000000
   takeDamageAnimation: []
   turnWhileMoving: 1
   bossDamageInstance:
@@ -336,7 +337,7 @@ MonoBehaviour:
     groundSlamEnter: {fileID: 1786734269287470583, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
     groundSlamDown: {fileID: -2402061190796498791, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
     groundSlamSlam: {fileID: -5197455875585456144, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
-    groundSlamStuck: {fileID: 7400000, guid: faa3efc8e6401c74a8f6b3aa7bc232c3, type: 2}
+    groundSlamStuck: {fileID: -75080595873988218, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
     groundSlamExit: {fileID: 3439545140406604964, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
     groundSlamEnded: {fileID: 2794955929623065441, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
     idleAnimation: {fileID: 8878584481353921674, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
@@ -398,7 +399,7 @@ MonoBehaviour:
     groundSlamEnter: {fileID: 1786734269287470583, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
     groundSlamDown: {fileID: -2402061190796498791, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
     groundSlamSlam: {fileID: -5197455875585456144, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
-    groundSlamStuck: {fileID: 7400000, guid: faa3efc8e6401c74a8f6b3aa7bc232c3, type: 2}
+    groundSlamStuck: {fileID: -75080595873988218, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
     groundSlamExit: {fileID: 3439545140406604964, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
     groundSlamEnded: {fileID: 2794955929623065441, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
     idleAnimation: {fileID: 8878584481353921674, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
@@ -472,6 +473,21 @@ MonoBehaviour:
   maxVines: 4
   minVines: 2
   distanceBetweenVines: 2.5
+--- !u!114 &112023301293336818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4026781224135266417}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7678d2b8025c2db41af2bf47463b3845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 9061734949686521096}
+  statePhase: 1
+  idleAnimation: {fileID: 8878584481353921674, guid: 6d5744e5ec166f347a35bf034c0a003d, type: 3}
 --- !u!114 &7208768216903791614
 MonoBehaviour:
   m_ObjectHideFlags: 0

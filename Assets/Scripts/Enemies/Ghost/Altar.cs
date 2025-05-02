@@ -81,6 +81,8 @@ public class Altar : MonoBehaviour
      
      private IEnumerator PlayCaughtGhostAnimation()
      {
+          // TODO: Stopp suck lyd
+          // TODO: Eventuelt spill av spis spøkelse lyd
           _animancerComponent.Play(caughtGhost);
 
           yield return new WaitForSeconds(1f);
@@ -90,6 +92,7 @@ public class Altar : MonoBehaviour
 
      private void PlaySuckAnimation()
      {
+          // TODO: Start suck lyd
           if (_animancerComponent.IsPlaying(suck)) return;
           
           if (_animationCoroutine != null)

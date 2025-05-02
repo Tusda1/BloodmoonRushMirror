@@ -16,8 +16,15 @@ public class CrusherScript : GravityObject {
     public Vector2 startPos;
     public Vector2 endPos;
     
+    private IAudioManager _audioManager;
+    
     [Inject] private CameraEffects _cameraEffects;
     #endregion
+    
+    [Inject]
+    public void Construct(IAudioManager audioManager) {
+        _audioManager = audioManager;
+    }
 
     protected override void ComputeVelocity() {
         if (isStill) return;
@@ -42,6 +49,7 @@ public class CrusherScript : GravityObject {
                 isStill = true;
                 triggerCollider2D.isTrigger = false;
                 _cameraEffects?.ShakeCamera(0.2f, 0.2f);
+                _audioManager.PlayOneShotAttached("Crusher_Slam", gameObject);
             }
         }
 
