@@ -64,7 +64,7 @@ public class LaserAttackState : DraculaState
         
         // Find middle point between left and right corner
         _teleportDestination = (rightCorner + leftCorner) / 2;
-        _teleportDestination.y -= 1.5f;
+        _teleportDestination.y -= 5f;
         
         stage = LaserAttackStage.Teleporting;
     }
@@ -99,7 +99,6 @@ public class LaserAttackState : DraculaState
     {
         Boss.AnimancerComponent.Play(idleAnimation);
         stage = LaserAttackStage.Tracking;
-        audioManager.PlayOneShotAttached("Drac_Lazer_Fire", gameObject);
     }
     
     private void Tracking()
@@ -108,16 +107,16 @@ public class LaserAttackState : DraculaState
         _timer += Time.deltaTime;
         if (_timer >= trackingTime)
         {
+            audioManager.PlayOneShot("Drac_Lazer_Hold");
             _timer = -10f;
             var state = Boss.AnimancerComponent.Play(laserAttackAnimation);
             state.Events(this).OnEnd = () =>
             {
-                state.Destroy();
+                state.Events(this).OnEnd = null;
                 stage = LaserAttackStage.Firing;
                 Destroy(_trackerObject);
                 _timer = 0;
-                Boss.AnimancerComponent.Play(idleAnimation);
-                audioManager.PlayOneShot("Drac_Lazer_Hold");
+                audioManager.PlayOneShotAttached("Drac_Lazer_Fire", gameObject);
             };
         }
        

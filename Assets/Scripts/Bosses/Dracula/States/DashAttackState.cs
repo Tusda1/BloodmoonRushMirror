@@ -53,6 +53,7 @@ public class DashAttackState : DraculaState
             _dashOrigin = leftCorner;
             _dashTarget = rightCorner;
         }
+        _dashOrigin.y += Boss.bossCollider.bounds.extents.y - Boss.bossCollider.offset.y;
         
         Initialize();
     }

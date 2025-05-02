@@ -66,6 +66,7 @@ public class PingPongState : DraculaState
         {
             _teleportPosition = leftCorner;
         }
+        _teleportPosition.y += Boss.bossCollider.bounds.extents.y - Boss.bossCollider.offset.y;
         
         _pingPongState = PingPong.Teleport;
     }

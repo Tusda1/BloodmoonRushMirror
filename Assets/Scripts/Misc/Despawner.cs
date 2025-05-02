@@ -6,7 +6,7 @@ public class Despawner : MonoBehaviour {
     {
         if (other.CompareTag("Despawnable"))
         {
-            gameObject.SetActive(false);
+            other.gameObject.SetActive(false);
         }
     }
 }

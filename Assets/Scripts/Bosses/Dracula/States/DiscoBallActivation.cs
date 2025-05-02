@@ -39,7 +39,7 @@ public class DiscoBallActivation : DraculaState
             }
             
             // Use a boxcast to check if you are teleporting on top of the player
-            var colliderSize = new Vector2(6, 3);
+            var colliderSize = new Vector2(10, 3);
             var hit = Physics2D.OverlapBox(center + Vector2.up * (colliderSize.y / 2), colliderSize, 0, LayerMask.GetMask("Player"));
             safePosition = hit == null;
             
@@ -48,7 +48,7 @@ public class DiscoBallActivation : DraculaState
                 center += new Vector2(increment, 0);
             }
         }
-        
+        center.y += Boss.bossCollider.bounds.extents.y - Boss.bossCollider.offset.y;
         var teleportEnter = Boss.isGrounded ? teleportEnterGround : teleportEnterAir;
         teleport.TeleportToLocation(center, teleportEnter, teleportExit);
     }

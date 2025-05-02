@@ -51,10 +51,10 @@ public class SwoopAttackState : DraculaState
     {
         var leftCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
         leftCorner.x += 1f;
-        leftCorner.y -= 2f;
+        leftCorner.y -= 5f;
         var rightCorner = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
         rightCorner.x -= 1f;
-        rightCorner.y -= 2f;
+        rightCorner.y -= 5f;
         
         // 50% chance to go left or right
         if (UnityEngine.Random.value > 0.5f)
@@ -145,7 +145,7 @@ public class SwoopAttackState : DraculaState
             Vector2 randomPoint = (Vector2)_player.position + UnityEngine.Random.insideUnitCircle * 2;
             
             // Shoot a projectile at the random point
-            var position = transform.position;
+            var position = Boss.bossCollider.bounds.center;
             var projectile = _projectilePooler.GetPooledObject();
             projectile.transform.position = (Vector2)position + projectileOriginOffset;
             projectile.GetComponent<DraculaBatScript>().targetVector = (randomPoint - (Vector2)position).normalized;

@@ -51,6 +51,7 @@ public class BoomerangState : DraculaState
             _leftCorner.x += 1;
             _teleportPosition = _leftCorner;
         }
+        _teleportPosition.y += Boss.bossCollider.bounds.extents.y - Boss.bossCollider.offset.y;
         
         _boomerangStage = BoomerangStage.Teleport;
     }

@@ -47,7 +47,7 @@ public class PingPongScript : GravityObject, IDamageable
     public void TakeDamage(DamageInstance damageInstance)
     {
         RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Dracula/Drac_pingpong_hit", gameObject);
-        setVelocity.x = Mathf.Abs(setVelocity.x) + 5f;
+        setVelocity.x = Mathf.Abs(setVelocity.x) + 3f;
         // If knocked back, reverse direction
         if (damageInstance.knockback.x > 0)
         {

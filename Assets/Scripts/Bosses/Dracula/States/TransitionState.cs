@@ -20,7 +20,7 @@ public class TransitionState : DraculaState
             teleportPosition = new Vector2(playerPosition.x - 5f, playerPosition.y);
         }
         
-        teleportPosition.y += Boss.bossCollider.bounds.extents.y + Mathf.Abs(Boss.bossCollider.offset.y);
+        teleportPosition.y += Boss.bossCollider.bounds.extents.y - Boss.bossCollider.offset.y;
         
         var teleportEnter = Boss.bossGrounded ? teleportEnterGround : teleportEnterAir;
         teleport.TeleportToLocation(teleportPosition, teleportEnter, teleportExit);

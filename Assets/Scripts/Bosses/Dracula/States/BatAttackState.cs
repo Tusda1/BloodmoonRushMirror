@@ -67,11 +67,11 @@ public class BatAttackState : DraculaState
             setPosition = new Vector2(randomX, rightWall.y);
             
             // Use a boxcast to determine that you are not teleporting on top of the player
-            var colliderSize = new Vector2(6, 3);
+            var colliderSize = new Vector2(10, 3);
             var hit = Physics2D.OverlapBox(setPosition + Vector2.up * (colliderSize.y / 2), colliderSize, 0, LayerMask.GetMask("Player"));
             safePosition = hit == null;
         }
-
+        setPosition.y += Boss.bossCollider.bounds.extents.y - Boss.bossCollider.offset.y;
         _teleportLocation = setPosition;
         
         _attackPhase = AttackPhase.Teleporting;

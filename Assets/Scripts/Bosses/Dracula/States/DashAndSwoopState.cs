@@ -66,14 +66,16 @@ public class DashAndSwoopState : DraculaState
     {
         _topLeft = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
         _topLeft.x += 1f;
-        _topLeft.y -= 2f;
+        _topLeft.y -= 5f;
         _topRight = _cornerFinder.GetCorner(CornerFinder.CornerType.TopRight);
         _topRight.x -= 1f;
-        _topRight.y -= 2f;
+        _topRight.y -= 5f;
         _bottomRight = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomRight);
         _bottomRight.x -= 1.5f;
         _bottomLeft = _cornerFinder.GetCorner(CornerFinder.CornerType.BottomLeft);
         _bottomLeft.x += 1.5f;
+        _bottomLeft.y += Boss.bossCollider.bounds.extents.y - Boss.bossCollider.offset.y;
+        _bottomRight.y += Boss.bossCollider.bounds.extents.y - Boss.bossCollider.offset.y;
         
         _bottomMiddle = (_bottomRight + _bottomLeft) / 2;
         _bottomMiddle.y += 1.5f;
