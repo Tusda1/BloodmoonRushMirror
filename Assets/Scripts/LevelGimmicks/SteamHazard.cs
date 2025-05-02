@@ -2,6 +2,7 @@ using System;
 using PlayerLoopTimer;
 using Unity.VisualScripting;
 using UnityEngine;
+using VContainer;
 
 public class SteamHazard : MonoBehaviour {
     private static readonly int Steam = Animator.StringToHash("ShootSteam");
@@ -16,7 +17,14 @@ public class SteamHazard : MonoBehaviour {
     [SerializeField] private Animator animator;
     [SerializeField] private DamageInstance damageInstance;
     [SerializeField] private BoxCollider2D boxCollider2D;
+    private IAudioManager _audioManager;
+
     #endregion
+    
+    [Inject]
+    public void Construct(IAudioManager audioManager) {
+        _audioManager = audioManager;
+    }
 
     private void Start() {
         _steamHazardTimer = new CountdownTimer(timeBetweenSteam);
@@ -35,6 +43,7 @@ public class SteamHazard : MonoBehaviour {
 
     private void EnableCollider() {
         boxCollider2D.enabled = true;
+        _audioManager.PlayOneShotAttached("Steam_Shoot", gameObject);
         _steamDurationTimer.StartTimer();
     }
 
