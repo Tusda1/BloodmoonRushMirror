@@ -30,6 +30,8 @@ public class DrucillaFight : ConversationTrigger {
 
     private void TriggerFightEndConversation() {
         cutsceneGraph.TriggerUnityEvent("End");
+        
+        bossBase.OnBattleEnd -= TriggerFightEndConversation;
     }
 
     public void EndLevel() {
