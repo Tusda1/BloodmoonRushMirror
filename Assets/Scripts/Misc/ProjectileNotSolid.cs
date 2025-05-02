@@ -25,7 +25,6 @@ public class ProjectileNotSolid : GravityObject
     {
         if (targetVector == Vector2.zero)
         {
-            Debug.LogError("Target vector is zero");
             gameObject.SetActive(false);
             return;
         }
