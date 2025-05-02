@@ -5,7 +5,8 @@ using Random = UnityEngine.Random;
 public class DiscoBallActivation : DraculaState
 {
     [SerializeField] private AnimationClip discoBallActivationAnimation;
-    [SerializeField] private DiscoBall discoBall;
+    
+    [HideInInspector] public DiscoBall discoBall;
     
     private CornerFinder _cornerFinder;
     private Collider2D _collider;
