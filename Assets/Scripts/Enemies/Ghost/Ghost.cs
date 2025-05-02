@@ -55,8 +55,10 @@ public class Ghost : ReactiveBase
         _playerMovement.OnPlayerSpikeDeath += OnPlayerSpikeReset;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+        
         // Unsubscribe from the event
         _playerMovement.OnPlayerSpikeDeath -= OnPlayerSpikeReset;
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
 using System.Linq;
+using VContainer;
+using VContainer.Unity;
 using Random = UnityEngine.Random;
 
 public class DraculaBrain : MonoBehaviour 
@@ -18,6 +20,15 @@ public class DraculaBrain : MonoBehaviour
     private bool _isFighting;
     private PingPongState[] _pingPongState;
     private bool _repeating;
+    
+    private IObjectResolver _objectResolver;
+    private IAudioManager _audioManager;
+    
+    [Inject]
+    public void Construct(LifetimeScope currentScope) {
+        _objectResolver = currentScope.Container;
+        _audioManager = _objectResolver.Resolve<IAudioManager>();
+    }
     
     private void Awake()
     {
@@ -35,11 +46,10 @@ public class DraculaBrain : MonoBehaviour
         
         _states = _states.Where(state => state.GetType() != typeof(PingPongState)).ToArray();
         _states = _states.Where(state => state.GetType() != typeof(VulnerableState)).ToArray();
-    }
-
-    private void Start()
-    {
+        _states = _states.Where(state => state.GetType() != typeof(DraculaDeath)).ToArray();
+        
         boss.OnBattleStart += StartFighting;
+        boss.OnDeath += EndFight;
         boss.DisableGravity();
     }
     
@@ -48,6 +58,15 @@ public class DraculaBrain : MonoBehaviour
         _isFighting = true;
         FillAttackQueue();
         MoveToNextState();
+        _audioManager.PlayMusic("Dracula_FightTheme");
+    }
+    
+    private void EndFight()
+    {
+        _isFighting = false;
+        var deathState = GetComponent<DraculaDeath>();
+        boss.StateMachine.ForceSetState(deathState);
+        _audioManager.StopMusic("Dracula_FightTheme");
     }
     
     private void PauseFight()
@@ -58,11 +77,6 @@ public class DraculaBrain : MonoBehaviour
     private void ResumeFight()
     {
         _isFighting = true;
-    }
-    
-    private void EndFight()
-    {
-        _isFighting = false;
     }
 
     private BossState[] GetStatesByPhase(int phase)

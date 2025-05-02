@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 public class AUBBrain : MonoBehaviour {
     [SerializeField] private BossBase leftHand;
@@ -18,6 +20,14 @@ public class AUBBrain : MonoBehaviour {
     private HandKilledState _rightHandKilledState;
     private HandKilledState _leftHandKilledState;
     
+    private IObjectResolver _objectResolver;
+    private IAudioManager _audioManager;
+    
+    [Inject]
+    public void Construct(LifetimeScope currentScope) {
+        _objectResolver = currentScope.Container;
+        _audioManager = _objectResolver.Resolve<IAudioManager>();
+    }
 
     private void Awake()
     {
@@ -49,10 +59,11 @@ public class AUBBrain : MonoBehaviour {
         _leftHandKilledState.OnHandKilled += HandHitScreen;
         _rightHandKilledState.OnHandKilled += HandHitScreen;
     }
-    
+
     private void StartBattle()
     {
         _isFighting = true;
+        _audioManager.PlayMusic("AUB_FightTheme");
     }
     
     private void EndBattle()
@@ -60,6 +71,7 @@ public class AUBBrain : MonoBehaviour {
         _isFighting = false;
         var deathState = GetComponent<DeathState>();
         _boss.StateMachine.ForceSetState(deathState);
+        _audioManager.StopMusic("AUB_FightTheme");
     }
 
     private void Update()

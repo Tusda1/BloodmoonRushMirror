@@ -18,13 +18,36 @@ public class JumpEnemy : ReactiveBase
     
     private GravityObjectPlayerMovement _playerMovement;
     private SlimeAnimation _slimeAnimation;
+
+    protected new void Awake()
+    {
+        base.Awake();
+        _initialGravityModifier = GravityModifier;
+    }
     
     protected override void Start()
     {
         base.Start();
         _slimeAnimation = enemyAnimationBase as SlimeAnimation;
     }
-    
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        
+        // Reset the state
+        GravityModifier = _initialGravityModifier;
+        _lastFramePosition = new Vector2(-100, -100);
+        _readyToJump = false;
+        _isJumping = false;
+        targetVelocity = Vector2.zero;
+        enemyCollider.enabled = true;
+        isDead = false;
+        isStunned = false;
+        isKnockedUp = false;
+        transform.position = startPosition;
+    }
+
     protected override void Action()
     {
         if (_lastFramePosition == new Vector2(-100, -100)) _lastFramePosition = targetObject.position;
@@ -53,7 +76,6 @@ public class JumpEnemy : ReactiveBase
     private IEnumerator Jump()
     {
         _readyToJump = false;
-        _initialGravityModifier = GravityModifier;
         GravityModifier = 0;
         _isJumping = true;
         _slimeAnimation.Jump();
