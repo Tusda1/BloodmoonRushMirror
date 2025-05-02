@@ -56,6 +56,8 @@ MonoBehaviour:
     name: 
     <ID>k__BackingField: 
     hasBeenTriggered: 0
+  nextScene: {fileID: 0}
+  bossBase: {fileID: 0}
 --- !u!61 &7514103845948908218
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -115,8 +117,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"DraculaFight","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"DraculaFight,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 3602542794451807415}
 --- !u!114 &1618586867706634899
 MonoBehaviour:
   m_ObjectHideFlags: 0
