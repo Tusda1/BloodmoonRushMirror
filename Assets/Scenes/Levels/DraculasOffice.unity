@@ -322,6 +322,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8971369240908742945, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
   m_PrefabInstance: {fileID: 5275367742811948989}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1359140004 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2176969380721542304, guid: d7433518722c55541ab2a890613ac3ce, type: 3}
+  m_PrefabInstance: {fileID: 588297454365797492}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1403248765 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5955643803413011838, guid: 6a80ec43e445d604bb5ef8640c14c4e6, type: 3}
@@ -345,50 +350,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1116447291052204353, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
-      propertyPath: 'baseAttackQueueSize.Array.data[0]'
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116447291052204353, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
-      propertyPath: 'baseAttackQueueSize.Array.data[1]'
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3912667724118841212, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
-      propertyPath: swoop.swoopDuration
-      value: 1.8
-      objectReference: {fileID: 0}
     - target: {fileID: 4292733656066779342, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
       propertyPath: m_Name
       value: Dracula
-      objectReference: {fileID: 0}
-    - target: {fileID: 4390382841925434126, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
-      propertyPath: attackLength
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4390382841925434126, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
-      propertyPath: batSpawnRate
-      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 5459067590035719071, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
       propertyPath: discoBall
       value: 
       objectReference: {fileID: 270973394}
-    - target: {fileID: 5633215474647500384, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
-      propertyPath: dashSpeed
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 5633215474647500384, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
-      propertyPath: dashAmount
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5633215474647500384, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
-      propertyPath: dashCooldown
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 5633215474647500384, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
-      propertyPath: easeStrength
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8785588194302458249, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
       propertyPath: m_LocalPosition.x
       value: 152.87524
@@ -429,10 +398,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9200508711738700960, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
-      propertyPath: currentPhase
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -443,7 +408,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9200508711738700960, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
   m_PrefabInstance: {fileID: 1474617610}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1891513014}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b722aab6225e2e044a3d5cf7e1916ae8, type: 3}
@@ -572,6 +537,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1891513014 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4292733656066779342, guid: 8473be67672861649b95ce6cdbdd6f88, type: 3}
+  m_PrefabInstance: {fileID: 1474617610}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1896551691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40348,19 +40318,19 @@ PrefabInstance:
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[0]'
       value: 
-      objectReference: {fileID: 637578556}
+      objectReference: {fileID: 1422211241}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[1]'
       value: 
-      objectReference: {fileID: 270973393}
+      objectReference: {fileID: 51499041}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[2]'
       value: 
-      objectReference: {fileID: 1403248765}
+      objectReference: {fileID: 2124842060}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[3]'
       value: 
-      objectReference: {fileID: 1989404998}
+      objectReference: {fileID: 1403248765}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[4]'
       value: 
@@ -40368,15 +40338,15 @@ PrefabInstance:
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[5]'
       value: 
-      objectReference: {fileID: 2124842060}
+      objectReference: {fileID: 270973393}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[6]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 637578556}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[7]'
       value: 
-      objectReference: {fileID: 1442046440}
+      objectReference: {fileID: 1989404998}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[8]'
       value: 
@@ -40384,19 +40354,19 @@ PrefabInstance:
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[9]'
       value: 
-      objectReference: {fileID: 1989404998}
+      objectReference: {fileID: 1442046440}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[10]'
       value: 
-      objectReference: {fileID: 1403248765}
+      objectReference: {fileID: 341688763}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[11]'
       value: 
-      objectReference: {fileID: 51499041}
+      objectReference: {fileID: 1891513014}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[12]'
       value: 
-      objectReference: {fileID: 1422211241}
+      objectReference: {fileID: 1359140004}
     - target: {fileID: 3910505896052560516, guid: d7edceb061f717844ad10fb8613d8201, type: 3}
       propertyPath: 'autoInjectGameObjects.Array.data[13]'
       value: 

@@ -3,6 +3,7 @@ using System.Collections;
 using Animancer;
 using UnityEngine;
 using Animancer.FSM;
+using Player;
 using VContainer;
 
 [DefaultExecutionOrder(-1)]
@@ -23,8 +24,11 @@ public class BossBase : GravityObject, IDamageable
     
     public event Action OnBattleStart;
     public event Action OnBattleEnd;
+    public event Action OnBattlePause;
+    public event Action OnBattleResume;
     public event Action TakenDamage;
     public event Action OnDeath;
+    public event Action OnReset;
     
     [SerializeField] private AnimationClip[] takeDamageAnimation;
     [SerializeField] private bool turnWhileMoving = true;
@@ -40,6 +44,7 @@ public class BossBase : GravityObject, IDamageable
     [HideInInspector] public bool isDead;
     private Material _whiteMaterial;
     private Material _defaultMaterial;
+    private Vector2 initialPosition;
 
     [SerializeField] private string hurtSoundID;
     [Inject] private IAudioManager _audioManager;
@@ -48,6 +53,7 @@ public class BossBase : GravityObject, IDamageable
     {
         base.Awake();
         _stateMachine.InitializeAfterDeserialize();
+        initialPosition = transform.position;
         
         CurrentHealth = maxHealth[currentPhase];
         facingDirection = Vector2.left;
@@ -58,15 +64,9 @@ public class BossBase : GravityObject, IDamageable
     protected override void Start()
     {
         base.Start();
-        
-        StartCoroutine(LateActivation());
-    }
 
-    private IEnumerator LateActivation()
-    {
-        yield return new WaitForSeconds(1f);
-        
-        // StartBattle();
+        var player = ServiceLocator.Get<PlayerScript>();
+        player.OnRespawn += ResetBoss;
     }
 
     protected void LateUpdate()
@@ -89,6 +89,16 @@ public class BossBase : GravityObject, IDamageable
     public void EndBattle()
     {
         OnBattleEnd?.Invoke();
+    }
+
+    public void PauseBattle()
+    {
+        OnBattlePause?.Invoke();
+    }
+    
+    public void ResumeBattle()
+    {
+        OnBattleResume?.Invoke();
     }
     
     public void EnableGravity()
@@ -161,6 +171,15 @@ public class BossBase : GravityObject, IDamageable
     {
         isDead = true;
         OnDeath?.Invoke();
+    }
+
+    private void ResetBoss()
+    {
+        OnReset?.Invoke();
+        isDead = false;
+        currentPhase = 0;
+        CurrentHealth = maxHealth[currentPhase];
+        transform.position = initialPosition;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

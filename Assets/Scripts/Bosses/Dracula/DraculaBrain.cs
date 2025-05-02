@@ -47,10 +47,19 @@ public class DraculaBrain : MonoBehaviour
         _states = _states.Where(state => state.GetType() != typeof(PingPongState)).ToArray();
         _states = _states.Where(state => state.GetType() != typeof(VulnerableState)).ToArray();
         _states = _states.Where(state => state.GetType() != typeof(DraculaDeath)).ToArray();
+        _states = _states.Where(state => state.GetType() != typeof(PreFightStateDracula)).ToArray();
+        _states = _states.Where(state => state.GetType() != typeof(TransitionState)).ToArray();
         
         boss.OnBattleStart += StartFighting;
-        boss.OnDeath += EndFight;
+        boss.OnDeath += Death;
+        boss.OnBattlePause += PauseFight;
+        boss.OnBattleResume += ResumeFight;
+        boss.OnReset += ResetFight;
         boss.DisableGravity();
+        
+        // Set the initial state to PreFightState
+        var preFightState = GetComponent<PreFightStateDracula>();
+        boss.StateMachine.ForceSetState(preFightState);
     }
     
     private void StartFighting()
@@ -60,23 +69,45 @@ public class DraculaBrain : MonoBehaviour
         MoveToNextState();
         _audioManager.PlayMusic("Dracula_FightTheme");
     }
-    
-    private void EndFight()
+
+    private void Death()
     {
-        _isFighting = false;
-        var deathState = GetComponent<DraculaDeath>();
-        boss.StateMachine.ForceSetState(deathState);
-        _audioManager.StopMusic("Dracula_FightTheme");
+        if (boss.CurrentPhase == 0)
+        {
+            boss.StateMachine.ForceSetState(GetComponent<TransitionState>());
+        }
+        else
+        {
+            EndFight();
+        }
     }
     
     private void PauseFight()
     {
         _isFighting = false;
+        _audioManager.StopMusic("Dracula_FightTheme");
+        boss.canTakeDamage = false;
+        boss.canDoDamage = false;
     }
     
     private void ResumeFight()
     {
+        boss.MoveToNextPhase();
         _isFighting = true;
+        FillAttackQueue();
+        MoveToNextState();
+        _audioManager.PlayMusic("Dracula_FightTheme");
+        boss.canTakeDamage = true;
+        boss.canDoDamage = true;
+    }
+    
+    private void ResetFight()
+    {
+        _isFighting = false;
+        boss.StateMachine.ForceSetState(GetComponent<PreFightStateDracula>());
+        boss.canTakeDamage = false;
+        boss.canDoDamage = true;
+        _audioManager.StopMusic("Dracula_FightTheme");
     }
 
     private BossState[] GetStatesByPhase(int phase)
@@ -132,6 +163,14 @@ public class DraculaBrain : MonoBehaviour
         {
             MoveToNextState();
         }
+    }
+    
+    private void EndFight()
+    {
+        _isFighting = false;
+        var deathState = GetComponent<DraculaDeath>();
+        boss.StateMachine.ForceSetState(deathState);
+        _audioManager.StopMusic("Dracula_FightTheme");
     }
 
 

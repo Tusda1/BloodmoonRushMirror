@@ -24,6 +24,7 @@ public class DrucillaBrain : MonoBehaviour
     {
         boss.OnBattleStart += StartFighting;
         boss.OnDeath += EndFighting;
+        boss.OnReset += ResetDrucilla;
         
         _states = GetComponentsInChildren<BossState>();
         _states = Array.FindAll(_states, state => state is not DefeatState);
@@ -37,8 +38,8 @@ public class DrucillaBrain : MonoBehaviour
         // Set the initial state to PreFightState
         boss.StateMachine.ForceSetState(GetComponent<PreFightState>());
     }
-    
-    public void StartFighting()
+
+    private void StartFighting()
     {
         // Play the boss music
         _audioManager.PlayMusic("Drucilla_FightTheme");
@@ -53,6 +54,16 @@ public class DrucillaBrain : MonoBehaviour
         _isFighting = false;
         var state = GetComponent<DefeatState>();
         boss.StateMachine.ForceSetState(state);
+    }
+
+    private void ResetDrucilla()
+    {
+        // Reset the boss state
+        _isFighting = false;
+        boss.StateMachine.ForceSetState(GetComponent<PreFightState>());
+        boss.canTakeDamage = true;
+        boss.canDoDamage = true;
+        _audioManager.StopMusic("Drucilla_FightTheme");
     }
     
     private void MoveToNextState()

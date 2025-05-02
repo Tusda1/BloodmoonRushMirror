@@ -28,6 +28,8 @@ GameObject:
   - component: {fileID: 2284434785147536232}
   - component: {fileID: 5680250599920887919}
   - component: {fileID: 5459067590035719071}
+  - component: {fileID: 8114276908111343333}
+  - component: {fileID: 1923359534741395119}
   m_Layer: 0
   m_Name: Dracula
   m_TagString: Untagged
@@ -149,6 +151,8 @@ MonoBehaviour:
   bossGrounded: 0
   canTakeDamage: 1
   canDoDamage: 1
+  isDead: 0
+  hurtSoundID: 
 --- !u!114 &1116447291052204353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,6 +549,42 @@ MonoBehaviour:
   idleAnimation: {fileID: -7198238251861986171, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   discoBallActivationAnimation: {fileID: 1222941748818375792, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
   discoBall: {fileID: 0}
+--- !u!114 &8114276908111343333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4292733656066779342}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c081747a665a7d24484388a5b3c95a6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 9200508711738700960}
+  statePhase: 1
+  teleportEnterAir: {fileID: 4334526518133561121, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  teleportEnterGround: {fileID: -5148104871102379313, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  teleportExit: {fileID: -7221150790100757568, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  idleAnimation: {fileID: -7867424926479658243, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+--- !u!114 &1923359534741395119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4292733656066779342}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2558d96ca9e2913449b459c999dad1cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 9200508711738700960}
+  statePhase: 1
+  teleportEnterAir: {fileID: -589026425857230926, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  teleportEnterGround: {fileID: -7221150790100757568, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  teleportExit: {fileID: -5148104871102379313, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
+  idleAnimation: {fileID: -7867424926479658243, guid: 303f66353dc8f024ba35176b978a5184, type: 3}
 --- !u!1 &5817308235334916588
 GameObject:
   m_ObjectHideFlags: 0

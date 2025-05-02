@@ -74,6 +74,20 @@ public class AUBBrain : MonoBehaviour {
         _audioManager.StopMusic("AUB_FightTheme");
     }
 
+    private void ResetBot()
+    {
+        _isFighting = false;
+        _handsDestroyed = false;
+        leftHand.StateMachine.ForceSetDefaultState();
+        rightHand.StateMachine.ForceSetDefaultState();
+        _boss.StateMachine.ForceSetDefaultState();
+        _boss.canTakeDamage = true;
+        _boss.canDoDamage = true;
+        leftHand.gameObject.SetActive(true);
+        rightHand.gameObject.SetActive(true);
+        _audioManager.StopMusic("AUB_FightTheme");
+    }
+
     private void Update()
     {
         if (!_handsDestroyed)
