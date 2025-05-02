@@ -112,8 +112,8 @@ MonoBehaviour:
   target: {fileID: 0}
   initialDirection: {x: 0, y: 0}
   launchDistance: 3
-  launchSpeed: 5
-  homingSpeed: 15
+  launchSpeed: 8
+  homingSpeed: 16
   startAngle: 315
   projectileAnimation: {fileID: 0}
   damageInstance:
@@ -124,7 +124,7 @@ MonoBehaviour:
     ignoreInvincibility: 0
     which: 0
   smoothDampScript:
-    smoothTime: 0.4
+    smoothTime: 0.3
 --- !u!58 &5993823144150821911
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -160,7 +160,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Radius: 0.175
 --- !u!50 &5774719124247700376
 Rigidbody2D:
   serializedVersion: 5
