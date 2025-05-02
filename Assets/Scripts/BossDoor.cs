@@ -5,13 +5,17 @@ public class BossDoorController : MonoBehaviour {
     [SerializeField] private Animator doorAnimator;
     [SerializeField] private ConversationTrigger conversationTrigger;
     [SerializeField] private BossBase bossBase;
+
+    private bool _state;
     
     private static readonly int DoorClosed = Animator.StringToHash("DoorClosed");
     #endregion
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (!other.CompareTag("Player")) return;
+    public void TriggerDoor() {
+        if (_state) return;
+        
         doorAnimator.SetBool(DoorClosed, true);
+        _state = true;
 
         if (conversationTrigger.hasBeenTriggered) {
             bossBase.StartBattle();
@@ -19,7 +23,9 @@ public class BossDoorController : MonoBehaviour {
     }
 
     private void OnTriggerExit2D(Collider2D other) {
-        if (!other.CompareTag("Player")) return;
+        if (!other.CompareTag("Player") || !_state) return;
+        
         doorAnimator.SetBool(DoorClosed, false);
+        _state = false;
     }
 }

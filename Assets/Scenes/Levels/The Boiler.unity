@@ -602,21 +602,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2249934125790270403, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
   m_PrefabInstance: {fileID: 5158702354565610302}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1395533280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1395533279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50d39e102b76d894295be9940f604815, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  doorAnimator: {fileID: 1476296623}
-  conversationTrigger: {fileID: 3033302205021506161}
-  bossBase: {fileID: 7335592192113684705}
 --- !u!1 &1402609423 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3218659686889535827, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
@@ -722,11 +707,6 @@ MonoBehaviour:
 --- !u!1 &1470719977 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3308869997384033853, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
-  m_PrefabInstance: {fileID: 5158702354565610302}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1476296623 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2898408623559831492, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
   m_PrefabInstance: {fileID: 5158702354565610302}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1486340910 stripped
@@ -77830,20 +77810,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2209241807504754294, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
+      propertyPath: bossBase
+      value: 
+      objectReference: {fileID: 7335592192113684705}
+    - target: {fileID: 2209241807504754294, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
+      propertyPath: conversationTrigger
+      value: 
+      objectReference: {fileID: 3033302205021506161}
     - target: {fileID: 5107846836374316058, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
       propertyPath: m_Name
       value: ---CameraStacks_TheBoiler---
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 6042226521106091201, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
-    - {fileID: 5323338018221736557, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
-    - {fileID: 4359473407560705990, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2249934125790270403, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1395533280}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
 --- !u!1 &5158702354565610303 stripped
 GameObject:
