@@ -1,15 +1,25 @@
-using Attributes;
+using SceneCollections;
 using UnityEngine;
-using UnityEngine.UIElements;
+using VContainer;
 
 public class CreditsController : MonoBehaviour {
     #region ---Fields---
-    [GetOrAddComponent, SerializeField, HideInInspector] private UIDocument uiDocument;
+    [SerializeField] private SceneCollectionSO sceneCollection;
+    [SerializeField] private string musicID;
     
-    private VisualElement _root;
+    private CameraEffects _cameraEffects;
+    private IAudioManager _audioManager;
     #endregion
-    
-    private void Start() {
-        _root = uiDocument.rootVisualElement;
+
+    [Inject]
+    public void Construct(IObjectResolver container) {
+        _cameraEffects = container.Resolve<CameraEffects>();
+        _audioManager = container.Resolve<IAudioManager>();
+    }
+
+    public void LoadScene() {
+        _cameraEffects.FadeLoadScene(sceneCollection);
+        _audioManager.PlayMusic(musicID);
+        PlayerPrefs.SetInt("BeatTheGame", 1);
     }
 }
