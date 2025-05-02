@@ -138,11 +138,9 @@ public class DraculaBrain : MonoBehaviour
             }
             
             _attackQueue.Add(state);
-            print(state);
             _repeating = false;
         }
         
-        print(_pingPongState.Length);
         // Add the pingPongState that corresponds to the currentPhase to the end of the queue
         _attackQueue.Add(_pingPongState.First(state => state.StatePhase == boss.CurrentPhase));
     }
@@ -150,7 +148,6 @@ public class DraculaBrain : MonoBehaviour
     private void MoveToNextState()
     {
         _currentState = _attackQueue[0];
-        print(_currentState);
         boss.StateMachine.ForceSetState(_currentState);
         _attackQueue.RemoveAt(0);
         _lastInQueue = _attackQueue.Count == 0;
