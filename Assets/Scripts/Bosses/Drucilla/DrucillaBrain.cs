@@ -27,11 +27,15 @@ public class DrucillaBrain : MonoBehaviour
         
         _states = GetComponentsInChildren<BossState>();
         _states = Array.FindAll(_states, state => state is not DefeatState);
+        _states = Array.FindAll(_states, state => state is not PreFightState);
 
         foreach (var state in _states)
         {
             state.OnStateEnd += MoveToNextState;
         }
+        
+        // Set the initial state to PreFightState
+        boss.StateMachine.ForceSetState(GetComponent<PreFightState>());
     }
     
     public void StartFighting()
@@ -58,7 +62,6 @@ public class DrucillaBrain : MonoBehaviour
         // pick a random state from the list of states
         var nextState = _states[UnityEngine.Random.Range(0, _states.Length)];
         boss.StateMachine.ForceSetState(nextState);
-        print(boss.StateMachine.CurrentState);
     }
     
 #if UNITY_EDITOR
