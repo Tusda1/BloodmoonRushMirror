@@ -1,6 +1,7 @@
 using System;
 using PlayerLoopTimer;
 using UnityEngine;
+using VContainer;
 
 public class RetractingPlatformScript : MonoBehaviour {
     private static readonly int Up = Animator.StringToHash("Up");
@@ -18,7 +19,14 @@ public class RetractingPlatformScript : MonoBehaviour {
     private bool _playerIsInFront;
     private CountdownTimer _retractingTimer;
     private CountdownTimer _backUpTimer;
+    private IAudioManager _audioManager;
+
     #endregion
+    
+    [Inject]
+    public void Construct(IAudioManager audioManager) {
+        _audioManager = audioManager;
+    }
 
     private void Start() {
         _retractingTimer = new CountdownTimer(retractingTime);
@@ -31,6 +39,7 @@ public class RetractingPlatformScript : MonoBehaviour {
         boxCollider.enabled = false;
         animator.SetTrigger(Down);
         _retracted = true;
+        _audioManager.PlayOneShot("Falling_Retract");
         _backUpTimer.StartTimer();
     }
 
