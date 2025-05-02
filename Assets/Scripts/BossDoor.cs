@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour {
+public class BossDoorController : MonoBehaviour {
     #region ---Fields---
     [SerializeField] private Animator doorAnimator;
     
