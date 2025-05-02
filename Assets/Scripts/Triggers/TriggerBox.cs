@@ -7,7 +7,7 @@ namespace Triggers {
         [Header(nameof(TriggerBox))]
         [SerializeField] private string colliderTag = "Player";
 
-        [SerializeField] protected bool hasBeenTriggered;
+        [SerializeField] public bool hasBeenTriggered;
         [SerializeField] protected bool triggerOnlyOnce = true;
         #endregion
 

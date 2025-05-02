@@ -23,6 +23,7 @@ public class DraculaFight : ConversationTrigger {
 
     private void Awake() {
         bossBase.OnBattleEnd += TriggerFightEndConversation;
+        bossBase.OnBattlePause += TriggerFightBreakConversation;
     }
     #endregion
 
@@ -30,8 +31,8 @@ public class DraculaFight : ConversationTrigger {
         _cameraEffects.FadeLoadScene(nextScene);
         _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_DraculasOffice);
     }
-    
-    public void TriggerFightBreakConversation() {
+
+    private void TriggerFightBreakConversation() {
         cutsceneGraph.TriggerUnityEvent("FightBreak");
     }
 
