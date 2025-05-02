@@ -67,7 +67,7 @@ public class HomingProjectile : GravityObject
         {
             other.GetComponent<IDamageable>()?.TakeDamage(damageInstance);
         }
-        else if (other.CompareTag("ground"))
+        else if (other.CompareTag("Ground"))
         {
             gameObject.SetActive(false);
         }
