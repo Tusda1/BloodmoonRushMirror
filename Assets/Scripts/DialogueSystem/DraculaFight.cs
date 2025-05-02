@@ -28,7 +28,7 @@ public class DraculaFight : ConversationTrigger {
     #endregion
 
     public void End() {
-        _cameraEffects.FadeLoadScene(nextScene);
+        _ = SceneCollectionManager.LoadSceneCollectionAsync(nextScene);
         _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_DraculasOffice);
     }
 
