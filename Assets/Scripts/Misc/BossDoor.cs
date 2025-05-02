@@ -17,8 +17,6 @@ public class BossDoor : GravityObject
         RaycastHit2D hit = Physics2D.Raycast(_collider.bounds.min + Vector3.down, Vector2.down, 10f, LayerMask.GetMask("Ground"));
         groundPoint = hit.point;
         groundPoint.y += _collider.bounds.extents.y + Mathf.Abs(_collider.offset.y);
-        
-        CloseDoor();
     }
 
     public void CloseDoor()
