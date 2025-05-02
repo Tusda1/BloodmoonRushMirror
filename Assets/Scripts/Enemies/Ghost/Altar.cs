@@ -3,7 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Animancer;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
+using VContainer;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class Altar : MonoBehaviour 
 {
@@ -19,9 +23,17 @@ public class Altar : MonoBehaviour
      private Coroutine _animationCoroutine;
      private AnimancerComponent _animancerComponent;
      private Collider2D _collider;
+     private IAudioManager _audioManager;
+     private EventInstance suckingEvent;
 
+     [Inject]
+     public void Construct(IAudioManager audioManager) {
+          _audioManager = audioManager;
+     }
+     
      private void Awake()
      {
+          suckingEvent = RuntimeManager.CreateInstance("event:/Sfx/Misc/Vacuum");
           _collider = GetComponent<Collider2D>();
           _animancerComponent = GetComponent<AnimancerComponent>();
           _animancerComponent.Play(idle);
@@ -79,10 +91,9 @@ public class Altar : MonoBehaviour
           }
      }
      
-     private IEnumerator PlayCaughtGhostAnimation()
-     {
-          // TODO: Stopp suck lyd
-          // TODO: Eventuelt spill av spis spøkelse lyd
+     private IEnumerator PlayCaughtGhostAnimation() {
+          suckingEvent.stop(STOP_MODE.ALLOWFADEOUT);
+          _audioManager.PlayOneShot("Ghost_Eat");
           _animancerComponent.Play(caughtGhost);
 
           yield return new WaitForSeconds(1f);
@@ -90,9 +101,8 @@ public class Altar : MonoBehaviour
           _animancerComponent.Play(idle);
      }
 
-     private void PlaySuckAnimation()
-     {
-          // TODO: Start suck lyd
+     private void PlaySuckAnimation() {
+          suckingEvent.start();
           if (_animancerComponent.IsPlaying(suck)) return;
           
           if (_animationCoroutine != null)
