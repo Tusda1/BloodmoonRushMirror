@@ -15212,6 +15212,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8958364651750657311, guid: f1429bd75a35ad64fb9411ecb53552ef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4489433010975781573}
+    - targetCorrespondingSourceObject: {fileID: 8958364651750657311, guid: f1429bd75a35ad64fb9411ecb53552ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2359843424135745604}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1429bd75a35ad64fb9411ecb53552ef, type: 3}
 --- !u!4 &4863141891841732041 stripped
@@ -18596,6 +18599,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8165646548204558986, guid: 6129d9a2bf7ce4240a2cb249601ae0bf, type: 3}
   m_PrefabInstance: {fileID: 5557865290619381784}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5558271653351088522
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4863141891841732041}
+    m_Modifications:
+    - target: {fileID: 5206490406437567732, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_Name
+      value: CastleMain_Outside_Parallax
+      objectReference: {fileID: 0}
+    - target: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+--- !u!4 &2359843424135745604 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7898517193086366158, guid: 7bfad8701fb39f74fbd2cc2e720e6492, type: 3}
+  m_PrefabInstance: {fileID: 5558271653351088522}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5638590955967860412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21778,7 +21843,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5206490406437567732, guid: c25169f6372395c41afd3cd41119358f, type: 3}
       propertyPath: m_Name
-      value: CastleMain_Parallax
+      value: CastleMain_Pictures_Parallax
       objectReference: {fileID: 0}
     - target: {fileID: 6217948926730280668, guid: c25169f6372395c41afd3cd41119358f, type: 3}
       propertyPath: startEnabled
