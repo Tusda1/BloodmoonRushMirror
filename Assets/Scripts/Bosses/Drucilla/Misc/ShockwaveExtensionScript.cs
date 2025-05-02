@@ -14,7 +14,17 @@ public class ShockwaveExtensionScript : MonoBehaviour
     {
         _animancerComponent = GetComponent<AnimancerComponent>();
         direction = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
-        transform.position += (Vector3)direction * 4f;
+        var newPos = transform.position + (Vector3)direction * 4f;
+        // Use overlapPoint to check if the new position is inside a wall
+        var hit = Physics2D.OverlapPoint(newPos + Vector3.up, LayerMask.GetMask("Ground"));
+        if (!hit)
+        {
+            transform.position = newPos;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Update()
