@@ -278,7 +278,7 @@ public class LivingArmor : ReactiveBase
 
     protected override bool CanBeDamaged(DamageInstance damageInstance)
     {
-        var canBlock = shield.ShieldBlock(base.Attack, player, damageInstance, () => StartCoroutine(Stagger()));
+        var canBlock = shield.ShieldBlock(player, damageInstance, () => StartCoroutine(Stagger()));
         
         return !canBlock;
     }
