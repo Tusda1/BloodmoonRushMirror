@@ -482,6 +482,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8808729528180071486, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
   m_PrefabInstance: {fileID: 5158702354565610302}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1001397410 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3639265300214637510, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+  m_PrefabInstance: {fileID: 3033302205021506158}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1023855399 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4380734106366255003, guid: 47253399f807cc64eaee7d2e98533dfb, type: 3}
@@ -1224,13 +1229,31 @@ PrefabInstance:
       value: ---Triggers_TheBoiler---
       objectReference: {fileID: 0}
     - target: {fileID: 6789487644639634626, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+      propertyPath: _data._json
+      value: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"UnionMeeting","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AUB_Wall","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"BlackBox","value":{"$content":2,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AUB","value":{"$content":3,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"BossBase,
+        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Ladder","value":{"$content":4,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"UnionLeaderTalking","value":{"$content":5,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnionLeaderTalking,
+        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789487644639634626, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+      propertyPath: _data._objectReferences.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789487644639634626, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
       propertyPath: '_data._objectReferences.Array.data[3]'
       value: 
       objectReference: {fileID: 7335592192113684705}
     - target: {fileID: 6789487644639634626, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
       propertyPath: '_data._objectReferences.Array.data[4]'
       value: 
-      objectReference: {fileID: 1928437364}
+      objectReference: {fileID: 1001397410}
+    - target: {fileID: 6789487644639634626, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+      propertyPath: '_data._objectReferences.Array.data[5]'
+      value: 
+      objectReference: {fileID: 3033302205021506174}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1277,6 +1300,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1958056070185392317, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
   m_PrefabInstance: {fileID: 3033302205021506158}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3033302205021506174 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6951074393003031438, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+  m_PrefabInstance: {fileID: 3033302205021506158}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3033302205021506164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ee70bafc6274743bfa78d2dcf9d942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4041129429515161005
 PrefabInstance:
   m_ObjectHideFlags: 0
