@@ -1,6 +1,7 @@
 using System;
 using Player;
 using UnityEngine;
+using VContainer;
 using Random = UnityEngine.Random;
 
 [DefaultExecutionOrder(1)]
@@ -24,7 +25,12 @@ public class Ghost : ReactiveBase
 
     private GhostAnimations _ghostAnimations;
     private GravityObjectPlayerMovement _playerMovement;
+    private IAudioManager _audioManager;
 
+    [Inject]
+    public void Construct(IAudioManager audioManager) {
+        _audioManager = audioManager;
+    }
     protected new void Awake()
     {
         base.Awake();
@@ -172,6 +178,7 @@ public class Ghost : ReactiveBase
 
     public void Execute()
     {
+        _audioManager.PlayOneShot("Ghost_Detect");
         transform.position = startPosition;
         currentState = EnemyState.Scanning;
         smoothDampScript.SetStartVelocity(Vector2.zero);
