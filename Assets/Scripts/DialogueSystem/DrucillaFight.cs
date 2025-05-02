@@ -36,7 +36,7 @@ public class DrucillaFight : ConversationTrigger {
 
     public void EndLevel() {
         _cameraEffects.FadeLoadScene(nextScene);
-        _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_TheDungeons);
+        _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_CastleMain);
         _speedrunTimer.StopTimer();
         
     }

@@ -21,7 +21,7 @@ public class ExitBoilerLadder : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
             _cameraEffects.FadeLoadScene(nextLevelSceneCollection);
-            _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_ToweringHeights);
+            _achievementManager.TryUnlockAchievement(IAchievementManager.AchievementID_TheBoiler);
             _speedrunTimer.StopTimer();
         }
     }
