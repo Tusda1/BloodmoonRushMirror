@@ -1,10 +1,25 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class BossDoor : MonoBehaviour
+public class BossDoor : GravityObject
 {
-    [SerializeField] private Collider2D bottomCollider;
     [SerializeField] private float closeSpeed = 5f;
+
+    private Vector2 groundPoint;
+    private Collider2D _collider;
+
+    protected void Awake()
+    {
+        _collider = GetComponent<Collider2D>();
+        
+        // Use raycast to find groundpoint
+        RaycastHit2D hit = Physics2D.Raycast(_collider.bounds.min + Vector3.down, Vector2.down, 10f, LayerMask.GetMask("Ground"));
+        groundPoint = hit.point;
+        groundPoint.y += _collider.bounds.extents.y + Mathf.Abs(_collider.offset.y);
+        
+        CloseDoor();
+    }
 
     public void CloseDoor()
     {
@@ -13,9 +28,9 @@ public class BossDoor : MonoBehaviour
 
     private IEnumerator CloseDoorCoroutine()
     {
-        while (!bottomCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        while (transform.position.y > groundPoint.y)
         {
-            transform.position += Vector3.down * closeSpeed * Time.deltaTime;
+            targetVelocity = Vector2.down * closeSpeed;
             yield return null;
         }
     }
