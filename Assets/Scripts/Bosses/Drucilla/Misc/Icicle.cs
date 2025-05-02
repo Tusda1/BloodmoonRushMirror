@@ -23,15 +23,8 @@ public class Icicle : GravityObject
         _animancerComponent.Play(icicleFall);
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnCollisionEnter2D()
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            var directionToPlayer = (other.transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
-            damageInstance.knockback = directionToPlayer * damageInstance.knockbackStrength;
-            other.gameObject.GetComponent<IDamageable>().TakeDamage(damageInstance);
-        }
-        
         RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_ice_break", gameObject);
         var state = _animancerComponent.Play(icicleImpact);
         state.Events(this).OnEnd = () =>
@@ -39,5 +32,23 @@ public class Icicle : GravityObject
             state.Destroy();
             gameObject.SetActive(false);
         };
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            var directionToPlayer = (other.transform.position - transform.position).normalized.x > 0 ? Vector2.right : Vector2.left;
+            damageInstance.knockback = directionToPlayer * damageInstance.knockbackStrength;
+            other.gameObject.GetComponent<IDamageable>().TakeDamage(damageInstance);
+            
+            RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_ice_break", gameObject);
+            var state = _animancerComponent.Play(icicleImpact);
+            state.Events(this).OnEnd = () =>
+            {
+                state.Destroy();
+                gameObject.SetActive(false);
+            };
+        }
     }
 }

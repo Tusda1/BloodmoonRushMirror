@@ -25,7 +25,15 @@ public class BombScript : GravityObject
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            Explode();
+        }
+    }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
         {
             Explode();
         }
