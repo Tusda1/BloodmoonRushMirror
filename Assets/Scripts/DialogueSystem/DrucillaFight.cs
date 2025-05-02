@@ -6,6 +6,7 @@ using VContainer;
 public class DrucillaFight : ConversationTrigger {
     #region ---Fields---
     [SerializeField, Required] private SceneCollectionSO nextScene;
+    [SerializeField] private BossBase bossBase;
     
     private CameraEffects _cameraEffects;
     private IAchievementManager _achievementManager;
@@ -21,9 +22,13 @@ public class DrucillaFight : ConversationTrigger {
         _achievementManager = container.Resolve<IAchievementManager>();
         _speedrunTimer = container.Resolve<ISpeedrunTimer>();
     }
+
+    private void Awake() {
+        bossBase.OnBattleEnd += TriggerFightEndConversation;
+    }
     #endregion
-    
-    public void TriggerFightEndConversation() {
+
+    private void TriggerFightEndConversation() {
         cutsceneGraph.TriggerUnityEvent("End");
     }
 
