@@ -97,7 +97,6 @@ public class DraculaBrain : MonoBehaviour
         FillAttackQueue();
         MoveToNextState();
         _audioManager.PlayMusic("Dracula_FightTheme");
-        boss.canTakeDamage = true;
         boss.canDoDamage = true;
     }
     

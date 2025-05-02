@@ -73,6 +73,14 @@ public class LaserAttackState : DraculaState
     {
         _timer = 0;
         _hasStartedFiring = false;
+        if (_trackerObject != null)
+        {
+            Destroy(_trackerObject);
+        }
+        if (_laserObject != null)
+        {
+            _laserObject.SetActive(false);
+        }
     }
 
     private void Update()
