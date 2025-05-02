@@ -6,6 +6,7 @@ using PlayerLoopTimer;
 using TetraCreations.Attributes;
 using UnityEngine;
 using UnityEngine.Serialization;
+using VContainer;
 using Object = UnityEngine.Object;
 
 public class ActivatingBook : MonoBehaviour, IDamageable {
@@ -18,6 +19,7 @@ public class ActivatingBook : MonoBehaviour, IDamageable {
     private CountdownTimer _activationTimer;
     [SerializeField] private GameObject book;
     [SerializeField] private Animator animator;
+
     #endregion
     
     private void Start() {

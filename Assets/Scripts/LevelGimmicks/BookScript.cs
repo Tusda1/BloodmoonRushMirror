@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using VContainer;
 
 public class BookScript : MonoBehaviour {
     private static readonly int Open = Animator.StringToHash("Open");
@@ -12,7 +13,13 @@ public class BookScript : MonoBehaviour {
     [SerializeField] private Animator animator;
     private float _carryColliderSize;
     private bool _isClosing = false;
+    private IAudioManager _audioManager;
     #endregion
+    
+    [Inject]
+    public void Construct(IAudioManager audioManager) {
+        _audioManager = audioManager;
+    }
 
     private void Start() {
         boxCollider.enabled = false;
@@ -32,6 +39,7 @@ public class BookScript : MonoBehaviour {
         boxCollider.enabled = false;
         gameObject.tag = "Untagged";
         gameObject.layer = LayerMask.NameToLayer("Default");
+        _audioManager.PlayOneShotAttached("Book_Slam", gameObject);
     }
 
     public void ActivateHitbox() {
