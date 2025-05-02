@@ -26,6 +26,7 @@ public class ShieldGuy : ReactiveBase
         _shieldGuyAnimation = GetComponent<ShieldGuyAnimation>();
         shield.AttackBlocked += _shieldGuyAnimation.Block;
         shield.AttackNotBlocked += _shieldGuyAnimation.StunHit;
+        shield.InitializeShield(Strike, this);
     }
 
     protected override void Scan()
@@ -97,7 +98,7 @@ public class ShieldGuy : ReactiveBase
     {
         if (isStunned) return true;
         
-        var blocked = shield.ShieldBlock(Strike, player, damageInstance, () => StartCoroutine(ShieldBreakCoroutine()));
+        var blocked = shield.ShieldBlock(player, damageInstance, () => StartCoroutine(ShieldBreakCoroutine()));
         return !blocked;
     }
 

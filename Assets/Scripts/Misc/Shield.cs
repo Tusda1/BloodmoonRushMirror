@@ -15,8 +15,16 @@ public class Shield
     private GravityObjectPlayerMovement _playerMovement;
     public event Action AttackBlocked;
     public event Action AttackNotBlocked;
+    private Action _counterAttack;
+    private MonoBehaviour _shieldUserMonoBehaviour;
+
+    public void InitializeShield(Action counterAttack, MonoBehaviour shieldUserMonoBehaviour)
+    {
+        _counterAttack = counterAttack;
+        _shieldUserMonoBehaviour = shieldUserMonoBehaviour;
+    }
     
-    public bool ShieldBlock(Action counterAttack, PlayerScript player, DamageInstance damageInstance, Action shieldBreakAction = null)
+    public bool ShieldBlock(PlayerScript player, DamageInstance damageInstance, Action shieldBreakAction = null)
     {
         if (!_playerMovement) _playerMovement = player.GetComponent<GravityObjectPlayerMovement>();
         
@@ -26,11 +34,7 @@ public class Shield
             
             if (damageInstance.which == DamageInstance.WhichAttack.DashAttack)
             {
-                _playerMovement.isDashing = false;
-                if (alwaysCounterAttackOnDash)
-                {
-                    counterAttack();
-                }
+                _shieldUserMonoBehaviour.StartCoroutine(DashCancelCoroutine());
             }
 
             return true;
@@ -51,5 +55,15 @@ public class Shield
         }
         
         return false;
+    }
+    
+    private IEnumerator DashCancelCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (_playerMovement.DashTimer.IsRunning) _playerMovement.DashTimer.StopTimer();
+        if (alwaysCounterAttackOnDash)
+        {
+            _counterAttack?.Invoke();
+        }
     }
 }
