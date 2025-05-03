@@ -15,7 +15,6 @@ public class BatAttackState : DraculaState
     private bool _batAttackStarted;
     private float _attackTimer;
     private float _batTimer;
-    private bool _startPlayed;
     private Vector2 _teleportLocation;
     private Transform _player;
     private Vector2 _attackDirection;
@@ -75,6 +74,14 @@ public class BatAttackState : DraculaState
         _teleportLocation = setPosition;
         
         _attackPhase = AttackPhase.Teleporting;
+    }
+    
+    private void OnDisable()
+    {
+        _batAnimationPlayed = false;
+        _batAttackStarted = false;
+        _attackTimer = 0;
+        _batTimer = 0;
     }
 
     public void Update()

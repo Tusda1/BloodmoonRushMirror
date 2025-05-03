@@ -71,6 +71,16 @@ public class PingPongState : DraculaState
         _pingPongState = PingPong.Teleport;
     }
     
+    private void OnDisable()
+    {
+        Debug.Log("PingPongState Exit");
+        _pingPongHitCount = 0;
+        _readyToPingPong = false;
+        _isReceiving = false;
+        _pingPongState = PingPong.Teleport;
+        if (_pongPongInstance != null) _pongPongInstance.gameObject.SetActive(false);
+    }
+    
     public void Update()
     {
         switch (_pingPongState)
@@ -177,14 +187,5 @@ public class PingPongState : DraculaState
         }
         
         _pingPongHitCount++;
-    }
-    
-    private void OnDisable()
-    {
-        Debug.Log("PingPongState Exit");
-        _pingPongHitCount = 0;
-        _readyToPingPong = false;
-        _isReceiving = false;
-        _pingPongState = PingPong.Teleport;
     }
 }

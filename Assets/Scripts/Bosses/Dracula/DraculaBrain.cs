@@ -12,6 +12,7 @@ public class DraculaBrain : MonoBehaviour
     [SerializeField] private BossBase boss;
     [SerializeField] private int[] baseAttackQueueSize;
     [SerializeField] private int[] attackQueueSizeIncreaseFactor;
+    [SerializeField] private DiscoBall discoBall;
     
     private BossState[] _states;
     private List<BossState> _attackQueue = new();
@@ -49,6 +50,9 @@ public class DraculaBrain : MonoBehaviour
         _states = _states.Where(state => state.GetType() != typeof(DraculaDeath)).ToArray();
         _states = _states.Where(state => state.GetType() != typeof(PreFightStateDracula)).ToArray();
         _states = _states.Where(state => state.GetType() != typeof(TransitionState)).ToArray();
+        
+        var discoBallState = GetComponent<DiscoBallActivation>();
+        discoBallState.discoBall = discoBall;
         
         boss.OnBattleStart += StartFighting;
         boss.OnDeath += Death;
@@ -97,14 +101,16 @@ public class DraculaBrain : MonoBehaviour
         FillAttackQueue();
         MoveToNextState();
         _audioManager.PlayMusic("Dracula_FightTheme");
-        boss.canTakeDamage = true;
         boss.canDoDamage = true;
     }
     
     private void ResetFight()
     {
         _isFighting = false;
+        boss.DisableGravity();
+        boss.AnimancerComponent.States.Current.Destroy();
         boss.StateMachine.ForceSetState(GetComponent<PreFightStateDracula>());
+        discoBall.ResetDiscoBall();
         boss.canTakeDamage = false;
         boss.canDoDamage = true;
         _audioManager.StopMusic("Dracula_FightTheme");
@@ -132,11 +138,9 @@ public class DraculaBrain : MonoBehaviour
             }
             
             _attackQueue.Add(state);
-            print(state);
             _repeating = false;
         }
         
-        print(_pingPongState.Length);
         // Add the pingPongState that corresponds to the currentPhase to the end of the queue
         _attackQueue.Add(_pingPongState.First(state => state.StatePhase == boss.CurrentPhase));
     }
@@ -144,7 +148,6 @@ public class DraculaBrain : MonoBehaviour
     private void MoveToNextState()
     {
         _currentState = _attackQueue[0];
-        print(_currentState);
         boss.StateMachine.ForceSetState(_currentState);
         _attackQueue.RemoveAt(0);
         _lastInQueue = _attackQueue.Count == 0;

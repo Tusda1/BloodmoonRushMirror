@@ -52,6 +52,12 @@ public class DiscoBall : MonoBehaviour
         _discoBallSoundInstance = RuntimeManager.CreateInstance("event:/Sfx/Boss/Dracula/Drac_disco_lower");
     }
 
+    public void ResetDiscoBall()
+    {
+        StopAllCoroutines();
+        transform.position = _highPointPosition;
+    }
+
     public void Activate()
     {
         if (_moveCoroutine != null)

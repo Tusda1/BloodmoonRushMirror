@@ -125,6 +125,7 @@ public class BossBase : GravityObject, IDamageable
             return;
         }
         
+        isDead = false;
         currentPhase++;
         CurrentHealth = maxHealth[currentPhase];
     }

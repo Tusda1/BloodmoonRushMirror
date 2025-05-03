@@ -73,8 +73,9 @@ public class Boomerang : GravityObject
     private void OnDisable()
     {
         _boomerangSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
-        
         RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Dracula/Drac_boomerang_catch", gameObject);
+        _isReturning = false;
+        _smoothDampScript.SetStartVelocity(Vector2.zero);
     }
 
     protected override void ComputeVelocity()
