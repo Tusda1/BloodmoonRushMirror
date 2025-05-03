@@ -89,8 +89,9 @@ public class Harpy : ReactiveBase
             StartPath();
         }
         
-        Vector2 direction = (_path.vectorPath[_currentWaypoint] - transform.position).normalized;
+        Vector2 direction = ((Vector2)(_path.vectorPath[_currentWaypoint] - transform.position)).normalized;
         force = direction * moveSpeed;
+        print(_path.vectorPath[_currentWaypoint] - transform.position);
         
         smoothDampScript.SmoothDampVector2(force, ref targetVelocity);
         
