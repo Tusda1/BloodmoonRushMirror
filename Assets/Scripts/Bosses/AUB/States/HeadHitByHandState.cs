@@ -20,6 +20,11 @@ public class HeadHitByHandState : BossState
         StopAllCoroutines();
     }
 
+    public void ResetHeadHitCount()
+    {
+        _hitCount = 0;
+    }
+
     private IEnumerator PlayHitAnimation()
     {
         _hitCount++;
