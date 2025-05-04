@@ -29,7 +29,8 @@ namespace SaveLoadSystem {
             SceneCollection = SceneCollection,
             PlayerPosition = PlayerPosition,
             enemyDatas = enemyDatas,
-            checkpointDatas = checkpointDatas
+            checkpointDatas = checkpointDatas,
+            levelTimerData = new LevelTimerData()
         };
         #endregion
         
