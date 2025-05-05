@@ -161,7 +161,6 @@ public class PingPongState : DraculaState
             return;
         }
         
-        print(_pingPongHitCount);
         if (_pingPongHitCount < pingPongsBeforeFailure)
         {
             _isReceiving = true;

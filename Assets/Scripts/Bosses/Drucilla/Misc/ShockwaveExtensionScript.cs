@@ -36,7 +36,6 @@ public class ShockwaveExtensionScript : MonoBehaviour
             state.Events(this).OnEnd = () =>
             {
                 // Use raycast to check if there is a wall in localscale.x direction
-                Debug.DrawRay(transform.position + Vector3.up * 0.1f, direction * (shockWaveMoveDistance + 1f), Color.red, 2f);
                 var hit = Physics2D.Raycast(transform.position + Vector3.up * 0.1f, direction, shockWaveMoveDistance + 1f, LayerMask.GetMask("Ground"));
                 if (hit.collider != null)
                 {

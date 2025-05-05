@@ -27,6 +27,8 @@ namespace UI {
         private Button _saveSlot1;
         private Button _saveSlot2;
         private Button _saveSlot3;
+
+        private bool _hasPressedSaveSlot;
         #endregion
 
         #region ***---DI---***
@@ -51,6 +53,8 @@ namespace UI {
             _saveSlot1 = _savesMenuRoot.Q<Button>("SaveSlot1");
             _saveSlot2 = _savesMenuRoot.Q<Button>("SaveSlot2");
             _saveSlot3 = _savesMenuRoot.Q<Button>("SaveSlot3");
+
+            _hasPressedSaveSlot = false;
         }
 
         private void Start() {
@@ -98,6 +102,8 @@ namespace UI {
         
 #if SAVESYSTEM_ACTIVE
         private void LoadSave(SaveSlotDataSO saveSlotData) {
+            if (_hasPressedSaveSlot) return;
+            
             if (saveSlotData.lastTimePlayed == string.Empty) {
                 _saveLoadSystemManager.SetCurrentGameDataFromTemplate(saveSlotData.saveSlotName);
             }
@@ -108,6 +114,8 @@ namespace UI {
             var sceneCollectionToLoad = _saveLoadSystemManager.GetCurrentSceneCollection();
 
             _cameraEffects.FadeLoadScene(sceneCollectionToLoad);
+            
+            _hasPressedSaveSlot = true;
         }
 #endif
         #endregion

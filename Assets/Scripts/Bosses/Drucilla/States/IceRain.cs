@@ -35,8 +35,8 @@ public class IceRain : DrucillaState
 
     private void Start()
     {
-        _bigPooler = TryGetCommunityPooler.TryGetPooler(bigIciclePrefab, ObjectResolver);
-        _smallPooler = TryGetCommunityPooler.TryGetPooler(smallIciclePrefab, ObjectResolver);
+        _bigPooler = TryGetCommunityPooler.TryGetPooler(bigIciclePrefab, objectResolver);
+        _smallPooler = TryGetCommunityPooler.TryGetPooler(smallIciclePrefab, objectResolver);
     }
     
     private void OnEnable()

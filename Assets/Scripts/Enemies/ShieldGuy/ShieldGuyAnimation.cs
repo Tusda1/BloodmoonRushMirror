@@ -16,11 +16,6 @@ public class ShieldGuyAnimation : EnemyAnimationBase
     
     [SerializeField] private string blockSoundID = "Shield_Block";
 
-    private void Update()
-    {
-        print(animancerComponent.States.Current);
-    }
-
     public override void PlayDefaultAnimation()
     {
         isExecutingAnAction = false;

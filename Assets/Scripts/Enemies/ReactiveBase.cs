@@ -3,6 +3,7 @@ using UnityEngine;
 public class ReactiveBase : EnemyBase
 {
     [SerializeField] protected float detectionDistance = 20f;
+    [SerializeField] private string detectionSoundID;
     
     protected Transform targetObject;
     
@@ -43,6 +44,7 @@ public class ReactiveBase : EnemyBase
         {
             currentState = EnemyState.Action;
             targetObject = player.transform;
+            if (!string.IsNullOrEmpty(detectionSoundID)) AudioManager.PlayOneShotAttached(detectionSoundID, gameObject);
         }
     }
     

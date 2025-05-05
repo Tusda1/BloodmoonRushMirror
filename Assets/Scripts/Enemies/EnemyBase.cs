@@ -190,9 +190,6 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
             bloodSplatter.Clear();
             bloodSplatter.Play();
         }
-        else {
-            Debug.LogWarning($"blood splatter on {name} is null");
-        }
 
         if (!isImmortal || isVulnerable)
         {
@@ -236,7 +233,6 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     }
 
     private IEnumerator KnockUp(Vector2 knockbackStrength) {
-        print("KnockUp");
         isStunned = true;
         isVulnerable = true;
         float force = knockbackStrength.magnitude;

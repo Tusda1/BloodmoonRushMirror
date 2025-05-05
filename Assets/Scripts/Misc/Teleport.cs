@@ -28,7 +28,6 @@ public class Teleport
         if (Vector2.Distance(_transform.position, destination) < 0.1f)
         {
             _onTeleportEnd.Invoke();
-            Debug.Log("Teleport destination same as current position. Teleport cancelled.");
             return;
         }
         

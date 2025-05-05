@@ -69,7 +69,6 @@ public class SlimeAnimation : EnemyAnimationBase
             state = animancerComponent.Play(splitFall);
             state.Events(this).OnEnd = () =>
             {
-                print(gravityObject.isGrounded);
                 if (gravityObject.isGrounded)
                 {
                     state.Destroy();

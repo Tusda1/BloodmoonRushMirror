@@ -39,7 +39,7 @@ public class BombAttackState : DrucillaState
         
         var tempCollider = GetComponent<Collider2D>();
         groundSlam.InitializeGroundSlam(tempCollider, Boss.AnimancerComponent);
-        _bombPooler = TryGetCommunityPooler.TryGetPooler(bombPrefab, ObjectResolver);
+        _bombPooler = TryGetCommunityPooler.TryGetPooler(bombPrefab, objectResolver);
     }
 
     private void OnEnable()

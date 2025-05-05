@@ -29,7 +29,7 @@ public class VineAttack : DrucillaState
 
     private void Start()
     {
-        _pooler = TryGetCommunityPooler.TryGetPooler(vinePrefab, ObjectResolver);
+        _pooler = TryGetCommunityPooler.TryGetPooler(vinePrefab, objectResolver);
     }
 
     private void OnEnable()
@@ -56,7 +56,6 @@ public class VineAttack : DrucillaState
     {
         var spawnPositions = new List<Vector2>();
         
-        print(_vinesToSpawn);
         for (int i = 0; i < _vinesToSpawn; i++)
         {
             var vine = _pooler.GetPooledObject();
