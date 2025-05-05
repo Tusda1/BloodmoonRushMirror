@@ -41,7 +41,7 @@ public class BatAttackState : DraculaState
     private void Start()
     {
         _player = ServiceLocator.Get<PlayerScript>().transform;
-        _batPooler = TryGetCommunityPooler.TryGetPooler(batPrefab, ObjectResolver);
+        _batPooler = TryGetCommunityPooler.TryGetPooler(batPrefab, objectResolver);
     }
 
     private void OnEnable()

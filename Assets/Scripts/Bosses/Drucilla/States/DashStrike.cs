@@ -42,7 +42,7 @@ public class DashStrike : DrucillaState
 
     private void Start()
     {
-        lightningManager.InitializeLightningManager(ObjectResolver);
+        lightningManager.InitializeLightningManager(objectResolver);
     }
 
     private void OnEnable()

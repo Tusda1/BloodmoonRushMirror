@@ -45,6 +45,7 @@ public class HeadSlide : BossState
     private void OnDisable()
     {
         StopAllCoroutines();
+        Boss.bossCollider.enabled = false;
     }
 
     private IEnumerator HeadSlideCoroutine()
