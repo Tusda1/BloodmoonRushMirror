@@ -50,12 +50,12 @@ public class BossState : StateBehaviour
         OnStateEnd?.Invoke();
     }
 
-    protected IObjectResolver ObjectResolver;
+    protected IObjectResolver objectResolver;
     protected IAudioManager audioManager;
 
     [Inject]
     public void Construct(IObjectResolver container) {
-        ObjectResolver = container;
+        objectResolver = container;
         audioManager = container.Resolve<IAudioManager>();
     }
     

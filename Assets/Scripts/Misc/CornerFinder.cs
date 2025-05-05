@@ -44,10 +44,6 @@ public class CornerFinder
         RaycastHit2D horizontalHit = Physics2D.Raycast(_transform.position, horizontalDirection, Mathf.Infinity, _groundLayer);
         RaycastHit2D verticalHit = Physics2D.Raycast(_transform.position, verticalDirection, Mathf.Infinity, _groundLayer);
         
-        //draw rays
-        Debug.DrawRay(_transform.position, horizontalDirection * 100, Color.red, 2f);
-        Debug.DrawRay(_transform.position, verticalDirection * 100, Color.blue, 2f);
-        
         var offset = new Vector2(_collider.bounds.extents.x * -horizontalDirection.x - _collider.offset.x,_collider.bounds.extents.y  * -verticalDirection.y - _collider.offset.y);
 
         if (horizontalHit.collider != null && verticalHit.collider != null)

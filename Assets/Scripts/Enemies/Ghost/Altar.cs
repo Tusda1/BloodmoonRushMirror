@@ -24,7 +24,7 @@ public class Altar : MonoBehaviour
      private AnimancerComponent _animancerComponent;
      private Collider2D _collider;
      private IAudioManager _audioManager;
-     private EventInstance suckingEvent;
+     private EventInstance _suckingEvent;
 
      [Inject]
      public void Construct(IAudioManager audioManager) {
@@ -33,7 +33,7 @@ public class Altar : MonoBehaviour
      
      private void Awake()
      {
-          suckingEvent = RuntimeManager.CreateInstance("event:/Sfx/Misc/Vacuum");
+          _suckingEvent = RuntimeManager.CreateInstance("event:/Sfx/Misc/Vacuum");
           _collider = GetComponent<Collider2D>();
           _animancerComponent = GetComponent<AnimancerComponent>();
           _animancerComponent.Play(idle);
@@ -92,7 +92,7 @@ public class Altar : MonoBehaviour
      }
      
      private IEnumerator PlayCaughtGhostAnimation() {
-          suckingEvent.stop(STOP_MODE.ALLOWFADEOUT);
+          _suckingEvent.stop(STOP_MODE.ALLOWFADEOUT);
           _audioManager.PlayOneShot("Ghost_Eat");
           _animancerComponent.Play(caughtGhost);
 
@@ -102,7 +102,7 @@ public class Altar : MonoBehaviour
      }
 
      private void PlaySuckAnimation() {
-          suckingEvent.start();
+          _suckingEvent.start();
           if (_animancerComponent.IsPlaying(suck)) return;
           
           if (_animationCoroutine != null)
