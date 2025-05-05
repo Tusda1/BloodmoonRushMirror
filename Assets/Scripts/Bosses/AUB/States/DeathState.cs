@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class DeathState : BossState
@@ -7,7 +8,7 @@ public class DeathState : BossState
     
     private void OnEnable()
     {
-        audioManager.PlayOneShotAttached("AUB_Head_Break", gameObject);
+        StartCoroutine(PlayOneShotDelayed("AUB_Head_Break", 1f));
         var state = Boss.AnimancerComponent.Play(deathAnimation);
         state.Events(this).OnEnd = () =>
         {

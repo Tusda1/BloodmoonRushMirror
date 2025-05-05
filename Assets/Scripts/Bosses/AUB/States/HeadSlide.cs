@@ -61,11 +61,11 @@ public class HeadSlide : BossState
 
         Boss.bossCollider.enabled = true;
         var waitOver = false;
+        StartCoroutine(PlayOneShotDelayed("AUB_Head_Slam", 0.3f));
         var state4 = Boss.AnimancerComponent.Play(headSlamAnimation);
         state4.Events(this).OnEnd = () =>
         {
-            state4.Destroy();
-            audioManager.PlayOneShotAttached("AUB_Head_Slam", gameObject);
+            state4.Events(this).OnEnd = null;
             _ = _cameraEffects.ShakeCamera(0.5f, 0.5f);
             waitOver = true;
         };
@@ -73,6 +73,8 @@ public class HeadSlide : BossState
         yield return new WaitUntil(() => waitOver);
         yield return new WaitForSeconds(postSlamWaitTime);
         
+        state4.Destroy();
+        StartCoroutine(PlayOneShotDelayed("AUB_Head_Slam", 0.3f));
         var state2 = Boss.AnimancerComponent.Play(_currentHeadSlideAnimation);
         state2.Events(this).OnEnd = () =>
         {

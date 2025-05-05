@@ -28,6 +28,7 @@ public class HeadHitByHandState : BossState
     private IEnumerator PlayHitAnimation()
     {
         _hitCount++;
+        audioManager.PlayOneShotAttached("AUB_Hand_Break", gameObject);
         
         if (_hitCount == 1)
         {

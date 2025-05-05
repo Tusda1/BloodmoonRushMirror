@@ -45,6 +45,7 @@ public class HandSlide : AUBHandState
             yield return null;
         }
         
+        audioManager.PlayOneShotAttached("AUB_Hand_Slam", gameObject);
         _ = _cameraEffects.ShakeCamera(shakeIntensity.x, shakeIntensity.y);
 
         yield return new WaitForSeconds(waitTimeAfterWallHit);

@@ -2,6 +2,7 @@ using Animancer;
 using Animancer.FSM;
 using UnityEngine;
 using System;
+using System.Collections;
 using UnityEngine.Serialization;
 using VContainer;
 
@@ -57,6 +58,12 @@ public class BossState : StateBehaviour
     public void Construct(IObjectResolver container) {
         objectResolver = container;
         audioManager = container.Resolve<IAudioManager>();
+    }
+    
+    protected IEnumerator PlayOneShotDelayed(string soundName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        audioManager.PlayOneShotAttached(soundName, gameObject);
     }
     
 #if UNITY_EDITOR
