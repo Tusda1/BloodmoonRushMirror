@@ -33,7 +33,7 @@ public class VulnerableState : DraculaState
 
     private void TookDamage()
     {
-        audioManager.PlayOneShotAttached("Drac_Hurt", gameObject);
+        audioManager.PlayOneShotAttached("Drac_Recover", gameObject);
         Boss.canDoDamage = true;
         Boss.canTakeDamage = false;
         EndState();

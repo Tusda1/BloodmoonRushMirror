@@ -14,6 +14,7 @@ public class GargoyleAnimations : EnemyAnimationBase
     public void PlayThrowRockAnimation(Action onEnd)
     {
         if (animancerComponent.IsPlaying(throwRock)) return;
+        StartCoroutine(PlayOneShotDelayed("Gargoyle_ThrowRock", 0.2f));
         var state = animancerComponent.Play(throwRock);
         state.Events(this).OnEnd = () =>
         {

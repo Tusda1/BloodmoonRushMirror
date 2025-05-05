@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Animancer;
 using VContainer;
@@ -15,6 +16,12 @@ public class EnemyAnimationBase : MonoBehaviour
     protected virtual void Awake()
     {
         animancerComponent = GetComponent<AnimancerComponent>();
+    }
+    
+    protected IEnumerator PlayOneShotDelayed(string soundName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        audioManager.PlayOneShotAttached(soundName, gameObject);
     }
 
     protected virtual void OnEnable()
