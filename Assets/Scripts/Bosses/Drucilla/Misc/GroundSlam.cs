@@ -110,8 +110,7 @@ public class GroundSlam
             case 3:
                 if (_timer >= waitBeforeNextAttack)
                 {
-                    _groundSlamStage = 0;
-                    _timer = 0;
+                    ResetGroundSlam();
                     onGroundSlamEnd?.Invoke();
                 }
                 else
@@ -125,6 +124,12 @@ public class GroundSlam
                 Debug.LogError("GroundSlamStage is out of bounds");
                 break;
         }
+    }
+    
+    public void ResetGroundSlam()
+    {
+        _groundSlamStage = 0;
+        _timer = 0;
     }
 
     private void StartShockwave()

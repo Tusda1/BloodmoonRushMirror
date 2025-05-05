@@ -24,6 +24,7 @@ public class GroundSlamState : DrucillaState
     private void OnDisable()
     {
         _hasTeleported = false;
+        groundSlam.ResetGroundSlam();
     }
 
     private void Update()

@@ -60,6 +60,7 @@ public class BombAttackState : DrucillaState
     {
         _droppingBombs = false;
         Boss.smoothDampScript.SetStartVelocity(Vector2.zero);
+        groundSlam.ResetGroundSlam();
     }
 
     private void Update()

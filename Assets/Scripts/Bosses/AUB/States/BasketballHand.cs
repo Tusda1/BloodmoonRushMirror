@@ -50,6 +50,7 @@ public class BasketballHand : AUBHandState
     private void OnDisable()
     {
         StopAllCoroutines();
+        _isMovingUp = true;
     }
 
     private IEnumerator Slam()

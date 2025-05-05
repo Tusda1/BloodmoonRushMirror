@@ -108,7 +108,7 @@ public class DraculaBrain : MonoBehaviour
     {
         _isFighting = false;
         boss.DisableGravity();
-        boss.AnimancerComponent.States.Current.Destroy();
+        boss.AnimancerComponent.States.Current?.Destroy();
         boss.StateMachine.ForceSetState(GetComponent<PreFightStateDracula>());
         discoBall.ResetDiscoBall();
         boss.canTakeDamage = false;

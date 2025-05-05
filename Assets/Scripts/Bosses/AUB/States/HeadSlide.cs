@@ -41,6 +41,11 @@ public class HeadSlide : BossState
         
         StartCoroutine(HeadSlideCoroutine());
     }
+    
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
 
     private IEnumerator HeadSlideCoroutine()
     {
@@ -65,6 +70,7 @@ public class HeadSlide : BossState
         };
         
         yield return new WaitUntil(() => waitOver);
+        yield return new WaitForSeconds(postSlamWaitTime);
         
         var state2 = Boss.AnimancerComponent.Play(_currentHeadSlideAnimation);
         state2.Events(this).OnEnd = () =>
