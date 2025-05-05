@@ -64,13 +64,14 @@ public class Gargoyle : ReactiveBase
     
     private void StartAttack()
     {
+        if (_virtualCameraSwitch != VirtualCameraSwitch.ActiveVirtualCameraSwitch) return;
         _animations.PlayThrowRockAnimation(ThrowRock);
     }
 
     private void ThrowRock()
     {
         // if distance to player is greater than detection distance, return to scanning
-        if (!_virtualCameraSwitch.isActiveRoom) return;
+        if (_virtualCameraSwitch != VirtualCameraSwitch.ActiveVirtualCameraSwitch) return;
         
         var position = transform.position;
         var spawnPosition = new Vector2(position.x, position.y + YOffset);
