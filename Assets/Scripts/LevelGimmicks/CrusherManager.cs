@@ -73,7 +73,6 @@ public class CrusherManager : MonoBehaviour {
 
         crusherRefrence.startPos = crusherTilemap.transform.position;
         crusherRefrence.endPos = new Vector3(crusherTilemap.transform.position.x, transform.position.y - (crusherSize.y*1.5f), 0);
-        print(crusherRefrence.endPos);
     }
 
     private void Down() {

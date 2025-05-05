@@ -60,8 +60,11 @@ public class MovingPlatformScript : GravityObject {
         _carryingPosition = Vector2.SmoothDamp(_carryingPosition, _targetPosition, ref _velocity, smoothTime);
         
         targetVelocity = _carryingPosition;
-        
-        if (_playerIsOnPlatform) _playerMovement.affectingVelocity = targetVelocity;
+
+        if (_playerIsOnPlatform) {
+            _playerMovement.affectingVelocity = targetVelocity;
+            _playerMovement.isGrounded = true;
+        }
     }
 
     private bool IsInsideCircle(Vector2 center, float radius, Vector2 point) {

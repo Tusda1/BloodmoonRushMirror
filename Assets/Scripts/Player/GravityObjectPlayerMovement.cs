@@ -495,6 +495,7 @@ namespace Player {
 
         public void MovingPlatformEnter() {
             if (_platformTimer.IsRunning) return;
+            gameObject.transform.position -= new Vector3(0, 0.1f, 0);
             GravityModifier = 0f;
         }
 
