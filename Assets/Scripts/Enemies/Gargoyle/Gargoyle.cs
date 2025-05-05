@@ -69,6 +69,9 @@ public class Gargoyle : ReactiveBase
 
     private void ThrowRock()
     {
+        // if distance to player is greater than detection distance, return to scanning
+        if (!_virtualCameraSwitch.isActiveRoom) return;
+        
         var position = transform.position;
         var spawnPosition = new Vector2(position.x, position.y + YOffset);
         

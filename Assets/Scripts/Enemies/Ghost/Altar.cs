@@ -102,8 +102,8 @@ public class Altar : MonoBehaviour
      }
 
      private void PlaySuckAnimation() {
-          _suckingEvent.start();
           if (_animancerComponent.IsPlaying(suck)) return;
+          _suckingEvent.start();
           
           if (_animationCoroutine != null)
           {
