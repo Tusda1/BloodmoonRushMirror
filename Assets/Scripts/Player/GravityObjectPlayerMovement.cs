@@ -88,6 +88,7 @@ namespace Player {
 
         private Vector2 _smoothMovement;
         private Vector2 _referenceSmoothVelocity;
+        private bool _previousFacingRight;
         [HideInInspector] public Vector2 lastPlatformCheckpoint;
         [HideInInspector] public bool wasGroundedLastFrame;
         
@@ -304,6 +305,7 @@ namespace Player {
                 targetVelocity.x = _smoothMovement.x * maxSpeed;
 
                 targetVelocity += affectingVelocity;
+                
             }
 
             if (!player.isAttacking) {
@@ -342,6 +344,28 @@ namespace Player {
             if (!wasGroundedLastFrame && isActuallyGrounded) {
                 player.AudioManager.PlayOneShot(PlayerScript.PlayerStep_SoundID);
             }
+            
+            if (!isTakingKnockback && affectingVelocity == Vector2.zero && move == Vector2.zero && isFacingRight != _previousFacingRight) {
+                targetVelocity = Vector2.zero;
+                _smoothMovement = Vector2.zero;
+                _referenceSmoothVelocity = Vector2.zero;
+                velocity = Vector2.zero;
+                isFacingRight = !isFacingRight;
+                
+                if (!player.isAttacking) {
+                    var transformLocalScale = transform.localScale;
+                    switch (isFacingRight) {
+                        case true:
+                            transform.localScale = transformLocalScale.With(1);
+                            break;
+                        case false:
+                            transform.localScale = transformLocalScale.With(-1);
+                            break;
+                    }
+                }
+            }
+            
+            _previousFacingRight = isFacingRight;
 
             wasGroundedLastFrame = isActuallyGrounded;
         }

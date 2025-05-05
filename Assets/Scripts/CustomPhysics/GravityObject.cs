@@ -126,9 +126,6 @@ public abstract class GravityObject : MonoBehaviour {
                 distance = modifiedDistance < distance ? modifiedDistance : distance;
             }
         }
-
-        if (move.normalized.y * distance < 0 && !isGrounded) isFalling = true;
-        else isFalling = false;
     
         rb2d.position = lockToAxis switch {
             Axis.None => rb2d.position + move.normalized * distance,
@@ -136,6 +133,9 @@ public abstract class GravityObject : MonoBehaviour {
             Axis.YAxis => new Vector2(rb2d.position.x, rb2d.position.y + move.normalized.y * distance),
             _ => rb2d.position
         };
+        
+        if (move.normalized.y * distance < 0 && !isGrounded) isFalling = true;
+        else isFalling = false;
     }
 
     public void ResetMovement(Axis axis) {
