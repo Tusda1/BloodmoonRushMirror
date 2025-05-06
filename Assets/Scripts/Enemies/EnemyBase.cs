@@ -364,7 +364,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         gameObject.SetActive(true);
         currentHealth = maxHealth;
         transform.position = startPosition;
-        _spriteRenderer.material = _defaultMaterial;
+        if (_spriteRenderer != null) _spriteRenderer.material = _defaultMaterial;
         facingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
     }
 
