@@ -73,7 +73,6 @@ public class CrusherScript : MonoBehaviour {
         if (goingDown) {
             transform.position = Vector2.MoveTowards(transform.position, endPos, downSpeed * Time.deltaTime);
             if (Vector2.Distance(transform.position, endPos) < 0.025f) {
-                print("Down!");
                 triggerCollider2D.isTrigger = false;
                 _cameraEffects?.ShakeCamera(0.2f, 0.2f);
                 _audioManager.PlayOneShotAttached("Crusher_Slam", gameObject);
