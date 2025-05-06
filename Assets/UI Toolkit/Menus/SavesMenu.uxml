@@ -3,8 +3,8 @@
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/Menu.uss?fileID=7433441132597879392&amp;guid=8efd6ee9dc2ccf147b85dff9f56810bf&amp;type=3#Menu" />
     <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/Left-Right.uss?fileID=7433441132597879392&amp;guid=bf66cd8737e6f00428f5f82f7deb54f1&amp;type=3#Left-Right" />
     <engine:VisualElement name="SavesMenuRoot" template="AudioSettingsMenuVisualTree" class="left" style="background-color: rgba(255, 255, 255, 0); border-left-color: rgb(108, 108, 108); border-right-color: rgb(108, 108, 108); border-top-color: rgb(108, 108, 108); border-bottom-color: rgb(108, 108, 108); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; justify-content: space-evenly; align-items: center; width: 640px; height: 360px; position: absolute; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; transition-duration: 2s; transition-property: translate; transition-timing-function: ease-out-bounce;">
-        <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/UI/Save_Assets.png?fileID=-2028314762&amp;guid=5ddd61c8f2d4e7c4ea855e29f670f893&amp;type=3#Save_Assets_0" name="SavesContainer" class="Container" style="max-width: 552px; min-width: 552px; padding-top: 75px;">
-            <engine:Button name="SaveSlot1" data-source="project://database/Assets/Resources/SaveSlotData/SaveSlot1Data.asset?fileID=11400000&amp;guid=badd82c5180cada40a1dcbe0d0bca9eb&amp;type=2#SaveSlot1Data" class="saveSlot">
+        <UI_Toolkit.SpriteElement sprite="project://database/Assets/Art/MainMenu/Save_Assets.png?fileID=-2028314762&amp;guid=5ddd61c8f2d4e7c4ea855e29f670f893&amp;type=3#Save_Assets_0" name="SavesContainer" class="Container" style="max-width: 552px; min-width: 552px; padding-top: 75px;">
+            <engine:Button name="SaveSlot1" data-source="project://database/Assets/SaveLoadSystem/SaveSlotData/SaveSlot1Data.asset?fileID=11400000&amp;guid=badd82c5180cada40a1dcbe0d0bca9eb&amp;type=2#SaveSlot1Data" class="saveSlot">
                 <engine:Label text="SaveSlot1" emoji-fallback-support="false" double-click-selects-word="false" triple-click-selects-line="false" display-tooltip-when-elided="false" selectable="false" parse-escape-sequences="false" style="position: absolute; top: 12px; left: 143px;">
                     <Bindings>
                         <engine:DataBinding property="text" data-source-path="saveSlotName" binding-mode="ToTarget" />
@@ -20,13 +20,13 @@
                         <engine:DataBinding property="text" data-source-path="currentLevel" binding-mode="ToTarget" />
                     </Bindings>
                 </engine:Label>
-                <engine:Label text="Label" style="position: absolute; -unity-text-align: upper-right; width: 180px; right: 138px; top: 42px; height: 17px;">
+                <engine:Label text="Label" class="save-slot--progress">
                     <Bindings>
                         <engine:DataBinding property="text" data-source-path="currentProgress" binding-mode="ToTarget" />
                     </Bindings>
                 </engine:Label>
             </engine:Button>
-            <engine:Button sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=-648919&amp;guid=90730bc22eee8c54b8f64bb5acb0c2a2&amp;type=3#UI_Asset_Sheet 1_66" name="SaveSlot2" data-source="project://database/Assets/Resources/SaveSlotData/SaveSlot2Data.asset?fileID=11400000&amp;guid=e560488653c7c4f45b0259121e596aad&amp;type=2#SaveSlot2Data" class="saveSlot">
+            <engine:Button sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=-648919&amp;guid=90730bc22eee8c54b8f64bb5acb0c2a2&amp;type=3#UI_Asset_Sheet 1_66" name="SaveSlot2" data-source="project://database/Assets/SaveLoadSystem/SaveSlotData/SaveSlot2Data.asset?fileID=11400000&amp;guid=e560488653c7c4f45b0259121e596aad&amp;type=2#SaveSlot2Data" class="saveSlot">
                 <engine:Label text="SaveSlot1" style="position: absolute; top: 12px; left: 145px;">
                     <Bindings>
                         <engine:DataBinding property="text" data-source-path="saveSlotName" binding-mode="ToTarget" />
@@ -42,13 +42,13 @@
                         <engine:DataBinding property="text" data-source-path="currentLevel" binding-mode="ToTarget" />
                     </Bindings>
                 </engine:Label>
-                <engine:Label text="Label" style="position: absolute; -unity-text-align: upper-right; width: 180px; right: 140px; top: 37px;">
+                <engine:Label text="Label" class="save-slot--progress">
                     <Bindings>
                         <engine:DataBinding property="text" data-source-path="currentProgress" binding-mode="ToTarget" />
                     </Bindings>
                 </engine:Label>
             </engine:Button>
-            <engine:Button sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=-223822351&amp;guid=90730bc22eee8c54b8f64bb5acb0c2a2&amp;type=3#UI_Asset_Sheet 1_67" name="SaveSlot3" data-source="project://database/Assets/Resources/SaveSlotData/SaveSlot3Data.asset?fileID=11400000&amp;guid=0d4c642fd77d33d4fbba6142a392f235&amp;type=2#SaveSlot3Data" class="saveSlot">
+            <engine:Button sprite="project://database/Assets/Art/UIArt/UI_Asset_Sheet%201.png?fileID=-223822351&amp;guid=90730bc22eee8c54b8f64bb5acb0c2a2&amp;type=3#UI_Asset_Sheet 1_67" name="SaveSlot3" data-source="project://database/Assets/SaveLoadSystem/SaveSlotData/SaveSlot3Data.asset?fileID=11400000&amp;guid=0d4c642fd77d33d4fbba6142a392f235&amp;type=2#SaveSlot3Data" class="saveSlot">
                 <engine:Label text="SaveSlot1" style="position: absolute; top: 12px; left: 145px;">
                     <Bindings>
                         <engine:DataBinding property="text" data-source-path="saveSlotName" binding-mode="ToTarget" />
@@ -64,7 +64,7 @@
                         <engine:DataBinding property="text" data-source-path="currentLevel" binding-mode="ToTarget" />
                     </Bindings>
                 </engine:Label>
-                <engine:Label text="Label" style="position: absolute; -unity-text-align: upper-right; width: 180px; right: 140px; top: 37px;">
+                <engine:Label text="Label" class="save-slot--progress">
                     <Bindings>
                         <engine:DataBinding property="text" data-source-path="currentProgress" binding-mode="ToTarget" />
                     </Bindings>
