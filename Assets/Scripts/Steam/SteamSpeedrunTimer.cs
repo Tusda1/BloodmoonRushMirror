@@ -43,7 +43,7 @@ public partial class SteamSpeedrunTimer : ISpeedrunTimer, IBind<LevelTimerData>,
     }
 
     public void StartTimer() {
-        if (_timerEnabled) return;
+        if (_timerEnabled || _leaderboardID == string.Empty) return;
 
         Bind();
 

@@ -10,6 +10,9 @@ using Cursor = UnityEngine.Cursor;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+#if STEAM_BUILD
+using Steamworks;
+#endif
 
 namespace UI {
     [RequireComponent(typeof(UITKWorldSpaceInteractive))]
@@ -98,7 +101,9 @@ namespace UI {
         private void Start() {
             _audioManager.PlayMusic(MainMenuMusic_SoundID);
             _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 0, true);
-
+#if STEAM_BUILD
+            SteamFriends.SetRichPresence("status", "#status_mainmenu");
+#endif
             _saveLoadSystemManager.CurrentGameData = null;
 
             levelSelectMenu.OnMenuActivated += HideMenu;

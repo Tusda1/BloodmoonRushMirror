@@ -164,9 +164,6 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
         currentLevelData.levelTimerData = newLevelData.levelTimerData;
         currentLevelData.currentProgress = newLevelData.currentProgress;
         currentLevelData.musicData = newLevelData.musicData;
-
-        // --- SaveData --- \\
-        SaveToFile();
     }
 
     public SceneCollectionSO GetCurrentSceneCollection() {

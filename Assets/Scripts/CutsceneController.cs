@@ -4,6 +4,9 @@ using SceneCollections;
 using UnityEngine;
 using UnityEngine.Video;
 using VContainer;
+#if STEAM_BUILD
+using Steamworks;
+#endif
 
 public class CutsceneController : MonoBehaviour {
     #region ---Fields---
@@ -14,6 +17,7 @@ public class CutsceneController : MonoBehaviour {
     [Header("Cutscene")]
     [SerializeField] private VideoClip cutscene;
     [SerializeField] private string introSoundID = "Cutscene_Intro";
+    [SerializeField] private string steamStatus = "#status_cutscene_";
     
     private CameraEffects _cameraEffects;
     private IAudioManager _audioManager;
@@ -27,7 +31,9 @@ public class CutsceneController : MonoBehaviour {
 
     private void Start() {
         StartCoroutine(PlayCutscene());
-
+#if STEAM_BUILD
+            SteamFriends.SetRichPresence("status", steamStatus);
+#endif
         videoPlayer.loopPointReached += CutsceneEnded;
         
         _cameraEffects.ClearAllRenderTextures();

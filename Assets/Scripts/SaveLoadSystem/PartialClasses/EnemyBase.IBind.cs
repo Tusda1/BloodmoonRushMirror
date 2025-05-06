@@ -20,12 +20,12 @@ public partial class EnemyBase {
         isAlive = !isDead,
         position = transform.position
     };
-    
-    private bool HasBinded => DataInGameData != null;
+
+    private bool _hasBinded;
     #endregion
 
     private void OnDestroy() {
-        if (HasBinded) {
+        if (_hasBinded) {
             Unbind();
         }
     }
@@ -33,6 +33,7 @@ public partial class EnemyBase {
     #region ---DataBindingMethods---
     public virtual void Bind() {
         _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
+        _hasBinded = true;
     }
 
     public void Unbind() {
@@ -40,6 +41,7 @@ public partial class EnemyBase {
         try {
 #endif
         _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
+        _hasBinded = false;
 #if UNITY_EDITOR
         }
         catch (NullReferenceException) {

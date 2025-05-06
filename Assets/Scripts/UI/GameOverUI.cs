@@ -3,6 +3,9 @@ using SceneCollections;
 using UnityEngine;
 using UnityEngine.UIElements;
 using VContainer;
+#if STEAM_BUILD
+using Steamworks;
+#endif
 
 [RequireComponent(typeof(UITKWorldSpaceInteractive))]
 public class GameOverUI : MonoBehaviour {
@@ -41,7 +44,9 @@ public class GameOverUI : MonoBehaviour {
 
     private void Start() {
         _audioManager.PlayMusic(GameOverMusic_SoundID);
-
+#if STEAM_BUILD
+            SteamFriends.SetRichPresence("status", "#status_gameover");
+#endif
         _cameraEffects.CircleFadeIn(0.5f);
 
         _retryButton.clicked += () => {

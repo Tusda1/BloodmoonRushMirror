@@ -5,10 +5,14 @@ using UnityEngine;
 using Animancer.FSM;
 using Player;
 using VContainer;
+#if STEAM_BUILD
+using Steamworks;
+#endif
 
 [DefaultExecutionOrder(-1)]
-public class BossBase : GravityObject, IDamageable
-{
+public class BossBase : GravityObject, IDamageable {
+    [SerializeField] private string steamStatus = "#status_boss_";
+    
     [SerializeField] private AnimancerComponent animancer;
     public AnimancerComponent AnimancerComponent => animancer;
     
@@ -95,6 +99,11 @@ public class BossBase : GravityObject, IDamageable
     public void StartBattle()
     {
         OnBattleStart?.Invoke();
+#if STEAM_BUILD
+        if (steamStatus != string.Empty) {
+            SteamFriends.SetRichPresence("status", steamStatus);
+        }
+#endif
     }
 
     public void EndBattle()

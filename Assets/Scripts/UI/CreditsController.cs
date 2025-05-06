@@ -1,6 +1,10 @@
+using System;
 using SceneCollections;
 using UnityEngine;
 using VContainer;
+#if STEAM_BUILD
+using Steamworks;
+#endif
 
 public class CreditsController : MonoBehaviour {
     #region ---Fields---
@@ -15,6 +19,12 @@ public class CreditsController : MonoBehaviour {
     public void Construct(IObjectResolver container) {
         _cameraEffects = container.Resolve<CameraEffects>();
         _audioManager = container.Resolve<IAudioManager>();
+    }
+
+    private void Start() {
+#if STEAM_BUILD
+            SteamFriends.SetRichPresence("status", "#status_credits");
+#endif
     }
 
     public void LoadScene() {
