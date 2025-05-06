@@ -20,10 +20,14 @@ public partial class EnemyBase {
         isAlive = !isDead,
         position = transform.position
     };
+    
+    private bool HasBinded => DataInGameData != null;
     #endregion
 
     private void OnDestroy() {
-        Unbind();
+        if (HasBinded) {
+            Unbind();
+        }
     }
 
     #region ---DataBindingMethods---
