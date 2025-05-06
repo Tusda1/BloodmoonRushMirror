@@ -45,6 +45,7 @@ public class BossBase : GravityObject, IDamageable
     private Material _whiteMaterial;
     private Material _defaultMaterial;
     private Vector2 initialPosition;
+    private PlayerScript _player;
 
     [SerializeField] private string hurtSoundID;
     [Inject] private IAudioManager _audioManager;
@@ -60,13 +61,23 @@ public class BossBase : GravityObject, IDamageable
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
     }
-    
+
     protected override void Start()
     {
         base.Start();
+        
+        _player = ServiceLocator.Get<PlayerScript>();
+        _player.OnRespawn += ResetBoss;
+    }
 
-        var player = ServiceLocator.Get<PlayerScript>();
-        player.OnRespawn += ResetBoss;
+    private void OnEnable()
+    {
+        if(_player != null) _player.OnRespawn += ResetBoss;
+    }
+
+    private void OnDisable()
+    {
+        if(_player != null) _player.OnRespawn -= ResetBoss;
     }
 
     protected void LateUpdate()
