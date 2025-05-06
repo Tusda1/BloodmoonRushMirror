@@ -22,6 +22,7 @@ public class CreditsController : MonoBehaviour {
     }
 
     private void Start() {
+        _audioManager.PlayMusic(musicID);
 #if STEAM_BUILD
             SteamFriends.SetRichPresence("status", "#status_credits");
 #endif
@@ -29,7 +30,6 @@ public class CreditsController : MonoBehaviour {
 
     public void LoadScene() {
         _cameraEffects.FadeLoadScene(sceneCollection);
-        _audioManager.PlayMusic(musicID);
         PlayerPrefs.SetInt("BeatTheGame", 1);
     }
 }
