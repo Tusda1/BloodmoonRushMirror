@@ -19,6 +19,7 @@ public partial class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
     #endregion
 
     [SerializeField] private string currentProgressTitle;
+    [SerializeField] private bool resetLevelOnGameOver = true;
     
     [Header("Animations")]
     [SerializeField] private AnimationClip inactiveIdle;
@@ -83,6 +84,8 @@ public partial class LevelCheckpoint : TriggerBox, IBind<CheckpointData> {
             : name;
         
         _saveLoadSystemManager.SaveAllDataBinds();
+        
+        _saveLoadSystemManager.ResetLevelOnGameOver = resetLevelOnGameOver;
     }
 
     private IEnumerator TurnOnLights()
