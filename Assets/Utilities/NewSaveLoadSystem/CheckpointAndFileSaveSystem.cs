@@ -13,6 +13,8 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
 
     public SaveGameData CurrentGameData { get; set; }
 
+    public bool ResetLevelOnGameOver { get; set; } = true;
+
     #region ***---DI---***
     private DebugLoggerSO _debugLogger;
     private SaveSlots _saveSlots;
@@ -145,12 +147,12 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
     public void GameOverLogic() {
         // --- GetCurrentData --- \\
         var currentPlayerData = CurrentGameData.playerData;
-        var currentLevelData = CurrentGameData.GetCurrentLevelData();
+        // var currentLevelData = CurrentGameData.GetCurrentLevelData();
 
         // --- GetNewData --- \\
         var newGameData = _newGameData.gameData.DeepClone();
         var newPlayerData = newGameData.playerData;
-        var newLevelData = newGameData.GetLevel(currentLevelData.ID);
+        // var newLevelData = newGameData.GetLevel(currentLevelData.ID);
 
         // --- SetCurrentPlayerData --- \\
         currentPlayerData.lives = newPlayerData.lives;
@@ -158,14 +160,16 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
         currentPlayerData.tempHealth = newPlayerData.tempHealth;
 
         // --- SetCurrentLevelData --- \\
-        currentLevelData.enemyDatas = newLevelData.enemyDatas;
-        currentLevelData.checkpointDatas = newLevelData.checkpointDatas;
-        currentLevelData.parallaxDatas = newLevelData.parallaxDatas;
-        currentLevelData.levelTimerData = newLevelData.levelTimerData;
-        currentLevelData.currentProgress = newLevelData.currentProgress;
-        currentLevelData.musicData = newLevelData.musicData;
-
-        // --- SaveData --- \\
+        // currentLevelData.enemyDatas = newLevelData.enemyDatas;
+        // currentLevelData.checkpointDatas = newLevelData.checkpointDatas;
+        // currentLevelData.parallaxDatas = newLevelData.parallaxDatas;
+        // currentLevelData.levelTimerData = newLevelData.levelTimerData;
+        // currentLevelData.currentProgress = newLevelData.currentProgress;
+        // currentLevelData.musicData = newLevelData.musicData;
+        if (ResetLevelOnGameOver) {
+            CurrentGameData.levelDatas.Remove(CurrentGameData.GetCurrentLevelData());
+        }
+        
         SaveToFile();
     }
 

@@ -44,6 +44,7 @@ namespace Player {
         public void SaveBindData() {
             SaveSystemData.ID = ID;
             SaveSystemData.health = healthComponent.Health;
+            SaveSystemData.tempHealth = healthComponent.TempHealth;
             SaveSystemData.lives = playerLives;
             SaveSystemData.gems = gems;
         }

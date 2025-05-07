@@ -82,6 +82,7 @@ public class BasketballHand : AUBHandState
                 verticalVelocity = Vector2.down * verticalSpeed;
                 if (Boss.bossCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
                 {
+                    audioManager.PlayOneShotAttached("AUB_Hand_Slam", gameObject);
                     _ = _cameraEffects.ShakeCamera(shakeIntensity.x, shakeIntensity.y);
                     _isMovingUp = true;
                 }

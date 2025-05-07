@@ -15,6 +15,7 @@ public class ShieldGuyAnimation : EnemyAnimationBase
     [HideInInspector] public bool isExecutingAnAction;
     
     [SerializeField] private string blockSoundID = "Shield_Block";
+    [SerializeField] private string strikeSoundID = "ShieldGuy_Strike";
 
     public override void PlayDefaultAnimation()
     {
@@ -26,6 +27,7 @@ public class ShieldGuyAnimation : EnemyAnimationBase
     public void Attack()
     {
         isExecutingAnAction = true;
+        audioManager.PlayOneShotAttached(strikeSoundID, gameObject);
         var state = animancerComponent.Play(attackAnimation);
         state.Events(this).OnEnd = () =>
         {

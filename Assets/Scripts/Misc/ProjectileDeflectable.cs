@@ -38,7 +38,10 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
-        _spawnRoom = VirtualCameraSwitch.ActiveVirtualCameraSwitch?.gameObject;
+        // Use overlappoint to determine the room the projectile was spawned in
+        Collider2D currentRoom = Physics2D.OverlapPoint(transform.position, LayerMask.GetMask("Room"));
+        if (currentRoom != null) _spawnRoom = currentRoom.gameObject;
+        
         _circleCollider2D.enabled = false;
         
         if (baseAnimation != null)
@@ -48,6 +51,7 @@ public class ProjectileDeflectable : MonoBehaviour, IDamageable
         
         StartCoroutine(EnableCollider());
         
+        velocityDirection = velocityDirection.normalized;
         rb2d.linearVelocity = velocityDirection * speed;
         
         transform.localScale = velocityDirection.x > 0 ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);

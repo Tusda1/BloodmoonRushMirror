@@ -122,7 +122,7 @@ MonoBehaviour:
     _CurrentState: {fileID: 978309185833296357}
     _DefaultState: {fileID: 978309185833296357}
   currentPhase: 0
-  maxHealth: 19000000
+  maxHealth: 0f000000
   takeDamageAnimation: []
   turnWhileMoving: 0
   bossDamageInstance:
@@ -230,8 +230,8 @@ MonoBehaviour:
   statePhase: 1
   hoverHand: {fileID: 978309185833296357}
   canBeMirrored: 0
-  horizontalSpeed: 5
-  verticalSpeed: 5
+  horizontalSpeed: 8
+  verticalSpeed: 8
   bounceHeight: 5
   endDistanceFromWall: 4
   shakeIntensity: {x: 0.3, y: 0.3}
@@ -279,7 +279,7 @@ MonoBehaviour:
   hoverHand: {fileID: 978309185833296357}
   canBeMirrored: 0
   slideAnimation: {fileID: -2101293955645152505, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
-  slideSpeed: 15
+  slideSpeed: 20
   waitTimeAfterWallHit: 1
   shakeIntensity: {x: 0.5, y: 0.5}
   handSlamLogic:
@@ -306,7 +306,7 @@ MonoBehaviour:
   distanceFromWall: 2
   maxHoverDistance: 2
   minHoverDistance: 1
-  moveSpeed: 10
+  moveSpeed: 15
   hoverSpeed: 2
   isHovering: 0
 --- !u!95 &6485913443875156579
@@ -348,7 +348,7 @@ MonoBehaviour:
   brokenAnimation: {fileID: 3750904758434366777, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
   deathAnimation: {fileID: 359162945896292318, guid: fee3ad32e0b0db04b96ede9a44c9dcea, type: 3}
   bossHead: {fileID: 0}
-  speed: 10
+  speed: 20
   explosionDistanceFromBossFace: 2
 --- !u!114 &7021801742264955943
 MonoBehaviour:

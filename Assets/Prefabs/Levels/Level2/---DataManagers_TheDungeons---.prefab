@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 6007356719917380407}
     m_Modifications:
     - target: {fileID: 1633521346962045033, guid: 04656f4891b2c34418311732561c7c6e, type: 3}
+      propertyPath: otherLevel
+      value: 
+      objectReference: {fileID: 11400000, guid: 9ba3e2cdc0b088c48b4e85ea13b1bb36, type: 2}
+    - target: {fileID: 1633521346962045033, guid: 04656f4891b2c34418311732561c7c6e, type: 3}
       propertyPath: <ID>k__BackingField
       value: TheDungeons
       objectReference: {fileID: 0}
@@ -16,6 +20,14 @@ PrefabInstance:
       propertyPath: <SceneCollection>k__BackingField
       value: 
       objectReference: {fileID: 11400000, guid: 53d54a1ea8fd51841a69e5a7316ee2e1, type: 2}
+    - target: {fileID: 1633521346962045033, guid: 04656f4891b2c34418311732561c7c6e, type: 3}
+      propertyPath: <PlayerPosition>k__BackingField.x
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1633521346962045033, guid: 04656f4891b2c34418311732561c7c6e, type: 3}
+      propertyPath: <PlayerPosition>k__BackingField.y
+      value: 1.015013
+      objectReference: {fileID: 0}
     - target: {fileID: 1633521346962045033, guid: 04656f4891b2c34418311732561c7c6e, type: 3}
       propertyPath: <SaveSystemData>k__BackingField.<LevelStartPoint>k__BackingField.x
       value: 7
@@ -103,6 +115,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 6007356719917380407}
     m_Modifications:
     - target: {fileID: 1541314127066406298, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
+      propertyPath: steamStatus
+      value: '#status_dungeon'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1541314127066406298, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
+      propertyPath: leaderboardID
+      value: TheDungeon_Time
+      objectReference: {fileID: 0}
+    - target: {fileID: 1541314127066406298, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
       propertyPath: levelDataManager
       value: 
       objectReference: {fileID: 707390553842381173}
@@ -176,6 +196,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7057345946494523879, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
   m_PrefabInstance: {fileID: 5318873699138176343}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6679883310196922573 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1541314127066406298, guid: 3bccf9846d48a034782ed0573762a36c, type: 3}
+  m_PrefabInstance: {fileID: 5318873699138176343}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ff5ab81a9acef94c825225ea9b8b189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7479347606305400763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -193,6 +224,10 @@ PrefabInstance:
       propertyPath: _data._objectReferences.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2028127883361844915, guid: 555d1d155b6e3fe46a91b2fcce83b184, type: 3}
+      propertyPath: '_data._objectReferences.Array.data[0]'
+      value: 
+      objectReference: {fileID: 6679883310196922573}
     - target: {fileID: 3789093122311148684, guid: 555d1d155b6e3fe46a91b2fcce83b184, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

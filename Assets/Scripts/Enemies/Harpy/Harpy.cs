@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Seeker))]
 public class Harpy : ReactiveBase
 {
+    [SerializeField] private string attackSoundID;
     [SerializeField] private float nextWaypointDistance;
     [SerializeField] private float hoverHeight;
     [SerializeField] private float xDistanceFromPlayer;
@@ -114,7 +115,7 @@ public class Harpy : ReactiveBase
         }
         
         // Swoop towards the player
-        Vector2 direction = (targetObject.position + Vector3.up * yAttackPositionOffset - transform.position).normalized;
+        Vector2 direction = ((Vector2)(targetObject.position + Vector3.up * yAttackPositionOffset - transform.position)).normalized;
         force = direction * swoopSpeed;
         
         smoothDampScript.SmoothDampVector2(force, ref targetVelocity);
@@ -136,6 +137,7 @@ public class Harpy : ReactiveBase
     private void StartSwoop()
     {
         _swooping = true;
+        AudioManager.PlayOneShotAttached(attackSoundID, gameObject);
         _animations.PlaySwoopAnimation();
     }
     

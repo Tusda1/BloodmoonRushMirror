@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Animancer;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class Boomerang : GravityObject
 {
     [SerializeField] private float speed;
     [SerializeField] private float catchDistance;
+    [SerializeField] private AnimationClip boomerangAnimation;
     [SerializeField] private DamageInstance damageInstance;
     
     [HideInInspector] public Vector2 direction;
@@ -26,17 +28,21 @@ public class Boomerang : GravityObject
     private EventInstance _boomerangSoundInstance;
     
     private readonly SmoothDampScript _smoothDampScript = new();
+    private AnimancerComponent _animancerComponent;
 
     private new void Awake()
     {
         base.Awake();
         
         GravityModifier = 0f;
+        _animancerComponent = GetComponent<AnimancerComponent>();
     }
 
     private void OnEnable()
     {
         returned = false;
+        
+        _animancerComponent.Play(boomerangAnimation);
 
         var position = transform.position;
         _initialPosition = position;

@@ -55,6 +55,6 @@ public class DataBinder {
             GameDataBinds.Remove(bind);
         }
         bind.SaveSystemData = default;
-        _debugLogger.Log($"{typeof(TBind)} object un-bind-ed from {typeof(TData)}");
+        _debugLogger.ForceLog($"{typeof(TBind)} object un-bind-ed from {typeof(TData)}");
     }
 }

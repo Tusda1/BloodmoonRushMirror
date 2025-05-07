@@ -360,12 +360,13 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         isVulnerable = false;
         isStunned = false;
         isKnockedUp = false;
-        enemyCollider.enabled = true;
         gameObject.SetActive(true);
         currentHealth = maxHealth;
         transform.position = startPosition;
-        _spriteRenderer.material = _defaultMaterial;
         facingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
+        
+        if (enemyCollider != null) enemyCollider.enabled = true;
+        if (_spriteRenderer != null) _spriteRenderer.material = _defaultMaterial;
     }
 
     private void OnTriggerStay2D(Collider2D other) {

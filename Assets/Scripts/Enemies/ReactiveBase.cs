@@ -3,7 +3,7 @@ using UnityEngine;
 public class ReactiveBase : EnemyBase
 {
     [SerializeField] protected float detectionDistance = 20f;
-    [SerializeField] private string detectionSoundID;
+    [SerializeField] protected string detectionSoundID;
     
     protected Transform targetObject;
     

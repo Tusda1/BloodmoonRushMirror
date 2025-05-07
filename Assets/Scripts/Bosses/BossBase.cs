@@ -5,10 +5,14 @@ using UnityEngine;
 using Animancer.FSM;
 using Player;
 using VContainer;
+#if STEAM_BUILD
+using Steamworks;
+#endif
 
 [DefaultExecutionOrder(-1)]
-public class BossBase : GravityObject, IDamageable
-{
+public class BossBase : GravityObject, IDamageable {
+    [SerializeField] private string steamStatus = "#status_boss_";
+    
     [SerializeField] private AnimancerComponent animancer;
     public AnimancerComponent AnimancerComponent => animancer;
     
@@ -45,6 +49,7 @@ public class BossBase : GravityObject, IDamageable
     private Material _whiteMaterial;
     private Material _defaultMaterial;
     private Vector2 initialPosition;
+    private PlayerScript _player;
 
     [SerializeField] private string hurtSoundID;
     [Inject] private IAudioManager _audioManager;
@@ -60,13 +65,23 @@ public class BossBase : GravityObject, IDamageable
         _whiteMaterial = Resources.Load<Material>("Materials/WhiteMaterial");
         _defaultMaterial = GetComponent<SpriteRenderer>().material;
     }
-    
+
     protected override void Start()
     {
         base.Start();
+        
+        _player = ServiceLocator.Get<PlayerScript>();
+        _player.OnRespawn += ResetBoss;
+    }
 
-        var player = ServiceLocator.Get<PlayerScript>();
-        player.OnRespawn += ResetBoss;
+    private void OnEnable()
+    {
+        if(_player != null) _player.OnRespawn += ResetBoss;
+    }
+
+    private void OnDisable()
+    {
+        if(_player != null) _player.OnRespawn -= ResetBoss;
     }
 
     protected void LateUpdate()
@@ -84,6 +99,11 @@ public class BossBase : GravityObject, IDamageable
     public void StartBattle()
     {
         OnBattleStart?.Invoke();
+#if STEAM_BUILD
+        if (steamStatus != string.Empty) {
+            SteamFriends.SetRichPresence("status", steamStatus);
+        }
+#endif
     }
 
     public void EndBattle()

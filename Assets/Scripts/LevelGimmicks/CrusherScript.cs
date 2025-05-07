@@ -1,14 +1,16 @@
+using System;
 using Player;
 using UnityEngine;
 using VContainer;
 
-public class CrusherScript : GravityObject {
+public class CrusherScript : MonoBehaviour {
     #region ---Fields---
     [HideInInspector] public float upSpeed;
     [HideInInspector] public float downSpeed;
     [HideInInspector] public Vector2 targetPosition;
     
     [SerializeField] private DamageInstance damageInstance = new();
+    private DamageInstance _enemyDamage = new();
     
     public Collider2D triggerCollider2D;
     public bool goingDown = false;
@@ -26,7 +28,12 @@ public class CrusherScript : GravityObject {
         _audioManager = audioManager;
     }
 
-    protected override void ComputeVelocity() {
+    private void Start() {
+        _enemyDamage.damage = 99;
+        _enemyDamage.ignoreInvincibility = true;
+    }
+
+    /* override void ComputeVelocity() {
         if (isStill) return;
 
         var currentPosition = new Vector2(transform.position.x, transform.position.y);
@@ -58,6 +65,27 @@ public class CrusherScript : GravityObject {
                 isStill = true;
         }
     }
+    */
+
+    private void Update() {
+        if (isStill) return;
+
+        if (goingDown) {
+            transform.position = Vector2.MoveTowards(transform.position, endPos, downSpeed * Time.deltaTime);
+            if (Vector2.Distance(transform.position, endPos) < 0.025f) {
+                triggerCollider2D.isTrigger = false;
+                _cameraEffects?.ShakeCamera(0.2f, 0.2f);
+                _audioManager.PlayOneShotAttached("Crusher_Slam", gameObject);
+                isStill = true;
+            }
+        }
+        else {
+            transform.position = Vector2.MoveTowards(transform.position, startPos, upSpeed * Time.deltaTime);
+            if (Vector2.Distance(transform.position, startPos) < 0.025f) {
+                isStill = true;
+            }
+        }
+    }
 
     private bool IsInsideCircle(Vector2 center, float radius, Vector2 point) {
         if (Mathf.Pow((point.x - center.x), 2) + Mathf.Pow((point.y - center.y), 2) < Mathf.Pow(radius, 2)) {
@@ -76,9 +104,7 @@ public class CrusherScript : GravityObject {
                         playerScript.playerMovement.SpikeReset();
                         break;
                     case EnemyBase enemyBase:
-                        damageInstance.damage = 99;
-                        enemyBase.TakeDamage(damageInstance);
-                        damageInstance.damage = 1;
+                        enemyBase.TakeDamage(_enemyDamage);
                         break;
         }
     }

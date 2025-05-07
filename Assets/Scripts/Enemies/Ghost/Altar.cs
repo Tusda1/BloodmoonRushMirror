@@ -34,6 +34,7 @@ public class Altar : MonoBehaviour
      private void Awake()
      {
           _suckingEvent = RuntimeManager.CreateInstance("event:/Sfx/Misc/Vacuum");
+          RuntimeManager.AttachInstanceToGameObject(_suckingEvent, transform, GetComponent<Rigidbody>());
           _collider = GetComponent<Collider2D>();
           _animancerComponent = GetComponent<AnimancerComponent>();
           _animancerComponent.Play(idle);
@@ -102,8 +103,8 @@ public class Altar : MonoBehaviour
      }
 
      private void PlaySuckAnimation() {
-          _suckingEvent.start();
           if (_animancerComponent.IsPlaying(suck)) return;
+          _suckingEvent.start();
           
           if (_animationCoroutine != null)
           {
