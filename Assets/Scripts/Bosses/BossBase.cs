@@ -194,7 +194,7 @@ public class BossBase : GravityObject, IDamageable {
         OnDeath?.Invoke();
     }
 
-    private void ResetBoss()
+    public void ResetBoss()
     {
         OnReset?.Invoke();
         isDead = false;
