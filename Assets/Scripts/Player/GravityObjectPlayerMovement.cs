@@ -502,7 +502,6 @@ namespace Player {
             ResetMovement(0);
             _knockbackVector = Vector2.zero;
             isTakingKnockback = true;
-            print("Starting spike stun");
         }
 
         private void SpikeStunStop() {
