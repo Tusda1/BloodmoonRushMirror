@@ -67,7 +67,7 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 2
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
@@ -126,8 +126,8 @@ MonoBehaviour:
   gameOverScene: {fileID: 11400000, guid: f049946a2b8e33e4c89218cc64a675cc, type: 2}
   cameraFollowTransform: {fileID: 3892124713632009612}
   lookahead: 4
-  playerLives: 10
-  playerLivesStartAmount: 10
+  playerLives: 5
+  playerLivesStartAmount: 5
   whatIsInteractable:
     serializedVersion: 2
     m_Bits: 0
@@ -145,6 +145,7 @@ MonoBehaviour:
   debugLogger: {fileID: 11400000, guid: d3bd655274d5e854a91c4568b881d8dd, type: 2}
   skipAction: {fileID: -3685540321926434071, guid: 60814f22f5df04341893c6be2e7adabe, type: 3}
   gems: 0
+  lifeGemCost: 50
   gemLostMethod: 0
   gemsLostOnDeath: 0
   gemMultiplierOnDeath: 0.9

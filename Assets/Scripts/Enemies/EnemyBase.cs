@@ -88,6 +88,8 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected override void Start() {
         base.Start();
 
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+        
         healthItemSpawnChancePercentage /= 100f;
         lifeItemSpawnChancePercentage /= 100f;
         
