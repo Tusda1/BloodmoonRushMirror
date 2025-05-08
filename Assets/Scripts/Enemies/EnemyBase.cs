@@ -277,7 +277,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         isKnockedUp = false;
     }
 
-    private void Die() 
+    protected virtual void Die() 
     {
         isDead = true;
         enemyCollider.enabled = false;
