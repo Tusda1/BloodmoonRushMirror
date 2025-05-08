@@ -1,6 +1,7 @@
 using System;
 using PlayerLoopTimer;
 using UnityEngine;
+using VContainer;
 
 public class MovingSpikes : MonoBehaviour {
     #region ---Fields---
@@ -18,8 +19,14 @@ public class MovingSpikes : MonoBehaviour {
     private CountdownTimer _downTimer;
     private CountdownTimer _bufferTimer;
 
+    private IAudioManager _audioManager;
     #endregion
 
+    [Inject]
+    public void Construct(IAudioManager audioManager) {
+        _audioManager = audioManager;
+    }
+    
     private void Awake() {
         _downPosition = new Vector2(transform.position.x, transform.position.y - 1); ;
         _startPosition = new Vector2(transform.position.x, transform.position.y);
@@ -54,11 +61,13 @@ public class MovingSpikes : MonoBehaviour {
     }
 
     private void Up() {
+        _audioManager.PlayOneShotAttached("Spike_Up", gameObject);
         _step = upSpeed * Time.deltaTime;
         _targetPos = new Vector2(_startPosition.x, _startPosition.y);
     }
 
     private void Down() {
+        _audioManager.PlayOneShotAttached("Spike_Down", gameObject);
         _step = downSpeed * Time.deltaTime;
         _targetPos = new Vector2(_downPosition.x, _downPosition.y);
     }
