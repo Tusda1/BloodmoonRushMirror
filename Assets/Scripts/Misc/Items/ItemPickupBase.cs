@@ -91,7 +91,7 @@ public class ItemPickupBase : GravityObject
         GravityModifier = _initialGravityModifier;
         velocity = Vector2.zero;
         moveSpeed = _initialMoveSpeed;
-        player.OnRespawn -= OnPlayerRespawn;
+        if (player != null) player.OnRespawn -= OnPlayerRespawn;
     }
 
     private void OnPlayerRespawn()

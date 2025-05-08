@@ -82,8 +82,6 @@ public class AUBBrain : MonoBehaviour {
         leftHand.AnimancerComponent.States.Current?.Destroy();
         rightHand.AnimancerComponent.States.Current?.Destroy();
         _boss.AnimancerComponent.States.Current?.Destroy();
-        leftHand.ResetBoss();
-        rightHand.ResetBoss();
         leftHand.StateMachine.ForceSetDefaultState();
         rightHand.StateMachine.ForceSetDefaultState();
         _boss.StateMachine.ForceSetDefaultState();
