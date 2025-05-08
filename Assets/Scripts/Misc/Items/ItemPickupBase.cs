@@ -54,8 +54,18 @@ public class ItemPickupBase : GravityObject
         _spriteGameObject = transform.GetChild(0).gameObject;
     }
 
+    protected override void Start()
+    {
+        base.Start();
+
+        player = ServiceLocator.Get<PlayerScript>();
+        player.OnRespawn += OnPlayerRespawn;
+    }
+
     private void OnEnable()
     {
+        if (player != null) player.OnRespawn += OnPlayerRespawn;
+        
         _initialGravityModifier = GravityModifier;
         
         _spriteGameObject.SetActive(true);
@@ -81,6 +91,12 @@ public class ItemPickupBase : GravityObject
         GravityModifier = _initialGravityModifier;
         velocity = Vector2.zero;
         moveSpeed = _initialMoveSpeed;
+        player.OnRespawn -= OnPlayerRespawn;
+    }
+
+    private void OnPlayerRespawn()
+    {
+        gameObject.SetActive(false);
     }
 
     private new void FixedUpdate()
@@ -159,7 +175,6 @@ public class ItemPickupBase : GravityObject
     {
         if (other.CompareTag("Player"))
         {
-            player = other.GetComponent<PlayerScript>();
             _state = RubyState.Moving;
         }
     }

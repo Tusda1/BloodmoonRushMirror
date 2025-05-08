@@ -207,7 +207,12 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         // Play hit animation
         // Play hit sound
-        if (canTakeKnockback) StartCoroutine(Knockback(damageInstance.knockback));
+        if (canTakeKnockback)
+        {
+            StartCoroutine(damageInstance.which != DamageInstance.WhichAttack.DashAttack
+                ? Knockback(damageInstance.knockback)
+                : Knockback(Vector2.up * 10f));
+        }
         
         OnTakeDamage(damageInstance);
     }
