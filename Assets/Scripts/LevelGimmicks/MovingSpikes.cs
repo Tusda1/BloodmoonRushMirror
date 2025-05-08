@@ -1,5 +1,6 @@
 using System;
 using PlayerLoopTimer;
+using UnityEditor.UI;
 using UnityEngine;
 using VContainer;
 
@@ -50,10 +51,16 @@ public class MovingSpikes : MonoBehaviour {
         if (startDown) {
             transform.position = _downPosition;
             _downTimer.StartTimer();
+            print("ja");
         }
         else {
             _upTimer.StartTimer();
         }
+    }
+
+    private void OnDisable() {
+        _upTimer.StopTimer();
+        _downTimer.StopTimer();
     }
 
     private void Update() {
@@ -61,13 +68,13 @@ public class MovingSpikes : MonoBehaviour {
     }
 
     private void Up() {
-        _audioManager.PlayOneShotAttached("Spike_Up", gameObject);
+        _audioManager.PlayOneShot("Spike_Up");
         _step = upSpeed * Time.deltaTime;
         _targetPos = new Vector2(_startPosition.x, _startPosition.y);
     }
 
     private void Down() {
-        _audioManager.PlayOneShotAttached("Spike_Down", gameObject);
+        _audioManager.PlayOneShot("Spike_Down");
         _step = downSpeed * Time.deltaTime;
         _targetPos = new Vector2(_downPosition.x, _downPosition.y);
     }
