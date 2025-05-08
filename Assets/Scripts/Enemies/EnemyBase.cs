@@ -88,6 +88,8 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
     protected override void Start() {
         base.Start();
 
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+        
         healthItemSpawnChancePercentage /= 100f;
         lifeItemSpawnChancePercentage /= 100f;
         
@@ -207,7 +209,12 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
 
         // Play hit animation
         // Play hit sound
-        if (canTakeKnockback) StartCoroutine(Knockback(damageInstance.knockback));
+        if (canTakeKnockback)
+        {
+            StartCoroutine(damageInstance.which != DamageInstance.WhichAttack.DashAttack
+                ? Knockback(damageInstance.knockback)
+                : Knockback(Vector2.up * 10f));
+        }
         
         OnTakeDamage(damageInstance);
     }
@@ -272,7 +279,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         isKnockedUp = false;
     }
 
-    private void Die() 
+    protected virtual void Die() 
     {
         isDead = true;
         enemyCollider.enabled = false;

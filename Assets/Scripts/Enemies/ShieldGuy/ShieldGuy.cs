@@ -19,11 +19,13 @@ public class ShieldGuy : ReactiveBase
     private Coroutine _strikeCoroutine;
     
     private ShieldGuyAnimation _shieldGuyAnimation;
+    private ParticleSystem _particleSystem;
 
     protected new void Awake()
     {
         base.Awake();
         _shieldGuyAnimation = GetComponent<ShieldGuyAnimation>();
+        _particleSystem = GetComponent<ParticleSystem>();
         shield.AttackBlocked += _shieldGuyAnimation.Block;
         shield.AttackNotBlocked += _shieldGuyAnimation.StunHit;
         shield.InitializeShield(Strike, this);
@@ -113,6 +115,7 @@ public class ShieldGuy : ReactiveBase
         CancelWaitThenStrike();
         isVulnerable = true;
         isStunned = true;
+        _particleSystem.Play();
         yield return new WaitForSeconds(stunnedTime);
         isVulnerable = false;
         isStunned = false;
@@ -148,5 +151,13 @@ public class ShieldGuy : ReactiveBase
         {
             Attack();
         }
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+        
+        _particleSystem.Stop();
+        _particleSystem.Clear();
     }
 }

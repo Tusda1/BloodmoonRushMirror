@@ -74,14 +74,9 @@ public class BossBase : GravityObject, IDamageable {
         _player.OnRespawn += ResetBoss;
     }
 
-    private void OnEnable()
+    private void OnDestroy()
     {
-        if(_player != null) _player.OnRespawn += ResetBoss;
-    }
-
-    private void OnDisable()
-    {
-        if(_player != null) _player.OnRespawn -= ResetBoss;
+        _player.OnRespawn -= ResetBoss;
     }
 
     protected void LateUpdate()
