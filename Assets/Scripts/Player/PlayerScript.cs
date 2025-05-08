@@ -76,6 +76,7 @@ namespace Player {
 
         #region ***---Gems---***
         [Header("Gems")] public int gems;
+        [SerializeField] private int lifeGemCost = 50;
         [SerializeField] private GemLostMethod gemLostMethod;
 
         [DrawIf(nameof(gemLostMethod), comparedValue: GemLostMethod.Subtraction)]
@@ -134,6 +135,14 @@ namespace Player {
             Bind();
         }
         #endregion
+
+        public void AddGems(int amount) {
+            gems += amount;
+            if (gems >= lifeGemCost) {
+                gems -= lifeGemCost;
+                playerLives++;
+            }
+        }
 
         #region ---EventFunctions---
         private void Start() {
