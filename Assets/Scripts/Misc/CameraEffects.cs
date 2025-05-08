@@ -169,11 +169,17 @@ public class CameraEffects : MonoBehaviour {
                 _ = SceneCollectionManager.LoadSceneCollectionAsync(sceneCollection,
                     () => {
                         ClearAllRenderTextures();
-                        CircleFadeIn(1, () => Time.timeScale = 1);
+                        _ = FadeIn();
                         callback?.Invoke();
                     });
             });
     }
+
+    private async Awaitable FadeIn() {
+        await Awaitable.WaitForSecondsAsync(1.5f);
+        CircleFadeIn(1, () => Time.timeScale = 1);
+    }
+    
 #if UNITY_EDITOR
     [ContextMenu(nameof(TestMoveCamera))]
     private void TestMoveCamera() {
