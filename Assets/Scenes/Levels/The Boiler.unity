@@ -607,6 +607,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3218659686889535827, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
   m_PrefabInstance: {fileID: 5158702354565610302}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1431304687 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2401382160840779183, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
+  m_PrefabInstance: {fileID: 5158702354565610302}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1448903625
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1221,11 +1226,12 @@ PrefabInstance:
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AUB","value":{"$content":3,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"BossBase,
         Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Ladder","value":{"$content":4,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"UnionLeaderTalking","value":{"$content":5,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnionLeaderTalking,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"BossRoomTrigger","value":{"$content":6,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
       objectReference: {fileID: 0}
     - target: {fileID: 6789487644639634626, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
       propertyPath: _data._objectReferences.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6789487644639634626, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
       propertyPath: '_data._objectReferences.Array.data[3]'
@@ -1239,6 +1245,10 @@ PrefabInstance:
       propertyPath: '_data._objectReferences.Array.data[5]'
       value: 
       objectReference: {fileID: 3033302205021506174}
+    - target: {fileID: 6789487644639634626, guid: 18500ae08ac3c2142aa00cffdb190e22, type: 3}
+      propertyPath: '_data._objectReferences.Array.data[6]'
+      value: 
+      objectReference: {fileID: 1431304687}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -111961,6 +111971,14 @@ PrefabInstance:
       propertyPath: conversationTrigger
       value: 
       objectReference: {fileID: 3033302205021506161}
+    - target: {fileID: 2264297749889888258, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264297749889888258, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 2541702900748101755, guid: c1d46c1756f26264697bed78eabf6932, type: 3}
       propertyPath: m_LocalScale.x
       value: 120

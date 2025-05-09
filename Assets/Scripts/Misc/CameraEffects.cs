@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Runtime.InteropServices;
 using System.Threading;
 using JetBrains.Annotations;
@@ -169,15 +170,10 @@ public class CameraEffects : MonoBehaviour {
                 _ = SceneCollectionManager.LoadSceneCollectionAsync(sceneCollection,
                     () => {
                         ClearAllRenderTextures();
-                        _ = FadeIn();
+                        CircleFadeIn(1, () => Time.timeScale = 1);
                         callback?.Invoke();
                     });
             });
-    }
-
-    private async Awaitable FadeIn() {
-        await Awaitable.WaitForSecondsAsync(1.5f);
-        CircleFadeIn(1, () => Time.timeScale = 1);
     }
     
 #if UNITY_EDITOR
