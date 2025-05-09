@@ -1,8 +1,9 @@
-using System;
 using PlayerLoopTimer;
-using UnityEditor.UI;
 using UnityEngine;
 using VContainer;
+#if UNITY_EDITOR
+using UnityEditor.UI;
+#endif
 
 public class MovingSpikes : MonoBehaviour {
     #region ---Fields---
