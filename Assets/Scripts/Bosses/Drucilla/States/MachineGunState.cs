@@ -40,6 +40,12 @@ public class MachineGunState : DrucillaState
     {
         _player = ServiceLocator.Get<PlayerScript>();
         _pooler = TryGetCommunityPooler.TryGetPooler(projectilePrefab, objectResolver);
+        Boss.OnReset += _pooler.ResetPooledObjects;
+    }
+
+    private void OnDestroy()
+    {
+        Boss.OnReset -= _pooler.ResetPooledObjects;
     }
 
     private void OnEnable()
@@ -61,7 +67,6 @@ public class MachineGunState : DrucillaState
         _bulletCount = 0;
         _shootTimer = 0;
         _startedFiring = false;
-        _pooler.ResetPooledObjects();
     }
 
     private void Update()

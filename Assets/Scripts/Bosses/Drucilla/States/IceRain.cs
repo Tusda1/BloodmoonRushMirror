@@ -37,8 +37,16 @@ public class IceRain : DrucillaState
     {
         _bigPooler = TryGetCommunityPooler.TryGetPooler(bigIciclePrefab, objectResolver);
         _smallPooler = TryGetCommunityPooler.TryGetPooler(smallIciclePrefab, objectResolver);
+        Boss.OnReset += _bigPooler.ResetPooledObjects;
+        Boss.OnReset += _smallPooler.ResetPooledObjects;
     }
-    
+
+    private void OnDestroy()
+    {
+        Boss.OnReset -= _bigPooler.ResetPooledObjects;
+        Boss.OnReset -= _smallPooler.ResetPooledObjects;
+    }
+
     private void OnEnable()
     {
         cornerOne = _cornerFinder.GetCorner(CornerFinder.CornerType.TopLeft);
@@ -50,8 +58,6 @@ public class IceRain : DrucillaState
         _hasTeleported = false;
         _iceRainActive = false;
         StopAllCoroutines();
-        _smallPooler.ResetPooledObjects();
-        _bigPooler.ResetPooledObjects();
     }
 
     private void Update()
