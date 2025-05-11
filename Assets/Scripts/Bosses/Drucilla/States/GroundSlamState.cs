@@ -18,7 +18,7 @@ public class GroundSlamState : DrucillaState
         _player = ServiceLocator.Get<PlayerScript>();
         _collider = GetComponent<Collider2D>();
 
-        groundSlam.InitializeGroundSlam(_collider, Boss.AnimancerComponent);
+        groundSlam.InitializeGroundSlam(Boss);
     }
 
     private void OnDisable()
