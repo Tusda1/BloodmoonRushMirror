@@ -62,14 +62,14 @@ public class GroundSlam
                 {
                     if (!_animancerComponent.IsPlaying(groundSlamSlam))
                     {
+                        StartShockwave();
+                        RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_groundslam_impact", _animancerComponent.gameObject);
                         var state = _animancerComponent.Play(groundSlamSlam);
                         state.Events(this).OnEnd = () =>
                         {
                             state.Destroy();
-                            RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_groundslam_impact", _animancerComponent.gameObject);
                             _animancerComponent.Play(groundSlamStuck);
                             _groundSlamStage++;
-                            StartShockwave();
                         };
                     }
                     velocityReference.y = 0;
