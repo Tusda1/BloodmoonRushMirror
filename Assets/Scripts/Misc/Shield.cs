@@ -28,6 +28,12 @@ public class Shield
     {
         if (!_playerMovement) _playerMovement = player.GetComponent<GravityObjectPlayerMovement>();
         
+        if (damageInstance.ignoreInvincibility)
+        {
+            shieldBreakAction?.Invoke();
+            return false;
+        }
+        
         if (damageInstance.which != DamageInstance.WhichAttack.CrouchAttack)
         {
             AttackBlocked?.Invoke();
