@@ -41,6 +41,11 @@ public class VineAttack : DrucillaState
         _vinesToSpawn = Random.Range(minVines, maxVines + 1);
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     protected override void OnTeleportEnd()
     {
         var state = Boss.AnimancerComponent.Play(vineAttackAnimation);

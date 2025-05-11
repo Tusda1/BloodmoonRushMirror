@@ -49,6 +49,9 @@ public class IceRain : DrucillaState
     {
         _hasTeleported = false;
         _iceRainActive = false;
+        StopAllCoroutines();
+        _smallPooler.ResetPooledObjects();
+        _bigPooler.ResetPooledObjects();
     }
 
     private void Update()

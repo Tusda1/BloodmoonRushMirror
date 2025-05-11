@@ -29,6 +29,11 @@ public class EnemyAnimationBase : MonoBehaviour
         PlayDefaultAnimation();
     }
 
+    public void ResetAnimancer()
+    {
+        animancerComponent.States.Current?.Destroy();
+    }
+
     public virtual void PlayDefaultAnimation()
     {
         // Play the default animation

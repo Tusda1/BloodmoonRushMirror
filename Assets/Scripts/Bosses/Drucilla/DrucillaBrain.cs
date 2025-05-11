@@ -61,8 +61,8 @@ public class DrucillaBrain : MonoBehaviour
         // Reset the boss state
         _isFighting = false;
         boss.AnimancerComponent.States.Current?.Destroy();
-        boss.transform.localScale = new Vector3(1, 1, 1);
         boss.StateMachine.ForceSetState(GetComponent<PreFightState>());
+        boss.transform.localScale = new Vector3(1, 1, 1);
         boss.canTakeDamage = true;
         boss.canDoDamage = true;
         _audioManager.StopMusic("Drucilla_FightTheme");

@@ -61,6 +61,7 @@ public class MachineGunState : DrucillaState
         _bulletCount = 0;
         _shootTimer = 0;
         _startedFiring = false;
+        _pooler.ResetPooledObjects();
     }
 
     private void Update()
