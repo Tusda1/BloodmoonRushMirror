@@ -77,11 +77,4 @@ public class SpitterEnemy : ReactiveBase
         projectileScript.velocityDirection = facingDirection;
         projectile.SetActive(true);
     }
-
-    public override void Respawn()
-    {
-        base.Respawn();
-        
-        _spitterAnimation.ResetAnimancer();
-    }
 }
