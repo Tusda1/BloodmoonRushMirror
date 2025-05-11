@@ -22,7 +22,14 @@ public class SpitterEnemy : ReactiveBase
         
         _projectilePooler = TryGetCommunityPooler.TryGetPooler(_projectilePrefab, _objectResolver);
     }
-    
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        
+        _attacking = false;
+    }
+
     protected override void Action()
     {
         // if distance to player is greater than detection distance, return to scanning

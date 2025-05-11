@@ -26,13 +26,15 @@ public class GroundSlam
     private float _timer;
     
     private GameObject _shockwavePrefab;
+    private BossBase _boss;
     private Collider2D _collider;
     private AnimancerComponent _animancerComponent;
     
-    public void InitializeGroundSlam(Collider2D externalCollider, AnimancerComponent externalAnimancerComponent)
+    public void InitializeGroundSlam(BossBase externalBoss)
     {
-        _collider = externalCollider;
-        _animancerComponent = externalAnimancerComponent;
+        _boss = externalBoss;
+        _collider = externalBoss.GetComponent<Collider2D>();
+        _animancerComponent = externalBoss.AnimancerComponent;
         _shockwavePrefab = Resources.Load<GameObject>("Prefabs/DrucillaShockwave");
     }
 
@@ -44,6 +46,7 @@ public class GroundSlam
 
                 if (!_animancerComponent.IsPlaying(groundSlamEnter))
                 {
+                    _boss.canDoDamage = true;
                     RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_groundslam_start", _animancerComponent.gameObject);
                     var state = _animancerComponent.Play(groundSlamEnter);
                     state.Events(this).OnEnd ??= () =>
@@ -62,6 +65,7 @@ public class GroundSlam
                 {
                     if (!_animancerComponent.IsPlaying(groundSlamSlam))
                     {
+                        _boss.canDoDamage = false;
                         StartShockwave();
                         RuntimeManager.PlayOneShotAttached("event:/Sfx/Boss/Drucilla/Druc_groundslam_impact", _animancerComponent.gameObject);
                         var state = _animancerComponent.Play(groundSlamSlam);
@@ -130,6 +134,7 @@ public class GroundSlam
     {
         _groundSlamStage = 0;
         _timer = 0;
+        _boss.canDoDamage = false;
     }
 
     private void StartShockwave()

@@ -38,7 +38,7 @@ public class BombAttackState : DrucillaState
         _player = ServiceLocator.Get<PlayerScript>();
         
         var tempCollider = GetComponent<Collider2D>();
-        groundSlam.InitializeGroundSlam(tempCollider, Boss.AnimancerComponent);
+        groundSlam.InitializeGroundSlam(Boss);
         _bombPooler = TryGetCommunityPooler.TryGetPooler(bombPrefab, objectResolver);
     }
 
@@ -61,6 +61,7 @@ public class BombAttackState : DrucillaState
         _droppingBombs = false;
         Boss.smoothDampScript.SetStartVelocity(Vector2.zero);
         groundSlam.ResetGroundSlam();
+        _bombPooler.ResetPooledObjects();
     }
 
     private void Update()

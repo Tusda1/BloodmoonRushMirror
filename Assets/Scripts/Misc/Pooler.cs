@@ -44,4 +44,12 @@ public class Pooler
         
         return pooledObject;
     }
+
+    public void ResetPooledObjects()
+    {
+        foreach (var pooledObject in _pooledObjects)
+        {
+            pooledObject.SetActive(false);
+        }
+    }
 }

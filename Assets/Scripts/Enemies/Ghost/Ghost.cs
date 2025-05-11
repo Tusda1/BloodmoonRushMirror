@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Player;
 using UnityEngine;
 using VContainer;
@@ -13,6 +14,7 @@ public class Ghost : ReactiveBase
     [SerializeField] private float minSlowDownDistance = 4f;
     [SerializeField] private float maxSlowDownDistance = 10f;
     [SerializeField] private float minSpeedPercentage = 0.8f;
+    [SerializeField] private float waitTimeAfterSpikeDeath = 1f;
     [SerializeField] private SmoothDampScript smoothDampScript = new();
     
     [HideInInspector] public bool sucked;
@@ -33,16 +35,6 @@ public class Ghost : ReactiveBase
         GravityModifier = 0;
     }
     
-    private void OnEnable()
-    {
-        // Reset the state
-        _playerDiedToSpike = false;
-        _withdrawing = false;
-        _withdrawPosition = Vector2.zero;
-        sucked = false;
-        _ghostAnimations.PlayDefaultAnimation();
-    }
-
     protected override void Start()
     {
         base.Start();
@@ -55,13 +47,25 @@ public class Ghost : ReactiveBase
         // Subscribe to the event
         _playerMovement.OnPlayerSpikeDeath += OnPlayerSpikeReset;
     }
+    
+    private void OnEnable()
+    {
+        // Reset the state
+        _playerDiedToSpike = false;
+        _withdrawing = false;
+        _withdrawPosition = Vector2.zero;
+        sucked = false;
+        _ghostAnimations.PlayDefaultAnimation();
+        if (_playerMovement != null) _playerMovement.OnPlayerSpikeDeath += OnPlayerSpikeReset;
+    }
 
     protected override void OnDisable()
     {
         base.OnDisable();
         
         // Unsubscribe from the event
-        _playerMovement.OnPlayerSpikeDeath -= OnPlayerSpikeReset;
+        if (_playerMovement != null) _playerMovement.OnPlayerSpikeDeath -= OnPlayerSpikeReset;
+        StopAllCoroutines();
     }
 
     protected override void ComputeVelocity()
@@ -91,13 +95,9 @@ public class Ghost : ReactiveBase
 
     protected override void Action()
     {
-        if (sucked) return;
-
-        if (_playerDiedToSpike)
-        {
-            Withdraw(10f, 10f);
-        }
-        else if (_withdrawing)
+        if (sucked || _playerDiedToSpike) return;
+        
+        if (_withdrawing)
         {
             Withdraw(minWithdrawDistance, maxWithdrawDistance);
         }
@@ -183,6 +183,14 @@ public class Ghost : ReactiveBase
 
     private void OnPlayerSpikeReset()
     {
+        StartCoroutine(WaitAfterSpikeReset());
+    }
+
+    private IEnumerator WaitAfterSpikeReset()
+    {
         _playerDiedToSpike = true;
+        yield return new WaitForSeconds(waitTimeAfterSpikeDeath);
+        smoothDampScript.SetStartVelocity(Vector2.zero);
+        _playerDiedToSpike = false;
     }
 }

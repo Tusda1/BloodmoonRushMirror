@@ -372,6 +372,7 @@ public partial class EnemyBase : GravityObject, IDamageable, IBind<EnemyData> {
         transform.position = startPosition;
         facingDirection = faceLeftOnStart ? Vector2.left : Vector2.right;
         
+        if (enemyAnimationBase != null) enemyAnimationBase.ResetAnimancer();
         if (enemyCollider != null) enemyCollider.enabled = true;
         if (_spriteRenderer != null) _spriteRenderer.material = _defaultMaterial;
     }
