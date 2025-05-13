@@ -53,6 +53,9 @@ namespace SaveLoadSystem {
 
         public void Unbind() {
             _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
+            foreach (var dataBinding in _saveLoadSystemManager.DataBinder.GameDataBinds) {
+                dataBinding.Unbind();
+            }
         }
 
         public void LoadCheckpointBindData() => LoadBindData();
