@@ -212,7 +212,7 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
     #endregion
 
     private Vector3[] GetAllChildPositions() {
-        return transform.GetImmediateChildren().Select(x => x.transform.position).ToArray();
+        return transform.GetComponentsInChildren<SpriteRenderer>().Select(x => x.transform.position).ToArray();
     }
 
     private void OnDestroy() {
@@ -247,7 +247,7 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
         
         // DataInGameData.Camera.ForceCameraPosition(DataInGameData.CameraPosition, Quaternion.identity);
         
-        var children = transform.GetImmediateChildren().ToArray();
+        var children = transform.GetComponentsInChildren<SpriteRenderer>().ToArray();
         for (var index = 0; index < children.Length; index++) {
             var child = children[index];
             child.transform.position = DataInGameData.Positions[index];
@@ -262,7 +262,7 @@ public class Parallax : MonoBehaviour, IBind<ParallaxData> {
         yield return new WaitForSeconds(0.2f);
         _cinemachineBrain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseOut, 0.6f);
         
-        var children = transform.GetImmediateChildren().ToArray();
+        var children = transform.GetComponentsInChildren<SpriteRenderer>().ToArray();
         for (var index = 0; index < children.Length; index++) {
             var child = children[index];
             child.transform.position = DataInGameData.Positions[index];
