@@ -4,6 +4,7 @@ using ExtensionMethods;
 using SaveLoadSystem.Data;
 using SceneCollections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SaveLoadSystem {
     public partial class LevelDataManager {
@@ -37,14 +38,20 @@ namespace SaveLoadSystem {
         public SaveGameData currentGameData;
         #endregion
 
-        private void OnDestroy() {
-            Unbind();
+        private void UnbindAll(Scene arg0) {
+            if (arg0.name is not ("EntranceHall" or "TheDungeons" or "TheBoiler" or "CastleMain" or "ToweringHeights" or "DraculasOffice")) return;
+            
+            foreach (var dataBinding in _saveLoadSystemManager.DataBinder.GameDataBinds.ToArray()) {
+                dataBinding.Unbind();
+            }
         }
 
         #region ---DataBindingMethods---
         public void Bind() {
             _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
             currentGameData = _saveLoadSystemManager.CurrentGameData;
+
+            SaveBindData();
         }
 
         public void LoadBindData() {
@@ -53,9 +60,6 @@ namespace SaveLoadSystem {
 
         public void Unbind() {
             _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
-            foreach (var dataBinding in _saveLoadSystemManager.DataBinder.GameDataBinds) {
-                dataBinding.Unbind();
-            }
         }
 
         public void LoadCheckpointBindData() => LoadBindData();

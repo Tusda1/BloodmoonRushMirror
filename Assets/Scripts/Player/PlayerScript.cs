@@ -10,6 +10,7 @@ using SceneCollections;
 using TetraCreations.Attributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Utilities.DataBinding;
 using VContainer;
 
@@ -133,6 +134,9 @@ namespace Player {
             debugLogger.messageOrigin = this;
             
             Bind();
+            
+            
+            SceneManager.sceneLoaded += (_, _) => Bind();
         }
         #endregion
 

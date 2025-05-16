@@ -1,7 +1,9 @@
+using System;
 using Player;
 using SaveLoadSystem.Data;
 using SceneCollections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utilities.DataBinding;
 using VContainer;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -52,6 +54,13 @@ namespace SaveLoadSystem {
             }
 #endif
             _saveLoadSystemManager.SaveLoad();
+            
+            SceneManager.sceneUnloaded += UnbindAll;
+        }
+
+        private void OnDestroy() {
+            
+            SceneManager.sceneUnloaded -= UnbindAll;
         }
         #endregion
 

@@ -61,9 +61,9 @@ public class LevelMusicManager : MonoBehaviour, IBind<MusicData> {
         PlayMusic(musicID);
     }
 
-    private void OnDestroy() {
-        Unbind();
-    }
+    // private void OnDestroy() {
+    //     Unbind();
+    // }
 
     #region ---DataBindingMethods---
     public void Bind() {

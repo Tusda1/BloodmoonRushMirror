@@ -24,11 +24,11 @@ public partial class EnemyBase {
     private bool _hasBinded;
     #endregion
 
-    private void OnDestroy() {
-        if (_hasBinded) {
-            Unbind();
-        }
-    }
+    // private void OnDestroy() {
+    //     if (_hasBinded) {
+    //         Unbind();
+    //     }
+    // }
 
     #region ---DataBindingMethods---
     public virtual void Bind() {
@@ -37,6 +37,8 @@ public partial class EnemyBase {
     }
 
     public void Unbind() {
+        if (!_hasBinded) return;
+        
         _saveLoadSystemManager.DataBinder.UnBind(this, DataInGameData);
         _hasBinded = false;
     }
