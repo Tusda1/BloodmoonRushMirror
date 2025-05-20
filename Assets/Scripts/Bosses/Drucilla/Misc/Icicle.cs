@@ -22,6 +22,13 @@ public class Icicle : GravityObject
     {
         _animancerComponent.Play(icicleFall);
     }
+    
+    private void OnDisable()
+    {
+        _animancerComponent.Stop();
+        targetVelocity = Vector2.zero;
+        velocity = Vector2.zero;
+    }
 
     private void OnCollisionEnter2D()
     {
