@@ -48,10 +48,11 @@ namespace SaveLoadSystem {
 
         #region ---DataBindingMethods---
         public void Bind() {
-            _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
             currentGameData = _saveLoadSystemManager.CurrentGameData;
 
             SaveBindData();
+            
+            _saveLoadSystemManager.DataBinder.Bind(this, DataInGameData);
         }
 
         public void LoadBindData() {

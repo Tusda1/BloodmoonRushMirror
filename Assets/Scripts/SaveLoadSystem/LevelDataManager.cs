@@ -59,7 +59,7 @@ namespace SaveLoadSystem {
         }
 
         private void OnDestroy() {
-            
+            UnbindAll(new Scene());
             SceneManager.sceneUnloaded -= UnbindAll;
         }
         #endregion
