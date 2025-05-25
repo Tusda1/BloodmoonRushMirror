@@ -147,7 +147,9 @@ public class BossBase : GravityObject, IDamageable {
 
     public void TakeDamage(DamageInstance damageInstance)
     {
+        print(canTakeDamage);
         if (!canTakeDamage || isDead) return;
+        print("taking damage");
         
         CurrentHealth -= damageInstance.damage;
 
@@ -162,17 +164,10 @@ public class BossBase : GravityObject, IDamageable {
 
         if (takeDamageAnimation.Length > 0)
         {
-            var state = animancer.Play(takeDamageAnimation[currentPhase]);
-            state.Events(this).OnEnd = () =>
-            {
-                state.Destroy();
-                TakenDamage?.Invoke();
-            };
+            animancer.Play(takeDamageAnimation[currentPhase]);
         }
-        else
-        {
-            TakenDamage?.Invoke();
-        }
+        
+        TakenDamage?.Invoke();
     }
     
     private IEnumerator FlashWhite() {

@@ -73,7 +73,6 @@ public class PingPongState : DraculaState
     
     private void OnDisable()
     {
-        Debug.Log("PingPongState Exit");
         _pingPongHitCount = 0;
         _readyToPingPong = false;
         _isReceiving = false;
