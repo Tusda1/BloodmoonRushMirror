@@ -124,6 +124,7 @@ public class DraculaBrain : MonoBehaviour
 
     private void FillAttackQueue()
     {
+        _attackQueue.Clear();
         if (boss.CurrentHealth <= 0) boss.MoveToNextPhase();
         
         var amount = baseAttackQueueSize[boss.CurrentPhase] + attackQueueSizeIncreaseFactor[boss.CurrentPhase] * (boss.MaxHealth[boss.CurrentPhase] - boss.CurrentHealth);
