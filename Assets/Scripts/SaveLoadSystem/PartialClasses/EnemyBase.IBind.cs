@@ -24,11 +24,11 @@ public partial class EnemyBase {
     private bool _hasBinded;
     #endregion
 
-    // private void OnDestroy() {
-    //     if (_hasBinded) {
-    //         Unbind();
-    //     }
-    // }
+    private void OnDestroy() {
+        if (_hasBinded) {
+            Unbind();
+        }
+    }
 
     #region ---DataBindingMethods---
     public virtual void Bind() {

@@ -99,6 +99,10 @@ namespace UI {
         }
 
         private void Start() {
+            foreach (var dataBinding in _saveLoadSystemManager.DataBinder.GameDataBinds.ToArray()) {
+                dataBinding.Unbind();
+            }
+            
             _audioManager.PlayMusic(MainMenuMusic_SoundID);
             _audioManager.SetParameterValue(LevelMusicManager.CalmnessParameter, 0, true);
 #if STEAM_BUILD
