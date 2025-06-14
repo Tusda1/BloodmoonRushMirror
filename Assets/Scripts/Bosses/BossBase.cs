@@ -48,7 +48,8 @@ public class BossBase : GravityObject, IDamageable {
     [HideInInspector] public bool isDead;
     private Material _whiteMaterial;
     private Material _defaultMaterial;
-    private Vector2 initialPosition;
+    private Vector2 _initialPosition;
+    private Quaternion _initialRotation;
     private PlayerScript _player;
 
     [SerializeField] private string hurtSoundID;
@@ -58,7 +59,8 @@ public class BossBase : GravityObject, IDamageable {
     {
         base.Awake();
         _stateMachine.InitializeAfterDeserialize();
-        initialPosition = transform.position;
+        _initialPosition = transform.position;
+        _initialRotation = transform.rotation;
         
         CurrentHealth = maxHealth[currentPhase];
         facingDirection = Vector2.left;
@@ -188,7 +190,8 @@ public class BossBase : GravityObject, IDamageable {
         isDead = false;
         currentPhase = 0;
         CurrentHealth = maxHealth[currentPhase];
-        transform.position = initialPosition;
+        transform.position = _initialPosition;
+        transform.rotation = _initialRotation;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
