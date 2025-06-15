@@ -78,8 +78,9 @@ public class SwoopAttackState : DraculaState
         _swoopState = SwoopState.Teleporting;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _shotCounter = 0;
         _swoopCount = 0;
     }

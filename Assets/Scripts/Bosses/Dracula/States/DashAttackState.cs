@@ -58,8 +58,9 @@ public class DashAttackState : DraculaState
         Initialize();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _isDashing = false;
         _dashCount = 0;
         _dashState = DashState.Teleporting;

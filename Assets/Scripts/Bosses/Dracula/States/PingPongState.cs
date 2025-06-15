@@ -71,8 +71,9 @@ public class PingPongState : DraculaState
         _pingPongState = PingPong.Teleport;
     }
     
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _pingPongHitCount = 0;
         _readyToPingPong = false;
         _isReceiving = false;

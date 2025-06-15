@@ -32,10 +32,9 @@ public class Teleport
         }
         
         IsTeleporting = true;
-        
         if (!string.IsNullOrEmpty(_teleportOutPath)) RuntimeManager.PlayOneShotAttached(_teleportOutPath, _transform.gameObject);
         AnimancerState animancerState = _animancerComponent.Play(teleportEnter);
-        animancerState.Events(this).OnEnd ??= () =>
+        animancerState.Events(this).OnEnd = () =>
         {
             animancerState.Destroy();
             _transform.position = destination;
@@ -52,5 +51,10 @@ public class Teleport
                 exitState.Destroy();
             };
         };
+    }
+
+    public void ResetTeleport()
+    {
+        IsTeleporting = false;
     }
 }

@@ -96,8 +96,9 @@ public class DashAndSwoopState : DraculaState
         teleport.TeleportToLocation(_teleportLocation, teleportEnter, tempTeleportExit, MidTeleport);
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         Boss.transform.rotation = Quaternion.identity;
         swoop.ResetSwoop();
         _loopCount = 0;

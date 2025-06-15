@@ -57,8 +57,9 @@ public class BoomerangState : DraculaState
         _boomerangStage = BoomerangStage.Teleport;
     }
     
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _boomerangThrown = false;
         _boomerang.returned = false;
         _boomerang.gameObject.SetActive(false);

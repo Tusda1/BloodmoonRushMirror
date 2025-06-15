@@ -20,4 +20,12 @@ public class DraculaState : BossState
     {
         
     }
+
+    protected virtual void OnDisable()
+    {
+        if (teleport != null)
+        {
+            teleport.ResetTeleport();
+        }
+    }
 }

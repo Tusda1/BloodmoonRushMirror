@@ -26,8 +26,9 @@ public class VulnerableState : DraculaState
         Boss.TakenDamage += TookDamage;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         Boss.TakenDamage -= TookDamage;
     }
 

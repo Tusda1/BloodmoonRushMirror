@@ -76,8 +76,9 @@ public class BatAttackState : DraculaState
         _attackPhase = AttackPhase.Teleporting;
     }
     
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _batAnimationPlayed = false;
         _batAttackStarted = false;
         _attackTimer = 0;

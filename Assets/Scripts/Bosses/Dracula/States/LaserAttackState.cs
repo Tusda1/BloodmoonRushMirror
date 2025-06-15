@@ -69,8 +69,9 @@ public class LaserAttackState : DraculaState
         stage = LaserAttackStage.Teleporting;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _timer = 0;
         _hasStartedFiring = false;
         if (_trackerObject != null)
