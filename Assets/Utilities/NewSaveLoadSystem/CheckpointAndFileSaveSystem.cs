@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using ExtensionMethods;
 using SaveLoadSystem.Data;
@@ -58,9 +59,15 @@ public class CheckpointAndFileSaveSystem : ISaveLoadSystemManager {
         saveSlotData.lastTimePlayed = metaData.LastWriteTime.ToString("HH:mm dd/MM/yyyy");
         saveSlotData.saveGameData = DataService.LoadByPath(pathToSaveFile);
         saveSlotData.currentLevel = saveSlotData.saveGameData.currentSceneCollectionName;
-        saveSlotData.currentProgress = saveSlotData.saveGameData.levelDatas
-            .Single(x => x.ID == saveSlotData.saveGameData.currentSceneCollectionName)
-            .currentProgress;
+        
+        try {
+            saveSlotData.currentProgress = saveSlotData.saveGameData.levelDatas
+                .Single(x => x.ID == saveSlotData.saveGameData.currentSceneCollectionName)
+                .currentProgress;
+        }
+        catch (InvalidOperationException) {
+            saveSlotData.currentProgress = "";
+        }
     }
 
     /// <summary>
